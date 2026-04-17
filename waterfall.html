@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc'teryx Outlet 瀑布流展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+
+        .filter-group label {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #00d2ff;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+        }
+
+        .filter-group select option {
+            background: #1a1a2e;
+        }
+
+        .price-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .price-range input {
+            width: 100px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d2ff;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .masonry {
+            column-count: 4;
+            column-gap: 20px;
+        }
+
+        @media (max-width: 1400px) {
+            .masonry {
+                column-count: 3;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .masonry {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .masonry {
+                column-count: 1;
+            }
+        }
+
+        .card {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 210, 255, 0.3);
+        }
+
+        .card-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            background: #1a1a2e;
+        }
+
+        .card-image-placeholder {
+            width: 100%;
+            aspect-ratio: 3 / 4;  /* 始祖鸟标准比例 1500x2000 */
+            background: linear-gradient(135deg, #2a2a4a 0%, #1a1a2e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .placeholder-icon {
+            font-size: 3rem;
+            opacity: 0.5;
+        }
+
+        /* 骨架屏动画 */
+        .card-image-placeholder.loading {
+            background: linear-gradient(90deg, 
+                #2a2a4a 0%, 
+                #3a3a5a 50%, 
+                #2a2a4a 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-region {
+            display: inline-block;
+            padding: 4px 8px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+        }
+
+        .card-category {
+            display: inline-block;
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .card-description {
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .card-prices {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .price-sale {
+            color: #00d2ff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+
+        .price-cny {
+            display: block;
+            font-size: 0.85rem;
+            color: #ff6b6b;
+            margin-top: 3px;
+        }
+        .discount-badge {
+            background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .card-colors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .color-tag {
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
+        .card-sizes {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .card-link {
+            display: inline-block;
+            padding: 8px 12px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .card-link:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.4);
+        }
+
+        .card-link-detail {
+            display: inline-block;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .card-link-detail:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #00d2ff;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #aaa;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .sort-buttons {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .sort-btn {
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sort-btn:hover,
+        .sort-btn.active {
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border-color: transparent;
+        }
+
+        .gender-icon {
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+
+        .stock-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .in-stock {
+            background: #00ff88;
+        }
+
+        .out-of-stock {
+            background: #ff4444;
+        }
+
+        .low-stock {
+            background: #ffaa00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏔️ Arc'teryx Outlet 瀑布流</h1>
+            <p class="subtitle">全球折扣商品实时监控 | 共 <span id="total-count">0</span> 件商品</p>
+        </header>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>地区</label>
+                <select id="region-filter">
+                    <option value="">全部地区</option>
+                    <option value="us">🇺🇸 美国</option>
+                    <option value="ca">🇨🇦 加拿大</option>
+                    <option value="gb">🇬🇧 英国</option>
+                    <option value="de">🇩🇪 德国</option>
+                    <option value="fr">🇫🇷 法国</option>
+                    <option value="nl">🇳🇱 荷兰</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>性别</label>
+                <select id="gender-filter">
+                    <option value="">全部</option>
+                    <option value="men">👨 男款</option>
+                    <option value="women">👩 女款</option>
+                    <option value="unisex">⚧ 通用</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>类别</label>
+                <select id="category-filter">
+                    <option value="">全部类别</option>
+                    <option value="硬壳冲锋衣">🧥 硬壳冲锋衣</option>
+                    <option value="保暖羽绒">🧥 保暖羽绒</option>
+                    <option value="抓绒/连帽">🧥 抓绒/连帽</option>
+                    <option value="裤装">👖 裤装</option>
+                    <option value="鞋类">👟 鞋类</option>
+                    <option value="背包">🎒 背包</option>
+                    <option value="配件">🧢 配件</option>
+                    <option value="上衣/T恤">👕 上衣/T恤</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>系列</label>
+                <select id="series-filter">
+                    <option value="">全部系列</option>
+                    <option value="Veilance">🏔️ Veilance (33)</option>
+                    <option value="Norvan">🏔️ Norvan (11)</option>
+                    <option value="Beta">🏔️ Beta (11)</option>
+                    <option value="Sentinel">🏔️ Sentinel (10)</option>
+                    <option value="Gamma">🏔️ Gamma (10)</option>
+                    <option value="Kragg">🏔️ Kragg (9)</option>
+                    <option value="Sabre">🏔️ Sabre (9)</option>
+                    <option value="Rush">🏔️ Rush (8)</option>
+                    <option value="Alpha">🏔️ Alpha (7)</option>
+                    <option value="Rho">🏔️ Rho (6)</option>
+                    <option value="Delta">🏔️ Delta (6)</option>
+                    <option value="Sylan">🏔️ Sylan (5)</option>
+                    <option value="Konseal">🏔️ Konseal (5)</option>
+                    <option value="Kopec">🏔️ Kopec (3)</option>
+                    <option value="Cerium">🏔️ Cerium (3)</option>
+                    <option value="Atom">🏔️ Atom (3)</option>
+                    <option value="Fissile">🏔️ Fissile (2)</option>
+                    <option value="Kyanite">🏔️ Kyanite (2)</option>
+                    <option value="Proton">🏔️ Proton (2)</option>
+                    <option value="Aerios">🏔️ Aerios (2)</option>
+                    <option value="Covert">🏔️ Covert (1)</option>
+                    <option value="Thorium">🏔️ Thorium (1)</option>
+                    <option value="Squamish">🏔️ Squamish (1)</option>
+                    <option value="Nuclei">🏔️ Nuclei (1)</option>
+                    <option value="其他">📦 其他</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>价格范围 (€)</label>
+                <div class="price-range">
+                    <input type="number" id="price-min" placeholder="最低" min="0">
+                    <span>-</span>
+                    <input type="number" id="price-max" placeholder="最高" min="0">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>最低折扣 (%)</label>
+                <input type="number" id="discount-min" placeholder="例如: 30" min="0" max="100">
+            </div>
+
+            <div class="filter-group">
+                <label>排序</label>
+                <select id="sort-filter">
+                    <option value="discount-desc">折扣最高</option>
+                    <option value="discount-asc">折扣最低</option>
+                    <option value="price-asc">价格最低</option>
+                    <option value="price-desc">价格最高</option>
+                    <option value="name-asc">名称 A-Z</option>
+                    <option value="name-desc">名称 Z-A</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>搜索</label>
+                <input type="text" id="search-input" placeholder="搜索产品名称...">
+            </div>
+
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button class="sort-btn" id="reset-btn">🔄 重置筛选</button>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="filtered-count">0</div>
+                <div class="stat-label">筛选结果</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="avg-discount">0%</div>
+                <div class="stat-label">平均折扣</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="min-price">€0</div>
+                <div class="stat-label">最低价格</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="max-discount">0%</div>
+                <div class="stat-label">最大折扣</div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            🔄 加载数据中...
+        </div>
+
+        <div id="no-results" class="no-results" style="display: none;">
+            😔 没有找到符合条件的商品
+        </div>
+
+        <div class="masonry" id="products-container">
+            <!-- 产品卡片将在这里动态生成 -->
+        </div>
+    </div>
+
+    <script>
+        let allProducts = [];
+        let filteredProducts = [];
+
+        // 加载数据
+        async function loadData() {
+            try {
+                const response = await fetch('global_data.json');
+                allProducts = await response.json();
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('total-count').textContent = allProducts.length;
+                applyFilters();
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                document.getElementById('loading').textContent = '❌ 加载数据失败，请刷新页面重试';
+            }
+        }
+
+        // 应用筛选
+        function applyFilters() {
+            const region = document.getElementById('region-filter').value;
+            const gender = document.getElementById('gender-filter').value;
+            const category = document.getElementById('category-filter').value;
+            const series = document.getElementById('series-filter').value;
+            const priceMin = parseFloat(document.getElementById('price-min').value) || 0;
+            const priceMax = parseFloat(document.getElementById('price-max').value) || Infinity;
+            const discountMin = parseFloat(document.getElementById('discount-min').value) || 0;
+            const sortBy = document.getElementById('sort-filter').value;
+            const search = document.getElementById('search-input').value.toLowerCase();
+
+            filteredProducts = allProducts.filter(product => {
+                // 地区筛选
+                if (region && product.region !== region) return false;
+                
+                // 性别筛选
+                if (gender && product.gender !== gender) return false;
+                
+                // 类别筛选
+                if (category && product.category !== category) return false;
+                
+                // 系列筛选
+                if (series && getSeries(product) !== series) return false;
+                
+                // 价格筛选
+                const price = product.sale_price || product.original_price;
+                if (price < priceMin || price > priceMax) return false;
+                
+                // 折扣筛选
+                if (product.discount_pct < discountMin) return false;
+                
+                // 搜索筛选
+                if (search) {
+                    const searchText = `${product.full_name} ${product.description} ${product.model}`.toLowerCase();
+                    if (!searchText.includes(search)) return false;
+                }
+                
+                return true;
+            });
+
+            // 排序
+            filteredProducts.sort((a, b) => {
+                switch (sortBy) {
+                    case 'discount-desc':
+                        return b.discount_pct - a.discount_pct;
+                    case 'discount-asc':
+                        return a.discount_pct - b.discount_pct;
+                    case 'price-asc':
+                        return (a.sale_price || a.original_price) - (b.sale_price || b.original_price);
+                    case 'price-desc':
+                        return (b.sale_price || b.original_price) - (a.sale_price || a.original_price);
+                    case 'name-asc':
+                        return (a.full_name || a.model).localeCompare(b.full_name || b.model);
+                    case 'name-desc':
+                        return (b.full_name || b.model).localeCompare(a.full_name || a.model);
+                    default:
+                        return 0;
+                }
+            });
+
+            updateStats();
+            renderProducts();
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            document.getElementById('filtered-count').textContent = filteredProducts.length;
+            
+            if (filteredProducts.length === 0) {
+                document.getElementById('avg-discount').textContent = '0%';
+                document.getElementById('min-price').textContent = '€0';
+                document.getElementById('max-discount').textContent = '0%';
+                return;
+            }
+
+            const avgDiscount = filteredProducts.reduce((sum, p) => sum + (p.discount_pct || 0), 0) / filteredProducts.length;
+            const minPrice = Math.min(...filteredProducts.map(p => p.sale_price || p.original_price));
+            const maxDiscount = Math.max(...filteredProducts.map(p => p.discount_pct || 0));
+
+            document.getElementById('avg-discount').textContent = Math.round(avgDiscount) + '%';
+            document.getElementById('min-price').textContent = '€' + Math.round(minPrice);
+            document.getElementById('max-discount').textContent = Math.round(maxDiscount) + '%';
+        }
+
+        // 渲染产品
+        function renderProducts() {
+            const container = document.getElementById('products-container');
+            const noResults = document.getElementById('no-results');
+
+            if (filteredProducts.length === 0) {
+                container.innerHTML = '';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            noResults.style.display = 'none';
+            container.innerHTML = filteredProducts.map(product => createCard(product)).join('');
+        }
+
+        // 创建产品卡片
+        function createCard(product) {
+            const price = product.sale_price || product.original_price;
+            const originalPrice = product.original_price;
+            const discount = product.discount_pct || 0;
+            // 优先使用本地图片
+            const imageUrl = product.local_image || product.image_url || '';
+            const colors = product.colors || [];
+            const sizes = product.sizes || [];
+            
+
+        // 汇率（对人民币）
+        const EXCHANGE_RATES = {
+            'USD': 7.25,
+            'EUR': 7.85,
+            'GBP': 9.15,
+            'CAD': 5.30
+        };
+
+        // 货币符号到代码的映射
+        const SYMBOL_TO_CURRENCY = {
+            '$': 'USD',
+            '€': 'EUR',
+            '£': 'GBP',
+            'CA$': 'CAD'
+        };
+
+        // 转换为人民币
+        function toCNY(price, symbol) {
+            const currency = SYMBOL_TO_CURRENCY[symbol] || 'EUR';
+            const rate = EXCHANGE_RATES[currency] || 7.85;
+            return Math.round(price * rate);
+        }
+            const regionFlags = {
+                'us': '🇺🇸',
+                'ca': '🇨🇦',
+                'gb': '🇬🇧',
+                'de': '🇩🇪',
+                'fr': '🇫🇷',
+                'nl': '🇳🇱'
+            };
+
+            const genderIcons = {
+                'men': '👨',
+                'women': '👩',
+                'unisex': '⚧'
+            };
+
+            const categoryIcons = {
+                '硬壳冲锋衣': '🧥',
+                '保暖羽绒': '🧥',
+                '抓绒/连帽': '🧥',
+                '裤装': '👖',
+                '鞋类': '👟',
+                '背包': '🎒',
+                '配件': '🧢',
+                '上衣/T恤': '👕'
+            };
+
+            return `
+                <div class="card">
+                    ${imageUrl ? 
+                        `<div class="card-image-placeholder loading" data-src="${imageUrl}">
+                            <span class="placeholder-icon">🏔️</span>
+                        </div>` : 
+                        `<div class="card-image-placeholder">
+                            ${categoryIcons[product.category] || '🏷️'}
+                        </div>`
+                    }
+                    <div class="card-content">
+                        <div>
+                            <span class="card-region">${regionFlags[product.region] || '🌍'} ${product.region_name || product.region}</span>
+                            <span class="card-category">${genderIcons[product.gender] || ''} ${product.category || '其他'}</span>
+                        </div>
+                        <h3 class="card-title">${product.full_name || product.model}</h3>
+                        <p class="card-description">${product.description || ''}</p>
+                        <div class="card-prices">
+                            <div>
+                                <span class="price-original">${product.symbol || '€'}${originalPrice}</span>
+                                <span class="price-sale">${product.symbol || '€'}${price}</span>
+                                <span class="price-cny">¥${toCNY(price, product.symbol || '€')}</span>
+                            </div>
+                            ${discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : ''}
+                        </div>
+                        ${colors.length > 0 ? `
+                            <div class="card-colors">
+                                ${colors.slice(0, 5).map(color => `<span class="color-tag">${color}</span>`).join('')}
+                                ${colors.length > 5 ? `<span class="color-tag">+${colors.length - 5}</span>` : ''}
+                            </div>
+                        ` : ''}
+                        ${sizes.length > 0 ? `
+                            <div class="card-sizes">
+                                📏 尺码: ${sizes.slice(0, 8).join(', ')}${sizes.length > 8 ? '...' : ''}
+                            </div>
+                        ` : ''}
+                        <div class="card-actions">
+                            <a href="product-detail.html?url=${encodeURIComponent(product.url)}" class="card-link-detail">
+                                📋 详情
+                            </a>
+                            <a href="${product.url}" target="_blank" rel="noopener noreferrer" class="card-link">
+                                🔗 官网
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 重置筛选
+        function resetFilters() {
+            document.getElementById('region-filter').value = '';
+            document.getElementById('gender-filter').value = '';
+            document.getElementById('category-filter').value = '';
+            document.getElementById('series-filter').value = '';
+            document.getElementById('price-min').value = '';
+            document.getElementById('price-max').value = '';
+            document.getElementById('discount-min').value = '';
+            document.getElementById('sort-filter').value = 'discount-desc';
+            document.getElementById('search-input').value = '';
+            applyFilters();
+        }
+
+        // 事件监听
+        document.getElementById('region-filter').addEventListener('change', applyFilters);
+        document.getElementById('gender-filter').addEventListener('change', applyFilters);
+        document.getElementById('category-filter').addEventListener('change', applyFilters);
+        document.getElementById('series-filter').addEventListener('change', applyFilters);
+        document.getElementById('price-min').addEventListener('input', applyFilters);
+        document.getElementById('price-max').addEventListener('input', applyFilters);
+        document.getElementById('discount-min').addEventListener('input', applyFilters);
+        document.getElementById('sort-filter').addEventListener('change', applyFilters);
+        document.getElementById('search-input').addEventListener('input', applyFilters);
+        document.getElementById('reset-btn').addEventListener('click', resetFilters);
+
+        // 图片懒加载
+        function setupLazyLoading() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const placeholder = entry.target;
+                        const src = placeholder.dataset.src;
+                        
+                        if (src) {
+                            const img = new Image();
+                            img.onload = () => {
+                                placeholder.outerHTML = `<img class="card-image loaded" src="${src}" alt="">`;
+                            };
+                            img.onerror = () => {
+                                placeholder.innerHTML = '<span style="font-size: 2rem;">📷</span>';
+                                placeholder.classList.remove('loading');
+                            };
+                            img.src = src;
+                        }
+                        observer.unobserve(placeholder);
+                    }
+                });
+            }, { rootMargin: '100px' });
+
+            document.querySelectorAll('.card-image-placeholder[data-src]').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // 在渲染后调用懒加载
+        const originalRenderProducts = renderProducts;
+        renderProducts = function() {
+            originalRenderProducts();
+            setTimeout(setupLazyLoading, 50);
+        };
+
+        // 初始化
+        loadData();
+    </script>
+</body>
+</html>

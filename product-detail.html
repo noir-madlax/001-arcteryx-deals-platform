@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品详情 | Arc'teryx Outlet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #00d2ff;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: opacity 0.3s;
+        }
+
+        .back-btn:hover {
+            opacity: 0.8;
+        }
+
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 900px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: contain;
+            background: #1a1a2e;
+            border-radius: 15px;
+        }
+
+        .thumbnails {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 5px 0;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+            background: #2a2a4a;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            border-color: #00d2ff;
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .product-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .product-desc {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .price-section {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .price-sale {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d2ff;
+        }
+
+        .price-original {
+            font-size: 1.2rem;
+            color: #888;
+            text-decoration: line-through;
+        }
+
+        .price-cny {
+            font-size: 1.2rem;
+            color: #ff6b6b;
+        }
+
+        .discount-badge {
+            background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .color-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .color-btn:hover,
+        .color-btn.active {
+            background: rgba(0, 210, 255, 0.2);
+            border-color: #00d2ff;
+        }
+
+        .color-btn.out-of-stock {
+            opacity: 0.4;
+            text-decoration: line-through;
+        }
+
+        .size-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .size-btn {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .size-btn:hover,
+        .size-btn.active {
+            background: rgba(0, 210, 255, 0.2);
+            border-color: #00d2ff;
+        }
+
+        .size-btn.out-of-stock {
+            opacity: 0.3;
+            text-decoration: line-through;
+            cursor: not-allowed;
+        }
+
+        .size-btn.in-stock::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #00ff88;
+            border-radius: 50%;
+        }
+
+        .stock-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .stock-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .stock-dot.in-stock {
+            background: #00ff88;
+        }
+
+        .stock-dot.low-stock {
+            background: #ffaa00;
+        }
+
+        .stock-dot.out-of-stock {
+            background: #ff4444;
+        }
+
+        .cta-btn {
+            padding: 15px 30px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+        }
+
+        .cta-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .meta-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .meta-label {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .meta-value {
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="waterfall.html" class="back-btn">
+            ← 返回列表
+        </a>
+
+        <div id="product-detail" class="product-detail">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <script>
+        // 汇率
+        const EXCHANGE_RATES = {
+            'USD': 7.25,
+            'EUR': 7.85,
+            'GBP': 9.15,
+            'CAD': 5.30
+        };
+
+        const SYMBOL_TO_CURRENCY = {
+            '$': 'USD',
+            '€': 'EUR',
+            '£': 'GBP',
+            'C$': 'CAD'
+        };
+
+        function toCNY(price, symbol) {
+            const currency = SYMBOL_TO_CURRENCY[symbol] || 'USD';
+            const rate = EXCHANGE_RATES[currency] || 7.25;
+            return Math.round(price * rate);
+        }
+
+        // 获取URL参数
+        function getUrlParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // 加载产品数据
+        async function loadProduct() {
+            const skuId = getUrlParam('sku');
+            const productUrl = getUrlParam('url');
+
+            try {
+                // 加载SKU数据
+                const skuResponse = await fetch('arcteryx_skus.json');
+                const skus = await skuResponse.json();
+
+                // 查找匹配的SKU
+                let sku = null;
+                if (skuId) {
+                    sku = skus.find(s => s.sku_id === skuId);
+                } else if (productUrl) {
+                    sku = skus.find(s => s.url === productUrl);
+                }
+
+                if (!sku) {
+                    // 如果没找到SKU，尝试从主数据加载
+                    const dataResponse = await fetch('global_data.json');
+                    const products = await dataResponse.json();
+                    const product = products.find(p => p.url === productUrl);
+                    if (product) {
+                        renderProduct(product);
+                    } else {
+                        document.getElementById('product-detail').innerHTML = '<div class="loading">产品未找到</div>';
+                    }
+                } else {
+                    // 查找同URL的所有颜色SKU
+                    const relatedSkus = skus.filter(s => s.url === sku.url);
+                    renderSkuProduct(sku, relatedSkus);
+                }
+            } catch (error) {
+                console.error('加载失败:', error);
+                document.getElementById('product-detail').innerHTML = '<div class="loading">加载失败</div>';
+            }
+        }
+
+        // 渲染SKU产品
+        function renderSkuProduct(currentSku, allSkus) {
+            const container = document.getElementById('product-detail');
+            const price = currentSku.sale_price;
+            const originalPrice = currentSku.original_price;
+            const discount = currentSku.discount_pct;
+            const cnyPrice = toCNY(price, currentSku.symbol);
+
+            // 获取所有颜色
+            const colors = allSkus.map(s => ({
+                name: s.color,
+                sku_id: s.sku_id,
+                images: s.images,
+                sizes: s.sizes,
+                size_stock: s.size_stock,
+                active: s.sku_id === currentSku.sku_id
+            }));
+
+            container.innerHTML = `
+                <div class="gallery">
+                    <img class="main-image" id="main-image" src="${currentSku.images[0] || currentSku.image_url}" alt="${currentSku.full_name}">
+                    <div class="thumbnails">
+                        ${currentSku.images.map((img, i) => `
+                            <img class="thumbnail ${i === 0 ? 'active' : ''}" src="${img}" onclick="changeMainImage('${img}', this)">
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="info">
+                    <h1 class="product-name">${currentSku.full_name}</h1>
+                    <p class="product-desc">${currentSku.description || ''}</p>
+
+                    <div class="price-section">
+                        <span class="price-sale">${currentSku.symbol}${price}</span>
+                        <span class="price-original">${currentSku.symbol}${originalPrice}</span>
+                        <span class="price-cny">¥${cnyPrice}</span>
+                        ${discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : ''}
+                    </div>
+
+                    <div>
+                        <div class="section-title">颜色: ${currentSku.color}</div>
+                        <div class="color-options">
+                            ${colors.map(c => `
+                                <button class="color-btn ${c.active ? 'active' : ''}" 
+                                        onclick="selectColor('${c.sku_id}')">
+                                    ${c.name}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    ${currentSku.sizes.length > 0 ? `
+                        <div>
+                            <div class="section-title">尺码</div>
+                            <div class="size-options">
+                                ${currentSku.sizes.map(size => {
+                                    const stockStatus = currentSku.size_stock?.[size] || 'unknown';
+                                    const isOutOfStock = stockStatus === 'out_of_stock';
+                                    return `
+                                        <button class="size-btn ${isOutOfStock ? 'out-of-stock' : ''}" 
+                                                ${isOutOfStock ? 'disabled' : ''}>
+                                            ${size}
+                                        </button>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <button class="cta-btn" onclick="window.open('${currentSku.url}', '_blank')">
+                        🔗 前往官网购买
+                    </button>
+
+                    <div class="meta-info">
+                        <div class="meta-item">
+                            <span class="meta-label">地区</span>
+                            <span class="meta-value">${currentSku.region_name}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">货币</span>
+                            <span class="meta-value">${currentSku.currency}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">SKU</span>
+                            <span class="meta-value">${currentSku.sku_id}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">更新时间</span>
+                            <span class="meta-value">${currentSku.last_updated?.split(' ')[0] || '-'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 渲染普通产品
+        function renderProduct(product) {
+            const container = document.getElementById('product-detail');
+            const price = product.sale_price;
+            const originalPrice = product.original_price;
+            const discount = product.discount_pct;
+            const cnyPrice = toCNY(price, product.symbol);
+
+            container.innerHTML = `
+                <div class="gallery">
+                    <img class="main-image" src="${product.image_url}" alt="${product.full_name}">
+                </div>
+
+                <div class="info">
+                    <h1 class="product-name">${product.full_name}</h1>
+                    <p class="product-desc">${product.description || ''}</p>
+
+                    <div class="price-section">
+                        <span class="price-sale">${product.symbol}${price}</span>
+                        <span class="price-original">${product.symbol}${originalPrice}</span>
+                        <span class="price-cny">¥${cnyPrice}</span>
+                        ${discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : ''}
+                    </div>
+
+                    ${product.colors?.length > 0 ? `
+                        <div>
+                            <div class="section-title">可选颜色</div>
+                            <div class="color-options">
+                                ${product.colors.map(c => `<span class="color-btn">${c}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <button class="cta-btn" onclick="window.open('${product.url}', '_blank')">
+                        🔗 前往官网购买
+                    </button>
+
+                    <div class="meta-info">
+                        <div class="meta-item">
+                            <span class="meta-label">地区</span>
+                            <span class="meta-value">${product.region_name}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">类别</span>
+                            <span class="meta-value">${product.category}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 切换主图
+        function changeMainImage(src, thumb) {
+            document.getElementById('main-image').src = src;
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        }
+
+        // 选择颜色
+        function selectColor(skuId) {
+            window.location.search = `?sku=${skuId}`;
+        }
+
+        // 初始化
+        loadProduct();
+    </script>
+</body>
+</html>
