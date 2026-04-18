@@ -13,9 +13,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/kragg-shoe-0110",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-shoe-0110",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000010110-Kragg-Shoe-Nightscape-Nightscape-Hover.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "colors": [
       "Canvas/Canvas",
       "Copper Sky/Copper Sky",
@@ -70,9 +70,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/rush-jacket-9903",
+    "url": "https://outlet.arcteryx.com/shop/mens/rush-jacket-9903",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/rush-jacket-mensa-durable-jacket-for-backcountry-skiing-and-riding.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -109,9 +109,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/sabre-jacket-0536",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-jacket-0536",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sabre-jacket-mensdurable-gore-tex-epe-freeride-jacket.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -148,9 +148,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/sabre-pant-8928",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-pant-8928",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/sabre-pant-mensgore-tex-epe-freeride-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -189,9 +189,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/sabre-bib-pant-8924",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-bib-pant-8924",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/sabre-bib-pant-mensgore-tex-epe-freeride-bib.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -230,9 +230,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/sabre-jacket-print-9975",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-jacket-print-9975",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sabre-jacket-print-mensstormproof-freeride-jacket.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -269,9 +269,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/sabre-pant-print-9974",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-pant-print-9974",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/sabre-pant-print-mensstormproof-freeride-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -310,9 +310,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/fissile-insulated-pant-0019",
+    "url": "https://outlet.arcteryx.com/shop/mens/fissile-insulated-pant-0019",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/fissile-insulated-pant-menswarm,-waterproof-resort-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -349,9 +349,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/rush-bib-pant-9904",
+    "url": "https://outlet.arcteryx.com/shop/mens/rush-bib-pant-9904",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009904-Rush-Bib-M-Black.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -390,9 +390,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/spere-lt-blazer",
+    "url": "https://outlet.arcteryx.com/shop/mens/spere-lt-blazer",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilancespere-lt-blazer-mensbreathable-blazer,-boxy-silhouette.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -429,9 +429,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/monitor-down-coat-9943",
+    "url": "https://outlet.arcteryx.com/shop/mens/monitor-down-coat-9943",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009943-Monitor-Down-Coat-Gnosis-Hover.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -468,9 +468,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/ogee-insulated-tote-9144",
+    "url": "https://outlet.arcteryx.com/shop/ogee-insulated-tote-9144",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/system_aogee-insulated-toteinsulated,-high-volume-tote-for-bouldering-tools.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -507,9 +507,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/kragg-multi-shoe-0404",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-multi-shoe-0404",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/kragg-multi-shoe-menspull-on-shoe-for-quick-approaches.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -560,9 +560,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/kragg-insulated-shoe-9205",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-insulated-shoe-9205",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/kragg-insulated-shoe-mensinsulated-pull-on-shoe-for-quick-approaches.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -613,9 +613,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/vertex-alpine-shoe",
+    "url": "https://outlet.arcteryx.com/shop/mens/vertex-alpine-shoe",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/vertex-alpine-shoe-mensfast,-light,-supportive-approach-shoe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -666,9 +666,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/kopec-mid-gtx-boot-0029",
+    "url": "https://outlet.arcteryx.com/shop/mens/kopec-mid-gtx-boot-0029",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/kopec-mid-gtx-boot-menswaterproof-mid-height-hiking-and-trekking-shoe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -719,9 +719,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/norvan-ld-4-shoe-0398",
+    "url": "https://outlet.arcteryx.com/shop/mens/norvan-ld-4-shoe-0398",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/norvan-ld-4-shoe-mensadaptable,-long-distance-mountain-running-shoe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -772,9 +772,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/sylan-gtx-shoe-9601",
+    "url": "https://outlet.arcteryx.com/shop/mens/sylan-gtx-shoe-9601",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/sylan-gtx-shoe-mensgore-tex-mountain-running-shoe-built-for-speed.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -825,9 +825,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/vertex-speed-low-shoe-9715",
+    "url": "https://outlet.arcteryx.com/shop/mens/vertex-speed-low-shoe-9715",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/vertex-speed-low-shoe-menslow-profile-shoe-for-vertical-technical-mountain-runs.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -878,9 +878,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/konseal-gtx-shoe-9833",
+    "url": "https://outlet.arcteryx.com/shop/mens/konseal-gtx-shoe-9833",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/konseal-gtx-shoe-menswaterproof-approach-shoe-for-rugged,-technical-terrain.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -931,9 +931,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/norvan-ld-4-gtx-shoe-0397",
+    "url": "https://outlet.arcteryx.com/shop/mens/norvan-ld-4-gtx-shoe-0397",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/norvan-ld-4-gtx-shoe-mensadaptable,-waterproof-mountain-running-shoe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -984,9 +984,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/vertex-alpine-gtx-shoe-9602",
+    "url": "https://outlet.arcteryx.com/shop/mens/vertex-alpine-gtx-shoe-9602",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/vertex-alpine-gtx-shoe-mensfast-and-light-gore-tex-approach-shoe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1037,9 +1037,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/conduit-down-jacket-9960",
+    "url": "https://outlet.arcteryx.com/shop/mens/conduit-down-jacket-9960",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009960-Conduit-Down-Jacket-Carmine-Hover.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1076,9 +1076,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/macai-shell-jacket-9889",
+    "url": "https://outlet.arcteryx.com/shop/mens/macai-shell-jacket-9889",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/macai-shell-jacket-mensgore-tex-ski-and-snowboard-shell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1115,9 +1115,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/konseal-shoe-9834",
+    "url": "https://outlet.arcteryx.com/shop/mens/konseal-shoe-9834",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/konseal-shoe-menssturdy-approach-shoe-for-rugged,-technical-terrain.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1168,9 +1168,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/entasis-insulated-coat-9125",
+    "url": "https://outlet.arcteryx.com/shop/womens/entasis-insulated-coat-9125",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceentasis-insulated-coat-womensrefined-relaxed-fit-coat-for-wet,-cold-weather.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1207,9 +1207,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/alpha-jacket",
+    "url": "https://outlet.arcteryx.com/shop/womens/alpha-jacket",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/alpha-jacket-womensversatile-gore-tex-shell-for-alpine-environments.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1246,9 +1246,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/norvan-ld-4-shoe-0400",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-ld-4-shoe-0400",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/norvan-ld-4-shoe-womensadaptable,-long-distance-mountain-running-shoe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1299,9 +1299,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/konseal-shoe-9970",
+    "url": "https://outlet.arcteryx.com/shop/womens/konseal-shoe-9970",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/konseal-shoe-womenssturdy-approach-shoe-for-rugged,-technical-terrain.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1352,9 +1352,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/konseal-gtx-shoe-9972",
+    "url": "https://outlet.arcteryx.com/shop/womens/konseal-gtx-shoe-9972",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/konseal-gtx-shoe-womenswaterproof-approach-shoe-for-rugged,-technical-terrain.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1405,9 +1405,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/vertex-speed-low-shoe-9716",
+    "url": "https://outlet.arcteryx.com/shop/womens/vertex-speed-low-shoe-9716",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/vertex-speed-low-shoe-womenslow-profile-shoe-for-vertical-technical-mountain-runs.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1458,9 +1458,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/kragg-insulated-shoe-9210",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-insulated-shoe-9210",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/kragg-insulated-shoe-womensinsulated-pull-on-shoe-for-quick-approaches.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1511,9 +1511,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/sylan-gtx-shoe-9605",
+    "url": "https://outlet.arcteryx.com/shop/womens/sylan-gtx-shoe-9605",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/sylan-gtx-shoe-womensgore-tex-mountain-running-shoe-built-for-speed.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1564,9 +1564,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/vertex-alpine-gtx-shoe-9603",
+    "url": "https://outlet.arcteryx.com/shop/womens/vertex-alpine-gtx-shoe-9603",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/vertex-alpine-gtx-shoe-womensfast-and-light-gore-tex-approach-shoe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1617,9 +1617,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/conduit-down-jacket-9962",
+    "url": "https://outlet.arcteryx.com/shop/womens/conduit-down-jacket-9962",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceconduit-down-jacket-womensrefined,-modern-down-jacket.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1656,9 +1656,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/alpha-lightweight-anorak",
+    "url": "https://outlet.arcteryx.com/shop/womens/alpha-lightweight-anorak",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/alpha-lightweight-anorak-womenssuperlight,-durable-gore-tex-shell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1695,9 +1695,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/sabre-insulated-pant",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-insulated-pant",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sabre-insulated-pant-mensinsulated-gore-tex-freeride-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1734,9 +1734,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/rush-bib-pant",
+    "url": "https://outlet.arcteryx.com/shop/mens/rush-bib-pant",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/rush-bib-pant-mensgore-tex-backcountry-touring-bib.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1775,9 +1775,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/fissile-insulated-pant-8489",
+    "url": "https://outlet.arcteryx.com/shop/mens/fissile-insulated-pant-8489",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/fissile-insulated-pant-menswarm,-waterproof-resort-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1814,9 +1814,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/sabre-relaxed-pant-9157",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-relaxed-pant-9157",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/sabre-relaxed-pant-mensstormproof-freeride-pant-with-a-relaxed-fit.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1855,9 +1855,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/alpha-insulated-pant",
+    "url": "https://outlet.arcteryx.com/shop/alpha-insulated-pant",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/alpha-insulated-pantdown-insulated,-unisex-alpinists-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -1894,9 +1894,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/vertex-speed-shoe-9613",
+    "url": "https://outlet.arcteryx.com/shop/mens/vertex-speed-shoe-9613",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/vertex-speed-shoe-menshybrid-shoe-for-vertical-technical-mountain-runs.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -1947,9 +1947,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/sylan-pro-shoe-0077",
+    "url": "https://outlet.arcteryx.com/shop/mens/sylan-pro-shoe-0077",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/sylan-pro-shoe-mensbreathable-mountain-running-shoe-built-for-speed.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -2000,9 +2000,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/mens/sabre-bib-pant-nightfall-9952",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-bib-pant-nightfall-9952",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/sabre-bib-pant---nightfall-mensspecial-edition-freeride-ski-and-snowboard-bib-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2041,9 +2041,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/rush-jacket",
+    "url": "https://outlet.arcteryx.com/shop/womens/rush-jacket",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/rush-jacket-womensgore-tex-backcountry-touring-shell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2080,9 +2080,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/sentinel-pant-8896",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-pant-8896",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/sentinel-pant-womensdurable-gore-tex-epe-freeride-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2121,9 +2121,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/sentinel-jacket-print-9868",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-jacket-print-9868",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sentinel-jacket-print-womensdurable-gore-tex-epe-freeride-shell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2160,9 +2160,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/rush-bib-pant",
+    "url": "https://outlet.arcteryx.com/shop/womens/rush-bib-pant",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/rush-bib-pant-womensgore-tex-backcountry-touring-bib.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2201,9 +2201,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/womens/sentinel-pant-print-9869",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-pant-print-9869",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/sentinel-pant-print-womensdurable-gore-tex-epe-freeride-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2242,9 +2242,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/womens/sentinel-jacket-8891",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-jacket-8891",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sentinel-jacket-womensdurable-gore-tex-epe-freeride-shell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2281,9 +2281,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/womens/patera-long-parka",
+    "url": "https://outlet.arcteryx.com/shop/womens/patera-long-parka",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/patera-long-parka-womenslong,-warm-gore-tex-parka.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2320,9 +2320,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/ifora-coat",
+    "url": "https://outlet.arcteryx.com/shop/womens/ifora-coat",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceifora-coat-womensdistinctive-gore-tex-trench-coat.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2359,9 +2359,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/sentinel-jacket-0539",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-jacket-0539",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sentinel-jacket-womensdurable-gore-tex-epe-freeride-shell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2398,9 +2398,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/womens/sentinel-jacket-7384",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-jacket-7384",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sentinel-jacket-womensdurable-gore-tex-freeride-shell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2437,9 +2437,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "ca",
     "region_name": "加拿大",
-    "url": "https://outlet.arcteryx.com/ca/en/shop/womens/sentinel-insulated-pant-9107",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-insulated-pant-9107",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sentinel-insulated-pant-womenswarm,-stormproof-freeride-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2476,9 +2476,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/bora-70-backpack",
+    "url": "https://outlet.arcteryx.com/shop/womens/bora-70-backpack",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/packs/bora-70-backpack-womensdurable,-comfortable-multiday-backpack.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "背包",
     "colors": [
       "Black/Black",
@@ -2510,9 +2510,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/vertex-speed-shoe-9619",
+    "url": "https://outlet.arcteryx.com/shop/womens/vertex-speed-shoe-9619",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/vertex-speed-shoe-womenshybrid-shoe-for-vertical-technical-mountain-runs.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -2563,9 +2563,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/delta-hoody",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-hoody",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000007743-Delta-Hoody-Dynasty-Hover.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2602,9 +2602,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mens/alpha-pant",
+    "url": "https://outlet.arcteryx.com/shop/mens/alpha-pant",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/alpha-pant-menslightweight,-ultra-durable-gore-tex-pant-with-our-proprietary-hadron-face-fabric.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2643,9 +2643,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/beta-insulated-jacket-0510",
+    "url": "https://outlet.arcteryx.com/shop/mens/beta-insulated-jacket-0510",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/beta-insulated-jacket-mensinsulated-gore-tex-mountain-shell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2682,9 +2682,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/ralle-insulated-jacket-9878",
+    "url": "https://outlet.arcteryx.com/shop/mens/ralle-insulated-jacket-9878",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/ralle-insulated-jacket-mensgore-tex-jacket-with-coreloft-insulation.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2721,9 +2721,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/konseal-crew-neck-pullover-8454",
+    "url": "https://outlet.arcteryx.com/shop/mens/konseal-crew-neck-pullover-8454",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/konseal-crew-neck-pullover-menscrew-neck-climbers-fleece-with-added-durability.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2760,9 +2760,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/ralle-down-parka-9156",
+    "url": "https://outlet.arcteryx.com/shop/mens/ralle-down-parka-9156",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/ralle-down-parka-menswarm,-waterproof-parka-for-mountain-living.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2799,9 +2799,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/kyanite-pullover-hoody-8444",
+    "url": "https://outlet.arcteryx.com/shop/mens/kyanite-pullover-hoody-8444",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/kyanite-pullover-hoody-menswarm-polartec-stretch-fleece-hoody.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2838,9 +2838,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/delta-jacket-9165",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-jacket-9165",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/delta-jacket-mensfleece-jacket-delivering-warmth-for-less-weight.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2877,9 +2877,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/beta-sl-jacket-0552",
+    "url": "https://outlet.arcteryx.com/shop/mens/beta-sl-jacket-0552",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/beta-sl-jacket-menslightweight,-highly-versatile-gore-tex-epe-shell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2916,9 +2916,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/sabre-relaxed-anorak-0537",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-relaxed-anorak-0537",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sabre-relaxed-anorak-mensstormproof-freeride-anorak.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2955,9 +2955,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/rush-jacket-7149",
+    "url": "https://outlet.arcteryx.com/shop/mens/rush-jacket-7149",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/rush-jacket-mensgore-tex-pro-shell-for-the-backcountry.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -2994,9 +2994,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/rho-lt-bottom-print-9320",
+    "url": "https://outlet.arcteryx.com/shop/mens/rho-lt-bottom-print-9320",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/rho-lt-bottom-print-mensbase-layer-mixed-output-in-cool-temperatures.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3033,9 +3033,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/altus-down-jacket-9879",
+    "url": "https://outlet.arcteryx.com/shop/mens/altus-down-jacket-9879",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilancealtus-down-jacket-menslightweight,-down-jacket-with-extensive-features.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3072,9 +3072,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/frame-polo-shirt-ls",
+    "url": "https://outlet.arcteryx.com/shop/mens/frame-polo-shirt-ls",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceframe-polo-shirt-ls-mensversatile-fine-gauge-merino-polo.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3111,9 +3111,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/beta-pant-9569",
+    "url": "https://outlet.arcteryx.com/shop/mens/beta-pant-9569",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/beta-pant-menswaterproof,-breathable-all-mountain-shell-pant.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3152,9 +3152,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "gb",
     "region_name": "英国",
-    "url": "https://outlet.arcteryx.com/gb/en/shop/mens/isogon-mx-hoody-0585",
+    "url": "https://outlet.arcteryx.com/shop/mens/isogon-mx-hoody-0585",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceisogon-mx-hoody-mensstreamlined-jacket,-weather-resistance.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3191,9 +3191,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/beta-down-parka-9101",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-down-parka-9101",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/der-beta-daunenparka-damenunsere-wärmste-und-längste-beta-hardshell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3230,9 +3230,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/emblem-fleece-jogger-9785",
+    "url": "https://outlet.arcteryx.com/shop/womens/emblem-fleece-jogger-9785",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/emblem-fleece-jogginghose-damenkomfortable-jogginghose-aus-biobaumwollmischung.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3269,9 +3269,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/covert-cardigan-0559",
+    "url": "https://outlet.arcteryx.com/shop/womens/covert-cardigan-0559",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/covert-cardigan-damenunser-legendärer-funktioneller-fleece-cardigan.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3308,9 +3308,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/cerium-jacket-0584",
+    "url": "https://outlet.arcteryx.com/shop/womens/cerium-jacket-0584",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/cerium-jacke-damenleichte,-warme,-vielseitige-daunenjacke.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3347,9 +3347,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/liatris-long-coat-9097",
+    "url": "https://outlet.arcteryx.com/shop/womens/liatris-long-coat-9097",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/liatris-langmantel-damenlange-gore-tex-hardshell-zum-wandern.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3386,9 +3386,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/rho-zip-neck-print-7358",
+    "url": "https://outlet.arcteryx.com/shop/womens/rho-zip-neck-print-7358",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/rho-zipper-funktionsshirt-print-damenvielseitiges,-leichtes-funktionsshirt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3425,9 +3425,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/emaris-relaxed-jacket-0089",
+    "url": "https://outlet.arcteryx.com/shop/womens/emaris-relaxed-jacket-0089",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/emaris-relaxed-jacke-damenhardshelljacke-mit-relaxed-fit-für-regnerische-touren.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3464,9 +3464,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/entasis-coat-9127",
+    "url": "https://outlet.arcteryx.com/shop/womens/entasis-coat-9127",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceentasis-mantel-dameneleganter,-relaxter-mantel-für-nasskaltes-wetter.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3503,9 +3503,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/gamma-mx-coat-9851",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-mx-coat-9851",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/gamma-mx-mantel-damensoftshellmantel-für-wechselhaftes,-kühles-wetter.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3542,9 +3542,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/atom-sv-jacket-9852",
+    "url": "https://outlet.arcteryx.com/shop/womens/atom-sv-jacket-9852",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/atom-sv-jacke-damenunsere-wärmste-atom-jacke-für-wanderungen-bei-kaltem-wetter.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3581,9 +3581,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/psiphon-hoody-9515",
+    "url": "https://outlet.arcteryx.com/shop/womens/psiphon-hoody-9515",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/psiphon-hoody-damenatmungsaktive-softshell-für-alpinkletterinnen.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3620,9 +3620,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/sonii-mx-jacket-0088",
+    "url": "https://outlet.arcteryx.com/shop/womens/sonii-mx-jacket-0088",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sonii-mx-jacke-damenvon-workwear-inspirierte-softshelljacke-für-tageswanderungen.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3659,9 +3659,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/beta-sl-jacket-9674",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-sl-jacket-9674",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/beta-sl-jacke-damenleichte,-extrem-vielseitige-shell-aus-gore-tex-epe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3698,9 +3698,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/beta-sl-jacket-9680",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-sl-jacket-9680",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/beta-sl-jacke-damenleichte,-extrem-vielseitige-shell-aus-gore-tex-epe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3737,9 +3737,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/cerium-sv-vest-8532",
+    "url": "https://outlet.arcteryx.com/shop/womens/cerium-sv-vest-8532",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/cerium-sv-weste-damenunsere-wärmste-cerium-daunenweste.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3776,9 +3776,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/liatris-down-parka-9858",
+    "url": "https://outlet.arcteryx.com/shop/womens/liatris-down-parka-9858",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/liatris-daunenparka-damengore-tex-daunenparka-für-extreme-kälte.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3815,9 +3815,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/rho-bottom-print-7299",
+    "url": "https://outlet.arcteryx.com/shop/womens/rho-bottom-print-7299",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/rho-funktionsunterhose-print-damenvielseitige,-leichte-funktionsunterhose.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3854,9 +3854,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/sentinel-insulated-anorak-0540",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-insulated-anorak-0540",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sentinel-gefütterter-anorak-damenwarmer-freerideanorak-mit-wetterschutz.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -3893,9 +3893,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/alpha-fl-30-backpack-7557",
+    "url": "https://outlet.arcteryx.com/shop/alpha-fl-30-backpack-7557",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/packs/alpha-fl-30-rucksackleichter,-schlanker,-strapazierfähiger-30-liter-kletterrucksack.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "背包",
     "colors": [
       "Black/Black",
@@ -3927,9 +3927,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/sylan-pro-shoe-0076",
+    "url": "https://outlet.arcteryx.com/shop/womens/sylan-pro-shoe-0076",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/sylan-pro-schuh-damenatmungsaktiver-trailrunningschuh-für-hohes-tempo.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -3980,9 +3980,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/beta-sl-jacket-0020",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-sl-jacket-0020",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/beta-sl-jacke-damenleichte,-extrem-vielseitige-shell-aus-gore-tex-epe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4019,9 +4019,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/patera-parka",
+    "url": "https://outlet.arcteryx.com/shop/womens/patera-parka",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/patera-parka-damenisolierter-gore-tex-daunenparka.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4058,9 +4058,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/delta-jacket-7710",
+    "url": "https://outlet.arcteryx.com/shop/womens/delta-jacket-7710",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/delta-jacke-damenwarme,-atmungsaktive-performance-fleecejacke.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4097,9 +4097,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/aestas-short-5-5",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-short-5-5",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/packs/aestas-short-5.5\"-damenleichte,-packbare-outdoorshort.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "背包",
     "colors": [
       "Black/Black",
@@ -4131,9 +4131,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/gamma-pant-7687",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-pant-7687",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/gamma-hose-damenunsere-vielseitigste-softshellhose.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4172,9 +4172,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/kopec-mid-gtx-boot-0031",
+    "url": "https://outlet.arcteryx.com/shop/womens/kopec-mid-gtx-boot-0031",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/kopec-mid-gtx-wanderschuh-damenwasserdichter,-mittelhoher-wander--und-trekkingschuh.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -4225,9 +4225,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/gamma-tapered-pant-0044",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-tapered-pant-0044",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/gamma-tapered-hose-damenwarme,-vielseitige-fortius-2.0-softshell-hose.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4266,9 +4266,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/beta-ar-jacket-9863",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-ar-jacket-9863",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/beta-ar-jacke-damenstrapazierfähige-hardshelljacke-für-extrembedingungen-am-berg.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4305,9 +4305,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/beta-ar-jacket",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-ar-jacket",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/beta-ar-jacke-damenvielseitige-gore-tex-pro-shell-für-den-allround-einsatz-(ar).jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4344,9 +4344,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/taema-crew-neck-shirt-ls",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-crew-neck-shirt-ls",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/taema-t-shirt-damenleichtes,-komfortables-funktionsshirt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -4383,9 +4383,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/gamma-short-9",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-short-9",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/gamma-short-9″-damenbesonders-vielseitige-9″-softshellshorts-mit-stretch.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4422,9 +4422,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/aestas-short-9-9520",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-short-9-9520",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/packs/aestas-short-9\"-damenleichte,-packbare-outdoorshort.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "背包",
     "colors": [
       "Black/Black",
@@ -4456,9 +4456,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/emblem-fleece-crew-neck-pullover",
+    "url": "https://outlet.arcteryx.com/shop/womens/emblem-fleece-crew-neck-pullover",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/emblem-fleecepullover-mit-rundhalsausschnitt-damenkomfortabler-pullover-aus-bio-baumwollmischung.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4495,9 +4495,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/satoro-sl-merino-wool-crew-neck-ls-9046",
+    "url": "https://outlet.arcteryx.com/shop/womens/satoro-sl-merino-wool-crew-neck-ls-9046",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/satoro-merino-longsleeve-damenunsere-leichtester,-langärmeliger-baselayer-aus-merinomix.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4534,9 +4534,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/kragg-sl-cotton-emblem-crew-shirt-ss-9502",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-sl-cotton-emblem-crew-shirt-ss-9502",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/kragg-sl-cotton-emblem-t-shirt-damenweiches-baumwollshirt-zum-klettern-mit-grafik-auf-der-brust.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -4573,9 +4573,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/gamma-pant-0033",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-pant-0033",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/gamma-hose-damenunsere-vielseitigste-softshellhose.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4614,9 +4614,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/lana-merino-wool-crew-neck-shirt-ss",
+    "url": "https://outlet.arcteryx.com/shop/womens/lana-merino-wool-crew-neck-shirt-ss",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/lana-merino-t-shirt-damenvielseitiges-oberteil-aus-einer-performance-mischung-mit-merino.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -4653,9 +4653,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/atom-jacket-9855",
+    "url": "https://outlet.arcteryx.com/shop/womens/atom-jacket-9855",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/atom-jacke-damenatmungsaktive-all-mountain-jacke-mit-hybrid-isolierung.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4692,9 +4692,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/norvan-insulated-vest",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-insulated-vest",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/norvan-isolierte-weste-damenultraleichte,-isolierte-trailrunningweste.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4731,9 +4731,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/aestas-pullover-hoody-9492",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-pullover-hoody-9492",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/aestas-pullover-hoody-damenfleecehoody-zum-klettern-und-für-vieles-mehr.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4770,9 +4770,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/thorium-xlong-parka-8531",
+    "url": "https://outlet.arcteryx.com/shop/womens/thorium-xlong-parka-8531",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/thorium-xlong-parka-damendaunenwärme-mit-extralänge.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4809,9 +4809,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/taema-hoody",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-hoody",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/taema-hoody-damenleichte,-atmungsaktive-performance-hoody-für-sonnige-tage.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4848,9 +4848,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/kragg-sl-cotton-blurred-bird-tank-9503",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-sl-cotton-blurred-bird-tank-9503",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/kragg-sl-cotton-blurred-bird-tanktop-damenweiches-baumwollshirt-zum-klettern-mit-verschwommener-bird-grafik.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -4887,9 +4887,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/gamma-sl-pant-0034",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-sl-pant-0034",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/gamma-sl-hose-damenleichte,-strapazierfähige,-vielseitige-softshellhose.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4928,9 +4928,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/proton-sl-hoody-9508",
+    "url": "https://outlet.arcteryx.com/shop/womens/proton-sl-hoody-9508",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/proton-sl-hoody-damendie-leichteste,-atmungsaktivste-isolationsjacke-zum-klettern.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -4967,9 +4967,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/taema-thermal-hoody-0257",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-thermal-hoody-0257",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/taema-thermal-hoody-damenmultisport-baselayer-mit-kapuze.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5006,9 +5006,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/kyanite-lt-hoody-9645",
+    "url": "https://outlet.arcteryx.com/shop/womens/kyanite-lt-hoody-9645",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/kyanite-lt-hoody-damenleichte-(lt),-komfortable-stretch-fleece-hoody-mit-hoher-funktionalität.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5045,9 +5045,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/taema-crew-neck-shirt-ss-7309",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-crew-neck-shirt-ss-7309",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/taema-kurzarmshirt-damenfeuchtigkeitstransportierendes-funktions-top.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5084,9 +5084,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/norvan-crew-shirt-ls-0259",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-crew-shirt-ls-0259",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/norvan-longsleeve-damenunser-erstklassiges-trail-running-shirt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5123,9 +5123,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/kragg-cotton-short-9-9519",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-cotton-short-9-9519",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/kragg-cotton-short-9\"-damenelastische-klettershort-aus-baumwollmix.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5162,9 +5162,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/diene-shirt-ls-9315",
+    "url": "https://outlet.arcteryx.com/shop/womens/diene-shirt-ls-9315",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilancediene-hemd-damenessenzielles-anzughemd-mit-stretch.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5201,9 +5201,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/taema-thermal-crew-neck-shirt-ls-0258",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-thermal-crew-neck-shirt-ls-0258",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/taema-thermal-longsleeve-damenmultisport-baselayershirt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5240,9 +5240,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/gamma-hybrid-pant",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-hybrid-pant",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/gamma-hybridhose-damensoftshellhose-zum-wandern-mit-besonders-viel-bewegungsfreiheit.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5281,9 +5281,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/arc-word-cotton-t-shirt",
+    "url": "https://outlet.arcteryx.com/shop/womens/arc-word-cotton-t-shirt",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/arcword-baumwoll-t-shirt-damenweiches,-atmungsaktives-t-shirt-aus-hochwertiger-baumwolle.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5320,9 +5320,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/rula-t-shirt-ss-0087",
+    "url": "https://outlet.arcteryx.com/shop/womens/rula-t-shirt-ss-0087",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/rula-t-shirt-damenkörpernah-geschnittenes-kletter-t-shirt-mit-sonnenschutz.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5359,9 +5359,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/delta-crew-neck-pullover",
+    "url": "https://outlet.arcteryx.com/shop/womens/delta-crew-neck-pullover",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/delta-pullover-damenwarmer,-atmungsaktiver-performance-fleecepullover-mit-rundhalsausschnitt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5398,9 +5398,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/squamish-hoody",
+    "url": "https://outlet.arcteryx.com/shop/womens/squamish-hoody",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/squamish-hoody-damenleichte,-komprimierbare-windshell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5437,9 +5437,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/norvan-crew-neck-shirt-ss",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-crew-neck-shirt-ss",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/norvan-t-shirt-damenunser-trailrunning-shirt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5476,9 +5476,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/soria-tank",
+    "url": "https://outlet.arcteryx.com/shop/womens/soria-tank",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/soria-tanktop-damenvielseitiges,-feuchtigkeitstransportierendes-tanktop.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5515,9 +5515,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/silene-tank",
+    "url": "https://outlet.arcteryx.com/shop/womens/silene-tank",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/silene-tanktop-damenkletter-tanktop-für-bewegungsfreiheit-und-komfort.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5554,9 +5554,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/vertex-alpine-shoe",
+    "url": "https://outlet.arcteryx.com/shop/womens/vertex-alpine-shoe",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/vertex-alpine-schuh-damenleichter,-stützender-zustiegsschuh-für-hohes-tempo.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -5607,9 +5607,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/norvan-short-3",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-short-3",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/norvan-short-3\"-damenunsere-3\"-trailrunning-short.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5646,9 +5646,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/lana-merino-wool-crew-shirt-ss-9495",
+    "url": "https://outlet.arcteryx.com/shop/womens/lana-merino-wool-crew-shirt-ss-9495",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/lana-merino-t-shirt-damenleichtes-t-shirt-aus-merinomix-für-alle-bergsportaktivitäten.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5685,9 +5685,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/aestas-crew-neck-pullover-9053",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-crew-neck-pullover-9053",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/aestas-pullover-damenfleecepullover-zum-sportklettern-und-bouldern.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5724,9 +5724,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/ifora-jacket-9524",
+    "url": "https://outlet.arcteryx.com/shop/womens/ifora-jacket-9524",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceifora-jacke-damenwind--und-wasserdichte-oversize-jacke-für-die-stadt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5763,9 +5763,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/satoro-sl-merino-wool-crew-neck-ss-9045",
+    "url": "https://outlet.arcteryx.com/shop/womens/satoro-sl-merino-wool-crew-neck-ss-9045",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/satoro-sl-merino-t-shirt-damenunsere-leichtester,-kurzärmeliger-baselayer-aus-merinomix.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5802,9 +5802,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/beta-insulated-jacket-0512",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-insulated-jacket-0512",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/beta-gefütterte-jacke-damenbeta-hardshell-mit-kunstfaserisolierung.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5841,9 +5841,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/taema-tank",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-tank",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/taema-tank-top-damenfeuchtigkeitstransportierendes-funktions-tank-top.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5880,9 +5880,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/essent-high-rise-utility-legging-26",
+    "url": "https://outlet.arcteryx.com/shop/womens/essent-high-rise-utility-legging-26",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/essent-high-rise-utility-leggings-26″-damenvielseitige-stretch-leggings-mit-taschen.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5919,9 +5919,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/soria-racerback-tank-9493",
+    "url": "https://outlet.arcteryx.com/shop/womens/soria-racerback-tank-9493",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/soria-racerback-tanktop-damenschnelltrockendes-klettertanktop-mit-racerback.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -5958,9 +5958,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/limina-insulated-jacket-9131",
+    "url": "https://outlet.arcteryx.com/shop/womens/limina-insulated-jacket-9131",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilancelimina-gefütterte-jacke-damengefütterte-softshelljacke-für-kühlere-bedingungen.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -5997,9 +5997,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/silene-crew-shirt-ss",
+    "url": "https://outlet.arcteryx.com/shop/womens/silene-crew-shirt-ss",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/silene-t-shirt-damenkletter-shirt-für-bewegungsfreiheit-und-komfort.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -6036,9 +6036,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/palister-dress",
+    "url": "https://outlet.arcteryx.com/shop/womens/palister-dress",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilancepalister-kleid-damenleichtes,-luftiges-sommerkleid-für-die-stadt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6075,9 +6075,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/taema-crop-t-shirt",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-crop-t-shirt",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/taema-crop-t-shirt-damenleichtes,-komfortables-performance-top.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "上衣",
     "colors": [
       "Black/Black",
@@ -6114,9 +6114,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/psiphon-pant-9505",
+    "url": "https://outlet.arcteryx.com/shop/womens/psiphon-pant-9505",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/psiphon-hose-damensoftshell-windhose-mit-highrise-bund-zu-alpinklettern.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6155,9 +6155,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/cerium-vest-9289",
+    "url": "https://outlet.arcteryx.com/shop/womens/cerium-vest-9289",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/cerium-weste-damenleichte,-warme,-vielseitige-daunenweste.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6194,9 +6194,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/essent-warm-high-rise-legging-26",
+    "url": "https://outlet.arcteryx.com/shop/womens/essent-warm-high-rise-legging-26",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/essent-warm-high-rise-legging-26\"-damenunsere-wärmste-essent-legging.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6233,9 +6233,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/aestas-jogger-0093",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-jogger-0093",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/aestas-jogginghose-damenpassgenauer-komfort-für-kühle-klettertage.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6272,9 +6272,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/rho-hybrid-insulated-bottom-8473",
+    "url": "https://outlet.arcteryx.com/shop/womens/rho-hybrid-insulated-bottom-8473",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/rho-hybrid-gefütterte-funktionsunterhose-damenisolierte-funktionsunterhose.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6311,9 +6311,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/nia-pant-0086",
+    "url": "https://outlet.arcteryx.com/shop/womens/nia-pant-0086",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/nia-hose-damenrobuste-softshellhose-mit-barrel-legs-für-tagestouren.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6352,9 +6352,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/bora-60-backpack",
+    "url": "https://outlet.arcteryx.com/shop/womens/bora-60-backpack",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/packs/bora-60-rucksack-damenstrapazierfähiger,-komfortabler-rucksack-für-mehrtagestouren.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "背包",
     "colors": [
       "Black/Black",
@@ -6386,9 +6386,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/sentinel-relaxed-jacket-print-7256",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-relaxed-jacket-print-7256",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sentinel-relaxed-jacke-damensturmfeste-freeridejacke-mit-relaxtem-schnitt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6425,9 +6425,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/ifora-jacket",
+    "url": "https://outlet.arcteryx.com/shop/womens/ifora-jacket",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceifora-jacke-damengore-tex-jacke-für-die-stadt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6464,9 +6464,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/alpha-sv-jacket-7556",
+    "url": "https://outlet.arcteryx.com/shop/womens/alpha-sv-jacket-7556",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/alpha-sv-jacke-damenunsere-strapazierfähigste-gore-tex-shelljacke.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6503,9 +6503,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/gamma-utility-pant-0035",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-utility-pant-0035",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/gamma-utility-hose-damenstrapazierfähige,-vielseitige,-stretchige-wanderhose-aus-softshell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6544,9 +6544,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/sylan-shoe",
+    "url": "https://outlet.arcteryx.com/shop/womens/sylan-shoe",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/sylan-schuh-damenatmungsaktiver-trailrunningschuh-für-hohes-tempo.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -6597,9 +6597,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/frame-shirt-ss",
+    "url": "https://outlet.arcteryx.com/shop/womens/frame-shirt-ss",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceframe-shirt-ss-damenfigurbetonter-merino-rundhalspullover.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6636,9 +6636,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/eave-v-neck-shirt",
+    "url": "https://outlet.arcteryx.com/shop/womens/eave-v-neck-shirt",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceeave-hemd-mit-v-ausschnitt-damenluftiges,-leger-geschnittenes-hemd-für-warme-tage.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6675,9 +6675,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/atom-vest-9507",
+    "url": "https://outlet.arcteryx.com/shop/womens/atom-vest-9507",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/atom-weste-damenkunstfaserweste-wärmt-auch-in-nassem-zustand.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6714,9 +6714,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/nuclei-pant-9113",
+    "url": "https://outlet.arcteryx.com/shop/womens/nuclei-pant-9113",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/nuclei-hose-damenunsere-wärmste-synthetisch-gefütterte-sicherungshose.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6755,9 +6755,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/essent-high-rise-utility-short-6",
+    "url": "https://outlet.arcteryx.com/shop/womens/essent-high-rise-utility-short-6",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/essent-high-rise-utility-short-6″-damenvielseitige-stretch-shorts-mit-taschen.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6794,9 +6794,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/asset-sl-jacket-9473",
+    "url": "https://outlet.arcteryx.com/shop/womens/asset-sl-jacket-9473",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilanceasset-sl-jacke-damensuperleichte,-wasserdichte-jacke-für-die-stadt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6833,9 +6833,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/khara-pant",
+    "url": "https://outlet.arcteryx.com/shop/womens/khara-pant",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/veilancekhara-hose-damensoftshellhose-für-die-stadt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6874,9 +6874,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/belfry-wool-pant-9978",
+    "url": "https://outlet.arcteryx.com/shop/womens/belfry-wool-pant-9978",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/veilancebelfry-hose-mit-wolle-damenfunktionelle-hose-aus-wollmischung.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -6915,9 +6915,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/norvan-ld-4-shoe-9618",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-ld-4-shoe-9618",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/norvan-ld-4-schuh-damenanpassungsfähiger-berglaufschuh-für-lange-einheiten.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -6968,9 +6968,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/kopec-mid-gtx-boot-9209",
+    "url": "https://outlet.arcteryx.com/shop/womens/kopec-mid-gtx-boot-9209",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/shoes/kopec-mid-gtx-wanderschuh-damenwasserdichter,-mittelhoher-wander--und-trekkingschuh.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Canvas/Canvas",
@@ -7021,9 +7021,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/gamma-tapered-pant",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-tapered-pant",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/pants/gamma-tapered-hose-damenwarme,-vielseitige-fortius-2.0-softshell-hose.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -7062,9 +7062,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/belfry-wool-jacket-9772",
+    "url": "https://outlet.arcteryx.com/shop/womens/belfry-wool-jacket-9772",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilancebelfry-jacke-mit-wolle-damensoftshelljacke-aus-wollmischung-mit-klassischem-schnitt.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -7101,9 +7101,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/norvan-cap",
+    "url": "https://outlet.arcteryx.com/shop/norvan-cap",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/norvan-capfunktionelle-trailrunningkappe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7140,9 +7140,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/aerios-5-panel-cap-9489",
+    "url": "https://outlet.arcteryx.com/shop/aerios-5-panel-cap-9489",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/aerios-5-panel-capschnelltrockenende,-ultraleichte-5-panel-kappe-zum-laufen.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7179,9 +7179,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/mallow-toque",
+    "url": "https://outlet.arcteryx.com/shop/mallow-toque",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/mallow-mützeallmountain-mütze-aus-tech-wool-strick.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -7218,9 +7218,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/sinsola-shade-hat-9487",
+    "url": "https://outlet.arcteryx.com/shop/sinsola-shade-hat-9487",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sinsola-sonnenhutoutdoorhut-mit-breiter-krempe-für-mehr-schatten.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7257,9 +7257,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/sinsolo-bucket-hat-9486",
+    "url": "https://outlet.arcteryx.com/shop/sinsolo-bucket-hat-9486",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sinsolo-fischerhutfischerhut-mit-kinnband-für-wanderungen-bei-wind.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7296,9 +7296,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/calidum-5-panel-cap",
+    "url": "https://outlet.arcteryx.com/shop/calidum-5-panel-cap",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/calidum-5-panel-caphochfunktionale-5-panel-kappe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7335,9 +7335,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/norvan-visor",
+    "url": "https://outlet.arcteryx.com/shop/norvan-visor",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/norvan-visorultraleichte-trailrunning-visor-kappe.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -7374,9 +7374,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/synthetic-mid-crew-sock",
+    "url": "https://outlet.arcteryx.com/shop/synthetic-mid-crew-sock",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/mittellange-funktionssockenvielseitige,-mittellange-outdoorsocken.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -7413,9 +7413,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/word-toque",
+    "url": "https://outlet.arcteryx.com/shop/word-toque",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/word-mützewarme-mütze-aus-wiederverwerteten-materialien.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -7452,9 +7452,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/bird-word-trucker-curved-hat",
+    "url": "https://outlet.arcteryx.com/shop/bird-word-trucker-curved-hat",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/bird-word-trucker-curved-capleichte,-atmungsaktive-trucker-cap-mit-unserem-schriftzug.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7491,9 +7491,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/sima-5-panel-cap-9485",
+    "url": "https://outlet.arcteryx.com/shop/sima-5-panel-cap-9485",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/sima-5-panel-cap5-panel-wanderkappe-mit-cape-für-rundumschutz.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7530,9 +7530,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/bird-word-trucker-hat-9488",
+    "url": "https://outlet.arcteryx.com/shop/bird-word-trucker-hat-9488",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/bird-word-trucker-capleichte,-atmungsaktive-kappe-im-trucker-style.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7569,9 +7569,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/gamma-5-panel-cap-9484",
+    "url": "https://outlet.arcteryx.com/shop/gamma-5-panel-cap-9484",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/gamma-5-panel-capsoftshellkappe-mit-sonnen--(und-regen)schutz.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7608,9 +7608,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/aerios-bucket-hat",
+    "url": "https://outlet.arcteryx.com/shop/aerios-bucket-hat",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/packs/aerios-bucket-hatunser-leichtester-sonnenhut-mit-kleinem-packmaß.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "背包",
     "colors": [
       "Black/Black",
@@ -7642,9 +7642,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/bucket-hat-9477",
+    "url": "https://outlet.arcteryx.com/shop/bucket-hat-9477",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilancefischerhutall-season-gore-tex-fischerhut.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -7681,9 +7681,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/kraft-waist-pack",
+    "url": "https://outlet.arcteryx.com/shop/kraft-waist-pack",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/packs/system_akraft-hüfttasche3-liter-hüfttasche-aus-stretch-ripstop.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "背包",
     "colors": [
       "Black/Black",
@@ -7715,9 +7715,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/bird-trucker-curved-brim-hat",
+    "url": "https://outlet.arcteryx.com/shop/bird-trucker-curved-brim-hat",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/bird-curved-brim-trucker-capleichte,-atmungsaktive-trucker-cap-mit-logo.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7754,9 +7754,9 @@ const PRODUCTS = [
     "gender": "unknown",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/ogee-insulated-bucket-hat-9145",
+    "url": "https://outlet.arcteryx.com/shop/ogee-insulated-bucket-hat-9145",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/system_aogee-gefütterter-fischerhutwarmer,-winddichter-fischerhut-zum-bouldern.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7793,9 +7793,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/saydi-hoody-9848",
+    "url": "https://outlet.arcteryx.com/shop/womens/saydi-hoody-9848",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/saydi-hoody-damenwind--und-wasserabweisende-softshelljacke-mit-kapuze-für-tageswanderungen.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -7832,9 +7832,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/focal-lt-hoody",
+    "url": "https://outlet.arcteryx.com/shop/womens/focal-lt-hoody",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/veilancefocal-lt-hoody-damenessenzielle-city-softshell.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "其他",
     "colors": [
       "Black/Black",
@@ -7871,9 +7871,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "de",
     "region_name": "德国",
-    "url": "https://outlet.arcteryx.com/de/en/shop/womens/proton-hoody-9095",
+    "url": "https://outlet.arcteryx.com/shop/womens/proton-hoody-9095",
     "image_url": "https://images.arcteryx.com/foundation/discontinued/other/proton-hoody-damenhochatmungsaktive-isolierte-jacke-mit-kapuze.jpg",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "outlet_category": "配件",
     "colors": [
       "Black/Black",
@@ -7910,9 +7910,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "fr",
     "region_name": "法国",
-    "url": "https://outlet.arcteryx.com/fr/en/shop/mens/delta-hoody",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-hoody",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "colors": [],
     "sizes": [],
     "size_stock": {},
@@ -7932,9 +7932,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "nl",
     "region_name": "荷兰",
-    "url": "https://outlet.arcteryx.com/nl/en/shop/mens/delta-hoody",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-hoody",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13",
+    "last_updated": "2026-04-19 01:57:55",
     "colors": [],
     "sizes": [],
     "size_stock": {},
@@ -7954,9 +7954,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-shoe-0110",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-shoe-0110",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000010110-Kragg-Shoe-Nightscape-Nightscape.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Rush Jacket Men",
@@ -7972,9 +7972,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/rush-jacket-9903",
+    "url": "https://outlet.arcteryx.com/shop/mens/rush-jacket-9903",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009903-Rush-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sabre Jacket Men",
@@ -7990,9 +7990,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/sabre-jacket-0536",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-jacket-0536",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000536-Sabre-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sabre Pant Men",
@@ -8008,9 +8008,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/sabre-pant-8928",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-pant-8928",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008928-Sabre-Pant-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sabre Bib Pant Men",
@@ -8026,9 +8026,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/sabre-bib-pant-8924",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-bib-pant-8924",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008924-Sabre-Bib-Pant-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sabre Jacket Print Men",
@@ -8044,9 +8044,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/sabre-jacket-print-9975",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-jacket-print-9975",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009975-Sabre-Jacket-Print-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Fissile Insulated Pant Men",
@@ -8062,9 +8062,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/fissile-insulated-pant-0019",
+    "url": "https://outlet.arcteryx.com/shop/mens/fissile-insulated-pant-0019",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000019-Fissile-Insulated-Pant-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sabre Pant Print Men",
@@ -8080,9 +8080,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/sabre-pant-print-9974",
+    "url": "https://outlet.arcteryx.com/shop/mens/sabre-pant-print-9974",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009974-Sabre-Pant-Print-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Rush Bib Pant Men",
@@ -8098,9 +8098,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/rush-bib-pant-9904",
+    "url": "https://outlet.arcteryx.com/shop/mens/rush-bib-pant-9904",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009904-Rush-Bib-Pant-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceSpere LT Blazer Men",
@@ -8116,9 +8116,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/spere-lt-blazer",
+    "url": "https://outlet.arcteryx.com/shop/mens/spere-lt-blazer",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg Cotton Short 9\" Men",
@@ -8134,9 +8134,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-cotton-short-9-9528",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-cotton-short-9-9528",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009528-Kragg-Cotton-Short-9-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg Multi Shoe Men",
@@ -8152,9 +8152,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-multi-shoe-0404",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-multi-shoe-0404",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000404-Kragg-Multi-Shoe-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma Pant Men",
@@ -8170,9 +8170,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/gamma-pant-9532",
+    "url": "https://outlet.arcteryx.com/shop/mens/gamma-pant-9532",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009532-Gamma-Pant-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Konseal Crew Neck Pullover Men",
@@ -8188,9 +8188,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/konseal-crew-neck-pullover-8454",
+    "url": "https://outlet.arcteryx.com/shop/mens/konseal-crew-neck-pullover-8454",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008454-Konseal-Crew-Neck-Pullover-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan LD 4 Shoe Men",
@@ -8206,9 +8206,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/norvan-ld-4-shoe-0398",
+    "url": "https://outlet.arcteryx.com/shop/mens/norvan-ld-4-shoe-0398",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000398-Norvan-LD-4-Shoe-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cormac Crew Neck Shirt LS Men",
@@ -8224,9 +8224,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/cormac-crew-neck-shirt-ls-9719",
+    "url": "https://outlet.arcteryx.com/shop/mens/cormac-crew-neck-shirt-ls-9719",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009719-Cormac-Crew-Neck-Shirt-LS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg SL Cotton Bird Word Shirt SS Men",
@@ -8242,9 +8242,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-sl-cotton-bird-word-shirt-ss-9535",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-sl-cotton-bird-word-shirt-ss-9535",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009535-Kragg-SL-Cotton-Bird-Word-Shirt-SS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Delta Pullover Hoody Men",
@@ -8260,9 +8260,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/delta-pullover-hoody",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-pullover-hoody",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg Cotton Lithographica Shirt SS Men",
@@ -8278,9 +8278,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-cotton-lithographica-shirt-ss-9926",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-cotton-lithographica-shirt-ss-9926",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009926-Kragg-Cotton-Lithographica-Shirt-SS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg Insulated Shoe Men",
@@ -8296,9 +8296,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-insulated-shoe-9205",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-insulated-shoe-9205",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009205-Kragg-Insulated-Shoe-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Vertex Alpine Shoe Men",
@@ -8314,9 +8314,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/vertex-alpine-shoe",
+    "url": "https://outlet.arcteryx.com/shop/mens/vertex-alpine-shoe",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg Cotton Shirt LS Men",
@@ -8332,9 +8332,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-cotton-shirt-ls-9714",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-cotton-shirt-ls-9714",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009714-Kragg-Cotton-Shirt-LS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kopec Mid GTX Boot Men",
@@ -8350,9 +8350,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kopec-mid-gtx-boot-0029",
+    "url": "https://outlet.arcteryx.com/shop/mens/kopec-mid-gtx-boot-0029",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000029-Kopec-Mid-GTX-Boot-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sylan GTX Shoe Men",
@@ -8368,9 +8368,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/sylan-gtx-shoe-9601",
+    "url": "https://outlet.arcteryx.com/shop/mens/sylan-gtx-shoe-9601",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009601-Sylan-GTX-Shoe-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Vertex Speed Low Shoe Men",
@@ -8386,9 +8386,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/vertex-speed-low-shoe-9715",
+    "url": "https://outlet.arcteryx.com/shop/mens/vertex-speed-low-shoe-9715",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009715-Vertex-Speed-Low-Shoe-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Konseal GTX Shoe Men",
@@ -8404,9 +8404,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/konseal-gtx-shoe-9833",
+    "url": "https://outlet.arcteryx.com/shop/mens/konseal-gtx-shoe-9833",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009833-Konseal-GTX-Shoe-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan LD 4 GTX Shoe Men",
@@ -8422,9 +8422,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/norvan-ld-4-gtx-shoe-0397",
+    "url": "https://outlet.arcteryx.com/shop/mens/norvan-ld-4-gtx-shoe-0397",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000397-Norvan-LD-4-GTX-Shoe-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Rho LT Bottom Men",
@@ -8440,9 +8440,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/rho-lt-bottom-9418",
+    "url": "https://outlet.arcteryx.com/shop/mens/rho-lt-bottom-9418",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009418-Rho-LT-Bottom-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Vertex Alpine GTX Shoe Men",
@@ -8458,9 +8458,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/vertex-alpine-gtx-shoe-9602",
+    "url": "https://outlet.arcteryx.com/shop/mens/vertex-alpine-gtx-shoe-9602",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009602-Vertex-Alpine-GTX-Shoe-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Ralle Down Parka Men",
@@ -8476,9 +8476,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/ralle-down-parka-9156",
+    "url": "https://outlet.arcteryx.com/shop/mens/ralle-down-parka-9156",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009156-Ralle-Down-Parka-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kyanite Pullover Hoody Men",
@@ -8494,9 +8494,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kyanite-pullover-hoody-8444",
+    "url": "https://outlet.arcteryx.com/shop/mens/kyanite-pullover-hoody-8444",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008444-Kyanite-Pullover-Hoody-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Delta Jacket Men",
@@ -8512,9 +8512,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/delta-jacket-9165",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-jacket-9165",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009165-Delta-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Alpha SV Jacket Men",
@@ -8530,9 +8530,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/alpha-sv-jacket-9899",
+    "url": "https://outlet.arcteryx.com/shop/mens/alpha-sv-jacket-9899",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009899-Alpha-SV-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cormac Crew Neck Shirt SS Men",
@@ -8548,9 +8548,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/cormac-crew-neck-shirt-ss-9718",
+    "url": "https://outlet.arcteryx.com/shop/mens/cormac-crew-neck-shirt-ss-9718",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009718-Cormac-Crew-Neck-Shirt-SS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg SL Cotton Shirt LS Men",
@@ -8566,9 +8566,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-sl-cotton-shirt-ls-9536",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-sl-cotton-shirt-ls-9536",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009536-Kragg-SL-Cotton-Shirt-LS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cormac Arc",
@@ -8584,9 +8584,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/cormac-arc-bird-logo-shirt-ss-0256",
+    "url": "https://outlet.arcteryx.com/shop/mens/cormac-arc-bird-logo-shirt-ss-0256",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000256-Cormac-Arc.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Delta 1/2 Zip Neck Men",
@@ -8602,9 +8602,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/delta-1-2-zip-neck-0550",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-1-2-zip-neck-0550",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000550-Delta-12-Zip-Neck-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg SL Cotton Bird Tile Shirt LS Men",
@@ -8620,9 +8620,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-sl-cotton-bird-tile-shirt-ls-9537",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-sl-cotton-bird-tile-shirt-ls-9537",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009537-Kragg-SL-Cotton-Bird-Tile-Shirt-LS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Serratus Pant Men",
@@ -8638,9 +8638,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/serratus-pant-9527",
+    "url": "https://outlet.arcteryx.com/shop/mens/serratus-pant-9527",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009527-Serratus-Pant-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceField Jacket Men",
@@ -8656,9 +8656,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/field-jacket-9942",
+    "url": "https://outlet.arcteryx.com/shop/mens/field-jacket-9942",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009942-veilanceField-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Liner 5\" Men",
@@ -8674,9 +8674,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/norvan-liner-5",
+    "url": "https://outlet.arcteryx.com/shop/mens/norvan-liner-5",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00005-Norvan-Liner-5-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Macai Shell Jacket Men",
@@ -8692,9 +8692,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/macai-shell-jacket-9889",
+    "url": "https://outlet.arcteryx.com/shop/mens/macai-shell-jacket-9889",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009889-Macai-Shell-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Rho LT Bottom Print Men",
@@ -8710,9 +8710,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/rho-lt-bottom-print-9320",
+    "url": "https://outlet.arcteryx.com/shop/mens/rho-lt-bottom-print-9320",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009320-Rho-LT-Bottom-Print-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg SL Cotton Blurred Bird Shirt SS Men",
@@ -8728,9 +8728,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-sl-cotton-blurred-bird-shirt-ss-9538",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-sl-cotton-blurred-bird-shirt-ss-9538",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009538-Kragg-SL-Cotton-Blurred-Bird-Shirt-SS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cronin Cotton Pant Men",
@@ -8746,9 +8746,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/cronin-cotton-pant-9316",
+    "url": "https://outlet.arcteryx.com/shop/mens/cronin-cotton-pant-9316",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009316-Cronin-Cotton-Pant-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Beta SL Jacket Men",
@@ -8764,9 +8764,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/beta-sl-jacket-0553",
+    "url": "https://outlet.arcteryx.com/shop/mens/beta-sl-jacket-0553",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000553-Beta-SL-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Downword Logo Shirt LS Men",
@@ -8782,9 +8782,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/norvan-downword-logo-shirt-ls-0255",
+    "url": "https://outlet.arcteryx.com/shop/mens/norvan-downword-logo-shirt-ls-0255",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000255-Norvan-Downword-Logo-Shirt-LS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Rho LT Zip Neck Print Men",
@@ -8800,9 +8800,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/rho-lt-zip-neck-print-9319",
+    "url": "https://outlet.arcteryx.com/shop/mens/rho-lt-zip-neck-print-9319",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009319-Rho-LT-Zip-Neck-Print-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Ionia Merino Wool Arc",
@@ -8818,9 +8818,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/ionia-merino-wool-arc-word-logo-shirt-ss",
+    "url": "https://outlet.arcteryx.com/shop/mens/ionia-merino-wool-arc-word-logo-shirt-ss",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Konseal Shoe Men",
@@ -8836,9 +8836,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/konseal-shoe-9834",
+    "url": "https://outlet.arcteryx.com/shop/mens/konseal-shoe-9834",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009834-Konseal-Shoe-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Konseal Pullover Hoody Men",
@@ -8854,9 +8854,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/konseal-pullover-hoody-8443",
+    "url": "https://outlet.arcteryx.com/shop/mens/konseal-pullover-hoody-8443",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008443-Konseal-Pullover-Hoody-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Downword Logo Shirt SS Men",
@@ -8872,9 +8872,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/norvan-downword-logo-shirt-ss-0254",
+    "url": "https://outlet.arcteryx.com/shop/mens/norvan-downword-logo-shirt-ss-0254",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000254-Norvan-Downword-Logo-Shirt-SS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Downword Logo Shirt LS Men",
@@ -8890,9 +8890,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/norvan-downword-logo-shirt-ls-9722",
+    "url": "https://outlet.arcteryx.com/shop/mens/norvan-downword-logo-shirt-ls-9722",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009722-Norvan-Downword-Logo-Shirt-LS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cormac Logo Shirt SS Men",
@@ -8908,9 +8908,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/cormac-logo-shirt-ss-9726",
+    "url": "https://outlet.arcteryx.com/shop/mens/cormac-logo-shirt-ss-9726",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009726-Cormac-Logo-Shirt-SS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kyanite Hoody Men",
@@ -8926,9 +8926,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kyanite-hoody-8446",
+    "url": "https://outlet.arcteryx.com/shop/mens/kyanite-hoody-8446",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008446-Kyanite-Hoody-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceConduit Down Jacket Men",
@@ -8944,9 +8944,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/conduit-down-jacket-9960",
+    "url": "https://outlet.arcteryx.com/shop/mens/conduit-down-jacket-9960",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009960-veilanceConduit-Down-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg SL Cotton Shirt SS Men",
@@ -8962,9 +8962,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kragg-sl-cotton-shirt-ss-9533",
+    "url": "https://outlet.arcteryx.com/shop/mens/kragg-sl-cotton-shirt-ss-9533",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009533-Kragg-SL-Cotton-Shirt-SS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Delta 1/2 Zip Neck Men",
@@ -8980,9 +8980,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/delta-1-2-zip-neck",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-1-2-zip-neck",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cormac Logo Shirt LS Men",
@@ -8998,9 +8998,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/cormac-logo-shirt-ls-8452",
+    "url": "https://outlet.arcteryx.com/shop/mens/cormac-logo-shirt-ls-8452",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008452-Cormac-Logo-Shirt-LS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cormac Heavyweight Hoody Men",
@@ -9016,9 +9016,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/cormac-heavyweight-hoody",
+    "url": "https://outlet.arcteryx.com/shop/mens/cormac-heavyweight-hoody",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceVoronoi Wool Jacket Men",
@@ -9034,9 +9034,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/voronoi-wool-jacket-9959",
+    "url": "https://outlet.arcteryx.com/shop/mens/voronoi-wool-jacket-9959",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009959-veilanceVoronoi-Wool-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Liner Short 7\" Men",
@@ -9052,9 +9052,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/norvan-liner-short-7-9540",
+    "url": "https://outlet.arcteryx.com/shop/mens/norvan-liner-short-7-9540",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009540-Norvan-Liner-Short-7-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kyanite Pant Men",
@@ -9070,9 +9070,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kyanite-pant",
+    "url": "https://outlet.arcteryx.com/shop/mens/kyanite-pant",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceVoronoi Wool Pant Men",
@@ -9088,9 +9088,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/voronoi-wool-pant-9979",
+    "url": "https://outlet.arcteryx.com/shop/mens/voronoi-wool-pant-9979",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009979-veilanceVoronoi-Wool-Pant-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Delta Hoody Men",
@@ -9106,9 +9106,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/delta-hoody",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-hoody",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Delta Hoody Men",
@@ -9124,9 +9124,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/delta-hoody-0551",
+    "url": "https://outlet.arcteryx.com/shop/mens/delta-hoody-0551",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000551-Delta-Hoody-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Covert 1/2 Zip Neck Men",
@@ -9142,9 +9142,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/covert-1-2-zip-neck-0360",
+    "url": "https://outlet.arcteryx.com/shop/mens/covert-1-2-zip-neck-0360",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000360-Covert-12-Zip-Neck-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kyanite Jacket Men",
@@ -9160,9 +9160,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/kyanite-jacket-8447",
+    "url": "https://outlet.arcteryx.com/shop/mens/kyanite-jacket-8447",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008447-Kyanite-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma Jogger Men",
@@ -9178,9 +9178,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/gamma-jogger-0040",
+    "url": "https://outlet.arcteryx.com/shop/mens/gamma-jogger-0040",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000040-Gamma-Jogger-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma Pant Men",
@@ -9196,9 +9196,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/gamma-pant-9251",
+    "url": "https://outlet.arcteryx.com/shop/mens/gamma-pant-9251",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009251-Gamma-Pant-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Rho LT Crew Neck Men",
@@ -9214,9 +9214,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/rho-lt-crew-neck-9417",
+    "url": "https://outlet.arcteryx.com/shop/mens/rho-lt-crew-neck-9417",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009417-Rho-LT-Crew-Neck-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma MX Hoody Men",
@@ -9232,9 +9232,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/gamma-mx-hoody-8485",
+    "url": "https://outlet.arcteryx.com/shop/mens/gamma-mx-hoody-8485",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008485-Gamma-MX-Hoody-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceMetry Shirt LS Men",
@@ -9250,9 +9250,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/metry-shirt-ls-9122",
+    "url": "https://outlet.arcteryx.com/shop/mens/metry-shirt-ls-9122",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009122-veilanceMetry-Shirt-LS-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Atom Jacket Men",
@@ -9268,9 +9268,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/atom-jacket-9561",
+    "url": "https://outlet.arcteryx.com/shop/mens/atom-jacket-9561",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009561-Atom-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Beta Jacket Men",
@@ -9286,9 +9286,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/beta-jacket-0511",
+    "url": "https://outlet.arcteryx.com/shop/mens/beta-jacket-0511",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000511-Beta-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cronin Cotton Overshirt Men",
@@ -9304,9 +9304,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/cronin-cotton-overshirt-8448",
+    "url": "https://outlet.arcteryx.com/shop/mens/cronin-cotton-overshirt-8448",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008448-Cronin-Cotton-Overshirt-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceLerus Insulated Tech Wool Jacket Men",
@@ -9322,9 +9322,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/lerus-insulated-tech-wool-jacket-0026",
+    "url": "https://outlet.arcteryx.com/shop/mens/lerus-insulated-tech-wool-jacket-0026",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000026-veilanceLerus-Insulated-Tech-Wool-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Atom SL Hoody Men",
@@ -9340,9 +9340,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/atom-sl-hoody-9560",
+    "url": "https://outlet.arcteryx.com/shop/mens/atom-sl-hoody-9560",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009560-Atom-SL-Hoody-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceIsogon MX Hoody Men",
@@ -9358,9 +9358,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/isogon-mx-hoody-0585",
+    "url": "https://outlet.arcteryx.com/shop/mens/isogon-mx-hoody-0585",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000585-veilanceIsogon-MX-Hoody-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceIndisce MX Blazer Men",
@@ -9376,9 +9376,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/indisce-mx-blazer-9946",
+    "url": "https://outlet.arcteryx.com/shop/mens/indisce-mx-blazer-9946",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009946-veilanceIndisce-MX-Blazer-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceMionn Insulated Jacket Men",
@@ -9394,9 +9394,9 @@ const PRODUCTS = [
     "gender": "men",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/mens/mionn-insulated-jacket-9116",
+    "url": "https://outlet.arcteryx.com/shop/mens/mionn-insulated-jacket-9116",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009116-veilanceMionn-Insulated-Jacket-Men.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg Shoe Women",
@@ -9412,9 +9412,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/kragg-shoe-0111",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-shoe-0111",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000010111-Kragg-Shoe-Aster-Aster-Women-s-Profile.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Beta AR Pant Women",
@@ -9430,9 +9430,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/beta-ar-pant-8068",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-ar-pant-8068",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X000008068-Beta-AR-Pant-Black-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Patera Parka Women",
@@ -9448,9 +9448,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/patera-parka-9949",
+    "url": "https://outlet.arcteryx.com/shop/womens/patera-parka-9949",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009949-Patera-Parka-Bliss-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Incendia Pant Women",
@@ -9466,9 +9466,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/incendia-pant-9860",
+    "url": "https://outlet.arcteryx.com/shop/womens/incendia-pant-9860",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009860-Incendia-Pant-Aster-Black-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Rush Bib Pant Women",
@@ -9484,9 +9484,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/rush-bib-pant-9857",
+    "url": "https://outlet.arcteryx.com/shop/womens/rush-bib-pant-9857",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009857-Rush-Bib-Pant-Olive-Moss-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Andessa Insulated Pant Women",
@@ -9502,9 +9502,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/andessa-insulated-pant-9864",
+    "url": "https://outlet.arcteryx.com/shop/womens/andessa-insulated-pant-9864",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009864-Andessa-Insulated-Pant-Arctic-Silk-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Incendia Jacket Women",
@@ -9520,9 +9520,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/incendia-jacket-9862",
+    "url": "https://outlet.arcteryx.com/shop/womens/incendia-jacket-9862",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/F25/1350x1710/Incendia-Jacket-W-Aster-Black.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Alpha Jacket Women",
@@ -9538,9 +9538,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/alpha-jacket",
+    "url": "https://outlet.arcteryx.com/shop/womens/alpha-jacket",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000007069-Alpha-Jacket-Black-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Alpha Pant Women",
@@ -9556,9 +9556,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/alpha-pant",
+    "url": "https://outlet.arcteryx.com/shop/womens/alpha-pant",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceLota Gore Skirt Women",
@@ -9574,9 +9574,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/lota-gore-skirt-8206",
+    "url": "https://outlet.arcteryx.com/shop/womens/lota-gore-skirt-8206",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008206-veilanceLota-Gore-Skirt-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceDemlo Tank Dress Women",
@@ -9592,9 +9592,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/demlo-tank-dress-9637",
+    "url": "https://outlet.arcteryx.com/shop/womens/demlo-tank-dress-9637",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009637-veilanceDemlo-Tank-Dress-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceToric Tank Women",
@@ -9610,9 +9610,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/toric-tank",
+    "url": "https://outlet.arcteryx.com/shop/womens/toric-tank",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceIcosa Dress Women",
@@ -9628,9 +9628,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/icosa-dress",
+    "url": "https://outlet.arcteryx.com/shop/womens/icosa-dress",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sentinel Insulated Jacket Women",
@@ -9646,9 +9646,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/sentinel-insulated-jacket-0538",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-insulated-jacket-0538",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000538-Sentinel-Insulated-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceEave Dress Women",
@@ -9664,9 +9664,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/eave-dress-9472",
+    "url": "https://outlet.arcteryx.com/shop/womens/eave-dress-9472",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009472-veilanceEave-Dress-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceEave Tank Women",
@@ -9682,9 +9682,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/eave-tank",
+    "url": "https://outlet.arcteryx.com/shop/womens/eave-tank",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceCella Pant Women",
@@ -9700,9 +9700,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/cella-pant",
+    "url": "https://outlet.arcteryx.com/shop/womens/cella-pant",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan LD 4 Shoe Women",
@@ -9718,9 +9718,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/norvan-ld-4-shoe-0400",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-ld-4-shoe-0400",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000400-Norvan-LD-4-Shoe-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg Multi Shoe Women",
@@ -9736,9 +9736,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/kragg-multi-shoe-0406",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-multi-shoe-0406",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000406-Kragg-Multi-Shoe-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Taema Crew Neck Shirt LS Women",
@@ -9754,9 +9754,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/taema-crew-neck-shirt-ls",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-crew-neck-shirt-ls",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000006914-Taema-Crew-Neck-Shirt-LS-Black-Heather-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Beta Down Parka Women",
@@ -9772,9 +9772,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/beta-down-parka-9101",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-down-parka-9101",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009101-Beta-Down-Parka-Black-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg SL Cotton Emblem Crew Shirt SS Women",
@@ -9790,9 +9790,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/kragg-sl-cotton-emblem-crew-shirt-ss-9502",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-sl-cotton-emblem-crew-shirt-ss-9502",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009502-Kragg-SL-Cotton-Emblem-Crew-Shirt-SS-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Liatris Jacket Women",
@@ -9808,9 +9808,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/liatris-jacket-9467",
+    "url": "https://outlet.arcteryx.com/shop/womens/liatris-jacket-9467",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009467-Liatris-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Taema Hoody Women",
@@ -9826,9 +9826,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/taema-hoody",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-hoody",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Taema Crew Neck Shirt SS Women",
@@ -9844,9 +9844,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/taema-crew-neck-shirt-ss-7309",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-crew-neck-shirt-ss-7309",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00007309-Taema-Crew-Neck-Shirt-SS-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Arc",
@@ -9862,9 +9862,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/arc-word-cotton-t-shirt",
+    "url": "https://outlet.arcteryx.com/shop/womens/arc-word-cotton-t-shirt",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/F24/1350x1710/Kragg-Shoe-W-Arctic-Silk-Arctic-Silk.jpg?auto=format&ixlib=react-9.10.0&w=50",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Taema Tank Women",
@@ -9880,9 +9880,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/taema-tank",
+    "url": "https://outlet.arcteryx.com/shop/womens/taema-tank",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Beta SL Jacket Women",
@@ -9898,9 +9898,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/beta-sl-jacket-0020",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-sl-jacket-0020",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000020-Beta-SL-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sylan GTX Shoe Women",
@@ -9916,9 +9916,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/sylan-gtx-shoe-9605",
+    "url": "https://outlet.arcteryx.com/shop/womens/sylan-gtx-shoe-9605",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009605-Sylan-GTX-Shoe-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Konseal Shoe Women",
@@ -9934,9 +9934,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/konseal-shoe-9970",
+    "url": "https://outlet.arcteryx.com/shop/womens/konseal-shoe-9970",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009970-Konseal-Shoe-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Aestas Short 5.5\" Women",
@@ -9952,9 +9952,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/aestas-short-5-5",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-short-5-5",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00005-Aestas-Short-55-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Beta AR Jacket Women",
@@ -9970,9 +9970,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/beta-ar-jacket-9863",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-ar-jacket-9863",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009863-Beta-AR-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Konseal GTX Shoe Women",
@@ -9988,9 +9988,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/konseal-gtx-shoe-9972",
+    "url": "https://outlet.arcteryx.com/shop/womens/konseal-gtx-shoe-9972",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009972-Konseal-GTX-Shoe-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Vertex Speed Low Shoe Women",
@@ -10006,9 +10006,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/vertex-speed-low-shoe-9716",
+    "url": "https://outlet.arcteryx.com/shop/womens/vertex-speed-low-shoe-9716",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009716-Vertex-Speed-Low-Shoe-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Aestas Pullover Hoody Women",
@@ -10024,9 +10024,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/aestas-pullover-hoody-9492",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-pullover-hoody-9492",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009492-Aestas-Pullover-Hoody-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Soria Racerback Tank Women",
@@ -10042,9 +10042,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/soria-racerback-tank-9493",
+    "url": "https://outlet.arcteryx.com/shop/womens/soria-racerback-tank-9493",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009493-Soria-Racerback-Tank-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma MX Coat Women",
@@ -10060,9 +10060,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/gamma-mx-coat-9851",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-mx-coat-9851",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009851-Gamma-MX-Coat-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Soria Tank Women",
@@ -10078,9 +10078,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/soria-tank",
+    "url": "https://outlet.arcteryx.com/shop/womens/soria-tank",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceLimina Insulated Jacket Women",
@@ -10096,9 +10096,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/limina-insulated-jacket-9131",
+    "url": "https://outlet.arcteryx.com/shop/womens/limina-insulated-jacket-9131",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009131-veilanceLimina-Insulated-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Aestas Crew Neck Pullover Women",
@@ -10114,9 +10114,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/aestas-crew-neck-pullover-9053",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-crew-neck-pullover-9053",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009053-Aestas-Crew-Neck-Pullover-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Short 3\" Women",
@@ -10132,9 +10132,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/norvan-short-3",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-short-3",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00003-Norvan-Short-3-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Silene Crew Shirt SS Women",
@@ -10150,9 +10150,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/silene-crew-shirt-ss",
+    "url": "https://outlet.arcteryx.com/shop/womens/silene-crew-shirt-ss",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceDiene Shirt LS Women",
@@ -10168,9 +10168,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/diene-shirt-ls-9315",
+    "url": "https://outlet.arcteryx.com/shop/womens/diene-shirt-ls-9315",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009315-veilanceDiene-Shirt-LS-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg Insulated Shoe Women",
@@ -10186,9 +10186,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/kragg-insulated-shoe-9210",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-insulated-shoe-9210",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009210-Kragg-Insulated-Shoe-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Aestas Jogger Women",
@@ -10204,9 +10204,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/aestas-jogger-0093",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-jogger-0093",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000093-Aestas-Jogger-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Vertex Alpine GTX Shoe Women",
@@ -10222,9 +10222,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/vertex-alpine-gtx-shoe-9603",
+    "url": "https://outlet.arcteryx.com/shop/womens/vertex-alpine-gtx-shoe-9603",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009603-Vertex-Alpine-GTX-Shoe-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Beta Jacket Women",
@@ -10240,9 +10240,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/beta-jacket-0516",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-jacket-0516",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000516-Beta-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan LD 4 GTX Shoe Women",
@@ -10258,9 +10258,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/norvan-ld-4-gtx-shoe-0399",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-ld-4-gtx-shoe-0399",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000399-Norvan-LD-4-GTX-Shoe-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg SL Cotton Blurred Bird Tank Women",
@@ -10276,9 +10276,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/kragg-sl-cotton-blurred-bird-tank-9503",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-sl-cotton-blurred-bird-tank-9503",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009503-Kragg-SL-Cotton-Blurred-Bird-Tank-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Liatris Long Coat Women",
@@ -10294,9 +10294,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/liatris-long-coat-9097",
+    "url": "https://outlet.arcteryx.com/shop/womens/liatris-long-coat-9097",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009097-Liatris-Long-Coat-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Crew Neck Shirt SS Women",
@@ -10312,9 +10312,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/norvan-crew-neck-shirt-ss",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-crew-neck-shirt-ss",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kragg Cotton Short 9\" Women",
@@ -10330,9 +10330,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/kragg-cotton-short-9-9519",
+    "url": "https://outlet.arcteryx.com/shop/womens/kragg-cotton-short-9-9519",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009519-Kragg-Cotton-Short-9-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cerium SV Vest Women",
@@ -10348,9 +10348,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/cerium-sv-vest-8532",
+    "url": "https://outlet.arcteryx.com/shop/womens/cerium-sv-vest-8532",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008532-Cerium-SV-Vest-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Essent High-Rise Utility Short 6\" Women",
@@ -10366,9 +10366,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/essent-high-rise-utility-short-6",
+    "url": "https://outlet.arcteryx.com/shop/womens/essent-high-rise-utility-short-6",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00006-Essent-HighRise-Utility-Short-6-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Nuclei Pant Women",
@@ -10384,9 +10384,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/nuclei-pant-9113",
+    "url": "https://outlet.arcteryx.com/shop/womens/nuclei-pant-9113",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009113-Nuclei-Pant-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Silene Tank Women",
@@ -10402,9 +10402,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/silene-tank",
+    "url": "https://outlet.arcteryx.com/shop/womens/silene-tank",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000007688-Silene-Tank-Black-Heather-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceConduit Down Jacket Women",
@@ -10420,9 +10420,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/conduit-down-jacket-9962",
+    "url": "https://outlet.arcteryx.com/shop/womens/conduit-down-jacket-9962",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009962-veilanceConduit-Down-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Essent High-Rise Utility Legging 26\" Women",
@@ -10438,9 +10438,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/essent-high-rise-utility-legging-26",
+    "url": "https://outlet.arcteryx.com/shop/womens/essent-high-rise-utility-legging-26",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000007856-Essent-High-Rise-Utility-Legging-26-Tatsu-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Satoro SL Merino Wool Crew Neck SS Women",
@@ -10456,9 +10456,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/satoro-sl-merino-wool-crew-neck-ss-9045",
+    "url": "https://outlet.arcteryx.com/shop/womens/satoro-sl-merino-wool-crew-neck-ss-9045",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009045-Satoro-SL-Merino-Wool-Crew-Neck-SS-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilancePalister Dress Women",
@@ -10474,9 +10474,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/palister-dress",
+    "url": "https://outlet.arcteryx.com/shop/womens/palister-dress",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceKhara Pant Women",
@@ -10492,9 +10492,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/khara-pant",
+    "url": "https://outlet.arcteryx.com/shop/womens/khara-pant",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Essent High-Rise Utility Short 8\" Women",
@@ -10510,9 +10510,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/essent-high-rise-utility-short-8-9522",
+    "url": "https://outlet.arcteryx.com/shop/womens/essent-high-rise-utility-short-8-9522",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009522-Essent-HighRise-Utility-Short-8-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Insulated Pant Women",
@@ -10528,9 +10528,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/norvan-insulated-pant-8471",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-insulated-pant-8471",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008471-Norvan-Insulated-Pant-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kyanite Hoody Women",
@@ -10546,9 +10546,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/kyanite-hoody-8535",
+    "url": "https://outlet.arcteryx.com/shop/womens/kyanite-hoody-8535",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008535-Kyanite-Hoody-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma MX Pant Women",
@@ -10564,9 +10564,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/gamma-mx-pant-8467",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-mx-pant-8467",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008467-Gamma-MX-Pant-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceDias MX Pant Women",
@@ -10582,9 +10582,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/dias-mx-pant-9135",
+    "url": "https://outlet.arcteryx.com/shop/womens/dias-mx-pant-9135",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009135-veilanceDias-MX-Pant-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Tank Women",
@@ -10600,9 +10600,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/norvan-tank",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-tank",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Kyanite Jacket Women",
@@ -10618,9 +10618,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/kyanite-jacket-8516",
+    "url": "https://outlet.arcteryx.com/shop/womens/kyanite-jacket-8516",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00008516-Kyanite-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma Tapered Pant Women",
@@ -10636,9 +10636,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/gamma-tapered-pant-0044",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-tapered-pant-0044",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000010044-Gamma-Tapered-Pant-Tatsu-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma Short 9\" Women",
@@ -10654,9 +10654,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/gamma-short-9",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-short-9",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000007683-Gamma-Short-9-Soulsonic-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Delta Crew Neck Pullover Women",
@@ -10672,9 +10672,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/delta-crew-neck-pullover",
+    "url": "https://outlet.arcteryx.com/shop/womens/delta-crew-neck-pullover",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Beta Insulated Jacket Women",
@@ -10690,9 +10690,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/beta-insulated-jacket-0512",
+    "url": "https://outlet.arcteryx.com/shop/womens/beta-insulated-jacket-0512",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00000512-Beta-Insulated-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Norvan Short 5\" Women",
@@ -10708,9 +10708,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/norvan-short-5",
+    "url": "https://outlet.arcteryx.com/shop/womens/norvan-short-5",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00005-Norvan-Short-5-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceBelfry Wool Jacket Women",
@@ -10726,9 +10726,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/belfry-wool-jacket-9772",
+    "url": "https://outlet.arcteryx.com/shop/womens/belfry-wool-jacket-9772",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009772-veilanceBelfry-Wool-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Alpha SV Jacket Women",
@@ -10744,9 +10744,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/alpha-sv-jacket-9990",
+    "url": "https://outlet.arcteryx.com/shop/womens/alpha-sv-jacket-9990",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009990-Alpha-SV-Jacket-Dynasty-Black-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma Lightweight Hoody Women",
@@ -10762,9 +10762,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/gamma-lightweight-hoody",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-lightweight-hoody",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000007779-Gamma-Lightweight-Hoody-Moonstone-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sentinel Bib Pant Women",
@@ -10780,9 +10780,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/sentinel-bib-pant-9106",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-bib-pant-9106",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000009106-Sentinel-Bib-Pant-Forage-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma Short 9\" Women",
@@ -10798,9 +10798,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/gamma-short-9-0367",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-short-9-0367",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000007683-Gamma-Short-9-Soulsonic-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Rush Jacket Women",
@@ -10816,9 +10816,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/rush-jacket-9856",
+    "url": "https://outlet.arcteryx.com/shop/womens/rush-jacket-9856",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009856-Rush-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Sentinel Insulated Pant Women",
@@ -10834,9 +10834,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/sentinel-insulated-pant-9107",
+    "url": "https://outlet.arcteryx.com/shop/womens/sentinel-insulated-pant-9107",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009107-Sentinel-Insulated-Pant-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Aestas Short 9\" Women",
@@ -10852,9 +10852,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/aestas-short-9-9520",
+    "url": "https://outlet.arcteryx.com/shop/womens/aestas-short-9-9520",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009520-Aestas-Short-9-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Lana Merino Wool Crew Neck Shirt SS Women",
@@ -10870,9 +10870,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/lana-merino-wool-crew-neck-shirt-ss",
+    "url": "https://outlet.arcteryx.com/shop/womens/lana-merino-wool-crew-neck-shirt-ss",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Gamma Hybrid Pant Women",
@@ -10888,9 +10888,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/gamma-hybrid-pant",
+    "url": "https://outlet.arcteryx.com/shop/womens/gamma-hybrid-pant",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceIfora Jacket Women",
@@ -10906,9 +10906,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/ifora-jacket-9524",
+    "url": "https://outlet.arcteryx.com/shop/womens/ifora-jacket-9524",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X00009524-veilanceIfora-Jacket-Women.jpg",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Psiphon Pant Women",
@@ -10924,9 +10924,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/psiphon-pant-9505",
+    "url": "https://outlet.arcteryx.com/shop/womens/psiphon-pant-9505",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000009505-Psiphon-Pant-Electra-DK-Electra-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Incendo Airshell Hoody Women",
@@ -10942,9 +10942,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/incendo-airshell-hoody",
+    "url": "https://outlet.arcteryx.com/shop/womens/incendo-airshell-hoody",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000007043-Incendo-Airshell-Hoody-Aster-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "veilanceFrame Crew Neck Shirt LS Women",
@@ -10960,9 +10960,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/frame-crew-neck-shirt-ls",
+    "url": "https://outlet.arcteryx.com/shop/womens/frame-crew-neck-shirt-ls",
     "image_url": "",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Cerium SV Hoody Women",
@@ -10978,9 +10978,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/cerium-sv-hoody-0558",
+    "url": "https://outlet.arcteryx.com/shop/womens/cerium-sv-hoody-0558",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000010558-Cerium-SV-Hoody-Azalea-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Allium Insulated Jacket Women",
@@ -10996,9 +10996,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/allium-insulated-jacket-8530",
+    "url": "https://outlet.arcteryx.com/shop/womens/allium-insulated-jacket-8530",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F25-X000008530-Allium-Insulated-Jacket-Arctic-Silk-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Alpha Lightweight Anorak Women",
@@ -11014,9 +11014,9 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/alpha-lightweight-anorak",
+    "url": "https://outlet.arcteryx.com/shop/womens/alpha-lightweight-anorak",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/S25-X000006328-Alpha-Lightweight-Anorak-Black-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   },
   {
     "model": "Rho Bottom Women",
@@ -11032,8 +11032,8 @@ const PRODUCTS = [
     "gender": "women",
     "region": "us",
     "region_name": "美国",
-    "url": "https://outlet.arcteryx.com/us/en/shop/womens/rho-bottom",
+    "url": "https://outlet.arcteryx.com/shop/womens/rho-bottom",
     "image_url": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F24-X000007308-Rho-Bottom-Stratus-Women-s-Front-View.jpg?auto=format%2Ccompress&fit=fill&q=75&ixlib=react-9.10.0&w=450",
-    "last_updated": "2026-04-15 03:42:13"
+    "last_updated": "2026-04-19 01:57:55"
   }
 ];
