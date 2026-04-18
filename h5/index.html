@@ -397,7 +397,12 @@
         <div class="modal-content" id="modal-content"></div>
     </div>
 
-    <script src="../data.js"></script>
+    <!-- Footer with update time -->
+    <footer style="text-align: center; padding: 20px; color: #666; font-size: 12px; border-top: 1px solid #222; margin-top: 20px;">
+        数据更新时间: <span id="update-time">加载中...</span>
+    </footer>
+
+    <script src="data.js"></script>
     <script>
         let currentCat = 'all';
         let currentRegion = 'all';
@@ -591,7 +596,40 @@
             if (e.target.id === 'modal') closeModal();
         });
         
+        // 显示数据更新时间
+        function updateDataTime() {
+            const updateTimeElement = document.getElementById('update-time');
+            if (PRODUCTS.length > 0) {
+                // 找到最新的last_updated时间
+                const latestUpdate = PRODUCTS.reduce((latest, product) => {
+                    if (product.last_updated) {
+                        const productDate = new Date(product.last_updated);
+                        return productDate > latest ? productDate : latest;
+                    }
+                    return latest;
+                }, new Date(0));
+                
+                if (latestUpdate.getTime() > 0) {
+                    // 格式化为中文日期时间
+                    const options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone: 'Asia/Shanghai'
+                    };
+                    updateTimeElement.textContent = latestUpdate.toLocaleString('zh-CN', options);
+                } else {
+                    updateTimeElement.textContent = '暂无数据';
+                }
+            } else {
+                updateTimeElement.textContent = '暂无数据';
+            }
+        }
+        
         // 初始化
+        updateDataTime();
         filterAndSort();
     </script>
 </body>
