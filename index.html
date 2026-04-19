@@ -7,6 +7,7 @@
     <title>Arc'teryx Outlet · 全球折扣实时追踪</title>
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <style>
         :root {
             --bg: #fafaf8;
@@ -656,9 +657,12 @@
     <p style="margin-top:6px">© Arc'teryx Outlet Tracker · Non-affiliated</p>
 </footer>
 
-<script src="data.js"></script>
 <script>
 'use strict';
+
+// ── Supabase config ──────────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://bupqagkrcvrezjkdbald.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDU1NTMsImV4cCI6MjA5MjAyMTU1M30.oszdUJIEKMCvpD9XFzTYTCYXj078uwjzFx84tfStfRU';
 
 const RATES = { USD: 7.25, EUR: 7.85, GBP: 9.15, CAD: 5.30 };
 const SYMBOL_TO_CCY = { '$': 'USD', '€': 'EUR', '£': 'GBP', 'C$': 'CAD' };
@@ -743,9 +747,14 @@ const writeURL = () => {
     history.replaceState(null, '', qs ? '?' + qs : location.pathname);
 };
 
+// ── Normalize ISO timestamp → "YYYY-MM-DD HH:MM:SS" ──
+const normTs = (ts) => {
+    if (!ts) return '';
+    return ts.replace('T', ' ').slice(0, 19);
+};
+
 // ── Filtering & rendering ──
-const products = (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []).slice()
-    .map(p => ({ ...p, _series: extractSeries(cleanName(p.full_name || p.model)) }));
+let products = [];
 
 const filterProducts = () => {
     const q = state.q.trim().toLowerCase();
@@ -982,13 +991,48 @@ const initReset = () => {
     });
 };
 
-readURL();
-computeStats();
-initChips();
-initSearch();
-initSort();
-initReset();
-render();
+// ── Bootstrap ────────────────────────────────────────────────────────────────
+async function init() {
+    readURL();
+    initSearch();
+    initSort();
+    initReset();
+
+    // Show loading skeleton
+    document.getElementById('grid').innerHTML =
+        `<div class="empty"><p style="color:var(--text-3);font-size:14px">加载数据中…</p></div>`;
+
+    try {
+        const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+        const { data, error } = await db.from('products').select('*').limit(2000);
+        if (error) throw error;
+        products = (data || []).map(p => ({
+            ...p,
+            last_updated: normTs(p.last_updated),
+            sizes:      Array.isArray(p.sizes)      ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
+            size_stock: typeof p.size_stock === 'object' ? p.size_stock : (p.size_stock ? JSON.parse(p.size_stock) : {}),
+            _series:    extractSeries(cleanName(p.full_name || p.model)),
+        }));
+    } catch (e) {
+        console.warn('Supabase load failed, falling back to data.js:', e);
+        // Graceful fallback: load data.js dynamically
+        await new Promise((res, rej) => {
+            const s = document.createElement('script');
+            s.src = 'data.js';
+            s.onload = res;
+            s.onerror = rej;
+            document.head.appendChild(s);
+        }).catch(() => {});
+        products = (typeof PRODUCTS !== 'undefined' ? PRODUCTS : [])
+            .map(p => ({ ...p, _series: extractSeries(cleanName(p.full_name || p.model)) }));
+    }
+
+    computeStats();
+    initChips();
+    render();
+}
+
+init();
 </script>
 
 </body>

@@ -7,6 +7,7 @@
     <title>商品详情 · Arc'teryx Outlet</title>
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <style>
         :root {
             --bg: #fafaf8;
@@ -379,6 +380,10 @@
 <script>
 'use strict';
 
+// ── Supabase config ──────────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://bupqagkrcvrezjkdbald.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDU1NTMsImV4cCI6MjA5MjAyMTU1M30.oszdUJIEKMCvpD9XFzTYTCYXj078uwjzFx84tfStfRU';
+
 const RATES = { USD: 7.25, EUR: 7.85, GBP: 9.15, CAD: 5.30 };
 const SYMBOL_TO_CCY = { '$': 'USD', '€': 'EUR', '£': 'GBP', 'C$': 'CAD' };
 const REGION_FLAG = { us: '🇺🇸', ca: '🇨🇦', gb: '🇬🇧', de: '🇩🇪', fr: '🇫🇷', nl: '🇳🇱' };
@@ -440,65 +445,62 @@ const resolveDesc = (p) => {
 
 const getParam = (k) => new URLSearchParams(location.search).get(k);
 
-// ── Load product (try SKUs first, fall back to PRODUCTS) ──
+// ── Normalize ISO timestamp → "YYYY-MM-DD HH:MM:SS" ──
+const normTs = (ts) => ts ? ts.replace('T', ' ').slice(0, 19) : '';
+
+// ── Load product from Supabase ─────────────────────────────────────────────
 async function loadProduct() {
     const skuId = getParam('sku');
-    const url = getParam('url');
-    const allProducts = (typeof PRODUCTS !== 'undefined') ? PRODUCTS : [];
-
-    // 1. Try arcteryx_skus.json (richer per-color data from Playwright scrape)
+    const url   = getParam('url');
     const slugOf = (u) => (u || '').replace(/\/$/, '').split('/').pop();
+
     let skuMatches = [];
+
     try {
-        const r = await fetch('arcteryx_skus.json');
-        if (r.ok) {
-            const skus = await r.json();
-            if (skuId) {
-                const target = skus.find(s => s.sku_id === skuId);
-                if (target) skuMatches = skus.filter(s => s.url === target.url);
-            } else if (url) {
-                // Exact URL match first
-                skuMatches = skus.filter(s => s.url === url);
-                // Slug fallback: same product slug, different region URL
-                if (!skuMatches.length) {
-                    const slug = slugOf(url);
-                    skuMatches = skus.filter(s => slugOf(s.url) === slug);
-                }
+        const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+        let data = null;
+
+        if (skuId) {
+            // Find the product's URL via sku_id, then load all colors for that URL
+            const { data: target } = await db.from('products')
+                .select('url').eq('sku_id', skuId).single();
+            if (target?.url) {
+                const { data: rows } = await db.from('products')
+                    .select('*').eq('url', target.url);
+                data = rows;
+            }
+        } else if (url) {
+            // Exact URL match
+            const { data: rows } = await db.from('products')
+                .select('*').eq('url', url);
+            data = rows;
+            // Slug fallback
+            if (!data?.length) {
+                const slug = slugOf(url);
+                const { data: allRows } = await db.from('products').select('*');
+                data = (allRows || []).filter(s => slugOf(s.url) === slug);
             }
         }
-    } catch (e) { /* fall through to PRODUCTS */ }
+
+        skuMatches = (data || []).map(p => ({
+            ...p,
+            last_updated: normTs(p.last_updated),
+            sizes:      Array.isArray(p.sizes)           ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
+            size_stock: typeof p.size_stock === 'object' ? p.size_stock : (p.size_stock ? JSON.parse(p.size_stock) : {}),
+            images:     Array.isArray(p.images)          ? p.images     : (p.images     ? JSON.parse(p.images)     : []),
+        }));
+    } catch (e) {
+        console.warn('Supabase load failed:', e);
+    }
 
     if (skuMatches.length) {
-        const current = skuId ? skuMatches.find(s => s.sku_id === skuId) || skuMatches[0] : skuMatches[0];
-        // If we matched by slug (different region URL), keep the original URL for the CTA
+        const current   = skuId ? skuMatches.find(s => s.sku_id === skuId) || skuMatches[0] : skuMatches[0];
         const outletUrl = (url && url !== current.url) ? url : current.url;
         renderSKU(current, skuMatches, outletUrl);
         return;
     }
 
-    // 2. Fall back to PRODUCTS (which may itself be SKU-expanded via sku_scraper --update-data)
-    let product = null;
-    if (skuId) {
-        product = allProducts.find(p => p.sku_id === skuId);
-    }
-    if (!product && url) {
-        product = allProducts.find(p => p.url === url && (!skuId || p.sku_id === skuId))
-               || allProducts.find(p => p.url === url);
-    }
-
-    if (product) {
-        // If PRODUCTS is expanded (has sku_id per record), find all color variants for same URL
-        if (product.sku_id) {
-            const siblings = allProducts.filter(p => p.url === product.url && p.sku_id);
-            if (siblings.length > 1) {
-                renderSKU(product, siblings);
-                return;
-            }
-        }
-        renderBase(product);
-    } else {
-        renderNotFound();
-    }
+    renderNotFound();
 }
 
 function priceBlock(p) {
