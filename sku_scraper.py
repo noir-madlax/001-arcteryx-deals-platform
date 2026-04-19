@@ -72,7 +72,7 @@ def save_json(path, data, indent=None):
 
 
 # ── 从 global_data.json 按 slug 去重，取最优地区（us/ca/gb/de 优先） ────────
-REGION_PRIORITY = ['us', 'ca', 'gb', 'de', 'fr', 'nl']
+REGION_PRIORITY = ['us', 'ca', 'gb', 'au', 'de', 'fr', 'nl', 'se', 'at', 'ch', 'jp', 'it', 'es', 'dk', 'be']
 
 def best_product_per_slug(products: list) -> dict:
     """返回 {slug: product_record}，每个商品只保留最优地区版本"""

@@ -102,53 +102,58 @@
             .header-stats .hide-sm { display: none; }
         }
 
-        /* ─── Hero ─── */
-        .hero {
+        /* ─── Filter strip (single scrollable chip row) ─── */
+        .filter-strip {
             max-width: 1440px;
             margin: 0 auto;
-            padding: 32px 24px 24px;
-            border-bottom: 1px solid var(--border);
+            padding: 0 24px 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
-        .hero h1 {
-            font-size: clamp(24px, 4vw, 36px);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.15;
-            margin-bottom: 10px;
+        .filter-strip::-webkit-scrollbar { display: none; }
+        .filter-strip .chip-group {
+            overflow-x: visible;
+            flex: 0 0 auto;
         }
-        .hero p {
+        .filter-pipe {
+            width: 1px;
+            height: 18px;
+            background: var(--border-strong);
+            flex-shrink: 0;
+            margin: 0 4px;
+        }
+        /* Inline result count in filter-top */
+        .filter-count {
+            margin-left: auto;
+            font-size: 11.5px;
             color: var(--text-2);
-            max-width: 560px;
-            font-size: 14px;
-        }
-        .hero-meta {
+            white-space: nowrap;
             display: flex;
-            gap: 24px;
-            margin-top: 18px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
         }
-        .hero-meta-item {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-        }
-        .hero-meta-num {
-            font-size: 22px;
-            font-weight: 700;
+        .filter-count strong {
+            color: var(--text);
+            font-weight: 600;
             font-variant-numeric: tabular-nums;
-            letter-spacing: -0.01em;
         }
-        .hero-meta-num.accent { color: var(--accent); }
-        .hero-meta-label {
-            font-size: 11px;
+        .filter-count .reset-link {
             color: var(--text-3);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
+            font-size: 11px;
+            padding: 2px 6px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            transition: all 0.15s;
         }
-        @media (max-width: 640px) {
-            .hero { padding: 24px 16px 18px; }
-            .hero-meta { gap: 18px; margin-top: 14px; }
-            .hero-meta-num { font-size: 18px; }
+        .filter-count .reset-link:hover { border-color: var(--text); color: var(--text); }
+        @media (max-width: 720px) {
+            .filter-strip { padding: 0 16px 8px; }
+            .filter-count .avg-label { display: none; }
         }
 
         /* ─── Filter bar ─── */
@@ -164,10 +169,10 @@
         .filter-top {
             max-width: 1440px;
             margin: 0 auto;
-            padding: 12px 24px 10px;
+            padding: 10px 24px 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .search {
             position: relative;
@@ -232,53 +237,14 @@
         }
         .sort-select:focus { outline: none; border-color: var(--text); }
 
-        /* filter rows with labels */
-        .filter-rows {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 0 24px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .filter-row {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            min-height: 32px;
-        }
-        .filter-label {
-            font-size: 10.5px;
-            font-weight: 600;
-            color: var(--text-3);
-            text-transform: uppercase;
-            letter-spacing: 0.07em;
-            white-space: nowrap;
-            width: 34px;
-            flex-shrink: 0;
-            padding-right: 6px;
-        }
-        .filter-divider {
-            width: 1px;
-            height: 20px;
-            background: var(--border);
-            flex-shrink: 0;
-            margin: 0 10px;
-        }
         .chip-group {
             display: flex;
             gap: 5px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding: 1px 2px;
-            min-width: 0;
-            flex: 1;
+            padding: 1px 0;
         }
-        .chip-group::-webkit-scrollbar { display: none; }
         .chip {
             flex-shrink: 0;
-            height: 28px;
+            height: 27px;
             padding: 0 10px;
             background: var(--surface);
             border: 1px solid var(--border);
@@ -302,40 +268,9 @@
             opacity: 0.55;
             font-variant-numeric: tabular-nums;
         }
-
         @media (max-width: 720px) {
-            .filter-top { padding: 10px 16px 8px; gap: 8px; }
-            .filter-rows { padding: 0 16px 8px; gap: 5px; }
-            .search { flex: 1 1 100%; max-width: none; }
-            .sort-wrap { flex-shrink: 0; }
-            .filter-label { width: 28px; font-size: 9.5px; }
-        }
-
-        /* ─── Results meta ─── */
-        .results-meta {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 18px 24px 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            font-size: 12.5px;
-            color: var(--text-2);
-            gap: 12px;
-        }
-        .results-meta strong {
-            color: var(--text);
-            font-weight: 600;
-            font-variant-numeric: tabular-nums;
-        }
-        .reset-link {
-            color: var(--text-3);
-            font-size: 12px;
-            transition: color 0.15s;
-        }
-        .reset-link:hover { color: var(--accent); }
-        @media (max-width: 640px) {
-            .results-meta { padding: 14px 16px 4px; }
+            .filter-top { padding: 8px 16px 8px; gap: 8px; }
+            .search { flex: 1 1 auto; max-width: none; }
         }
 
         /* ─── Grid ─── */
@@ -571,30 +506,11 @@
         </div>
         <div class="header-stats">
             <span><strong id="stat-total">—</strong> 件</span>
-            <span class="hide-sm"><strong id="stat-regions">—</strong> 国</span>
             <span>最高 <strong id="stat-max-disc">—</strong></span>
+            <span class="hide-sm" style="color:var(--text-3)"><strong id="stat-updated" style="color:var(--text-2)">—</strong></span>
         </div>
     </div>
 </header>
-
-<section class="hero">
-    <h1>Arc'teryx 全球 Outlet 折扣</h1>
-    <p>聚合多国 Arc'teryx Outlet 站点的实时折扣数据，按地区、品类、性别筛选，找到值得入手的好价。</p>
-    <div class="hero-meta">
-        <div class="hero-meta-item">
-            <span class="hero-meta-num" id="hero-total">—</span>
-            <span class="hero-meta-label">在售商品</span>
-        </div>
-        <div class="hero-meta-item">
-            <span class="hero-meta-num accent" id="hero-avg">—</span>
-            <span class="hero-meta-label">平均折扣</span>
-        </div>
-        <div class="hero-meta-item">
-            <span class="hero-meta-num" id="hero-updated">—</span>
-            <span class="hero-meta-label">最近更新</span>
-        </div>
-    </div>
-</section>
 
 <section class="filter-bar" id="filter-bar">
     <div class="filter-top">
@@ -618,30 +534,22 @@
                 <option value="recent">最近更新</option>
             </select>
         </div>
+        <div class="filter-count">
+            <strong id="result-count">0</strong> 件
+            <span class="avg-label">· <strong id="result-avg">—</strong></span>
+            <a href="#" class="reset-link" id="reset-link">清除</a>
+        </div>
     </div>
-    <div class="filter-rows">
-        <div class="filter-row">
-            <span class="filter-label">地区</span>
-            <div class="chip-group" id="region-chips"></div>
-        </div>
-        <div class="filter-row">
-            <span class="filter-label">性别</span>
-            <div class="chip-group" id="gender-chips"></div>
-            <div class="filter-divider"></div>
-            <span class="filter-label">品类</span>
-            <div class="chip-group" id="category-chips"></div>
-        </div>
-        <div class="filter-row">
-            <span class="filter-label">系列</span>
-            <div class="chip-group" id="series-chips"></div>
-        </div>
+    <div class="filter-strip">
+        <div class="chip-group" id="region-chips"></div>
+        <div class="filter-pipe"></div>
+        <div class="chip-group" id="gender-chips"></div>
+        <div class="filter-pipe"></div>
+        <div class="chip-group" id="category-chips"></div>
+        <div class="filter-pipe"></div>
+        <div class="chip-group" id="series-chips"></div>
     </div>
 </section>
-
-<div class="results-meta">
-    <span>共 <strong id="result-count">0</strong> 件 · 平均折扣 <strong id="result-avg">—</strong></span>
-    <a href="#" class="reset-link" id="reset-link">清除筛选</a>
-</div>
 
 <main class="grid-wrap">
     <div class="grid" id="grid">
@@ -664,14 +572,26 @@
 const SUPABASE_URL  = 'https://bupqagkrcvrezjkdbald.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDU1NTMsImV4cCI6MjA5MjAyMTU1M30.oszdUJIEKMCvpD9XFzTYTCYXj078uwjzFx84tfStfRU';
 
-const RATES = { USD: 7.25, EUR: 7.85, GBP: 9.15, CAD: 5.30 };
-const SYMBOL_TO_CCY = { '$': 'USD', '€': 'EUR', '£': 'GBP', 'C$': 'CAD' };
-const REGION_FLAG = { us: '🇺🇸', ca: '🇨🇦', gb: '🇬🇧', de: '🇩🇪', fr: '🇫🇷', nl: '🇳🇱' };
-const REGION_LABEL = { us: '美国', ca: '加拿大', gb: '英国', de: '德国', fr: '法国', nl: '荷兰' };
+const RATES = {
+    USD: 7.25, EUR: 7.85, GBP: 9.15, CAD: 5.30,
+    AUD: 4.70, CHF: 8.20, SEK: 0.70, DKK: 1.05, NOK: 0.68, JPY: 0.048,
+};
+const SYMBOL_TO_CCY = {
+    '$': 'USD', '€': 'EUR', '£': 'GBP', 'C$': 'CAD',
+    'A$': 'AUD', 'CHF': 'CHF', 'kr': 'SEK', '¥': 'JPY',
+};
+const REGION_FLAG = {
+    us:'🇺🇸', ca:'🇨🇦', gb:'🇬🇧', de:'🇩🇪', fr:'🇫🇷', nl:'🇳🇱',
+    au:'🇦🇺', se:'🇸🇪', at:'🇦🇹', ch:'🇨🇭', jp:'🇯🇵', it:'🇮🇹', es:'🇪🇸', dk:'🇩🇰', be:'🇧🇪',
+};
+const REGION_LABEL = {
+    us:'美国', ca:'加拿大', gb:'英国', de:'德国', fr:'法国', nl:'荷兰',
+    au:'澳大利亚', se:'瑞典', at:'奥地利', ch:'瑞士', jp:'日本', it:'意大利', es:'西班牙', dk:'丹麦', be:'比利时',
+};
 const GENDER_LABEL = { men: '男装', women: '女装', unknown: '其他' };
 
-const toCNY = (price, symbol) => {
-    const ccy = SYMBOL_TO_CCY[symbol] || 'USD';
+const toCNY = (price, symbol, currency) => {
+    const ccy = currency || SYMBOL_TO_CCY[symbol] || 'USD';
     return Math.round(price * (RATES[ccy] || 7.25));
 };
 
@@ -785,7 +705,7 @@ const sortProducts = (arr) => {
 
 const buildCard = (p) => {
     const name = cleanName(p.full_name || p.model);
-    const cny = toCNY(p.sale_price, p.symbol);
+    const cny = toCNY(p.sale_price, p.symbol, p.currency);
     const encodedUrl = encodeURIComponent(p.url || '');
     const flag = REGION_FLAG[p.region] || '';
     const skuParam = p.sku_id ? `&sku=${encodeURIComponent(p.sku_id)}` : '';
@@ -845,24 +765,18 @@ const buildChips = (containerId, options, key) => {
 
 const computeStats = () => {
     const total = products.length;
-    const regions = new Set(products.map(p => p.region)).size;
     const maxDisc = Math.max(...products.map(p => p.discount_pct || 0));
-    const avgDisc = Math.round(products.reduce((s, p) => s + (p.discount_pct || 0), 0) / total);
     const lastUpdated = products.map(p => p.last_updated).filter(Boolean).sort().pop() || '';
-    // Format: "04-20 14:00" (month-day hour, no minutes — per requirement)
     const fmtUpdated = (() => {
         if (!lastUpdated) return '—';
         const [datePart, timePart] = lastUpdated.split(' ');
-        const mmdd = datePart?.slice(5) || '';          // "04-20"
-        const hh   = timePart?.slice(0, 2) || '';       // "14"
+        const mmdd = datePart?.slice(5) || '';
+        const hh   = timePart?.slice(0, 2) || '';
         return hh ? `${mmdd} ${hh}:00` : mmdd;
     })();
     document.getElementById('stat-total').textContent = total;
-    document.getElementById('stat-regions').textContent = regions;
     document.getElementById('stat-max-disc').textContent = '−' + maxDisc + '%';
-    document.getElementById('hero-total').textContent = total;
-    document.getElementById('hero-avg').textContent = '−' + avgDisc + '%';
-    document.getElementById('hero-updated').textContent = fmtUpdated;
+    document.getElementById('stat-updated').textContent = fmtUpdated;
 };
 
 const countBy = (key) => {

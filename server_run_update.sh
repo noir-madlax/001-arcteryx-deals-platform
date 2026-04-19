@@ -23,16 +23,20 @@ log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE"; }
 
 log "===== UPDATE START ====="
 
-# 1. Run Playwright scraper (full re-scrape)
-log "Step 1: Playwright scrape"
+# 1. Refresh product list
+log "Step 1: Global scraper (product list)"
+$PYTHON global_scraper.py 2>&1 | tee -a "$LOG_FILE"
+
+# 2. Run Playwright scraper (full re-scrape)
+log "Step 2: Playwright scrape"
 $PYTHON sku_scraper.py --reset 2>&1 | tee -a "$LOG_FILE"
 
-# 2. Sync to Supabase
-log "Step 2: Supabase sync"
+# 3. Sync to Supabase
+log "Step 3: Supabase sync"
 $PYTHON supabase_sync.py 2>&1 | tee -a "$LOG_FILE"
 
-# 3. Push data.js to GitHub as backup
-log "Step 3: GitHub push"
+# 4. Push data.js to GitHub as backup
+log "Step 4: GitHub push"
 git -C "$PROJ_DIR" config user.email "bot@arcteryx-deals.local"
 git -C "$PROJ_DIR" config user.name  "ArcBot"
 git -C "$PROJ_DIR" add data.js arcteryx_skus.json global_data.json

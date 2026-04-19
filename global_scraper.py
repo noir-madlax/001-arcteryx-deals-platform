@@ -22,6 +22,11 @@ REGIONS = [
     {"code": "se", "lang": "en", "name": "瑞典", "currency": "SEK", "symbol": "kr"},
     {"code": "at", "lang": "de", "name": "奥地利", "currency": "EUR", "symbol": "€"},
     {"code": "ch", "lang": "de", "name": "瑞士", "currency": "CHF", "symbol": "CHF"},
+    {"code": "jp", "lang": "ja", "name": "日本", "currency": "JPY", "symbol": "¥"},
+    {"code": "it", "lang": "it", "name": "意大利", "currency": "EUR", "symbol": "€"},
+    {"code": "es", "lang": "es", "name": "西班牙", "currency": "EUR", "symbol": "€"},
+    {"code": "dk", "lang": "da", "name": "丹麦", "currency": "DKK", "symbol": "kr"},
+    {"code": "be", "lang": "nl", "name": "比利时", "currency": "EUR", "symbol": "€"},
 ]
 
 # 分类路径

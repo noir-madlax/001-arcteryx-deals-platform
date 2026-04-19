@@ -384,14 +384,26 @@
 const SUPABASE_URL  = 'https://bupqagkrcvrezjkdbald.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDU1NTMsImV4cCI6MjA5MjAyMTU1M30.oszdUJIEKMCvpD9XFzTYTCYXj078uwjzFx84tfStfRU';
 
-const RATES = { USD: 7.25, EUR: 7.85, GBP: 9.15, CAD: 5.30 };
-const SYMBOL_TO_CCY = { '$': 'USD', '€': 'EUR', '£': 'GBP', 'C$': 'CAD' };
-const REGION_FLAG = { us: '🇺🇸', ca: '🇨🇦', gb: '🇬🇧', de: '🇩🇪', fr: '🇫🇷', nl: '🇳🇱' };
-const REGION_LABEL = { us: '美国', ca: '加拿大', gb: '英国', de: '德国', fr: '法国', nl: '荷兰' };
+const RATES = {
+    USD: 7.25, EUR: 7.85, GBP: 9.15, CAD: 5.30,
+    AUD: 4.70, CHF: 8.20, SEK: 0.70, DKK: 1.05, NOK: 0.68, JPY: 0.048,
+};
+const SYMBOL_TO_CCY = {
+    '$': 'USD', '€': 'EUR', '£': 'GBP', 'C$': 'CAD',
+    'A$': 'AUD', 'CHF': 'CHF', 'kr': 'SEK', '¥': 'JPY',
+};
+const REGION_FLAG = {
+    us:'🇺🇸', ca:'🇨🇦', gb:'🇬🇧', de:'🇩🇪', fr:'🇫🇷', nl:'🇳🇱',
+    au:'🇦🇺', se:'🇸🇪', at:'🇦🇹', ch:'🇨🇭', jp:'🇯🇵', it:'🇮🇹', es:'🇪🇸', dk:'🇩🇰', be:'🇧🇪',
+};
+const REGION_LABEL = {
+    us:'美国', ca:'加拿大', gb:'英国', de:'德国', fr:'法国', nl:'荷兰',
+    au:'澳大利亚', se:'瑞典', at:'奥地利', ch:'瑞士', jp:'日本', it:'意大利', es:'西班牙', dk:'丹麦', be:'比利时',
+};
 const GENDER_LABEL = { men: '男装', women: '女装', unknown: '中性' };
 
-const toCNY = (price, symbol) => {
-    const ccy = SYMBOL_TO_CCY[symbol] || 'USD';
+const toCNY = (price, symbol, currency) => {
+    const ccy = currency || SYMBOL_TO_CCY[symbol] || 'USD';
     return Math.round(price * (RATES[ccy] || 7.25));
 };
 const fmt = (n) => n.toLocaleString('en-US');
