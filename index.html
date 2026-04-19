@@ -102,30 +102,6 @@
             .header-stats .hide-sm { display: none; }
         }
 
-        /* ─── Filter strip (single scrollable chip row) ─── */
-        .filter-strip {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 0 24px 10px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .filter-strip::-webkit-scrollbar { display: none; }
-        .filter-strip .chip-group {
-            overflow-x: visible;
-            flex: 0 0 auto;
-        }
-        .filter-pipe {
-            width: 1px;
-            height: 18px;
-            background: var(--border-strong);
-            flex-shrink: 0;
-            margin: 0 4px;
-        }
         /* Inline result count in filter-top */
         .filter-count {
             margin-left: auto;
@@ -152,7 +128,6 @@
         }
         .filter-count .reset-link:hover { border-color: var(--text); color: var(--text); }
         @media (max-width: 720px) {
-            .filter-strip { padding: 0 16px 8px; }
             .filter-count .avg-label { display: none; }
         }
 
@@ -237,40 +212,47 @@
         }
         .sort-select:focus { outline: none; border-color: var(--text); }
 
-        .chip-group {
+        /* ─── Filter dropdowns ─── */
+        .filter-dropdowns {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px 10px;
             display: flex;
-            gap: 5px;
-            padding: 1px 0;
+            gap: 7px;
         }
-        .chip {
-            flex-shrink: 0;
-            height: 27px;
-            padding: 0 10px;
+        .filter-select {
+            flex: 1;
+            min-width: 0;
+            height: 30px;
+            padding: 0 22px 0 9px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 999px;
+            border-radius: var(--r-sm);
             font-size: 12px;
             color: var(--text-2);
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5' viewBox='0 0 9 5'%3E%3Cpath fill='none' stroke='%239a948a' stroke-width='1.4' d='M1 1l3.5 3L8 1'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 7px center;
             white-space: nowrap;
-            transition: all 0.15s;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: border-color 0.15s, background-color 0.15s, color 0.15s;
         }
-        .chip:hover { border-color: var(--border-strong); color: var(--text); }
-        .chip.active {
-            background: var(--text);
+        .filter-select:focus { outline: none; border-color: var(--text); }
+        .filter-select.active {
             border-color: var(--text);
-            color: var(--surface);
-        }
-        .chip .count {
-            font-size: 10.5px;
-            opacity: 0.55;
-            font-variant-numeric: tabular-nums;
+            background-color: var(--text);
+            color: #fff;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5' viewBox='0 0 9 5'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-width='1.4' d='M1 1l3.5 3L8 1'/%3E%3C/svg%3E");
         }
         @media (max-width: 720px) {
             .filter-top { padding: 8px 16px 8px; gap: 8px; }
+            .filter-dropdowns { padding: 0 16px 10px; gap: 6px; }
             .search { flex: 1 1 auto; max-width: none; }
+            .filter-select { font-size: 11.5px; padding-left: 7px; }
         }
 
         /* ─── Grid ─── */
@@ -394,54 +376,43 @@
             margin-top: 2px;
             flex-wrap: wrap;
         }
-        .card-sale {
-            font-size: 14.5px;
-            font-weight: 700;
-            color: var(--accent);
-            font-variant-numeric: tabular-nums;
-        }
-        .card-orig {
-            font-size: 12px;
-            color: var(--text-3);
-            text-decoration: line-through;
-            font-variant-numeric: tabular-nums;
-        }
-        .card-cny {
-            font-size: 11.5px;
-            color: var(--text-2);
-            font-variant-numeric: tabular-nums;
+        /* color + sizes on same row */
+        .card-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+            min-width: 0;
             margin-top: 2px;
         }
         .card-color {
             font-size: 11px;
             color: var(--text-3);
-            margin-top: 1px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             display: flex;
             align-items: center;
             gap: 4px;
+            flex-shrink: 0;
+            max-width: 50%;
         }
         .card-color::before {
             content: '';
             display: inline-block;
-            width: 8px;
-            height: 8px;
+            width: 7px; height: 7px;
             border-radius: 50%;
             background: var(--border-strong);
             flex-shrink: 0;
         }
-        /* size chips on card */
         .card-sizes {
             display: flex;
             flex-wrap: wrap;
             gap: 3px;
-            margin-top: 5px;
         }
         .card-sz {
             font-size: 10px;
-            padding: 1px 5px;
+            padding: 1px 4px;
             border: 1px solid var(--border);
             border-radius: 3px;
             color: var(--text-2);
@@ -449,10 +420,46 @@
             line-height: 1.6;
             background: var(--surface);
         }
-        .card-sz.more {
+        .card-sz.more { color: var(--text-3); border-color: transparent; background: none; }
+
+        /* price row — sale + orig + disc% on left, CNY on right */
+        .card-prices {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 4px;
+            margin-top: 5px;
+        }
+        .card-prices-left {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+        .card-sale {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+        }
+        .card-orig {
+            font-size: 11.5px;
             color: var(--text-3);
-            border-color: transparent;
-            background: none;
+            text-decoration: line-through;
+            font-variant-numeric: tabular-nums;
+        }
+        .card-disc-rate {
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .card-cny {
+            font-size: 11.5px;
+            color: var(--text-2);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         /* ─── Empty state ─── */
@@ -540,14 +547,11 @@
             <a href="#" class="reset-link" id="reset-link">清除</a>
         </div>
     </div>
-    <div class="filter-strip">
-        <div class="chip-group" id="region-chips"></div>
-        <div class="filter-pipe"></div>
-        <div class="chip-group" id="gender-chips"></div>
-        <div class="filter-pipe"></div>
-        <div class="chip-group" id="category-chips"></div>
-        <div class="filter-pipe"></div>
-        <div class="chip-group" id="series-chips"></div>
+    <div class="filter-dropdowns">
+        <select class="filter-select" id="region-select"></select>
+        <select class="filter-select" id="gender-select"></select>
+        <select class="filter-select" id="category-select"></select>
+        <select class="filter-select" id="series-select"></select>
     </div>
 </section>
 
@@ -681,7 +685,11 @@ const filterProducts = () => {
     return products.filter(p => {
         if (state.region !== 'all' && p.region !== state.region) return false;
         if (state.gender !== 'all' && p.gender !== state.gender) return false;
-        if (state.category !== 'all' && p.category !== state.category) return false;
+        if (state.category !== 'all') {
+            const cat = (p.category && p.category !== '其他')
+                ? p.category : inferCategory(cleanName(p.full_name || p.model), p.url);
+            if (cat !== state.category) return false;
+        }
         if (state.series !== 'all' && p._series !== state.series) return false;
         if (q) {
             const hay = ((p.full_name || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
@@ -703,6 +711,45 @@ const sortProducts = (arr) => {
     return sorted;
 };
 
+// ── Category inference from product name ─────────────────────────────────────
+const inferCategory = (name, url) => {
+    const n = (name || '').toLowerCase();
+    const u = (url || '').toLowerCase();
+    if (/veilance/.test(n) || /veilance/.test(u)) return 'Veilance';
+    if (/shoe|boot|sandal|kragg|konseal|aerios|bora|acrux|vertex|kopec|norvan\s*sl|sylan/.test(n)) return '鞋类';
+    if (/\bpack\b|backpack|bag|mantis|arro|brize|khard|\bindex\b/.test(n)) return '背包';
+    if (/\bpant\b|bib\s*pant|bib\s*short|short|legging/.test(n)) return '裤装';
+    if (/down\s*jacket|insulated\s*jacket|cerium|thorium|nuclei|calidum|proton\s*lt\s*j/.test(n)) return '保暖羽绒';
+    if (/jacket|shell/.test(n)) return '冲锋衣';
+    if (/hoody|hoodie|fleece|zip.*neck|pullover|crew|cardigan|sweater/.test(n)) return '卫衣/抓绒';
+    if (/\btee\b|t-shirt|\bshirt\b|\bpolo\b/.test(n)) return '上衣';
+    if (/glove|mitt/.test(n)) return '手套';
+    if (/\bhat\b|toque|beanie|\bcap\b|headband/.test(n)) return '帽子';
+    if (/brief|boxer|base.?layer/.test(n)) return '内衣';
+    return '其他';
+};
+
+// ── Size normalization — split "LXL" → ["L","XL"] etc. ────────────────────────
+const SZ_TOKENS = ['XXS','XXL','XS-R','XS-L','S-R','S-L','M-R','M-L','L-R','L-L','XL-R','XL-L','XS','XL','S','M','L'];
+const normalizeSz = (sz) => {
+    const s = (sz || '').trim();
+    if (!s || /^[\d.]+/.test(s)) return [s]; // numeric shoe size, keep as-is
+    let rem = s.toUpperCase();
+    const out = [];
+    while (rem.length) {
+        let hit = false;
+        for (const t of SZ_TOKENS) {
+            if (rem.startsWith(t)) { out.push(t); rem = rem.slice(t.length); hit = true; break; }
+        }
+        if (!hit) return [s]; // unparseable — return original
+    }
+    return out.length > 1 ? out : [s];
+};
+const expandSizes = (sizes) => {
+    if (!Array.isArray(sizes)) return [];
+    return [...new Set(sizes.flatMap(normalizeSz))];
+};
+
 const buildCard = (p) => {
     const name = cleanName(p.full_name || p.model);
     const cny = toCNY(p.sale_price, p.symbol, p.currency);
@@ -710,7 +757,8 @@ const buildCard = (p) => {
     const flag = REGION_FLAG[p.region] || '';
     const skuParam = p.sku_id ? `&sku=${encodeURIComponent(p.sku_id)}` : '';
     const href = `product-detail.html?url=${encodedUrl}${skuParam}`;
-    // Color label — clean up "Name/Name" duplicates
+
+    // Clean color label
     const colorRaw = p.color || '';
     const colorDisplay = (() => {
         if (!colorRaw) return '';
@@ -718,48 +766,68 @@ const buildCard = (p) => {
         if (parts.length === 2 && parts[0].trim() === parts[1].trim()) return parts[0].trim();
         return colorRaw;
     })();
-    // In-stock sizes — show first 6, then "+N"
-    const inStock = p.sizes
+
+    // Category — infer if data says "其他"
+    const cat = (p.category && p.category !== '其他')
+        ? p.category
+        : inferCategory(name, p.url);
+
+    // In-stock sizes with normalization — show first 5
+    const rawInStock = p.sizes
         ? p.sizes.filter(sz => (p.size_stock?.[sz] || 'in_stock') !== 'out_of_stock')
         : [];
-    const shown = inStock.slice(0, 6);
+    const inStock = expandSizes(rawInStock);
+    const shown = inStock.slice(0, 5);
     const extra = inStock.length - shown.length;
-    const sizeHtml = shown.length
-        ? `<div class="card-sizes">${shown.map(sz => `<span class="card-sz">${sz}</span>`).join('')}${extra > 0 ? `<span class="card-sz more">+${extra}</span>` : ''}</div>`
+    const szChips = shown.length
+        ? shown.map(sz => `<span class="card-sz">${sz}</span>`).join('') +
+          (extra > 0 ? `<span class="card-sz more">+${extra}</span>` : '')
         : '';
+
+    // Color + sizes on same row
+    const metaRow = (colorDisplay || szChips) ? `
+        <div class="card-meta-row">
+            ${colorDisplay ? `<span class="card-color">${colorDisplay}</span>` : ''}
+            ${szChips ? `<div class="card-sizes">${szChips}</div>` : ''}
+        </div>` : '';
+
     return `
     <a class="card" href="${href}">
         <div class="card-img-wrap">
             <div class="card-img-fallback">${name}</div>
             ${p.image_url ? `<img class="card-img" src="${p.image_url}" alt="${name.replace(/"/g, '&quot;')}" loading="lazy" onerror="this.style.display='none'">` : ''}
             <span class="card-flag">${flag} ${REGION_LABEL[p.region] || p.region}</span>
-            ${p.discount_pct ? `<span class="card-disc">−${p.discount_pct}%</span>` : ''}
         </div>
         <div class="card-body">
-            <div class="card-cat">${p.category || '其他'}</div>
+            <div class="card-cat">${cat}</div>
             <div class="card-name">${name}</div>
-            ${colorDisplay ? `<div class="card-color">${colorDisplay}</div>` : ''}
+            ${metaRow}
             <div class="card-prices">
-                <span class="card-sale">${p.symbol}${fmt(p.sale_price)}</span>
-                ${p.original_price ? `<span class="card-orig">${p.symbol}${fmt(p.original_price)}</span>` : ''}
+                <div class="card-prices-left">
+                    <span class="card-sale">${p.symbol}${fmt(p.sale_price)}</span>
+                    ${p.original_price ? `<span class="card-orig">${p.symbol}${fmt(p.original_price)}</span>` : ''}
+                    ${p.discount_pct ? `<span class="card-disc-rate">-${p.discount_pct}%</span>` : ''}
+                </div>
+                <span class="card-cny">≈¥${fmt(cny)}</span>
             </div>
-            <div class="card-cny">≈ ¥${fmt(cny)}</div>
-            ${sizeHtml}
         </div>
     </a>`;
 };
 
-const buildChips = (containerId, options, key) => {
-    const el = document.getElementById(containerId);
+// ── Filter dropdowns ─────────────────────────────────────────────────────────
+const buildSelect = (selectId, options, key) => {
+    const el = document.getElementById(selectId);
+    if (!el) return;
     el.innerHTML = options.map(opt =>
-        `<button class="chip ${state[key] === opt.value ? 'active' : ''}" data-value="${opt.value}">${opt.label}${opt.count != null ? `<span class="count">${opt.count}</span>` : ''}</button>`
+        `<option value="${opt.value}">${opt.label}${opt.count != null ? ` (${opt.count})` : ''}</option>`
     ).join('');
-    el.querySelectorAll('.chip').forEach(btn => {
-        btn.addEventListener('click', () => {
-            state[key] = btn.dataset.value;
-            writeURL();
-            render();
-        });
+    el.value = state[key];
+    el.classList.toggle('active', state[key] !== 'all');
+    el.addEventListener('change', () => {
+        state[key] = el.value;
+        el.classList.toggle('active', el.value !== 'all');
+        writeURL();
+        render();
     });
 };
 
@@ -785,54 +853,62 @@ const countBy = (key) => {
     return m;
 };
 
-const initChips = () => {
+const initFilters = () => {
+    // Region
     const regionCounts = countBy('region');
-    const regionOrder = ['us', 'ca', 'gb', 'de', 'fr', 'nl'];
+    const regionOrder = ['us', 'ca', 'gb', 'au', 'de', 'fr', 'nl', 'se', 'at', 'ch', 'jp', 'it', 'es', 'dk', 'be'];
     const presentRegions = Object.keys(regionCounts).sort((a, b) => {
         const ai = regionOrder.indexOf(a), bi = regionOrder.indexOf(b);
         return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
     });
-    const regions = [
+    buildSelect('region-select', [
         { value: 'all', label: '全部地区', count: products.length },
         ...presentRegions.map(r => ({
             value: r,
-            label: `${REGION_FLAG[r] || '🌐'} ${REGION_LABEL[r] || r.toUpperCase()}`,
+            label: `${REGION_FLAG[r] || ''} ${REGION_LABEL[r] || r.toUpperCase()}`,
             count: regionCounts[r],
         })),
-    ];
-    buildChips('region-chips', regions, 'region');
+    ], 'region');
 
+    // Gender
     const genderCounts = countBy('gender');
-    const genders = [
+    buildSelect('gender-select', [
         { value: 'all', label: '不限性别' },
-        ...['women', 'men', 'unknown']
-            .filter(g => genderCounts[g])
+        ...['women', 'men', 'unknown'].filter(g => genderCounts[g])
             .map(g => ({ value: g, label: GENDER_LABEL[g], count: genderCounts[g] })),
-    ];
-    buildChips('gender-chips', genders, 'gender');
+    ], 'gender');
 
-    const catCounts = countBy('category');
-    const cats = [
+    // Category — use inferred category for display counts
+    const catCounts = {};
+    products.forEach(p => {
+        const c = (p.category && p.category !== '其他')
+            ? p.category : inferCategory(cleanName(p.full_name || p.model), p.url);
+        catCounts[c] = (catCounts[c] || 0) + 1;
+    });
+    const catOrder = ['冲锋衣','保暖羽绒','卫衣/抓绒','裤装','鞋类','背包','上衣','内衣','手套','帽子','Veilance','其他'];
+    const cats = Object.entries(catCounts).sort((a, b) => {
+        const ai = catOrder.indexOf(a[0]), bi = catOrder.indexOf(b[0]);
+        if (ai !== -1 && bi !== -1) return ai - bi;
+        if (ai !== -1) return -1;
+        if (bi !== -1) return 1;
+        return b[1] - a[1];
+    });
+    buildSelect('category-select', [
         { value: 'all', label: '全部品类' },
-        ...Object.entries(catCounts)
-            .sort((a, b) => b[1] - a[1])
-            .map(([c, n]) => ({ value: c, label: c, count: n })),
-    ];
-    buildChips('category-chips', cats, 'category');
+        ...cats.map(([c, n]) => ({ value: c, label: c, count: n })),
+    ], 'category');
 
+    // Series
     const seriesCounts = countBy('_series');
-    // Show "其他" last, rest sorted by count desc
-    const seriesEntries = Object.entries(seriesCounts)
-        .sort((a, b) => {
-            if (a[0] === '其他') return 1;
-            if (b[0] === '其他') return -1;
-            return b[1] - a[1];
-        });
-    const series = [
+    const seriesEntries = Object.entries(seriesCounts).sort((a, b) => {
+        if (a[0] === '其他') return 1;
+        if (b[0] === '其他') return -1;
+        return b[1] - a[1];
+    });
+    buildSelect('series-select', [
         { value: 'all', label: '全部系列' },
         ...seriesEntries.map(([s, n]) => ({ value: s, label: s, count: n })),
-    ];
-    buildChips('series-chips', series, 'series');
+    ], 'series');
 };
 
 const render = () => {
@@ -846,15 +922,12 @@ const render = () => {
     document.getElementById('result-count').textContent = filtered.length;
     const avg = filtered.length ? Math.round(filtered.reduce((s, p) => s + (p.discount_pct || 0), 0) / filtered.length) : 0;
     document.getElementById('result-avg').textContent = '−' + avg + '%';
-    // Refresh active state on chips
-    document.querySelectorAll('.chip').forEach(b => {
-        const parent = b.parentElement.id;
-        const key = parent === 'region-chips' ? 'region'
-            : parent === 'gender-chips' ? 'gender'
-            : parent === 'series-chips' ? 'series'
-            : 'category';
-        b.classList.toggle('active', state[key] === b.dataset.value);
-    });
+    // Sync filter select values + active styling
+    [['region-select','region'],['gender-select','gender'],['category-select','category'],['series-select','series']]
+        .forEach(([id, key]) => {
+            const el = document.getElementById(id);
+            if (el) { el.value = state[key]; el.classList.toggle('active', state[key] !== 'all'); }
+        });
 };
 
 const initSearch = () => {
@@ -942,7 +1015,7 @@ async function init() {
     }
 
     computeStats();
-    initChips();
+    initFilters();
     render();
 }
 
