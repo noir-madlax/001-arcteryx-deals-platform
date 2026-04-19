@@ -2,538 +2,710 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>产品详情 | Arc'teryx Outlet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#fafaf8">
+    <title>商品详情 · Arc'teryx Outlet</title>
+    <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
+    <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #fafaf8;
+            --surface: #ffffff;
+            --border: #e8e4dc;
+            --border-strong: #d4cfc4;
+            --text: #1a1a1a;
+            --text-2: #5e5e5e;
+            --text-3: #9a948a;
+            --accent: #c8362a;
+            --accent-soft: #f7e8e6;
+            --accent-strong: #a72b21;
+            --hover: #f3efe8;
+            --in-stock: #1f7a3d;
+            --warn: #b8860b;
+            --shadow-sm: 0 1px 2px rgba(28,25,22,0.05);
+            --shadow-md: 0 8px 28px rgba(28,25,22,0.08);
+            --r-sm: 6px;
+            --r-md: 10px;
+            --r-lg: 16px;
         }
-
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.55;
+            font-feature-settings: 'tnum' 1, 'kern' 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding-bottom: env(safe-area-inset-bottom);
         }
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+        img { display: block; max-width: 100%; }
 
-        .container {
-            max-width: 1400px;
+        /* ─── Header (consistent w/ index) ─── */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(250, 250, 248, 0.88);
+            backdrop-filter: saturate(180%) blur(14px);
+            -webkit-backdrop-filter: saturate(180%) blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-inner {
+            max-width: 1440px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
         }
-
-        .back-btn {
+        .brand { display: flex; align-items: baseline; gap: 10px; }
+        .brand-mark { font-size: 16px; font-weight: 700; letter-spacing: 0.02em; }
+        .brand-sub { font-size: 11px; color: var(--text-3); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+        .back {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            color: #00d2ff;
-            text-decoration: none;
-            margin-bottom: 20px;
-            transition: opacity 0.3s;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-2);
+            transition: color 0.15s;
+        }
+        .back:hover { color: var(--text); }
+        @media (max-width: 640px) {
+            .header-inner { padding: 12px 16px; }
+            .brand-sub { display: none; }
         }
 
-        .back-btn:hover {
-            opacity: 0.8;
-        }
-
-        .product-detail {
+        /* ─── Layout ─── */
+        .product {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px 24px 48px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            gap: 56px;
+        }
+        @media (max-width: 960px) {
+            .product { grid-template-columns: 1fr; gap: 28px; padding: 20px 16px 96px; }
         }
 
-        @media (max-width: 900px) {
-            .product-detail {
-                grid-template-columns: 1fr;
+        /* ─── Gallery ─── */
+        .gallery { position: relative; }
+        @media (min-width: 961px) {
+            .gallery {
+                position: sticky;
+                top: 80px;
+                align-self: start;
             }
         }
-
-        .gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .main-img-wrap {
+            aspect-ratio: 4 / 5;
+            background: #f0ece4;
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            position: relative;
         }
-
-        .main-image {
+        .main-img {
             width: 100%;
-            aspect-ratio: 3/4;
-            object-fit: contain;
-            background: #1a1a2e;
-            border-radius: 15px;
-        }
-
-        .thumbnails {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 5px 0;
-        }
-
-        .thumbnail {
-            width: 80px;
-            height: 100px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: border-color 0.3s;
-            background: #2a2a4a;
+            cursor: zoom-in;
         }
-
-        .thumbnail:hover,
-        .thumbnail.active {
-            border-color: #00d2ff;
-        }
-
-        .info {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .product-name {
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-
-        .product-desc {
-            color: #aaa;
-            line-height: 1.6;
-        }
-
-        .price-section {
-            display: flex;
-            align-items: baseline;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .price-sale {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #00d2ff;
-        }
-
-        .price-original {
-            font-size: 1.2rem;
-            color: #888;
-            text-decoration: line-through;
-        }
-
-        .price-cny {
-            font-size: 1.2rem;
-            color: #ff6b6b;
-        }
-
-        .discount-badge {
-            background: linear-gradient(90deg, #ff6b6b, #ff8e53);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        .section-title {
-            font-size: 1rem;
-            color: #aaa;
-            margin-bottom: 10px;
-        }
-
-        .color-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .color-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .color-btn:hover,
-        .color-btn.active {
-            background: rgba(0, 210, 255, 0.2);
-            border-color: #00d2ff;
-        }
-
-        .color-btn.out-of-stock {
-            opacity: 0.4;
-            text-decoration: line-through;
-        }
-
-        .size-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .size-btn {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-
-        .size-btn:hover,
-        .size-btn.active {
-            background: rgba(0, 210, 255, 0.2);
-            border-color: #00d2ff;
-        }
-
-        .size-btn.out-of-stock {
-            opacity: 0.3;
-            text-decoration: line-through;
-            cursor: not-allowed;
-        }
-
-        .size-btn.in-stock::after {
-            content: '';
+        .gallery-disc {
             position: absolute;
-            bottom: 3px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            background: #00ff88;
-            border-radius: 50%;
+            top: 16px;
+            right: 16px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: var(--r-sm);
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.02em;
         }
+        .thumbs {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 4px;
+        }
+        .thumbs::-webkit-scrollbar { display: none; }
+        .thumb {
+            flex-shrink: 0;
+            width: 76px;
+            height: 76px;
+            border-radius: var(--r-sm);
+            overflow: hidden;
+            background: #f0ece4;
+            border: 1.5px solid transparent;
+            transition: border-color 0.15s, transform 0.15s;
+            cursor: pointer;
+            padding: 0;
+        }
+        .thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .thumb:hover { transform: translateY(-1px); }
+        .thumb.active { border-color: var(--text); }
 
-        .stock-info {
+        /* ─── Info column ─── */
+        .info { display: flex; flex-direction: column; gap: 22px; }
+        .crumb {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.9rem;
+            font-size: 11px;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
-
-        .stock-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+        .crumb .dot { width: 3px; height: 3px; background: var(--text-3); border-radius: 50%; }
+        .title-block h1 {
+            font-size: clamp(22px, 3.2vw, 30px);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
         }
+        .desc { color: var(--text-2); font-size: 14px; line-height: 1.65; }
 
-        .stock-dot.in-stock {
-            background: #00ff88;
-        }
-
-        .stock-dot.low-stock {
-            background: #ffaa00;
-        }
-
-        .stock-dot.out-of-stock {
-            background: #ff4444;
-        }
-
-        .cta-btn {
-            padding: 15px 30px;
-            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
-        }
-
-        .cta-btn:disabled {
-            background: #555;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .meta-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .meta-item {
+        /* Price */
+        .price-block {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding: 16px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .price-sale {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.01em;
+        }
+        .price-orig {
+            font-size: 15px;
+            color: var(--text-3);
+            text-decoration: line-through;
+            font-variant-numeric: tabular-nums;
+        }
+        .price-cny {
+            font-size: 14px;
+            color: var(--text-2);
+            font-variant-numeric: tabular-nums;
+        }
+        .save {
+            font-size: 12px;
+            color: var(--accent);
+            background: var(--accent-soft);
+            padding: 3px 8px;
+            border-radius: var(--r-sm);
+            font-weight: 600;
         }
 
-        .meta-label {
-            font-size: 0.85rem;
-            color: #888;
+        /* Section */
+        .section h3 {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+        }
+        .section h3 .val { color: var(--text); margin-left: 6px; text-transform: none; letter-spacing: 0; font-weight: 500; font-size: 13px; }
+
+        .opts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .opt {
+            min-height: 38px;
+            padding: 0 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            font-size: 13px;
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+        .opt:hover { border-color: var(--text); }
+        .opt.active { border-color: var(--text); background: var(--text); color: var(--surface); }
+        .opt.out {
+            opacity: 0.45;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+        .opt.out:hover { border-color: var(--border); }
+        .opt.size {
+            min-width: 50px;
+            padding: 0 10px;
+            font-variant-numeric: tabular-nums;
+        }
+        .stock-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--in-stock);
+        }
+        .opt.out .stock-dot { background: var(--text-3); }
+
+        /* CTA */
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 52px;
+            padding: 0 28px;
+            background: var(--text);
+            color: var(--surface);
+            border-radius: var(--r-md);
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.15s, transform 0.15s;
+            letter-spacing: 0.01em;
+        }
+        .cta:hover { background: var(--accent); }
+        .cta:active { transform: translateY(1px); }
+
+        /* Meta */
+        .meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 18px 24px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+        }
+        .meta-item { display: flex; flex-direction: column; gap: 3px; }
+        .meta-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
+        .meta-val { font-size: 13px; color: var(--text); font-weight: 500; word-break: break-word; }
+
+        /* Sticky bottom CTA on mobile */
+        .sticky-cta {
+            display: none;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 60;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+            padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+            align-items: center;
+            gap: 12px;
+        }
+        .sticky-cta .price-stack { display: flex; flex-direction: column; line-height: 1.2; }
+        .sticky-cta .price-sale { font-size: 18px; }
+        .sticky-cta .price-cny { font-size: 11px; color: var(--text-2); }
+        .sticky-cta .cta { flex: 1; height: 46px; font-size: 14px; }
+        @media (max-width: 960px) {
+            .sticky-cta { display: flex; }
+            .info .cta-inline { display: none; }
         }
 
-        .meta-value {
-            font-weight: 500;
-        }
-
-        .loading {
+        /* States */
+        .state {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 80px 24px;
             text-align: center;
-            padding: 50px;
-            color: #888;
+            color: var(--text-2);
         }
+        .state h2 { color: var(--text); font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+        .state .cta { margin-top: 18px; }
+
+        .skel { background: linear-gradient(90deg, #f0ece4 0%, #e8e2d4 50%, #f0ece4 100%); background-size: 200% 100%; border-radius: var(--r-md); animation: shine 1.4s ease-in-out infinite; }
+        @keyframes shine { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(20,18,15,0.92);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            cursor: zoom-out;
+        }
+        .lightbox.open { display: flex; }
+        .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="waterfall.html" class="back-btn">
-            ← 返回列表
-        </a>
 
-        <div id="product-detail" class="product-detail">
-            <div class="loading">加载中...</div>
+<header class="site-header">
+    <div class="header-inner">
+        <div class="brand">
+            <a href="index.html" class="brand-mark">ARC'TERYX</a>
+            <span class="brand-sub">Outlet Deals Tracker</span>
         </div>
+        <a href="index.html" class="back" id="back-link">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            返回列表
+        </a>
     </div>
+</header>
 
-    <script>
-        // 汇率
-        const EXCHANGE_RATES = {
-            'USD': 7.25,
-            'EUR': 7.85,
-            'GBP': 9.15,
-            'CAD': 5.30
-        };
+<main id="main">
+    <div class="state" id="initial-state">
+        <h2>加载中…</h2>
+    </div>
+</main>
 
-        const SYMBOL_TO_CURRENCY = {
-            '$': 'USD',
-            '€': 'EUR',
-            '£': 'GBP',
-            'C$': 'CAD'
-        };
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+    <img id="lightbox-img" alt="">
+</div>
 
-        function toCNY(price, symbol) {
-            const currency = SYMBOL_TO_CURRENCY[symbol] || 'USD';
-            const rate = EXCHANGE_RATES[currency] || 7.25;
-            return Math.round(price * rate);
-        }
+<script src="data.js"></script>
+<script>
+'use strict';
 
-        // 获取URL参数
-        function getUrlParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
+const RATES = { USD: 7.25, EUR: 7.85, GBP: 9.15, CAD: 5.30 };
+const SYMBOL_TO_CCY = { '$': 'USD', '€': 'EUR', '£': 'GBP', 'C$': 'CAD' };
+const REGION_FLAG = { us: '🇺🇸', ca: '🇨🇦', gb: '🇬🇧', de: '🇩🇪', fr: '🇫🇷', nl: '🇳🇱' };
+const REGION_LABEL = { us: '美国', ca: '加拿大', gb: '英国', de: '德国', fr: '法国', nl: '荷兰' };
+const GENDER_LABEL = { men: '男装', women: '女装', unknown: '中性' };
 
-        // 加载产品数据
-        async function loadProduct() {
-            const skuId = getUrlParam('sku');
-            const productUrl = getUrlParam('url');
+const toCNY = (price, symbol) => {
+    const ccy = SYMBOL_TO_CCY[symbol] || 'USD';
+    return Math.round(price * (RATES[ccy] || 7.25));
+};
+const fmt = (n) => n.toLocaleString('en-US');
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-            try {
-                // 加载SKU数据
-                const skuResponse = await fetch('arcteryx_skus.json');
-                const skus = await skuResponse.json();
+// Clean up "Name/Name" duplicates in color strings → "Name"
+const cleanColor = (raw) => {
+    if (!raw) return '';
+    const parts = raw.split('/');
+    if (parts.length === 2 && parts[0].trim() === parts[1].trim()) return parts[0].trim();
+    return raw;
+};
 
-                // 查找匹配的SKU
-                let sku = null;
-                if (skuId) {
-                    sku = skus.find(s => s.sku_id === skuId);
-                } else if (productUrl) {
-                    sku = skus.find(s => s.url === productUrl);
+const GENDER_MARKERS = ["Women's", "Men's", "Unisex", 'Damen', 'Herren', 'Femme', 'Homme'];
+const NAME_PREFIX_STRIP = /^(?:Der|Die|Das|Veste à capuche|Veste|system_a)\s*/i;
+const cleanName = (raw) => {
+    if (!raw) return '';
+    let s = raw.trim().replace(NAME_PREFIX_STRIP, '');
+    s = s.replace(/^veilance([A-Z])/, 'Veilance $1');
+    for (const m of GENDER_MARKERS) {
+        const i = s.indexOf(m);
+        if (i > 0) return s.slice(0, i + m.length).trim();
+    }
+    const m = s.match(/^(.+?[a-z])([A-Z].{12,})$/);
+    return m ? m[1].trim() : s;
+};
+
+// Extract description that was glued onto the name
+const extractGluedDesc = (raw) => {
+    if (!raw) return '';
+    let s = raw.trim().replace(NAME_PREFIX_STRIP, '').replace(/^veilance([A-Z])/, 'Veilance $1');
+    for (const m of GENDER_MARKERS) {
+        const i = s.indexOf(m);
+        if (i > 0) return s.slice(i + m.length).trim();
+    }
+    const m = s.match(/^(.+?[a-z])([A-Z].{12,})$/);
+    return m ? m[2].trim() : '';
+};
+
+// Resolve usable description: prefer glued tail; fall back to description
+// only when it's not just duplicating the raw name
+const resolveDesc = (p) => {
+    const raw = p.full_name || p.model || '';
+    const glued = extractGluedDesc(raw);
+    if (glued) return glued;
+    const d = (p.description || '').trim();
+    if (!d) return '';
+    if (d === raw || d === p.model) return '';
+    return d;
+};
+
+const getParam = (k) => new URLSearchParams(location.search).get(k);
+
+// ── Load product (try SKUs first, fall back to PRODUCTS) ──
+async function loadProduct() {
+    const skuId = getParam('sku');
+    const url = getParam('url');
+    const allProducts = (typeof PRODUCTS !== 'undefined') ? PRODUCTS : [];
+
+    // 1. Try arcteryx_skus.json (richer per-color data from Playwright scrape)
+    const slugOf = (u) => (u || '').replace(/\/$/, '').split('/').pop();
+    let skuMatches = [];
+    try {
+        const r = await fetch('arcteryx_skus.json');
+        if (r.ok) {
+            const skus = await r.json();
+            if (skuId) {
+                const target = skus.find(s => s.sku_id === skuId);
+                if (target) skuMatches = skus.filter(s => s.url === target.url);
+            } else if (url) {
+                // Exact URL match first
+                skuMatches = skus.filter(s => s.url === url);
+                // Slug fallback: same product slug, different region URL
+                if (!skuMatches.length) {
+                    const slug = slugOf(url);
+                    skuMatches = skus.filter(s => slugOf(s.url) === slug);
                 }
-
-                if (!sku) {
-                    // 如果没找到SKU，尝试从主数据加载
-                    const dataResponse = await fetch('global_data.json');
-                    const products = await dataResponse.json();
-                    const product = products.find(p => p.url === productUrl);
-                    if (product) {
-                        renderProduct(product);
-                    } else {
-                        document.getElementById('product-detail').innerHTML = '<div class="loading">产品未找到</div>';
-                    }
-                } else {
-                    // 查找同URL的所有颜色SKU
-                    const relatedSkus = skus.filter(s => s.url === sku.url);
-                    renderSkuProduct(sku, relatedSkus);
-                }
-            } catch (error) {
-                console.error('加载失败:', error);
-                document.getElementById('product-detail').innerHTML = '<div class="loading">加载失败</div>';
             }
         }
+    } catch (e) { /* fall through to PRODUCTS */ }
 
-        // 渲染SKU产品
-        function renderSkuProduct(currentSku, allSkus) {
-            const container = document.getElementById('product-detail');
-            const price = currentSku.sale_price;
-            const originalPrice = currentSku.original_price;
-            const discount = currentSku.discount_pct;
-            const cnyPrice = toCNY(price, currentSku.symbol);
+    if (skuMatches.length) {
+        const current = skuId ? skuMatches.find(s => s.sku_id === skuId) || skuMatches[0] : skuMatches[0];
+        // If we matched by slug (different region URL), keep the original URL for the CTA
+        const outletUrl = (url && url !== current.url) ? url : current.url;
+        renderSKU(current, skuMatches, outletUrl);
+        return;
+    }
 
-            // 获取所有颜色
-            const colors = allSkus.map(s => ({
-                name: s.color,
-                sku_id: s.sku_id,
-                images: s.images,
-                sizes: s.sizes,
-                size_stock: s.size_stock,
-                active: s.sku_id === currentSku.sku_id
-            }));
+    // 2. Fall back to PRODUCTS (which may itself be SKU-expanded via sku_scraper --update-data)
+    let product = null;
+    if (skuId) {
+        product = allProducts.find(p => p.sku_id === skuId);
+    }
+    if (!product && url) {
+        product = allProducts.find(p => p.url === url && (!skuId || p.sku_id === skuId))
+               || allProducts.find(p => p.url === url);
+    }
 
-            container.innerHTML = `
-                <div class="gallery">
-                    <img class="main-image" id="main-image" src="${currentSku.images[0] || currentSku.image_url}" alt="${currentSku.full_name}">
-                    <div class="thumbnails">
-                        ${currentSku.images.map((img, i) => `
-                            <img class="thumbnail ${i === 0 ? 'active' : ''}" src="${img}" onclick="changeMainImage('${img}', this)">
-                        `).join('')}
-                    </div>
-                </div>
-
-                <div class="info">
-                    <h1 class="product-name">${currentSku.full_name}</h1>
-                    <p class="product-desc">${currentSku.description || ''}</p>
-
-                    <div class="price-section">
-                        <span class="price-sale">${currentSku.symbol}${price}</span>
-                        <span class="price-original">${currentSku.symbol}${originalPrice}</span>
-                        <span class="price-cny">¥${cnyPrice}</span>
-                        ${discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : ''}
-                    </div>
-
-                    <div>
-                        <div class="section-title">颜色: ${currentSku.color}</div>
-                        <div class="color-options">
-                            ${colors.map(c => `
-                                <button class="color-btn ${c.active ? 'active' : ''}" 
-                                        onclick="selectColor('${c.sku_id}')">
-                                    ${c.name}
-                                </button>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    ${currentSku.sizes.length > 0 ? `
-                        <div>
-                            <div class="section-title">尺码</div>
-                            <div class="size-options">
-                                ${currentSku.sizes.map(size => {
-                                    const stockStatus = currentSku.size_stock?.[size] || 'unknown';
-                                    const isOutOfStock = stockStatus === 'out_of_stock';
-                                    return `
-                                        <button class="size-btn ${isOutOfStock ? 'out-of-stock' : ''}" 
-                                                ${isOutOfStock ? 'disabled' : ''}>
-                                            ${size}
-                                        </button>
-                                    `;
-                                }).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    <button class="cta-btn" onclick="window.open('${currentSku.url}', '_blank')">
-                        🔗 前往官网购买
-                    </button>
-
-                    <div class="meta-info">
-                        <div class="meta-item">
-                            <span class="meta-label">地区</span>
-                            <span class="meta-value">${currentSku.region_name}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">货币</span>
-                            <span class="meta-value">${currentSku.currency}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">SKU</span>
-                            <span class="meta-value">${currentSku.sku_id}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">更新时间</span>
-                            <span class="meta-value">${currentSku.last_updated?.split(' ')[0] || '-'}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
+    if (product) {
+        // If PRODUCTS is expanded (has sku_id per record), find all color variants for same URL
+        if (product.sku_id) {
+            const siblings = allProducts.filter(p => p.url === product.url && p.sku_id);
+            if (siblings.length > 1) {
+                renderSKU(product, siblings);
+                return;
+            }
         }
+        renderBase(product);
+    } else {
+        renderNotFound();
+    }
+}
 
-        // 渲染普通产品
-        function renderProduct(product) {
-            const container = document.getElementById('product-detail');
-            const price = product.sale_price;
-            const originalPrice = product.original_price;
-            const discount = product.discount_pct;
-            const cnyPrice = toCNY(price, product.symbol);
+function priceBlock(p) {
+    const cny = toCNY(p.sale_price, p.symbol);
+    const save = p.original_price ? p.original_price - p.sale_price : 0;
+    return `
+    <div class="price-block">
+        <span class="price-sale">${esc(p.symbol)}${fmt(p.sale_price)}</span>
+        ${p.original_price && p.original_price > p.sale_price ? `<span class="price-orig">${esc(p.symbol)}${fmt(p.original_price)}</span>` : ''}
+        <span class="price-cny">≈ ¥${fmt(cny)}</span>
+        ${p.discount_pct ? `<span class="save">立省 ${esc(p.symbol)}${fmt(save)} · −${p.discount_pct}%</span>` : ''}
+    </div>`;
+}
 
-            container.innerHTML = `
-                <div class="gallery">
-                    <img class="main-image" src="${product.image_url}" alt="${product.full_name}">
+function metaBlock(p, extra = {}) {
+    const items = [
+        ['地区', `${REGION_FLAG[p.region] || ''} ${REGION_LABEL[p.region] || p.region || '—'}`],
+        ['品类', p.category || '—'],
+        ['性别', GENDER_LABEL[p.gender] || '—'],
+        ['货币', p.currency || '—'],
+    ];
+    if (extra.sku) items.push(['SKU', extra.sku]);
+    if (p.last_updated) items.push(['更新时间', p.last_updated.split(' ')[0]]);
+    return `
+    <div class="meta">
+        ${items.map(([k, v]) => `<div class="meta-item"><span class="meta-label">${k}</span><span class="meta-val">${esc(v)}</span></div>`).join('')}
+    </div>`;
+}
+
+function ctaBlock(url, klass = '') {
+    return `<a class="cta ${klass}" href="${esc(url)}" target="_blank" rel="noopener">
+        前往 Outlet 购买
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3h7v7M13 3L6 10M3 6v7h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>`;
+}
+
+function stickyCTA(p) {
+    const cny = toCNY(p.sale_price, p.symbol);
+    return `
+    <div class="sticky-cta">
+        <div class="price-stack">
+            <span class="price-sale">${esc(p.symbol)}${fmt(p.sale_price)}</span>
+            <span class="price-cny">≈ ¥${fmt(cny)}</span>
+        </div>
+        ${ctaBlock(p.url)}
+    </div>`;
+}
+
+function renderSKU(current, all, outletUrl) {
+    const name = cleanName(current.full_name || current.model);
+    const images = (current.images && current.images.length ? current.images : [current.image_url]).filter(Boolean);
+    const ctaUrl = outletUrl || current.url;   // respect original region URL
+    const colors = all.map(s => ({
+        name: s.color,
+        sku_id: s.sku_id,
+        active: s.sku_id === current.sku_id,
+    }));
+
+    const html = `
+    <div class="product">
+        <div class="gallery">
+            <div class="main-img-wrap">
+                <img class="main-img" id="main-img" src="${esc(images[0])}" alt="${esc(name)}" onclick="openLightbox(this.src)">
+                ${current.discount_pct ? `<span class="gallery-disc">−${current.discount_pct}%</span>` : ''}
+            </div>
+            ${images.length > 1 ? `
+            <div class="thumbs">
+                ${images.map((src, i) => `
+                    <button class="thumb ${i === 0 ? 'active' : ''}" onclick="changeImage('${esc(src)}', this)">
+                        <img src="${esc(src)}" alt="" loading="lazy">
+                    </button>`).join('')}
+            </div>` : ''}
+        </div>
+        <div class="info">
+            <div class="crumb">
+                <span>${REGION_FLAG[current.region] || ''} ${REGION_LABEL[current.region] || current.region}</span>
+                <span class="dot"></span>
+                <span>${esc(current.category || '其他')}</span>
+            </div>
+            <div class="title-block">
+                <h1>${esc(name)}</h1>
+                ${(() => { const d = resolveDesc(current); return d ? `<p class="desc">${esc(d)}</p>` : ''; })()}
+            </div>
+            ${priceBlock(current)}
+            ${colors.length ? `
+            <div class="section">
+                <h3>颜色 <span class="val">${esc(cleanColor(current.color || ''))}</span></h3>
+                <div class="opts">
+                    ${colors.map(c => `<button class="opt ${c.active ? 'active' : ''}" onclick="selectColor('${esc(c.sku_id)}')">${esc(cleanColor(c.name))}</button>`).join('')}
                 </div>
-
-                <div class="info">
-                    <h1 class="product-name">${product.full_name}</h1>
-                    <p class="product-desc">${product.description || ''}</p>
-
-                    <div class="price-section">
-                        <span class="price-sale">${product.symbol}${price}</span>
-                        <span class="price-original">${product.symbol}${originalPrice}</span>
-                        <span class="price-cny">¥${cnyPrice}</span>
-                        ${discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : ''}
-                    </div>
-
-                    ${product.colors?.length > 0 ? `
-                        <div>
-                            <div class="section-title">可选颜色</div>
-                            <div class="color-options">
-                                ${product.colors.map(c => `<span class="color-btn">${c}</span>`).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    <button class="cta-btn" onclick="window.open('${product.url}', '_blank')">
-                        🔗 前往官网购买
-                    </button>
-
-                    <div class="meta-info">
-                        <div class="meta-item">
-                            <span class="meta-label">地区</span>
-                            <span class="meta-value">${product.region_name}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">类别</span>
-                            <span class="meta-value">${product.category}</span>
-                        </div>
-                    </div>
+            </div>` : ''}
+            ${current.sizes && current.sizes.length ? `
+            <div class="section">
+                <h3>尺码</h3>
+                <div class="opts">
+                    ${current.sizes.map(sz => {
+                        const status = current.size_stock?.[sz];
+                        const out = status === 'out_of_stock';
+                        return `<button class="opt size ${out ? 'out' : ''}" ${out ? 'disabled' : ''}>
+                            ${esc(sz)}${!out && status === 'in_stock' ? '<span class="stock-dot"></span>' : ''}
+                        </button>`;
+                    }).join('')}
                 </div>
-            `;
-        }
+            </div>` : ''}
+            ${ctaBlock(ctaUrl, 'cta-inline')}
+            ${metaBlock(current, { sku: current.sku_id })}
+        </div>
+    </div>
+    <div class="sticky-cta">
+        <div class="price-stack">
+            <span class="price-sale">${esc(current.symbol)}${fmt(current.sale_price)}</span>
+            <span class="price-cny">≈ ¥${fmt(toCNY(current.sale_price, current.symbol))}</span>
+        </div>
+        ${ctaBlock(ctaUrl)}
+    </div>`;
 
-        // 切换主图
-        function changeMainImage(src, thumb) {
-            document.getElementById('main-image').src = src;
-            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-        }
+    document.getElementById('main').innerHTML = html;
+}
 
-        // 选择颜色
-        function selectColor(skuId) {
-            window.location.search = `?sku=${skuId}`;
-        }
+function renderBase(p) {
+    const name = cleanName(p.full_name || p.model);
+    const html = `
+    <div class="product">
+        <div class="gallery">
+            <div class="main-img-wrap">
+                ${p.image_url ? `<img class="main-img" src="${esc(p.image_url)}" alt="${esc(name)}" onclick="openLightbox(this.src)">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-3);padding:24px;text-align:center">${esc(name)}</div>`}
+                ${p.discount_pct ? `<span class="gallery-disc">−${p.discount_pct}%</span>` : ''}
+            </div>
+        </div>
+        <div class="info">
+            <div class="crumb">
+                <span>${REGION_FLAG[p.region] || ''} ${REGION_LABEL[p.region] || p.region}</span>
+                <span class="dot"></span>
+                <span>${esc(p.category || '其他')}</span>
+            </div>
+            <div class="title-block">
+                <h1>${esc(name)}</h1>
+                ${(() => { const d = resolveDesc(p); return d ? `<p class="desc">${esc(d)}</p>` : ''; })()}
+            </div>
+            ${priceBlock(p)}
+            ${p.colors && p.colors.length ? `
+            <div class="section">
+                <h3>可选颜色 <span class="val">${p.colors.length} 种</span></h3>
+                <div class="opts">
+                    ${p.colors.map(c => `<span class="opt">${esc(c)}</span>`).join('')}
+                </div>
+            </div>` : ''}
+            ${p.sizes && p.sizes.length ? `
+            <div class="section">
+                <h3>尺码</h3>
+                <div class="opts">
+                    ${p.sizes.map(sz => {
+                        const status = p.size_stock?.[sz];
+                        const out = status === 'out_of_stock';
+                        return `<button class="opt size ${out ? 'out' : ''}" ${out ? 'disabled' : ''}>
+                            ${esc(sz)}${!out && status === 'in_stock' ? '<span class="stock-dot"></span>' : ''}
+                        </button>`;
+                    }).join('')}
+                </div>
+            </div>` : ''}
+            ${ctaBlock(p.url, 'cta-inline')}
+            ${metaBlock(p)}
+        </div>
+    </div>
+    ${stickyCTA(p)}`;
+    document.getElementById('main').innerHTML = html;
+}
 
-        // 初始化
-        loadProduct();
-    </script>
+function renderNotFound() {
+    document.getElementById('main').innerHTML = `
+    <div class="state">
+        <h2>未找到该商品</h2>
+        <p>它可能已下架，或链接已变更。</p>
+        <a href="index.html" class="cta">返回列表</a>
+    </div>`;
+}
+
+function changeImage(src, el) {
+    const main = document.getElementById('main-img');
+    if (main) main.src = src;
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function selectColor(skuId) {
+    const u = new URL(location.href);
+    u.searchParams.set('sku', skuId);
+    u.searchParams.delete('url');
+    location.href = u.toString();
+}
+
+function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightbox-img').src = src;
+    lb.classList.add('open');
+}
+
+// Smart back link: if we came from index, go back; otherwise go to index
+document.getElementById('back-link').addEventListener('click', (e) => {
+    if (document.referrer && new URL(document.referrer).pathname.endsWith('index.html')) {
+        e.preventDefault();
+        history.back();
+    }
+});
+
+loadProduct();
+</script>
+
 </body>
 </html>
