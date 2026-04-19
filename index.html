@@ -155,30 +155,29 @@
             position: sticky;
             top: 53px;
             z-index: 40;
-            background: rgba(250, 250, 248, 0.92);
+            background: rgba(250, 250, 248, 0.95);
             backdrop-filter: saturate(180%) blur(12px);
             -webkit-backdrop-filter: saturate(180%) blur(12px);
             border-bottom: 1px solid var(--border);
         }
-        .filter-inner {
+        .filter-top {
             max-width: 1440px;
             margin: 0 auto;
-            padding: 14px 24px;
+            padding: 12px 24px 10px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 10px;
         }
         .search {
             position: relative;
-            flex: 1 1 240px;
-            min-width: 200px;
-            max-width: 360px;
+            flex: 1 1 200px;
+            min-width: 160px;
+            max-width: 340px;
         }
         .search input {
             width: 100%;
-            height: 36px;
-            padding: 0 36px 0 36px;
+            height: 34px;
+            padding: 0 34px 0 34px;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 999px;
@@ -199,11 +198,11 @@
             display: flex;
             align-items: center;
         }
-        .search-icon { left: 12px; }
+        .search-icon { left: 11px; }
         .search-clear {
-            right: 8px;
-            width: 22px;
-            height: 22px;
+            right: 7px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             justify-content: center;
             cursor: pointer;
@@ -214,31 +213,82 @@
         .search-clear:hover { background: var(--hover); }
         .search.has-value .search-clear { opacity: 1; }
 
-        .chip-group {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            margin: 0 -4px;
-            padding: 0 4px;
-            min-width: 0;
-        }
-        .chip-group::-webkit-scrollbar { display: none; }
-        .chip {
-            flex-shrink: 0;
-            height: 32px;
-            padding: 0 12px;
+        .sort-wrap { margin-left: auto; position: relative; }
+        .sort-select {
+            height: 34px;
+            padding: 0 30px 0 12px;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 999px;
             font-size: 12.5px;
+            color: var(--text);
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%235e5e5e' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        .sort-select:focus { outline: none; border-color: var(--text); }
+
+        /* filter rows with labels */
+        .filter-rows {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            min-height: 32px;
+        }
+        .filter-label {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            white-space: nowrap;
+            width: 34px;
+            flex-shrink: 0;
+            padding-right: 6px;
+        }
+        .filter-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+            flex-shrink: 0;
+            margin: 0 10px;
+        }
+        .chip-group {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 1px 2px;
+            min-width: 0;
+            flex: 1;
+        }
+        .chip-group::-webkit-scrollbar { display: none; }
+        .chip {
+            flex-shrink: 0;
+            height: 28px;
+            padding: 0 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 12px;
             color: var(--text-2);
             white-space: nowrap;
             transition: all 0.15s;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
         .chip:hover { border-color: var(--border-strong); color: var(--text); }
         .chip.active {
@@ -247,48 +297,18 @@
             color: var(--surface);
         }
         .chip .count {
-            font-size: 11px;
-            opacity: 0.6;
+            font-size: 10.5px;
+            opacity: 0.55;
             font-variant-numeric: tabular-nums;
         }
 
-        .sort-wrap {
-            position: relative;
-            margin-left: auto;
-        }
-        .sort-select {
-            height: 36px;
-            padding: 0 32px 0 14px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            font-size: 13px;
-            color: var(--text);
-            appearance: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%235e5e5e' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-        }
-        .sort-select:focus { outline: none; border-color: var(--text); }
-
         @media (max-width: 720px) {
-            .filter-inner { padding: 12px 16px; gap: 8px; }
-            .filter-bar { top: 53px; }
-            .search { flex: 1 1 100%; max-width: none; order: -1; }
-            .sort-wrap { margin-left: 0; }
+            .filter-top { padding: 10px 16px 8px; gap: 8px; }
+            .filter-rows { padding: 0 16px 8px; gap: 5px; }
+            .search { flex: 1 1 100%; max-width: none; }
+            .sort-wrap { flex-shrink: 0; }
+            .filter-label { width: 28px; font-size: 9.5px; }
         }
-
-        .filter-row-2 {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-        .filter-row-2::-webkit-scrollbar { display: none; }
 
         /* ─── Results meta ─── */
         .results-meta {
@@ -357,12 +377,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            position: relative;   /* sit above the abs-positioned fallback */
+            z-index: 1;
             transition: transform 0.4s ease;
         }
         .card:hover .card-img { transform: scale(1.02); }
         .card-img-fallback {
             position: absolute;
             inset: 0;
+            z-index: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -473,6 +496,28 @@
             background: var(--border-strong);
             flex-shrink: 0;
         }
+        /* size chips on card */
+        .card-sizes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin-top: 5px;
+        }
+        .card-sz {
+            font-size: 10px;
+            padding: 1px 5px;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            color: var(--text-2);
+            font-variant-numeric: tabular-nums;
+            line-height: 1.6;
+            background: var(--surface);
+        }
+        .card-sz.more {
+            color: var(--text-3);
+            border-color: transparent;
+            background: none;
+        }
 
         /* ─── Empty state ─── */
         .empty {
@@ -551,24 +596,19 @@
 </section>
 
 <section class="filter-bar" id="filter-bar">
-    <div class="filter-inner">
+    <div class="filter-top">
         <div class="search" id="search-wrap">
             <span class="search-icon">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
                     <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
                     <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
             </span>
             <input id="q" type="search" placeholder="搜索型号或描述…" autocomplete="off">
             <button class="search-clear" id="q-clear" aria-label="清除">
-                <svg width="10" height="10" viewBox="0 0 10 10"><path d="M1 1l8 8M9 1l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <svg width="9" height="9" viewBox="0 0 10 10"><path d="M1 1l8 8M9 1l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </button>
         </div>
-
-        <div class="filter-row-2">
-            <div class="chip-group" id="region-chips"></div>
-        </div>
-
         <div class="sort-wrap">
             <select class="sort-select" id="sort">
                 <option value="discount_desc">折扣最高</option>
@@ -578,14 +618,20 @@
             </select>
         </div>
     </div>
-    <div class="filter-inner" style="padding-top:0">
-        <div class="filter-row-2" style="width:100%">
-            <div class="chip-group" id="gender-chips"></div>
-            <div class="chip-group" id="category-chips" style="margin-left:8px"></div>
+    <div class="filter-rows">
+        <div class="filter-row">
+            <span class="filter-label">地区</span>
+            <div class="chip-group" id="region-chips"></div>
         </div>
-    </div>
-    <div class="filter-inner" style="padding-top:0">
-        <div class="filter-row-2" style="width:100%">
+        <div class="filter-row">
+            <span class="filter-label">性别</span>
+            <div class="chip-group" id="gender-chips"></div>
+            <div class="filter-divider"></div>
+            <span class="filter-label">品类</span>
+            <div class="chip-group" id="category-chips"></div>
+        </div>
+        <div class="filter-row">
+            <span class="filter-label">系列</span>
             <div class="chip-group" id="series-chips"></div>
         </div>
     </div>
@@ -733,10 +779,9 @@ const buildCard = (p) => {
     const cny = toCNY(p.sale_price, p.symbol);
     const encodedUrl = encodeURIComponent(p.url || '');
     const flag = REGION_FLAG[p.region] || '';
-    // Append sku param when per-color SKU data is available
     const skuParam = p.sku_id ? `&sku=${encodeURIComponent(p.sku_id)}` : '';
     const href = `product-detail.html?url=${encodedUrl}${skuParam}`;
-    // Color label — clean up "Name/Name" duplicates (e.g. "Canvas/Canvas" → "Canvas")
+    // Color label — clean up "Name/Name" duplicates
     const colorRaw = p.color || '';
     const colorDisplay = (() => {
         if (!colorRaw) return '';
@@ -744,11 +789,20 @@ const buildCard = (p) => {
         if (parts.length === 2 && parts[0].trim() === parts[1].trim()) return parts[0].trim();
         return colorRaw;
     })();
+    // In-stock sizes — show first 6, then "+N"
+    const inStock = p.sizes
+        ? p.sizes.filter(sz => (p.size_stock?.[sz] || 'in_stock') !== 'out_of_stock')
+        : [];
+    const shown = inStock.slice(0, 6);
+    const extra = inStock.length - shown.length;
+    const sizeHtml = shown.length
+        ? `<div class="card-sizes">${shown.map(sz => `<span class="card-sz">${sz}</span>`).join('')}${extra > 0 ? `<span class="card-sz more">+${extra}</span>` : ''}</div>`
+        : '';
     return `
     <a class="card" href="${href}">
         <div class="card-img-wrap">
-            ${p.image_url ? `<img class="card-img" src="${p.image_url}" alt="${name.replace(/"/g, '&quot;')}" loading="lazy" onerror="this.remove()">` : ''}
             <div class="card-img-fallback">${name}</div>
+            ${p.image_url ? `<img class="card-img" src="${p.image_url}" alt="${name.replace(/"/g, '&quot;')}" loading="lazy" onerror="this.style.display='none'">` : ''}
             <span class="card-flag">${flag} ${REGION_LABEL[p.region] || p.region}</span>
             ${p.discount_pct ? `<span class="card-disc">−${p.discount_pct}%</span>` : ''}
         </div>
@@ -761,6 +815,7 @@ const buildCard = (p) => {
                 ${p.original_price ? `<span class="card-orig">${p.symbol}${fmt(p.original_price)}</span>` : ''}
             </div>
             <div class="card-cny">≈ ¥${fmt(cny)}</div>
+            ${sizeHtml}
         </div>
     </a>`;
 };
@@ -785,12 +840,20 @@ const computeStats = () => {
     const maxDisc = Math.max(...products.map(p => p.discount_pct || 0));
     const avgDisc = Math.round(products.reduce((s, p) => s + (p.discount_pct || 0), 0) / total);
     const lastUpdated = products.map(p => p.last_updated).filter(Boolean).sort().pop() || '';
+    // Format: "04-20 14:00" (month-day hour, no minutes — per requirement)
+    const fmtUpdated = (() => {
+        if (!lastUpdated) return '—';
+        const [datePart, timePart] = lastUpdated.split(' ');
+        const mmdd = datePart?.slice(5) || '';          // "04-20"
+        const hh   = timePart?.slice(0, 2) || '';       // "14"
+        return hh ? `${mmdd} ${hh}:00` : mmdd;
+    })();
     document.getElementById('stat-total').textContent = total;
     document.getElementById('stat-regions').textContent = regions;
     document.getElementById('stat-max-disc').textContent = '−' + maxDisc + '%';
     document.getElementById('hero-total').textContent = total;
     document.getElementById('hero-avg').textContent = '−' + avgDisc + '%';
-    document.getElementById('hero-updated').textContent = lastUpdated.split(' ')[0]?.slice(5) || '—';
+    document.getElementById('hero-updated').textContent = fmtUpdated;
 };
 
 const countBy = (key) => {

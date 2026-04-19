@@ -521,7 +521,7 @@ function metaBlock(p, extra = {}) {
         ['货币', p.currency || '—'],
     ];
     if (extra.sku) items.push(['SKU', extra.sku]);
-    if (p.last_updated) items.push(['更新时间', p.last_updated.split(' ')[0]]);
+    if (p.last_updated) items.push(['更新时间', p.last_updated]);  // full YYYY-MM-DD HH:MM:SS
     return `
     <div class="meta">
         ${items.map(([k, v]) => `<div class="meta-item"><span class="meta-label">${k}</span><span class="meta-val">${esc(v)}</span></div>`).join('')}
