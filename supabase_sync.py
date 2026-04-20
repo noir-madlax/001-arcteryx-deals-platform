@@ -114,6 +114,46 @@ def main():
 
     print(f"\n[sync] DONE — {total} upserted, {errors} batch errors")
 
+    # ── Stale-row cleanup ─────────────────────────────────────────────────
+    # Delete any row in Supabase whose sku_id is NOT in this scrape. This
+    # garbage-collects products that went out of stock / were removed from
+    # the outlet, and also cleans up rows left over from old sku_id schemas.
+    # Only runs if the upsert phase was mostly successful.
+    if errors == 0 and total > 0:
+        synced_ids = {r["sku_id"] for r in rows if r.get("sku_id")}
+        try:
+            # Fetch all existing sku_ids (paginated; PostgREST caps at 1000/page)
+            existing = []
+            page = 0
+            while True:
+                res = client.table("products").select("sku_id").range(
+                    page * 1000, page * 1000 + 999
+                ).execute()
+                data = res.data or []
+                if not data:
+                    break
+                existing.extend(r["sku_id"] for r in data)
+                if len(data) < 1000:
+                    break
+                page += 1
+
+            stale = [sid for sid in existing if sid not in synced_ids]
+            print(f"[sync] stale rows to delete: {len(stale)} (existing={len(existing)}, synced={len(synced_ids)})")
+
+            deleted = 0
+            for i in range(0, len(stale), BATCH_SIZE):
+                batch = stale[i : i + BATCH_SIZE]
+                try:
+                    client.table("products").delete().in_("sku_id", batch).execute()
+                    deleted += len(batch)
+                except Exception as e:
+                    print(f"[ERROR] delete batch {i//BATCH_SIZE + 1}: {e}", file=sys.stderr)
+            print(f"[sync] deleted {deleted} stale rows")
+        except Exception as e:
+            print(f"[WARN] stale cleanup skipped: {e}", file=sys.stderr)
+    else:
+        print("[sync] skipping stale-row cleanup (upsert had errors or produced 0 rows)")
+
     # Also write a minimal last-sync marker
     marker = BASE_DIR / ".last_sync"
     marker.write_text(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
