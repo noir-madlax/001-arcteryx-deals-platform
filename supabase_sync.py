@@ -114,15 +114,16 @@ def main():
 
     print(f"\n[sync] DONE — {total} upserted, {errors} batch errors")
 
-    # ── Stale-row cleanup ─────────────────────────────────────────────────
-    # Delete any row in Supabase whose sku_id is NOT in this scrape. This
-    # garbage-collects products that went out of stock / were removed from
-    # the outlet, and also cleans up rows left over from old sku_id schemas.
-    # Only runs if the upsert phase was mostly successful.
-    if errors == 0 and total > 0:
-        synced_ids = {r["sku_id"] for r in rows if r.get("sku_id")}
+    # ── Stale-row cleanup (unconditional) ─────────────────────────────────
+    # The scrape (sku_scraper --reset) is a full re-crawl, so arcteryx_skus.json
+    # IS the source of truth. Any row in Supabase not present here = product
+    # went out of stock, was removed from outlet, or is a leftover from old
+    # schema. On a deals site, showing expired/stale data is worse than
+    # temporarily missing a product — upsert batch errors will be re-healed
+    # on the next cron run (6h later) anyway.
+    synced_ids = {r["sku_id"] for r in rows if r.get("sku_id")}
+    if synced_ids:
         try:
-            # Fetch all existing sku_ids (paginated; PostgREST caps at 1000/page)
             existing = []
             page = 0
             while True:
@@ -150,9 +151,9 @@ def main():
                     print(f"[ERROR] delete batch {i//BATCH_SIZE + 1}: {e}", file=sys.stderr)
             print(f"[sync] deleted {deleted} stale rows")
         except Exception as e:
-            print(f"[WARN] stale cleanup skipped: {e}", file=sys.stderr)
+            print(f"[WARN] stale cleanup failed: {e}", file=sys.stderr)
     else:
-        print("[sync] skipping stale-row cleanup (upsert had errors or produced 0 rows)")
+        print("[sync] no synced rows — skipping cleanup to avoid wiping table")
 
     # Also write a minimal last-sync marker
     marker = BASE_DIR / ".last_sync"
