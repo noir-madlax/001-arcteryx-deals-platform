@@ -98,6 +98,26 @@ def main():
     from supabase import create_client
     client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+    # ── Snapshot existing prices BEFORE upsert, so we can diff & log changes
+    old_prices = {}   # sku_id -> (original_price, sale_price)
+    try:
+        page = 0
+        while True:
+            res = client.table("products").select(
+                "sku_id,original_price,sale_price"
+            ).range(page * 1000, page * 1000 + 999).execute()
+            data = res.data or []
+            if not data:
+                break
+            for r in data:
+                old_prices[r["sku_id"]] = (r.get("original_price"), r.get("sale_price"))
+            if len(data) < 1000:
+                break
+            page += 1
+        print(f"[sync] loaded {len(old_prices)} existing price snapshots")
+    except Exception as e:
+        print(f"[WARN] could not preload prices (price_history may be incomplete): {e}", file=sys.stderr)
+
     total, errors = 0, 0
     for i in range(0, len(rows), BATCH_SIZE):
         batch = rows[i : i + BATCH_SIZE]
@@ -113,6 +133,39 @@ def main():
             print(f"[ERROR] batch {i//BATCH_SIZE + 1}: {e}", file=sys.stderr)
 
     print(f"\n[sync] DONE — {total} upserted, {errors} batch errors")
+
+    # ── Price history (append-only) ───────────────────────────────────────
+    # Record a snapshot for every SKU whose price changed vs. last run, plus
+    # brand-new SKUs. Preserved forever so we can chart price trends even
+    # after the product is removed from the current products table.
+    history_rows = []
+    for r in rows:
+        sid = r.get("sku_id")
+        if not sid:
+            continue
+        new_op, new_sp = r.get("original_price"), r.get("sale_price")
+        if new_sp is None:
+            continue
+        old = old_prices.get(sid)
+        if old is None or old != (new_op, new_sp):
+            history_rows.append({
+                "sku_id":         sid,
+                "original_price": new_op,
+                "sale_price":     new_sp,
+                "discount_pct":   r.get("discount_pct"),
+                "currency":       r.get("currency"),
+                "recorded_at":    r.get("last_updated"),
+            })
+    print(f"[sync] price_history: {len(history_rows)} changes to log")
+    hist_inserted = 0
+    for i in range(0, len(history_rows), BATCH_SIZE):
+        batch = history_rows[i : i + BATCH_SIZE]
+        try:
+            client.table("price_history").insert(batch).execute()
+            hist_inserted += len(batch)
+        except Exception as e:
+            print(f"[ERROR] price_history batch {i//BATCH_SIZE + 1}: {e}", file=sys.stderr)
+    print(f"[sync] price_history: inserted {hist_inserted}")
 
     # ── Stale-row cleanup (unconditional) ─────────────────────────────────
     # The scrape (sku_scraper --reset) is a full re-crawl, so arcteryx_skus.json

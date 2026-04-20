@@ -47,5 +47,25 @@ CREATE POLICY "public_read"
 -- service_role key bypasses RLS automatically, so no write policy needed
 -- (scraper uses service_role key, frontend uses anon key)
 
--- 4. Quick sanity check
+-- 4. Price history (append-only log, preserved even after product is removed)
+CREATE TABLE IF NOT EXISTS price_history (
+  id             BIGSERIAL PRIMARY KEY,
+  sku_id         TEXT        NOT NULL,
+  original_price NUMERIC,
+  sale_price     NUMERIC     NOT NULL,
+  discount_pct   INTEGER,
+  currency       TEXT,
+  recorded_at    TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_price_history_sku_recorded
+  ON price_history (sku_id, recorded_at DESC);
+
+ALTER TABLE price_history ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "public_read_price_history" ON price_history;
+CREATE POLICY "public_read_price_history"
+  ON price_history FOR SELECT
+  USING (true);
+
+-- 5. Quick sanity check
 SELECT COUNT(*) AS row_count FROM products;

@@ -46,8 +46,9 @@ def slug_from_url(url: str) -> str:
 def normalize_color(color: str) -> str:
     return re.sub(r'[^a-zA-Z0-9]+', '_', color).strip('_')
 
-def sku_id(slug: str, color: str) -> str:
-    return f"{slug}_{normalize_color(color)}"
+def sku_id(slug: str, color: str, region: str = '') -> str:
+    base = f"{slug}_{normalize_color(color)}"
+    return f"{base}_{region}" if region else base
 
 def is_junk_color(color: str) -> bool:
     """Reject entries that look like mis-scraped size values or placeholders."""
@@ -71,11 +72,11 @@ def save_json(path, data, indent=None):
         json.dump(data, f, ensure_ascii=False, indent=indent)
 
 
-# ── 从 global_data.json 按 slug 去重，取最优地区（us/ca/gb/de 优先） ────────
+# ── 从 global_data.json 按 slug 整理，支持多地区 ──────────────────────────────
 REGION_PRIORITY = ['us', 'ca', 'gb', 'au', 'de', 'fr', 'nl', 'se', 'at', 'ch', 'jp', 'it', 'es', 'dk', 'be']
 
 def best_product_per_slug(products: list) -> dict:
-    """返回 {slug: product_record}，每个商品只保留最优地区版本"""
+    """返回 {slug: product_record}，每个商品只保留最优地区版本（用于确定访问哪个 URL）"""
     by_slug: dict = {}
     for p in products:
         s = slug_from_url(p.get('url', ''))
@@ -85,7 +86,6 @@ def best_product_per_slug(products: list) -> dict:
             by_slug[s] = p
         else:
             existing = by_slug[s]
-            # 优先级：us > ca > gb > de > ...
             try:
                 pr_new = REGION_PRIORITY.index(p.get('region', ''))
             except ValueError:
@@ -96,6 +96,23 @@ def best_product_per_slug(products: list) -> dict:
                 pr_old = 99
             if pr_new < pr_old:
                 by_slug[s] = p
+    return by_slug
+
+
+def all_regions_per_slug(products: list) -> dict:
+    """返回 {slug: {region: product_record}}，每个 slug 保留所有地区版本的价格信息"""
+    by_slug: dict = {}
+    for p in products:
+        s = slug_from_url(p.get('url', ''))
+        region = p.get('region', '')
+        if not s or not region:
+            continue
+        if s not in by_slug:
+            by_slug[s] = {}
+        existing = by_slug[s].get(region)
+        # 同地区有多条时，保留折扣最高的（通常 sale_price 最低）
+        if existing is None or p.get('discount_pct', 0) >= existing.get('discount_pct', 0):
+            by_slug[s][region] = p
     return by_slug
 
 
@@ -127,12 +144,31 @@ async def scrape_product(page, product: dict) -> list[dict]:
         // description
         const descEl = document.querySelector('[data-testid="product-description"] p, .product-description p, .pdp-description p');
         const desc = descEl?.textContent?.trim() || '';
-        // prices
+        // prices (locale-aware: "1,299.99" / "1.299,00" / "9 990,00")
+        const normalizeNum = (s) => {
+            s = s.replace(/[\s\u00a0]/g, '');
+            const hasDot = s.includes('.'), hasComma = s.includes(',');
+            if (hasDot && hasComma) {
+                if (s.lastIndexOf(',') > s.lastIndexOf('.')) s = s.replace(/\./g, '').replace(',', '.');
+                else s = s.replace(/,/g, '');
+            } else if (hasComma) {
+                const parts = s.split(',');
+                if (parts.length === 2 && parts[1].length <= 2) s = parts[0] + '.' + parts[1];
+                else s = parts.join('');
+            } else if (hasDot) {
+                const parts = s.split('.');
+                if (parts.length >= 2 && parts[parts.length-1].length === 3 && parts[0].length <= 3) s = parts.join('');
+            }
+            return parseFloat(s);
+        };
         const prices = [];
         document.querySelectorAll('[data-testid*="price"] [class*="price"], .price, [class*="Price"]').forEach(el => {
             const t = el.textContent.trim();
-            const m = t.match(/[0-9,]+[.]?[0-9]*/);
-            if (m) prices.push(parseFloat(m[0].replace(',','')));
+            const m = t.match(/\d+(?:[\s\u00a0.,]\d+)*/);
+            if (m) {
+                const v = normalizeNum(m[0]);
+                if (v > 0 && v < 1000000) prices.push(v);
+            }
         });
         // breadcrumb / outlet category
         const crumbs = [...document.querySelectorAll('nav a, [data-testid="breadcrumb"] a')]
@@ -279,17 +315,16 @@ async def scrape_product(page, product: dict) -> list[dict]:
 async def run(args):
     # 加载现有数据
     products_raw = load_json(DATA_FILE, [])
-    product_map = best_product_per_slug(products_raw)
+    product_map   = best_product_per_slug(products_raw)   # {slug: best_product} 用于访问页面
+    regions_map   = all_regions_per_slug(products_raw)    # {slug: {region: product}} 用于展开多地区
     print(f"商品总数（去重后）: {len(product_map)}")
+    print(f"地区版本总数: {sum(len(v) for v in regions_map.values())}")
 
     # 加载已有 SKU（支持断点续抓）
     existing_skus: list = load_json(SKU_FILE, [])
     done_slugs: set = set()
     if os.path.exists(PROGRESS_FILE):
         done_slugs = set(load_json(PROGRESS_FILE, []))
-    else:
-        # 从 SKU 文件推断已完成的 slug
-        done_slugs = {slug_from_url(s['url']) for s in existing_skus}
     print(f"已完成 slug: {len(done_slugs)}")
 
     # 过滤目标
@@ -305,10 +340,12 @@ async def run(args):
 
     if not targets:
         print("无待抓取商品，退出。")
+        # 仍输出当前 SKU 总数
+        print(f"\n✅ 抓取完成! 总 SKU: {len(existing_skus)}")
         return
 
-    new_skus_map = {slug_from_url(s['url']) + '_' + normalize_color(s['color']): s
-                    for s in existing_skus}
+    # sku_id 格式：{slug}_{color}_{region}
+    new_skus_map = {s['sku_id']: s for s in existing_skus if s.get('sku_id')}
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(
@@ -329,12 +366,38 @@ async def run(args):
             skus = await scrape_product(page, product)
 
             if skus:
+                # 获取该 slug 的所有地区价格信息
+                region_variants = regions_map.get(slug, {})
+
+                added = 0
                 for sku in skus:
                     if is_junk_color(sku.get('color', '')):
                         print(f"    ⚠ 跳过无效颜色: {sku.get('color','')!r}")
                         continue
-                    key = sku_id(slug, sku['color'])
-                    new_skus_map[key] = sku
+
+                    if region_variants:
+                        # 方案B：为每个地区生成一条 SKU 记录
+                        for region_code, region_product in region_variants.items():
+                            sid = sku_id(slug, sku['color'], region_code)
+                            new_skus_map[sid] = {
+                                **sku,
+                                "sku_id":         sid,
+                                "region":         region_code,
+                                "region_name":    region_product.get('region_name', ''),
+                                "original_price": region_product.get('original_price') or sku.get('original_price', 0),
+                                "sale_price":     region_product.get('sale_price')     or sku.get('sale_price', 0),
+                                "sale_price_max": region_product.get('sale_price_max') or sku.get('sale_price', 0),
+                                "discount_pct":   region_product.get('discount_pct')   or sku.get('discount_pct', 0),
+                                "currency":       region_product.get('currency', sku.get('currency', '')),
+                                "symbol":         region_product.get('symbol',   sku.get('symbol', '')),
+                                "url":            region_product.get('url',      sku.get('url', '')),
+                            }
+                            added += 1
+                    else:
+                        # 无多地区数据，退回单条
+                        sid = sku_id(slug, sku['color'], sku.get('region', ''))
+                        new_skus_map[sid] = {**sku, "sku_id": sid}
+                        added += 1
 
                 # 标记完成
                 done_slugs.add(slug)
@@ -342,7 +405,7 @@ async def run(args):
 
                 # 增量保存 SKU 文件
                 save_json(SKU_FILE, list(new_skus_map.values()), indent=2)
-                print(f"  → 已保存 {len(new_skus_map)} 条 SKU")
+                print(f"  → +{added} 条（{len(region_variants)} 地区 × 颜色），共 {len(new_skus_map)} SKU")
             else:
                 print(f"  → 无法提取 SKU（页面可能需要认证或已下架）")
 
@@ -424,9 +487,12 @@ def main():
     parser.add_argument('--reset',  action='store_true',      help="清除进度，从头开始")
     args = parser.parse_args()
 
-    if args.reset and os.path.exists(PROGRESS_FILE):
-        os.remove(PROGRESS_FILE)
-        print("进度已重置")
+    if args.reset:
+        if os.path.exists(PROGRESS_FILE):
+            os.remove(PROGRESS_FILE)
+        if os.path.exists(SKU_FILE):
+            os.remove(SKU_FILE)
+        print("进度已重置（进度文件 + SKU 文件已清空，将从头全量抓取）")
 
     asyncio.run(run(args))
 
