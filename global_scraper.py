@@ -238,9 +238,10 @@ async def extract_tiles(page, region: dict, gender: str) -> list:
 
             const text = container.textContent || a.textContent || '';
 
-            // 提取所有价格数字（locale-aware: 支持 "1,299.99" / "1.299,00" / "9 990,00" / "1 299 kr"）
+            // 提取所有价格数字（locale-aware: 支持 "1,299.99" / "1.299,00" / "9 990,00" / "1 299 kr" / "1'099.00" Swiss）
             const normalizeNum = (s) => {
-                s = s.replace(/[\s\u00a0]/g, '');
+                // 空格类 + Swiss apostrophes (U+0027, U+2019) 视作千分位分隔符
+                s = s.replace(/[\s\u00a0\u0027\u2019]/g, '');
                 const hasDot = s.includes('.'), hasComma = s.includes(',');
                 if (hasDot && hasComma) {
                     // 两种分隔符都有 → 最后出现的是小数点
@@ -259,7 +260,7 @@ async def extract_tiles(page, region: dict, gender: str) -> list:
                 }
                 return parseFloat(s);
             };
-            const allNums = [...text.matchAll(/\d+(?:[\s\u00a0.,]\d+)*/g)]
+            const allNums = [...text.matchAll(/\d+(?:[\s\u00a0.,\u0027\u2019]\d+)*/g)]
                 .map(m => normalizeNum(m[0]))
                 .filter(n => n > 0 && n < 1000000);
 

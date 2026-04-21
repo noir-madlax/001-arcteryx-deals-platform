@@ -12,8 +12,8 @@ PYTHON="python3"
 export SUPABASE_URL="https://bupqagkrcvrezjkdbald.supabase.co"
 export SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjQ0NTU1MywiZXhwIjoyMDkyMDIxNTUzfQ.QPg4iHNEix_uB1Dlo6ONz2fBq59XhV9NZdEIsXc95_k"
 
-export GITHUB_TOKEN="YOUR_GITHUB_TOKEN"
 GITHUB_REPO="noir-madlax/001-arcteryx-deals-platform"
+# GITHUB_TOKEN is sourced from ~/.arcteryx_secrets below
 
 # ── Telegram notification credentials ──
 # Kept in ~/.arcteryx_secrets (NOT committed to git) so we don't leak tokens.
@@ -60,8 +60,12 @@ for f in data.js arcteryx_skus.json global_data.json; do
 done
 
 git fetch origin main 2>&1 | tee -a "$LOG_FILE"
+# Discard any local tracked changes + switch to clean main (data files are in TMPDIR)
+git reset --hard HEAD 2>&1 | tee -a "$LOG_FILE" || true
 git checkout -B main origin/main 2>&1 | tee -a "$LOG_FILE"
 git reset --hard origin/main 2>&1 | tee -a "$LOG_FILE"
+# Remove untracked files that would conflict (but preserve state files)
+git clean -fd -e .last_run_start -e .last_sync -e .sku_progress.json -e update.log -e update_global.log -e .arcteryx_secrets 2>&1 | tee -a "$LOG_FILE" || true
 
 for f in data.js arcteryx_skus.json global_data.json; do
   [ -f "$TMPDIR/$f" ] && cp "$TMPDIR/$f" "$f"

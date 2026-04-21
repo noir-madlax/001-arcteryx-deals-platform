@@ -146,7 +146,8 @@ async def scrape_product(page, product: dict) -> list[dict]:
         const desc = descEl?.textContent?.trim() || '';
         // prices (locale-aware: "1,299.99" / "1.299,00" / "9 990,00")
         const normalizeNum = (s) => {
-            s = s.replace(/[\s\u00a0]/g, '');
+            // 空格 + Swiss apostrophes (U+0027, U+2019) = 千分位
+            s = s.replace(/[\s\u00a0\u0027\u2019]/g, '');
             const hasDot = s.includes('.'), hasComma = s.includes(',');
             if (hasDot && hasComma) {
                 if (s.lastIndexOf(',') > s.lastIndexOf('.')) s = s.replace(/\./g, '').replace(',', '.');
@@ -164,7 +165,7 @@ async def scrape_product(page, product: dict) -> list[dict]:
         const prices = [];
         document.querySelectorAll('[data-testid*="price"] [class*="price"], .price, [class*="Price"]').forEach(el => {
             const t = el.textContent.trim();
-            const m = t.match(/\d+(?:[\s\u00a0.,]\d+)*/);
+            const m = t.match(/\d+(?:[\s\u00a0.,\u0027\u2019]\d+)*/);
             if (m) {
                 const v = normalizeNum(m[0]);
                 if (v > 0 && v < 1000000) prices.push(v);
