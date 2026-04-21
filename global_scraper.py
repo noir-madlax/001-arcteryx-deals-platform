@@ -19,6 +19,9 @@ import asyncio
 import json
 import re
 import sys
+import ssl
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 
@@ -542,8 +545,75 @@ async def run(args):
         pprint.pprint((new_items or existing)[:3])
         return
 
+    # ── URL 重定向验证（剔除跨地区幻影条目） ─────────────────────────────────
+    # Arc'teryx 有时在 JP/EU 列表页显示不在该地区销售的商品，点击后静默重定向到
+    # 其它地区（如 jp/ja/.../vertex-alpine-shoe → us/en/.../vertex-alpine-shoe）。
+    # 这种"幻影"条目会让前端详情页跳错国家。这里做一次并发 HEAD 检查，凡是
+    # 最终 URL 的地区段与 record.region 不一致的直接丢弃。
+    # 只验证今天刚更新的记录，避免每次全量 ~3700 次 HEAD。
+    existing = _filter_redirected(existing)
+
     save_json(DATA_FILE, existing)
     print(f"[global_scraper] 已写入 {DATA_FILE}")
+
+
+# ── URL 重定向验证 ────────────────────────────────────────────────────────────
+_REDIRECT_SSL = ssl.create_default_context()
+_REDIRECT_SSL.check_hostname = False
+_REDIRECT_SSL.verify_mode = ssl.CERT_NONE
+
+_URL_REGION_RE = re.compile(r"https?://outlet\.arcteryx\.com/([a-z]{2})/")
+
+
+def _final_region(url: str, timeout: float = 8.0):
+    """HEAD the URL following redirects; return the region segment of the final URL, or None on error."""
+    try:
+        req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, context=_REDIRECT_SSL, timeout=timeout) as resp:
+            final = resp.geturl()
+        m = _URL_REGION_RE.match(final)
+        return m.group(1) if m else None
+    except Exception:
+        return None
+
+
+def _filter_redirected(products: list, today_only: bool = True, max_workers: int = 30) -> list:
+    """Remove products whose URL redirects to a different region (phantom entries).
+
+    today_only: only validate records updated today (much cheaper than full ~3700 HEADs).
+    """
+    today = datetime.now().strftime("%Y-%m-%d")
+    to_check = []
+    for i, p in enumerate(products):
+        if today_only and not (p.get("last_updated", "") or "").startswith(today):
+            continue
+        url = p.get("url", "")
+        region = p.get("region", "")
+        if not url or not region:
+            continue
+        to_check.append((i, url, region))
+
+    if not to_check:
+        return products
+
+    print(f"[validate] HEAD {len(to_check)} URLs to detect cross-region redirects...", flush=True)
+    bad_indices = set()
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        futures = {ex.submit(_final_region, url): (i, url, region) for (i, url, region) in to_check}
+        for fut in as_completed(futures):
+            i, url, region = futures[fut]
+            final_region = fut.result()
+            # final_region is None on network error — keep the record (fail open)
+            if final_region and final_region != region:
+                bad_indices.add(i)
+                print(f"  ✗ phantom: {url} → {final_region} (expected {region})", flush=True)
+
+    if not bad_indices:
+        print("[validate] no phantom entries found", flush=True)
+        return products
+
+    print(f"[validate] removing {len(bad_indices)} phantom entries", flush=True)
+    return [p for i, p in enumerate(products) if i not in bad_indices]
 
 
 def main():
