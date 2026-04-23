@@ -29,7 +29,9 @@
             --r-lg: 16px;
         }
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { overflow-x: hidden; max-width: 100vw; }
         html { -webkit-text-size-adjust: 100%; }
+        img, svg { max-width: 100%; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: var(--bg);
@@ -1032,9 +1034,18 @@ async function init() {
 
     try {
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-        const { data, error } = await db.from('products').select('*').limit(2000);
-        if (error) throw error;
-        products = (data || []).map(p => ({
+        // PostgREST caps at 1000 rows per response; paginate via .range() until exhausted.
+        const PAGE = 1000;
+        let all = [];
+        for (let offset = 0; ; offset += PAGE) {
+            const { data, error } = await db.from('products').select('*').range(offset, offset + PAGE - 1);
+            if (error) throw error;
+            if (!data || !data.length) break;
+            all = all.concat(data);
+            if (data.length < PAGE) break;
+            if (offset > 50000) break; // safety
+        }
+        products = all.map(p => ({
             ...p,
             last_updated: normTs(p.last_updated),
             sizes:      Array.isArray(p.sizes)      ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
