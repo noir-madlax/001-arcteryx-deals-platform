@@ -27,6 +27,26 @@ SKUS_FILE = BASE_DIR / "arcteryx_skus.json"
 
 BATCH_SIZE = 50   # upsert N rows at a time
 
+# ── Category inference (re-run on every sync so old "其他" rows get backfilled) ──
+def infer_category(name: str, url: str) -> str:
+    u = (url or "").lower()
+    n = (name or "").lower()
+    if "veilance" in u or "veilance" in n: return "Veilance商务系列"
+    if any(x in u for x in ["shell-jacket", "hardshell", "softshell"]): return "硬壳冲锋衣"
+    if any(x in u for x in ["insulated", "down-jacket", "down-coat", "hoody", "atom", "cerium", "proton", "nuclei", "thorium"]): return "保暖夹克"
+    if any(x in u for x in ["/pant", "-pant", "bib-", "short-"]): return "裤装"
+    if any(x in u for x in ["shoe", "boot", "footwear", "sandal"]): return "鞋类"
+    if any(x in u for x in ["/pack", "-pack", "backpack", "bag", "tote", "sling"]): return "背包"
+    if any(x in u for x in ["base-layer", "rho-", "-rho", "phase-", "merino"]): return "排汗内衣"
+    if any(x in u for x in ["fleece", "polar", "fortrez", "kyanite", "covert"]): return "抓绒/摇粒绒"
+    if any(x in u for x in ["vest", "gilet"]): return "背心"
+    if any(x in u for x in ["jacket", "-coat", "anorak", "parka"]): return "夹克/外套"
+    if any(x in u for x in ["blazer"]): return "西装/西服"
+    if any(x in u for x in ["shirt", "polo", "tee", "top-"]): return "上衣/T恤"
+    if any(x in u for x in ["dress", "skirt"]): return "裙装"
+    if any(x in u for x in ["hat", "cap", "headwear", "glove", "sock", "buff", "toque", "beanie"]): return "配件"
+    return "其他"
+
 # ── Junk color guard ──────────────────────────────────────────────────────────
 def is_junk_color(color: str) -> bool:
     import re
@@ -63,7 +83,10 @@ def sku_to_row(sku: dict) -> dict:
         "gender":         sku.get("gender"),
         "region":         sku.get("region"),
         "region_name":    sku.get("region_name"),
-        "category":       sku.get("category"),
+        # Always re-infer category so old "其他" rows get reclassified when sync runs.
+        # If the scraper already picked a non-"其他" category, keep it.
+        "category":       (sku.get("category") if sku.get("category") and sku.get("category") != "其他"
+                           else infer_category(sku.get("full_name"), sku.get("url"))),
         "url":            sku.get("url"),
         "image_url":      sku.get("image_url"),
         "images":         sku.get("images", []),
