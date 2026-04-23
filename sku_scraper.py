@@ -284,6 +284,17 @@ async def scrape_product(page, product: dict) -> list[dict]:
         # ── 主图 ────────────────────────────────────────────────────────────
         primary_image = images[0] if images else product.get('image_url', '')
 
+        # ── 发售季度 (Arc'teryx image filename convention: F25-/S25-/W25-) ──
+        # F/W = Fall/Winter, S = Spring, followed by 2-digit year.
+        release_year = None
+        release_season = None  # "Fall" | "Spring" | "Winter"
+        for u in [primary_image] + list(images or []):
+            m = re.search(r'/([FSWfsw])(\d{2})[-_]', u or "")
+            if m:
+                release_year = 2000 + int(m.group(2))
+                release_season = {'F':'Fall','W':'Winter','S':'Spring'}[m.group(1).upper()]
+                break
+
         sku = {
             "sku_id":        sku_id(slug, color_name),
             "model":         product.get('model', ''),
@@ -304,6 +315,8 @@ async def scrape_product(page, product: dict) -> list[dict]:
             "image_url":     primary_image,
             "images":        images,
             "description":   base_info.get('desc', '') or product.get('description', ''),
+            "release_year":  release_year,
+            "release_season": release_season,
             "last_updated":  datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         }
         skus.append(sku)

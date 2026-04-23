@@ -530,6 +530,18 @@ function priceBlock(p) {
     </div>`;
 }
 
+// Extract release season from Arc'teryx image-URL filename like "F25-X000009862-Incendia-Jacket…"
+// F/W = Fall/Winter, S = Spring + 2-digit year. Returns string like "2025 秋冬" or null.
+const SEASON_LABEL = { F: '秋冬', W: '秋冬', S: '春夏' };
+function releaseSeason(p) {
+    const urls = [p.image_url, ...(Array.isArray(p.images) ? p.images : [])].filter(Boolean);
+    for (const u of urls) {
+        const m = u.match(/\/([FSWfsw])(\d{2})[-_]/);
+        if (m) return `20${m[2]} ${SEASON_LABEL[m[1].toUpperCase()] || ''}`.trim();
+    }
+    return null;
+}
+
 function metaBlock(p, extra = {}) {
     const items = [
         ['地区', `${REGION_FLAG[p.region] || ''} ${REGION_LABEL[p.region] || p.region || '—'}`],
@@ -537,6 +549,8 @@ function metaBlock(p, extra = {}) {
         ['性别', GENDER_LABEL[p.gender] || '—'],
         ['货币', p.currency || '—'],
     ];
+    const season = releaseSeason(p);
+    if (season) items.push(['发售', season]);
     if (extra.sku) items.push(['SKU', extra.sku]);
     if (p.last_updated) items.push(['更新时间', p.last_updated]);  // full YYYY-MM-DD HH:MM:SS
     return `
