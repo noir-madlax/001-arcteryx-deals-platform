@@ -502,12 +502,37 @@ async def run(args):
                     # 更新现有条目（保留 sku_scraper 已填充的字段）
                     idx = existing_by_url[url]
                     old = existing[idx]
-                    # 只更新价格、折扣等动态字段
+
+                    # 价格三元组 (orig, sale, disc) 必须整体一致，绝不能把新一次的 sale
+                    # 和旧一次的 orig 混在一起（之前的 bug 导致 SE/DK 出现 sale > orig
+                    # 的数据，因为 SE 页面抓不到原价时落回旧值，但旧值单位/来源已不匹配）
+                    new_orig = p["original_price"] or 0
+                    new_sale = p["sale_price"] or 0
+                    new_disc = p["discount_pct"] or 0
+                    old_orig = old.get("original_price", 0) or 0
+                    old_sale = old.get("sale_price", 0) or 0
+                    old_disc = old.get("discount_pct", 0) or 0
+
+                    if new_sale > 0 and new_orig > 0 and new_orig >= new_sale:
+                        # 新抓到的三元组本身一致 → 整体用新
+                        final_orig, final_sale, final_disc = new_orig, new_sale, new_disc
+                    elif new_sale > 0 and new_orig == 0 and old_orig > new_sale * 1.05:
+                        # 新只拿到 sale、旧 orig 在合理范围内（> 新 sale）→ 拼接，重算 disc
+                        final_orig = old_orig
+                        final_sale = new_sale
+                        final_disc = round((1 - new_sale / old_orig) * 100) if old_orig > 0 else 0
+                    elif new_sale > 0:
+                        # 新 sale 存在但旧 orig 不兼容 → 只保 sale，orig/disc 置零（前端会忽略）
+                        final_orig, final_sale, final_disc = 0, new_sale, 0
+                    else:
+                        # 新抓取整体失败 → 保持旧值
+                        final_orig, final_sale, final_disc = old_orig, old_sale, old_disc
+
                     old.update({
-                        "original_price": p["original_price"] or old.get("original_price", 0),
-                        "sale_price":     p["sale_price"]     or old.get("sale_price", 0),
-                        "sale_price_max": p["sale_price_max"] or old.get("sale_price_max", 0),
-                        "discount_pct":   p["discount_pct"]   or old.get("discount_pct", 0),
+                        "original_price": final_orig,
+                        "sale_price":     final_sale,
+                        "sale_price_max": p["sale_price_max"] or final_sale,
+                        "discount_pct":   final_disc,
                         "image_url":      p["image_url"]      or old.get("image_url", ""),
                         "last_updated":   p["last_updated"],
                     })
