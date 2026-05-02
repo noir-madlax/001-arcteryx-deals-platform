@@ -13,10 +13,10 @@
 | 5 | Steep & Cheap | ❌ Akamai | — | 同 Backcountry（同公司） |
 | 6 | Moosejaw | ❌ 已收购 | — | 重定向到 Public Lands，后者维护页 403 |
 | 7 | REI Outlet | ❌ Akamai | — | 多 URL 返回 timeout 或 prods=0 |
-| 8 | Sierra | ❌ 5xx | — | 服务器 500，可能是地区拦截（TJX 海外封锁） |
+| 8 | Sierra | ❌ 反爬 | — | EC2 us-west-2 也返回 403；TJX 屏蔽云厂商 IP 段（不仅是海外）。非 headless 能进首页，品牌页 0 商品 |
 | 9 | The Last Hunt | ⚠️ 无库存 | 0 | 站点正常但已不售 Arc'teryx（搜索返回其他品牌） |
 | 10 | Altitude Sports | ⚠️ 无库存 | 0 | 同上，搜索返回 Garmin/Sweet Protection 等 |
-| 11 | SportsShoes (UK) | ❌ 404 | — | 搜索返回 404 但有 692KB body；需要找正确 URL |
+| 11 | SportsShoes (UK) | ⚠️ 无库存 | 0 | `?brands=Arc'teryx` 过滤器无效，返回 72 件全是 Saucony/Asics（**不售 Arc'teryx**） |
 | 12 | Zalando Lounge | ❌ 需登录 | — | 闪购站，所有品牌页要会员登录 |
 | 13 | 好日子 (CN) | ❌ SSL/不存在 | — | TLS connect error；域名疑似失效 |
 
