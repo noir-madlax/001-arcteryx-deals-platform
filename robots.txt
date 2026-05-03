@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /data.js
+
+# 百度蜘蛛
+User-agent: Baiduspider
+Allow: /
+
+# 360 / 神马
+User-agent: 360Spider
+Allow: /
+User-agent: YisouSpider
+Allow: /
+
+Sitemap: https://001.100app.dev/sitemap.xml

@@ -4,7 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#fafaf8">
-    <title>Arc'teryx Outlet · 全球折扣实时追踪</title>
+    <title>Arc'teryx Deals Tracker · 始祖鸟全球折扣实时追踪</title>
+
+    <!-- SEO: 描述与关键词（Google / Baidu 通用） -->
+    <meta name="description" content="Arc'teryx Deals Tracker：聚合 Arc'teryx Outlet 官方奥莱与 SSENSE、MEC、EVO、REI 等经销商的始祖鸟实时折扣，跨美国、加拿大、英国、欧盟、日本等 15 个区域，每日更新原价、折扣价、库存与折扣率。">
+    <meta name="keywords" content="Arc'teryx,始祖鸟,Arc'teryx Outlet,始祖鸟奥莱,始祖鸟折扣,始祖鸟打折,Beta AR,Atom Hoody,Cerium,Alpha SV,Arc'teryx Sale,户外品牌折扣,arcteryx deals,arcteryx tracker">
+    <meta name="author" content="Arc'teryx Deals Tracker">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="googlebot" content="index,follow">
+    <meta name="baiduspider" content="index,follow">
+    <link rel="canonical" href="https://001.100app.dev/">
+    <link rel="alternate" hreflang="zh-CN" href="https://001.100app.dev/">
+    <link rel="alternate" hreflang="x-default" href="https://001.100app.dev/">
+
+    <!-- Open Graph (Facebook / Telegram / 微信内置浏览器) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Arc'teryx Deals Tracker">
+    <meta property="og:title" content="Arc'teryx Deals Tracker · 始祖鸟全球折扣实时追踪">
+    <meta property="og:description" content="聚合 Arc'teryx Outlet、SSENSE、MEC、EVO、REI 等始祖鸟全球折扣，每日更新。">
+    <meta property="og:url" content="https://001.100app.dev/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://images.arcteryx.com/F25-OG-arcteryx-deals-tracker.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Arc'teryx Deals Tracker · 始祖鸟全球折扣实时追踪">
+    <meta name="twitter:description" content="Arc'teryx 全球经销商折扣聚合，每日更新。">
+
+    <!-- Schema.org JSON-LD：网站 + 检索 + ItemList（结构化数据，对 Google 富结果有用） -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebSite",
+                "@id": "https://001.100app.dev/#website",
+                "url": "https://001.100app.dev/",
+                "name": "Arc'teryx Deals Tracker",
+                "description": "Arc'teryx 全球经销商实时折扣追踪",
+                "inLanguage": "zh-CN",
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://001.100app.dev/?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+            },
+            {
+                "@type": "Organization",
+                "@id": "https://001.100app.dev/#org",
+                "name": "Arc'teryx Deals Tracker",
+                "url": "https://001.100app.dev/"
+            }
+        ]
+    }
+    </script>
+
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -265,11 +319,12 @@
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            /* minmax(0, 1fr) 强制列不被卡片内长文本撑大，避免出现"左右列宽度不一致"的溢出 */
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 28px 20px;
         }
-        @media (max-width: 1180px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 24px 16px; } }
-        @media (max-width: 720px)  { .grid { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; } }
+        @media (max-width: 1180px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 16px; } }
+        @media (max-width: 720px)  { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 12px; } }
         @media (max-width: 640px)  { .grid-wrap { padding: 8px 16px 48px; } }
 
         /* ─── Card ─── */
@@ -280,6 +335,9 @@
             flex-direction: column;
             cursor: pointer;
             transition: transform 0.2s ease;
+            /* grid item 默认 min-width:auto，会拒绝被压缩到内容自然宽度以下；
+               显式归零，让 grid 的 minmax(0,1fr) 真正生效 */
+            min-width: 0;
         }
         .card:hover { transform: translateY(-2px); }
         .card:hover .card-img-wrap { background: var(--hover); }
@@ -364,6 +422,13 @@
             align-items: center;
             gap: 8px;
             justify-content: space-between;
+            min-width: 0;     /* allow children to shrink below intrinsic width */
+        }
+        .card-cat {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         .card-platform {
             font-size: 10px;
@@ -447,6 +512,8 @@
             justify-content: space-between;
             gap: 4px;
             margin-top: 5px;
+            min-width: 0;     /* prevent flex item from overflowing grid column */
+            flex-wrap: wrap;
         }
         .card-prices-left {
             display: flex;
@@ -566,6 +633,7 @@
         </div>
     </div>
     <div class="filter-dropdowns">
+        <select class="filter-select" id="platform-select"></select>
         <select class="filter-select" id="region-select"></select>
         <select class="filter-select" id="gender-select"></select>
         <select class="filter-select" id="category-select"></select>
@@ -634,15 +702,21 @@ const PLATFORM = {
     sportsshoes:     { label: 'SportsShoes',      color: '#003a8c' },
     zalando_lounge:  { label: 'Zalando Lounge',   color: '#ff6900' },
 };
-// 从 URL 推断平台（向下兼容旧的 outlet 数据，没有 dealer 字段）
-function inferPlatform(p) {
-    if (p.dealer && PLATFORM[p.dealer]) return PLATFORM[p.dealer];
+// 从 URL 推断平台 key（向下兼容旧的 outlet 数据，没有 dealer 字段）
+function platformKey(p) {
+    if (p.dealer && PLATFORM[p.dealer]) return p.dealer;
     const u = (p.url || '').toLowerCase();
-    if (u.includes('outlet.arcteryx.com')) return PLATFORM.arcteryx_outlet;
-    for (const k of Object.keys(PLATFORM)) {
-        if (u.includes(k.replace('_outlet','').replace('_',''))) return PLATFORM[k];
-    }
-    return PLATFORM.arcteryx_outlet;  // fallback
+    if (u.includes('outlet.arcteryx.com')) return 'arcteryx_outlet';
+    if (u.includes('ssense.com'))     return 'ssense';
+    if (u.includes('mec.ca'))         return 'mec';
+    if (u.includes('evo.com'))        return 'evo';
+    if (u.includes('rei.com'))        return 'rei';
+    if (u.includes('backcountry'))    return 'backcountry';
+    if (u.includes('steepandcheap'))  return 'steepandcheap';
+    return 'arcteryx_outlet';  // fallback
+}
+function inferPlatform(p) {
+    return PLATFORM[platformKey(p)] || PLATFORM.arcteryx_outlet;
 }
 
 const toCNY = (price, symbol, currency) => {
@@ -699,6 +773,7 @@ const extractSeries = (cleanedName) => {
 
 const state = {
     q: '',
+    platform: 'all',
     region: 'all',
     gender: 'all',
     category: 'all',
@@ -734,6 +809,7 @@ let products = [];
 const filterProducts = () => {
     const q = state.q.trim().toLowerCase();
     return products.filter(p => {
+        if (state.platform !== 'all' && p._platform !== state.platform) return false;
         if (state.region !== 'all' && p.region !== state.region) return false;
         if (state.gender !== 'all' && p.gender !== state.gender) return false;
         if (state.category !== 'all') {
@@ -897,6 +973,7 @@ const buildSelect = (selectId, options, key) => {
 const filterExcept = (exclude) => {
     const q = state.q.trim().toLowerCase();
     return products.filter(p => {
+        if (exclude !== 'platform' && state.platform !== 'all' && p._platform !== state.platform) return false;
         if (exclude !== 'region'   && state.region   !== 'all' && p.region !== state.region) return false;
         if (exclude !== 'gender'   && state.gender   !== 'all' && p.gender !== state.gender) return false;
         if (exclude !== 'category' && state.category !== 'all') {
@@ -943,6 +1020,22 @@ const initFilters = () => {
         for (const p of arr) { const k = fn(p); if (k == null) continue; m[k] = (m[k] || 0) + 1; }
         return m;
     };
+
+    // Platform (销售平台)
+    const platformPool = filterExcept('platform');
+    const platformCounts = countIn(platformPool, p => p._platform);
+    if (state.platform !== 'all' && !platformCounts[state.platform]) platformCounts[state.platform] = 0;
+    const platformOrder = ['arcteryx_outlet','ssense','mec','evo','rei'];
+    const platformKeys = [...new Set([...platformOrder, ...Object.keys(platformCounts)])]
+        .filter(k => platformCounts[k] !== undefined && (platformCounts[k] > 0 || k === state.platform));
+    buildSelect('platform-select', [
+        { value: 'all', label: '全部平台', count: platformPool.length },
+        ...platformKeys.map(k => ({
+            value: k,
+            label: (PLATFORM[k]?.label || k),
+            count: platformCounts[k] || 0,
+        })),
+    ], 'platform');
 
     // Region
     const regionPool = filterExcept('region');
@@ -1021,7 +1114,7 @@ const render = () => {
     const avg = filtered.length ? Math.round(filtered.reduce((s, p) => s + (p.discount_pct || 0), 0) / filtered.length) : 0;
     document.getElementById('result-avg').textContent = '−' + avg + '%';
     // Sync filter select values + active styling
-    [['region-select','region'],['gender-select','gender'],['category-select','category'],['series-select','series']]
+    [['platform-select','platform'],['region-select','region'],['gender-select','gender'],['category-select','category'],['series-select','series']]
         .forEach(([id, key]) => {
             const el = document.getElementById(id);
             if (el) { el.value = state[key]; el.classList.toggle('active', state[key] !== 'all'); }
@@ -1067,7 +1160,7 @@ const initSort = () => {
 const initReset = () => {
     document.getElementById('reset-link').addEventListener('click', (e) => {
         e.preventDefault();
-        Object.assign(state, { q: '', region: 'all', gender: 'all', category: 'all', series: 'all', sort: 'discount_desc' });
+        Object.assign(state, { q: '', platform: 'all', region: 'all', gender: 'all', category: 'all', series: 'all', sort: 'discount_desc' });
         document.getElementById('q').value = '';
         document.getElementById('search-wrap').classList.remove('has-value');
         document.getElementById('sort').value = 'discount_desc';
@@ -1106,6 +1199,7 @@ async function init() {
             sizes:      Array.isArray(p.sizes)      ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
             size_stock: typeof p.size_stock === 'object' ? p.size_stock : (p.size_stock ? JSON.parse(p.size_stock) : {}),
             _series:    extractSeries(cleanName(p.full_name || p.model)),
+            _platform:  platformKey(p),
         }));
     } catch (e) {
         console.warn('Supabase load failed, falling back to data.js:', e);
@@ -1118,7 +1212,7 @@ async function init() {
             document.head.appendChild(s);
         }).catch(() => {});
         products = (typeof PRODUCTS !== 'undefined' ? PRODUCTS : [])
-            .map(p => ({ ...p, _series: extractSeries(cleanName(p.full_name || p.model)) }));
+            .map(p => ({ ...p, _series: extractSeries(cleanName(p.full_name || p.model)), _platform: platformKey(p) }));
     }
 
     computeStats();
