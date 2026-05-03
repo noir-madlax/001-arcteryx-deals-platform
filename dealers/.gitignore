@@ -1,5 +1,5 @@
 __pycache__/
-results.json
 recon_results.json
 recon_stealthy_results.json
 recon_v3_results.json
+# results.json 是产线数据文件，shipped 到 Vercel 让前端 fetch
