@@ -409,6 +409,7 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
+            flex: 1;          /* fill grid cell stretched height */
         }
         .card-cat {
             font-size: 11px;
@@ -468,6 +469,11 @@
             min-width: 0;
             margin-top: 2px;
         }
+        .card-meta-empty {
+            font-size: 11px;
+            color: var(--text-3);
+            font-style: italic;
+        }
         .card-color {
             font-size: 11px;
             color: var(--text-3);
@@ -511,9 +517,10 @@
             align-items: baseline;
             justify-content: space-between;
             gap: 4px;
-            margin-top: 5px;
-            min-width: 0;     /* prevent flex item from overflowing grid column */
+            margin-top: auto;   /* push to bottom — keeps price row aligned across the row regardless of whether the card has color/sizes */
+            min-width: 0;
             flex-wrap: wrap;
+            padding-top: 5px;   /* keep visual gap from meta-row when present */
         }
         .card-prices-left {
             display: flex;
@@ -926,7 +933,7 @@ const inferCategory = (name, url) => {
     if (/veilance/.test(n) || /veilance/.test(u)) return 'Veilance';
     if (/shoe|boot|sandal|kragg|konseal|aerios|bora|acrux|vertex|kopec|norvan\s*sl|sylan/.test(n)) return '鞋类';
     if (/\bpack\b|backpack|bag|mantis|arro|brize|khard|\bindex\b/.test(n)) return '背包';
-    if (/\bpant\b|bib\s*pant|bib\s*short|short|legging/.test(n)) return '裤装';
+    if (/\bpants?\b|bib\s*pants?|bib\s*shorts?|\bshorts?\b|leggings?/.test(n)) return '裤装';
     if (/down\s*jacket|insulated\s*jacket|cerium|thorium|nuclei|calidum|proton\s*lt\s*j/.test(n)) return '保暖羽绒';
     if (/jacket|shell/.test(n)) return '冲锋衣';
     if (/hoody|hoodie|fleece|zip.*neck|pullover|crew|cardigan|sweater/.test(n)) return '卫衣/抓绒';
@@ -996,11 +1003,14 @@ const buildCard = (p) => {
         : '';
 
     // Color + sizes on same row
+    // Dealer 商品（EVO/REI/SSENSE/MEC）只抓了列表页，尺码/颜色要去原平台详情页查
+    const isDealer = p.dealer && p.dealer !== 'arcteryx_outlet';
     const metaRow = (colorDisplay || szChips) ? `
         <div class="card-meta-row">
             ${colorDisplay ? `<span class="card-color">${colorDisplay}</span>` : ''}
             ${szChips ? `<div class="card-sizes">${szChips}</div>` : ''}
-        </div>` : '';
+        </div>`
+        : (isDealer ? `<div class="card-meta-row card-meta-empty">尺码/颜色见 ${platform.label}</div>` : '');
 
     return `
     <a class="card" href="${href}">
