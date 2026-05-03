@@ -748,18 +748,31 @@ const cleanName = (raw) => {
 // ── State (URL-synced) ──
 // Known Arc'teryx series (first word of cleaned name)
 const KNOWN_SERIES = new Set([
+    // 经典壳/羽绒/抓绒系列
     'Alpha', 'Beta', 'Gamma', 'Delta', 'Zeta', 'Theta', 'Sigma', 'Kappa',
     'Atom', 'Cerium', 'Proton', 'Nuclei', 'Thorium',
     'Rho', 'Phasic', 'Motus', 'Rhomb',
+    // 滑雪/登山
     'Sabre', 'Rush', 'Sentinel', 'Fissile', 'Orsin', 'Hadron',
-    'Norvan', 'Sylan', 'Cormac',
-    'Konseal', 'Aerios', 'Vertex', 'Bora', 'Acrux', 'Kragg', 'Kopec',
-    'Covert', 'Incendia', 'Patera', 'Liatris', 'Emaris', 'Sonii', 'Psiphon', 'Emblem',
+    // 越野跑 / 鞋
+    'Norvan', 'Sylan', 'Cormac', 'Aerios', 'Konseal', 'Vertex', 'Bora', 'Acrux',
+    'Kragg', 'Kopec',
+    // 都市/通勤
+    'Covert', 'Incendia', 'Incendo', 'Patera', 'Liatris', 'Emaris', 'Sonii', 'Psiphon', 'Emblem',
     'Palisade', 'Kyanite', 'Squamish', 'Essent', 'Taema', 'Aestas',
+    // 高端 Veilance / 经典户外
     'Veilance', 'Macai', 'Cronin', 'Serratus', 'Satoro',
-    'Mantis', 'Arro', 'Brize', 'Khard', 'Granville', 'Index',
+    // 背包 / 包袋
+    'Mantis', 'Arro', 'Brize', 'Khard', 'Granville', 'Index', 'Kraft',
+    // 配饰
     'Spere', 'Blade', 'Soria', 'Silene', 'Ralle', 'Lana', 'Bird',
     'Mallow', 'Sinsola', 'Sinsolo', 'Calidum', 'Saydi', 'Sima', 'Rula', 'Nia',
+    // 2024-2026 年新增系列（之前漏入"其他"，共 462 件）
+    'Monitor', 'Andessa', 'Decca', 'Entasis', 'Ifora', 'Align',
+    'Focal', 'Therme', 'Demlo', 'Altus', 'Sorin', 'Frame',
+    'Indisce', 'Asset', 'Eave', 'Levon', 'Voronoi', 'Diode',
+    'Ogee', 'Conic', 'Creston', 'Clarkia', 'Corbel', 'Field',
+    "Arc'Word",
 ]);
 
 // German/French prefix garbage to strip from product names
