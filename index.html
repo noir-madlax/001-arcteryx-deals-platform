@@ -359,6 +359,22 @@
             letter-spacing: 0.06em;
             font-weight: 500;
         }
+        .card-cat-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: space-between;
+        }
+        .card-platform {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #fff;
+            white-space: nowrap;
+            line-height: 1.4;
+        }
         .card-name {
             font-size: 13.5px;
             font-weight: 500;
@@ -596,6 +612,33 @@ const REGION_LABEL = {
 };
 const GENDER_LABEL = { men: '男装', women: '女装', unknown: '其他' };
 
+// 销售平台映射（dealer key → 显示名 + 颜色）
+const PLATFORM = {
+    arcteryx_outlet: { label: "Arc'teryx Outlet", color: '#000' },
+    ssense:          { label: 'SSENSE',           color: '#000' },
+    mec:             { label: 'MEC',              color: '#c8102e' },
+    evo:             { label: 'EVO',              color: '#1a1a1a' },
+    rei:             { label: 'REI',              color: '#067a46' },
+    backcountry:     { label: 'Backcountry',      color: '#003a70' },
+    steepandcheap:   { label: 'Steep&Cheap',      color: '#d22730' },
+    moosejaw:        { label: 'Moosejaw',         color: '#e87722' },
+    sierra:          { label: 'Sierra',           color: '#5c2d91' },
+    altitude:        { label: 'Altitude',         color: '#003c5c' },
+    thelasthunt:     { label: 'TheLastHunt',      color: '#000' },
+    sportsshoes:     { label: 'SportsShoes',      color: '#003a8c' },
+    zalando_lounge:  { label: 'Zalando Lounge',   color: '#ff6900' },
+};
+// 从 URL 推断平台（向下兼容旧的 outlet 数据，没有 dealer 字段）
+function inferPlatform(p) {
+    if (p.dealer && PLATFORM[p.dealer]) return PLATFORM[p.dealer];
+    const u = (p.url || '').toLowerCase();
+    if (u.includes('outlet.arcteryx.com')) return PLATFORM.arcteryx_outlet;
+    for (const k of Object.keys(PLATFORM)) {
+        if (u.includes(k.replace('_outlet','').replace('_',''))) return PLATFORM[k];
+    }
+    return PLATFORM.arcteryx_outlet;  // fallback
+}
+
 const toCNY = (price, symbol, currency) => {
     const ccy = currency || SYMBOL_TO_CCY[symbol] || 'USD';
     return Math.round(price * (RATES[ccy] || 7.25));
@@ -774,6 +817,9 @@ const buildCard = (p) => {
         ? p.category
         : inferCategory(name, p.url);
 
+    // 销售平台
+    const platform = inferPlatform(p);
+
     // In-stock sizes with normalization — show first 5
     const rawInStock = p.sizes
         ? p.sizes.filter(sz => (p.size_stock?.[sz] || 'in_stock') !== 'out_of_stock')
@@ -801,7 +847,10 @@ const buildCard = (p) => {
             <span class="card-flag">${flag} ${REGION_LABEL[p.region] || p.region}</span>
         </div>
         <div class="card-body">
-            <div class="card-cat">${cat}</div>
+            <div class="card-cat-row">
+                <div class="card-cat">${cat}</div>
+                <span class="card-platform" style="background:${platform.color}">${platform.label}</span>
+            </div>
             <div class="card-name">${name}</div>
             ${metaRow}
             <div class="card-prices">

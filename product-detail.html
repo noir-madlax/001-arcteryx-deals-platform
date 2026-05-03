@@ -405,6 +405,25 @@ const REGION_LABEL = {
 };
 const GENDER_LABEL = { men: '男装', women: '女装', unknown: '中性' };
 
+const PLATFORM = {
+    arcteryx_outlet: { label: "Arc'teryx Outlet", color: '#000' },
+    ssense:          { label: 'SSENSE',           color: '#000' },
+    mec:             { label: 'MEC',              color: '#c8102e' },
+    evo:             { label: 'EVO',              color: '#1a1a1a' },
+    rei:             { label: 'REI',              color: '#067a46' },
+    backcountry:     { label: 'Backcountry',      color: '#003a70' },
+    steepandcheap:   { label: 'Steep&Cheap',      color: '#d22730' },
+};
+function inferPlatform(p) {
+    if (p.dealer && PLATFORM[p.dealer]) return PLATFORM[p.dealer];
+    const u = (p.url || '').toLowerCase();
+    if (u.includes('outlet.arcteryx.com')) return PLATFORM.arcteryx_outlet;
+    for (const k of Object.keys(PLATFORM)) {
+        if (u.includes(k.replace('_outlet','').replace('_',''))) return PLATFORM[k];
+    }
+    return PLATFORM.arcteryx_outlet;
+}
+
 const toCNY = (price, symbol, currency) => {
     const ccy = currency || SYMBOL_TO_CCY[symbol] || 'USD';
     return Math.round(price * (RATES[ccy] || 7.25));
@@ -543,7 +562,9 @@ function releaseSeason(p) {
 }
 
 function metaBlock(p, extra = {}) {
+    const platform = inferPlatform(p);
     const items = [
+        ['销售平台', platform.label],
         ['地区', `${REGION_FLAG[p.region] || ''} ${REGION_LABEL[p.region] || p.region || '—'}`],
         ['品类', p.category || '—'],
         ['性别', GENDER_LABEL[p.gender] || '—'],
