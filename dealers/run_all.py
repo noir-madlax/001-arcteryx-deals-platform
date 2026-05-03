@@ -7,7 +7,8 @@ DEALER_KEYS = [
     "ssense",
     "mec",
     "evo",
-    # 后续加：rei, backcountry, steepandcheap
+    "rei",
+    # backcountry / steepandcheap 已确认停售 Arc'teryx（搜索返回 Outdoor Research 替代品）
 ]
 
 def main():

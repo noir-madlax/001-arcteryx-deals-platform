@@ -1,19 +1,50 @@
-"""SSENSE — Arc'teryx 男女款，纯 HTTP 即可。"""
+"""SSENSE — Arc'teryx 男女款；
+SSENSE 升级了 Cloudflare 每页验证，故用 StealthySession + solve_cloudflare。"""
 from __future__ import annotations
-import re, json
+import re, json, time
 from .base import DealerScraper, normalize_price, discount_pct
+from scrapling.fetchers import StealthySession
 
 HOST = "https://www.ssense.com"
 
 class Scraper(DealerScraper):
     KEY    = "ssense"
     NAME   = "SSENSE"
-    REGION = "US"          # 默认 US 站，价格 USD
-    TIER   = "fetcher"
+    REGION = "US"
+    TIER   = "stealthy_cf"
     LIST_URLS = [
         "https://www.ssense.com/en-us/men/designers/arcteryx",
         "https://www.ssense.com/en-us/women/designers/arcteryx",
     ]
+
+    def scrape(self) -> list[dict]:
+        items = []
+        seen = set()
+        with StealthySession(headless=True, network_idle=True, solve_cloudflare=True) as s:
+            print("[ssense] warm: home")
+            s.fetch(f"{HOST}/", timeout=45000)
+            for url in self.LIST_URLS:
+                print(f"[ssense] {url}")
+                p = s.fetch(url, timeout=60000)
+                body = p.body.decode("utf-8","ignore")
+                if "Just a moment" in body[:5000]:
+                    print("[ssense] still on Cloudflare — skipping")
+                    continue
+                page_items = self.parse_list(body, url)
+                new = 0
+                for it in page_items:
+                    if not it.get("url") or it["url"] in seen:
+                        continue
+                    seen.add(it["url"])
+                    it["dealer"] = self.KEY
+                    it["dealer_name"] = self.NAME
+                    it["region"] = self.REGION
+                    if "discount_pct" not in it:
+                        it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
+                    items.append(it)
+                    new += 1
+                print(f"[ssense] +{new} (total {len(items)})")
+        return items
 
     # SSENSE 把每个产品包成 <a class="flex flex-col" href="/en-us/men/product/arcteryx/..."> ...
     # 内含 <h3> 品牌+名字, 价格在 data-test="regularPriceText"/"salePriceText".

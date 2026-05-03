@@ -9,10 +9,10 @@
 | 1 | **SSENSE** (US) | ✅ 可用 | 26 | 纯 HTTP（Fetcher）+ JSON-LD |
 | 2 | **MEC** (CA) | ✅ 可用 | 129 | StealthyFetcher + HTML |
 | 3 | **EVO** (US) | ✅ 可用 | 77 | StealthySession 暖首页 cookies → mens + womens 商品列表页 |
-| 4 | Backcountry | ❌ 客户端渲染+隐 GraphQL | — | StealthySession 进得去（200 + 1.28MB），SSR 仅返回 42 个默认商品（含 Outdoor Research 等），品牌 filter 由客户端 GraphQL 异步触发；DynamicFetcher 拦截网络则被 405 反检测。需要 Camoufox + 网络拦截二合一 |
-| 5 | Steep & Cheap | ❌ 同上 | — | Backcountry 同公司同栈 |
+| 4 | Backcountry | ⚠️ 已停售 | 0 | Camoufox 进得去并且看到 1240 件 mens-jackets，但 `?ftxt=arcteryx` 返回 2 件 Outdoor Research 替代品（"找不到 → 推荐"）。**Arc'teryx 已撤出 Backcountry** |
+| 5 | Steep & Cheap | ⚠️ 已停售 | 0 | Backcountry 同公司同情况 |
 | 6 | Moosejaw | ❌ 已收购 | — | 重定向到 Public Lands，后者维护页 403 |
-| 7 | REI Outlet | ❌ 双重屏障 | — | 直接 search 返回 403/296B challenge；/c/* /b/* 全 404；GraphQL 隐藏在 JS chunks |
+| 7 | **REI** (US) | ✅ 可用 | 13 | Camoufox 真 Firefox 指纹 + `data-ui="sale-price"` / `full-price` 抓取 |
 | 8 | Sierra | ❌ 反爬 | — | EC2 us-west-2 也返回 403；TJX 屏蔽云厂商 IP 段（不仅是海外）。非 headless 能进首页，品牌页 0 商品 |
 | 9 | The Last Hunt | ⚠️ 无库存 | 0 | 站点正常但已不售 Arc'teryx（搜索返回其他品牌） |
 | 10 | Altitude Sports | ⚠️ 无库存 | 0 | 同上，搜索返回 Garmin/Sweet Protection 等 |
@@ -20,7 +20,7 @@
 | 12 | Zalando Lounge | ❌ 需登录 | — | 闪购站，所有品牌页要会员登录 |
 | 13 | 好日子 (CN) | ❌ SSL/不存在 | — | TLS connect error；域名疑似失效 |
 
-**当前总量：231 件 (3/13 站点)**
+**当前总量：245 件 (4/13 站点)** — SSENSE 26 + MEC 129 + EVO 77 + REI 13
 
 ## 文件结构
 
