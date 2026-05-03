@@ -684,6 +684,72 @@ const REGION_LABEL = {
     us:'美国', ca:'加拿大', gb:'英国', de:'德国', fr:'法国', nl:'荷兰',
     au:'澳大利亚', se:'瑞典', at:'奥地利', ch:'瑞士', jp:'日本', it:'意大利', es:'西班牙', dk:'丹麦', be:'比利时',
 };
+// 平台支持的所有区域 — 用户地理位置不在这里就 fallback 美国
+const SUPPORTED_REGIONS = new Set(Object.keys(REGION_LABEL));
+
+// IANA 时区 → 国家代码：浏览器零开销自带，不需任何 API/权限
+const TZ_TO_REGION = {
+    // United States
+    'America/New_York':'us','America/Los_Angeles':'us','America/Chicago':'us',
+    'America/Denver':'us','America/Phoenix':'us','America/Anchorage':'us',
+    'America/Detroit':'us','America/Indianapolis':'us','America/Indiana/Indianapolis':'us',
+    'America/Boise':'us','America/Juneau':'us','America/Kentucky/Louisville':'us',
+    'America/Menominee':'us','America/Sitka':'us',
+    'Pacific/Honolulu':'us','Pacific/Guam':'us',
+    // Canada
+    'America/Toronto':'ca','America/Vancouver':'ca','America/Montreal':'ca',
+    'America/Edmonton':'ca','America/Halifax':'ca','America/Winnipeg':'ca',
+    'America/Regina':'ca','America/St_Johns':'ca','America/Whitehorse':'ca',
+    // United Kingdom
+    'Europe/London':'gb','Europe/Belfast':'gb',
+    // Germany
+    'Europe/Berlin':'de','Europe/Munich':'de',
+    // France
+    'Europe/Paris':'fr',
+    // Netherlands
+    'Europe/Amsterdam':'nl',
+    // Australia
+    'Australia/Sydney':'au','Australia/Melbourne':'au','Australia/Brisbane':'au',
+    'Australia/Perth':'au','Australia/Adelaide':'au','Australia/Hobart':'au','Australia/Darwin':'au',
+    // Sweden
+    'Europe/Stockholm':'se',
+    // Austria
+    'Europe/Vienna':'at',
+    // Switzerland
+    'Europe/Zurich':'ch',
+    // Japan
+    'Asia/Tokyo':'jp',
+    // Italy
+    'Europe/Rome':'it',
+    // Spain
+    'Europe/Madrid':'es','Atlantic/Canary':'es',
+    // Denmark
+    'Europe/Copenhagen':'dk',
+    // Belgium
+    'Europe/Brussels':'be',
+};
+
+// 检测用户所在地区：取浏览器时区 → 映射到平台支持的国家。
+// 不支持的地区（中国大陆、东南亚、南美、中东等）一律落到 us。
+function detectRegion() {
+    try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const r = TZ_TO_REGION[tz];
+        if (r && SUPPORTED_REGIONS.has(r)) return r;
+    } catch (_) {}
+    return 'us';
+}
+
+// 初始 region 解析顺序：URL 参数 > localStorage（用户上次选择）> 自动检测 > 美国
+function initialRegion() {
+    try {
+        const u = new URLSearchParams(location.search).get('region');
+        if (u) return u;
+        const stored = localStorage.getItem('region');
+        if (stored !== null) return stored;
+    } catch (_) {}
+    return detectRegion();
+}
 const GENDER_LABEL = { men: '男装', women: '女装', unknown: '其他' };
 
 // 销售平台映射（dealer key → 显示名 + 颜色）
@@ -787,7 +853,7 @@ const extractSeries = (cleanedName) => {
 const state = {
     q: '',
     platform: 'all',
-    region: 'all',
+    region: initialRegion(),   // 默认按 IP/时区自动；不支持地区→us
     gender: 'all',
     category: 'all',
     series: 'all',
@@ -808,6 +874,8 @@ const writeURL = () => {
     }
     const qs = p.toString();
     history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+    // 持久化用户选择的国家（含 'all'）— 覆盖下次访问的自动检测
+    try { localStorage.setItem('region', state.region); } catch (_) {}
 };
 
 // ── Normalize ISO timestamp → "YYYY-MM-DD HH:MM:SS" ──
@@ -1173,7 +1241,9 @@ const initSort = () => {
 const initReset = () => {
     document.getElementById('reset-link').addEventListener('click', (e) => {
         e.preventDefault();
-        Object.assign(state, { q: '', platform: 'all', region: 'all', gender: 'all', category: 'all', series: 'all', sort: 'discount_desc' });
+        // 重置时清掉本地保存的 region，回到自动检测的默认
+        try { localStorage.removeItem('region'); } catch (_) {}
+        Object.assign(state, { q: '', platform: 'all', region: detectRegion(), gender: 'all', category: 'all', series: 'all', sort: 'discount_desc' });
         document.getElementById('q').value = '';
         document.getElementById('search-wrap').classList.remove('has-value');
         document.getElementById('sort').value = 'discount_desc';
