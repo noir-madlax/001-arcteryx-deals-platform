@@ -6,7 +6,8 @@ from pathlib import Path
 DEALER_KEYS = [
     "ssense",
     "mec",
-    # 后续加：rei, backcountry, steepandcheap, sportsshoes
+    "evo",
+    # 后续加：rei, backcountry, steepandcheap
 ]
 
 def main():
