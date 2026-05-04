@@ -28,8 +28,10 @@ def make_sku_id(dealer: str, url: str) -> str:
         m = re.search(r'/product/([0-9-]+)/', url or "")
         if m: return f"mec:{m.group(1)}"
     elif dealer == "evo":
-        m = re.search(r'/([a-z0-9-]+)$', url or "")
-        if m: return f"evo:{m.group(1)}"
+        # EVO 把同一商品挂多个分类，URL 末段会重复（shell-jackets/sabre vs
+        # insulated-jackets/sabre），用整段 path 才能保证唯一
+        m = re.search(r'evo\.com(/[a-z0-9/-]+)$', url or "")
+        if m: return f"evo:{m.group(1).strip('/')}"
     elif dealer == "rei":
         m = re.search(r'/product/(\d+)/', url or "")
         if m: return f"rei:{m.group(1)}"

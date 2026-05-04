@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # ============================================================
-#  Dealer scraper — SSENSE / MEC / EVO / REI 每天抓一次
-#  Cron: 0 3 * * *   (UTC 03:00, 错开 outlet 的 0/6/12/18)
+#  Dealer scraper — SSENSE / MEC / EVO / REI 每 6h 一次
+#  Cron: 0 3,9,15,21 * * *   (UTC, 错开 outlet 的 0/6/12/18 三小时)
+#  这样两个 scraper 不会同时跑，避免 EC2 OOM
 # ============================================================
 set -euo pipefail
 
