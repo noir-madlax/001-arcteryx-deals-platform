@@ -125,11 +125,14 @@
             align-items: baseline;
             gap: 10px;
             min-width: 0;
+            flex: 1 1 auto;        /* allow brand to take remaining space */
         }
         .brand-mark {
             font-size: 16px;
             font-weight: 700;
             letter-spacing: 0.02em;
+            white-space: nowrap;
+            flex-shrink: 0;        /* never clip the brand wordmark */
         }
         .brand-sub {
             font-size: 11px;
@@ -138,6 +141,9 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
         }
         .header-stats {
             display: flex;
@@ -152,10 +158,15 @@
             font-variant-numeric: tabular-nums;
         }
         @media (max-width: 640px) {
-            .header-inner { padding: 12px 16px; }
+            .header-inner { padding: 12px 14px; gap: 10px; }
+            .brand-mark { font-size: 14px; letter-spacing: 0.01em; }
             .brand-sub { display: none; }
-            .header-stats { gap: 12px; font-size: 11px; }
+            .header-stats { gap: 10px; font-size: 11px; flex-wrap: wrap; justify-content: flex-end; }
             .header-stats .hide-sm { display: none; }
+        }
+        @media (max-width: 380px) {
+            /* very narrow screens — drop max-discount to give brand title room */
+            .header-stats span:nth-child(2) { display: none; }
         }
 
         /* Inline result count in filter-top */
@@ -601,7 +612,7 @@
     <div class="header-inner">
         <div class="brand">
             <span class="brand-mark">ARC'TERYX</span>
-            <span class="brand-sub">Outlet Deals Tracker</span>
+            <span class="brand-sub">Deals Tracker</span>
         </div>
         <div class="header-stats">
             <span><strong id="stat-total">—</strong> 件</span>
