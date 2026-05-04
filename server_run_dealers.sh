@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# ============================================================
+#  Dealer scraper — SSENSE / MEC / EVO / REI 每天抓一次
+#  Cron: 0 3 * * *   (UTC 03:00, 错开 outlet 的 0/6/12/18)
+# ============================================================
+set -euo pipefail
+
+PROJ_DIR="$HOME/arcteryx"
+LOG="$PROJ_DIR/dealers.log"
+PYTHON=python3.12
+
+GITHUB_REPO="noir-madlax/001-arcteryx-deals-platform"
+if [ -f "$HOME/.arcteryx_secrets" ]; then
+  # shellcheck disable=SC1091
+  source "$HOME/.arcteryx_secrets"
+fi
+
+cd "$PROJ_DIR"
+
+log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG"; }
+
+log "===== DEALERS START ====="
+
+# pull latest code
+git fetch origin main 2>&1 | tee -a "$LOG"
+git reset --hard origin/main 2>&1 | tee -a "$LOG"
+
+# 4 个 dealer 串行跑（EC2 1.6GB RAM 不够并行 + Camoufox/Chromium 开销大）
+mkdir -p dealers/_partial
+for d in mec evo rei ssense; do
+    log "→ dealers.$d"
+    if timeout 1800 $PYTHON -m dealers.$d >> "$LOG" 2>&1; then
+        log "  ✓ $d done"
+    else
+        log "  ✗ $d failed (timeout 30 min or error)"
+    fi
+done
+
+# 合并到 results.json
+log "merge → results.json"
+$PYTHON -m dealers.merge_partial 2>&1 | tee -a "$LOG"
+
+# 推到 GitHub（只 commit results.json，dealers/_partial/ 在 .gitignore）
+log "git commit + push"
+git config user.email "bot@arcteryx-deals.local"
+git config user.name  "ArcBot"
+git remote set-url origin "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git"
+git add dealers/results.json
+if ! git diff --cached --quiet; then
+    TS=$(date '+%Y-%m-%d %H:%M')
+    git commit -m "data(dealers): auto refresh ${TS}" 2>&1 | tee -a "$LOG"
+    git push origin main 2>&1 | tee -a "$LOG" || log "push failed (non-fatal)"
+else
+    log "no changes"
+fi
+
+log "===== DEALERS END ====="
