@@ -6,13 +6,13 @@
 
 | # | 站点 | 状态 | 抓到件数 | 备注 |
 |---|---|---|---:|---|
-| 1 | **SSENSE** (US) | ✅ 可用 | 26 | 纯 HTTP（Fetcher）+ JSON-LD |
-| 2 | **MEC** (CA) | ✅ 可用 | 129 | StealthyFetcher + HTML |
-| 3 | **EVO** (US) | ✅ 可用 | 77 | StealthySession 暖首页 cookies → mens + womens 商品列表页 |
+| 1 | **SSENSE** (US) | ✅ 可用 | 26 | StealthySession + solve_cloudflare（Camoufox 单飞过不了 CF）；列表 + 详情页颜色都有，sizes 待补 |
+| 2 | **MEC** (CA) | ✅ 可用 | 127 | StealthyFetcher + JSON-LD `productGroupId/hasVariant` 拿到完整 sizes/colors |
+| 3 | **EVO** (US) | ✅ 可用 | 77 | StealthySession 暖首页 → 详情页 `data-product-size` / `data-product-color` 解析 |
 | 4 | Backcountry | ⚠️ 已停售 | 0 | Camoufox 进得去并且看到 1240 件 mens-jackets，但 `?ftxt=arcteryx` 返回 2 件 Outdoor Research 替代品（"找不到 → 推荐"）。**Arc'teryx 已撤出 Backcountry** |
 | 5 | Steep & Cheap | ⚠️ 已停售 | 0 | Backcountry 同公司同情况 |
 | 6 | Moosejaw | ❌ 已收购 | — | 重定向到 Public Lands，后者维护页 403 |
-| 7 | **REI** (US) | ✅ 可用 | 13 | Camoufox 真 Firefox 指纹 + `data-ui="sale-price"` / `full-price` 抓取 |
+| 7 | **REI** (US) | ✅ 可用 | 10 | Camoufox 真 Firefox + 详情页 size-selector / color-swatch 抓 sizes/colors |
 | 8 | Sierra | ❌ 反爬 | — | EC2 us-west-2 也返回 403；TJX 屏蔽云厂商 IP 段（不仅是海外）。非 headless 能进首页，品牌页 0 商品 |
 | 9 | The Last Hunt | ⚠️ 无库存 | 0 | 站点正常但已不售 Arc'teryx（搜索返回其他品牌） |
 | 10 | Altitude Sports | ⚠️ 无库存 | 0 | 同上，搜索返回 Garmin/Sweet Protection 等 |
@@ -20,7 +20,8 @@
 | 12 | Zalando Lounge | ❌ 需登录 | — | 闪购站，所有品牌页要会员登录 |
 | 13 | 好日子 (CN) | ❌ SSL/不存在 | — | TLS connect error；域名疑似失效 |
 
-**当前总量：245 件 (4/13 站点)** — SSENSE 26 + MEC 129 + EVO 77 + REI 13
+**当前总量：240 件 (4/13 站点)** — SSENSE 26 + MEC 127 + EVO 77 + REI 10
+含 detail-enriched 尺码/颜色：EVO/MEC/REI = 100% 双填充；SSENSE = 颜色 100%、尺码 0%（详情页 size markup 后续待解）
 
 ## 文件结构
 

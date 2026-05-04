@@ -1,5 +1,6 @@
 """SSENSE — Arc'teryx 男女款；
-SSENSE 升级了 Cloudflare 每页验证，故用 StealthySession + solve_cloudflare。"""
+StealthySession+solve_cloudflare 是唯一稳跑的。Camoufox 单独跑无法过 CF Turnstile。
+注：solve_cloudflare 单页 ~30-60s；遇到顽抗时 fail 一次跳过即可。"""
 from __future__ import annotations
 import re, json, time
 from .base import DealerScraper, normalize_price, discount_pct
@@ -65,15 +66,19 @@ class Scraper(DealerScraper):
         items = []
         seen = set()
         with StealthySession(headless=True, network_idle=True, solve_cloudflare=True) as s:
-            print("[ssense] warm: home")
+            print("[ssense] warm: home", flush=True)
             s.fetch(f"{HOST}/", timeout=45000)
             # Stage 1: list pages
             for url in self.LIST_URLS:
-                print(f"[ssense] {url}")
-                p = s.fetch(url, timeout=60000)
-                body = p.body.decode("utf-8","ignore")
+                print(f"[ssense] list {url}", flush=True)
+                try:
+                    p = s.fetch(url, timeout=60000)
+                    body = p.body.decode("utf-8","ignore")
+                except Exception as e:
+                    print(f"[ssense] list fetch err: {str(e)[:80]}", flush=True)
+                    continue
                 if "Just a moment" in body[:5000]:
-                    print("[ssense] still on Cloudflare — skipping")
+                    print("[ssense] CF still blocking — skip", flush=True)
                     continue
                 page_items = self.parse_list(body, url)
                 new = 0
@@ -88,19 +93,20 @@ class Scraper(DealerScraper):
                         it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
                     items.append(it)
                     new += 1
-                print(f"[ssense] list +{new} (total {len(items)})")
-            # Stage 2: detail pages
-            print(f"[ssense] enriching {len(items)} items...")
+                print(f"[ssense] list +{new} (total {len(items)})", flush=True)
+            # Stage 2: detail pages — fail-fast，单 PDP 超时跳过
+            print(f"[ssense] enriching {len(items)} items...", flush=True)
             for i, it in enumerate(items, 1):
                 try:
-                    p = s.fetch(it["url"], timeout=45000)
+                    p = s.fetch(it["url"], timeout=30000)
                     body = p.body.decode("utf-8","ignore")
-                    detail = self.parse_detail(body)
-                    if detail:
-                        it.update(detail)
+                    if "Just a moment" in body[:3000]:
+                        continue
+                    detail = self.parse_detail(body, name_hint=it.get("name",""))
+                    if detail: it.update(detail)
                 except Exception as e:
-                    print(f"[ssense] detail err {it['url']}: {str(e)[:60]}")
-                if i % 5 == 0: print(f"[ssense] enriched {i}/{len(items)}")
+                    print(f"[ssense] detail err {it['url'][-40:]}: {str(e)[:60]}", flush=True)
+                if i % 3 == 0: print(f"[ssense] enriched {i}/{len(items)}", flush=True)
         return items
 
     # SSENSE 把每个产品包成 <a class="flex flex-col" href="/en-us/men/product/arcteryx/..."> ...
@@ -170,4 +176,8 @@ if __name__ == "__main__":
     print(f"\n=== SSENSE 抓取完毕：{len(items)} 件 ===")
     for it in items[:8]:
         print(f"  {it.get('discount_pct')}% off  ${it.get('sale_price')} ({it.get('original_price')}) {it.get('name')[:50]}")
-        print(f"    {it.get('url')}")
+    import json as _json, os as _os, time as _time
+    _os.makedirs("dealers/_partial", exist_ok=True)
+    _json.dump({"name":"SSENSE","region":"US","count":len(items),"items":items,"saved_at":_time.strftime("%Y-%m-%d %H:%M:%S")},
+               open("dealers/_partial/ssense.json","w"), indent=2, ensure_ascii=False)
+    print(f"→ dealers/_partial/ssense.json")

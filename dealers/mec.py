@@ -171,3 +171,9 @@ if __name__ == "__main__":
     for it in items[:8]:
         d = discount_pct(it.get("original_price"), it.get("sale_price"))
         print(f"  -{d}% C${it.get('sale_price')}/{it.get('original_price')}  {it.get('name')[:60]}")
+    # save standalone for run_all merge
+    import json as _json, os as _os, time as _time
+    _os.makedirs("dealers/_partial", exist_ok=True)
+    _json.dump({"name":"MEC","region":"CA","count":len(items),"items":items,"saved_at":_time.strftime("%Y-%m-%d %H:%M:%S")},
+               open("dealers/_partial/mec.json","w"), indent=2, ensure_ascii=False)
+    print(f"→ dealers/_partial/mec.json")
