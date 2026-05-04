@@ -70,6 +70,7 @@ def sku_to_row(sku: dict) -> dict:
 
     return {
         "sku_id":         sku.get("sku_id", ""),
+        "dealer":         "arcteryx_outlet",   # 区分 outlet vs 各经销商
         "model":          sku.get("model"),
         "full_name":      sku.get("full_name"),
         "color":          sku.get("color"),
@@ -202,10 +203,12 @@ def main():
         try:
             existing = []
             page = 0
+            # 只选 outlet 的行（dealer='arcteryx_outlet' 或旧数据 NULL）
+            # 避免把 dealer 经销商的行（ssense:/mec:/evo:/rei:）误删
             while True:
-                res = client.table("products").select("sku_id").range(
-                    page * 1000, page * 1000 + 999
-                ).execute()
+                res = client.table("products").select("sku_id,dealer").or_(
+                    "dealer.is.null,dealer.eq.arcteryx_outlet"
+                ).range(page * 1000, page * 1000 + 999).execute()
                 data = res.data or []
                 if not data:
                     break
@@ -215,7 +218,7 @@ def main():
                 page += 1
 
             stale = [sid for sid in existing if sid not in synced_ids]
-            print(f"[sync] stale rows to delete: {len(stale)} (existing={len(existing)}, synced={len(synced_ids)})")
+            print(f"[sync] stale outlet rows to delete: {len(stale)} (existing={len(existing)}, synced={len(synced_ids)})")
 
             deleted = 0
             for i in range(0, len(stale), BATCH_SIZE):

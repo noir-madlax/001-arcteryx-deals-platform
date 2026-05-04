@@ -40,6 +40,10 @@ done
 log "merge → results.json"
 $PYTHON -m dealers.merge_partial 2>&1 | tee -a "$LOG"
 
+# 同步到 Supabase（products 表 dealer 列）
+log "sync → Supabase"
+$PYTHON -m dealers.supabase_sync 2>&1 | tee -a "$LOG" || log "supabase sync 失败 (non-fatal)"
+
 # 推到 GitHub（只 commit results.json，dealers/_partial/ 在 .gitignore）
 log "git commit + push"
 git config user.email "bot@arcteryx-deals.local"
