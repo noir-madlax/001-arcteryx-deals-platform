@@ -35,6 +35,31 @@ class Scraper(DealerScraper):
     WAS_RE      = re.compile(r'<span[^>]*class="[^"]*was[^"]*"[^>]*>\s*\$?([\d.,]+)\s*</span>')
     NOW_RE      = re.compile(r'<span[^>]*class="[^"]*now[^"]*"[^>]*>\s*\$?([\d.,]+)\s*</span>')
 
+    # PDP: <input class="pdp-selection-input" name="Size" value="XL" [disabled] [class*=sold-out]>
+    SIZE_RADIO_RE = re.compile(
+        r'<input[^>]+pdp-selection-input[^>]+name="Size"[^>]+value="([^"]+)"[^>]*>',
+    )
+    COLOR_RADIO_RE = re.compile(
+        r'<input[^>]+pdp-selection-input[^>]+name="Color"[^>]+value="([^"]+)"[^>]*>',
+    )
+
+    def parse_detail(self, body: str) -> dict:
+        sizes = []
+        size_stock = {}
+        for m in self.SIZE_RADIO_RE.finditer(body):
+            sz = m.group(1).strip()
+            tag = m.group(0)
+            sold_out = ('disabled' in tag.lower() or 'sold-out' in tag.lower() or 'unavailable' in tag.lower())
+            sizes.append(sz)
+            size_stock[sz] = 'out_of_stock' if sold_out else 'in_stock'
+        colors = [m.group(1).strip() for m in self.COLOR_RADIO_RE.finditer(body)]
+        return {
+            "sizes": sizes,
+            "size_stock": size_stock,
+            "colors": colors,
+            "color": colors[0] if colors else "",
+        }
+
     # NOT using base.fetch — need session.
     def scrape(self) -> list[dict]:
         items = []
@@ -105,9 +130,20 @@ class Scraper(DealerScraper):
                             "region": self.REGION,
                         })
                         new += 1
-                    print(f"[evo] page {page} +{new} (total {len(items)})")
+                    print(f"[evo] list page {page} +{new} (total {len(items)})")
                     if new == 0:
                         break
+            # Stage 2: detail pages — within the same StealthySession (cookies保留)
+            print(f"[evo] enriching {len(items)} items...")
+            for i, it in enumerate(items, 1):
+                try:
+                    p = s.fetch(it["url"], timeout=45000)
+                    body = p.body.decode("utf-8","ignore")
+                    detail = self.parse_detail(body)
+                    if detail: it.update(detail)
+                except Exception as e:
+                    print(f"[evo] detail err {it['url']}: {str(e)[:60]}")
+                if i % 10 == 0: print(f"[evo] enriched {i}/{len(items)}")
         return items
 
 

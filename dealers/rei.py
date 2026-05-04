@@ -25,6 +25,40 @@ class Scraper:
     REG_RE   = re.compile(r'data-ui="regular-price">\s*\$([\d.,]+)')
     IMG_RE   = re.compile(r'<img[^>]+id="image-(\d+)-0"[^>]+src="([^"]+)"')
 
+    # PDP: <button class="size-selector__size-button" data-ui="size-selector-button:available|unavailable"><span aria-hidden="true">SIZE</span></button>
+    SIZE_BUTTON_RE = re.compile(
+        r'<button[^>]+class="size-selector__size-button"[^>]+data-ui="size-selector-button:(available|unavailable|sold-out)"[^>]*>.*?<span\s+aria-hidden="true"[^>]*>([^<]+)</span>',
+        re.S
+    )
+    # color buttons: <button class="color-btn" data-color="BLACK" data-ui="available">
+    COLOR_BUTTON_RE = re.compile(
+        r'<button[^>]+class="color-btn[^"]*"[^>]+data-color="([^"]+)"[^>]+data-ui="(available|unavailable|sold-out)"',
+    )
+    # current selected color label
+    SELECTED_COLOR_RE = re.compile(r'class="color-selector-wrapper__selected-color"[^>]*>([^<]+)</span>')
+
+    def parse_detail(self, body: str) -> dict:
+        """REI PDP: 抓 size buttons + color swatch"""
+        sizes = []
+        size_stock = {}
+        for m in self.SIZE_BUTTON_RE.finditer(body):
+            status, sz = m.group(1), m.group(2).strip()
+            if not sz: continue
+            sizes.append(sz)
+            size_stock[sz] = 'in_stock' if status == 'available' else 'out_of_stock'
+        colors = []
+        for m in self.COLOR_BUTTON_RE.finditer(body):
+            cl = m.group(1).strip().title()  # BLACK → Black
+            if cl: colors.append(cl)
+        sel = self.SELECTED_COLOR_RE.search(body)
+        primary_color = sel.group(1).strip() if sel else (colors[0] if colors else "")
+        return {
+            "sizes": sizes,
+            "size_stock": size_stock,
+            "colors": colors,
+            "color": primary_color,
+        }
+
     def scrape(self) -> list[dict]:
         items = []
         seen = set()
@@ -91,7 +125,19 @@ class Scraper:
                         "dealer_name":    self.NAME,
                         "region":         self.REGION,
                     })
-                print(f"[rei] +{len(items)} (total)")
+                print(f"[rei] list +{len(items)} (total)")
+            # Stage 2: detail enrichment
+            print(f"[rei] enriching {len(items)} items...")
+            for i, it in enumerate(items, 1):
+                try:
+                    page.goto(it["url"], wait_until="networkidle", timeout=45000)
+                    time.sleep(3)
+                    body = page.content()
+                    detail = self.parse_detail(body)
+                    if detail: it.update(detail)
+                except Exception as e:
+                    print(f"[rei] detail err {it['url']}: {str(e)[:60]}")
+                if i % 3 == 0: print(f"[rei] enriched {i}/{len(items)}")
         return items
 
 

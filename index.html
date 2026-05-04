@@ -1339,8 +1339,10 @@ async function init() {
                         region_name:    (d.region || ''),
                         category:       '',  // 由 inferCategory 推断
                         description:    '',
-                        sizes:          [],
-                        size_stock:     {},
+                        sizes:          Array.isArray(it.sizes) ? it.sizes : [],
+                        size_stock:     (it.size_stock && typeof it.size_stock === 'object') ? it.size_stock : {},
+                        color:          it.color || '',
+                        colors:         Array.isArray(it.colors) ? it.colors : [],
                         last_updated:   js.generated_at || '',
                         sku_id:         '',
                         images:         [it.image].filter(Boolean),

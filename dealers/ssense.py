@@ -17,12 +17,57 @@ class Scraper(DealerScraper):
         "https://www.ssense.com/en-us/women/designers/arcteryx",
     ]
 
+    # SSENSE PDP: <select id="pdpSizeDropdown"><option value="XS_..." [disabled]>XS - Only N remaining</option> ...
+    SIZE_OPT_RE = re.compile(
+        r'<option\s+[^>]*value="([A-Za-z0-9-]+)_[^"]*"\s*([^>]*)>(.*?)</option>',
+        re.S
+    )
+
+    # SSENSE 在商品名里塞颜色作首词（"Black Alpha SV Jacket"）
+    _COLOR_PREFIX = re.compile(
+        r"^(black|white|beige|brown|green|blue|red|yellow|orange|purple|pink|gr[ae]y|"
+        r"off-white|olive|khaki|navy|gold|silver|tan|cream|charcoal|burgundy|teal|sage|"
+        r"sand|coral|mint|rust|stone|cobalt|ivory|forest|graphite|peach|lavender|"
+        r"taupe|mauve|crimson|emerald|amber|bronze|maroon|fuchsia)\b",
+        re.I
+    )
+
+    def parse_detail(self, body: str, name_hint: str = "") -> dict:
+        """从 SSENSE PDP <select id=pdpSizeDropdown> 抽尺码 + 库存；color 从名首词提取"""
+        i = body.find('id="pdpSizeDropdown"')
+        sizes = []
+        size_stock = {}
+        if i >= 0:
+            end = body.find('</select>', i)
+            if end >= 0:
+                block = body[i:end]
+                for m in self.SIZE_OPT_RE.finditer(block):
+                    attrs = m.group(2) or ""
+                    label = re.sub(r'\s+', ' ', m.group(3)).strip()
+                    if not label or 'SELECT A SIZE' in label.upper():
+                        continue
+                    sz = label.split(' - ')[0].strip()
+                    if not sz: continue
+                    disabled = 'disabled' in attrs.lower()
+                    sizes.append(sz)
+                    size_stock[sz] = 'out_of_stock' if disabled else 'in_stock'
+        # color from JSON-LD product name (h1 在 SSENSE PDP 是 cookie banner)
+        # 用 lazy [^}]*? 避免被 brand.name="Arc'teryx" 偷换成品牌名
+        name = name_hint
+        m_name = re.search(r'"@type":"Product",[^}]*?"name":"([^"]+)"', body)
+        if m_name: name = m_name.group(1)
+        color = ""
+        m = self._COLOR_PREFIX.match(name or "")
+        if m: color = m.group(1).title()
+        return {"sizes": sizes, "size_stock": size_stock, "color": color, "colors": [color] if color else []}
+
     def scrape(self) -> list[dict]:
         items = []
         seen = set()
         with StealthySession(headless=True, network_idle=True, solve_cloudflare=True) as s:
             print("[ssense] warm: home")
             s.fetch(f"{HOST}/", timeout=45000)
+            # Stage 1: list pages
             for url in self.LIST_URLS:
                 print(f"[ssense] {url}")
                 p = s.fetch(url, timeout=60000)
@@ -43,7 +88,19 @@ class Scraper(DealerScraper):
                         it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
                     items.append(it)
                     new += 1
-                print(f"[ssense] +{new} (total {len(items)})")
+                print(f"[ssense] list +{new} (total {len(items)})")
+            # Stage 2: detail pages
+            print(f"[ssense] enriching {len(items)} items...")
+            for i, it in enumerate(items, 1):
+                try:
+                    p = s.fetch(it["url"], timeout=45000)
+                    body = p.body.decode("utf-8","ignore")
+                    detail = self.parse_detail(body)
+                    if detail:
+                        it.update(detail)
+                except Exception as e:
+                    print(f"[ssense] detail err {it['url']}: {str(e)[:60]}")
+                if i % 5 == 0: print(f"[ssense] enriched {i}/{len(items)}")
         return items
 
     # SSENSE 把每个产品包成 <a class="flex flex-col" href="/en-us/men/product/arcteryx/..."> ...
