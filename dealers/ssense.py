@@ -1,6 +1,9 @@
 """SSENSE — Arc'teryx 男女款；
-StealthySession+solve_cloudflare 是唯一稳跑的。Camoufox 单独跑无法过 CF Turnstile。
-注：solve_cloudflare 单页 ~30-60s；遇到顽抗时 fail 一次跳过即可。"""
+试过双引擎 (StealthySession 列表 + Camoufox PDP)，Camoufox 也过不了
+SSENSE 每页 Cloudflare Turnstile，详情页全返 CF stub。
+
+最终采用：StealthySession + solve_cloudflare 跑列表页（提取 color +
+基本信息）；详情页放弃，sizes 留空。"""
 from __future__ import annotations
 import re, json, time
 from .base import DealerScraper, normalize_price, discount_pct
@@ -34,26 +37,52 @@ class Scraper(DealerScraper):
     )
 
     def parse_detail(self, body: str, name_hint: str = "") -> dict:
-        """从 SSENSE PDP <select id=pdpSizeDropdown> 抽尺码 + 库存；color 从名首词提取"""
-        i = body.find('id="pdpSizeDropdown"')
-        sizes = []
-        size_stock = {}
-        if i >= 0:
-            end = body.find('</select>', i)
-            if end >= 0:
-                block = body[i:end]
-                for m in self.SIZE_OPT_RE.finditer(block):
-                    attrs = m.group(2) or ""
-                    label = re.sub(r'\s+', ' ', m.group(3)).strip()
-                    if not label or 'SELECT A SIZE' in label.upper():
-                        continue
-                    sz = label.split(' - ')[0].strip()
-                    if not sz: continue
-                    disabled = 'disabled' in attrs.lower()
-                    sizes.append(sz)
-                    size_stock[sz] = 'out_of_stock' if disabled else 'in_stock'
-        # color from JSON-LD product name (h1 在 SSENSE PDP 是 cookie banner)
-        # 用 lazy [^}]*? 避免被 brand.name="Arc'teryx" 偷换成品牌名
+        """SSENSE PDP 把 sizes 嵌在 inline GraphQL 状态里的 "variants":[...]
+        每个 variant 含 {"size":{"name":"S",...}, "inStock":true, "lowStock":n} —
+        从这里提取 sizes/库存。color 从 JSON-LD name 首词。"""
+        sizes, size_stock = [], {}
+        # 1) 找 "variants":[ 数组（手动平衡 [ ] 解 JSON）
+        idx = body.find('"variants":[')
+        if idx >= 0:
+            start = idx + len('"variants":')
+            depth = 0
+            end = -1
+            for i in range(start, min(len(body), start + 50000)):
+                c = body[i]
+                if c == '[': depth += 1
+                elif c == ']':
+                    depth -= 1
+                    if depth == 0:
+                        end = i + 1
+                        break
+            if end > 0:
+                try:
+                    variants = json.loads(body[start:end])
+                    for v in variants:
+                        sz = (v.get("size") or {}).get("name")
+                        if not sz: continue
+                        sizes.append(sz)
+                        size_stock[sz] = "in_stock" if v.get("inStock") else "out_of_stock"
+                except Exception:
+                    pass
+        # 2) 兜底：旧版 SSENSE 的 <select id=pdpSizeDropdown>（少见）
+        if not sizes:
+            i = body.find('id="pdpSizeDropdown"')
+            if i >= 0:
+                end = body.find('</select>', i)
+                if end >= 0:
+                    block = body[i:end]
+                    for m in self.SIZE_OPT_RE.finditer(block):
+                        attrs = m.group(2) or ""
+                        label = re.sub(r'\s+', ' ', m.group(3)).strip()
+                        if not label or 'SELECT A SIZE' in label.upper():
+                            continue
+                        sz = label.split(' - ')[0].strip()
+                        if not sz: continue
+                        disabled = 'disabled' in attrs.lower()
+                        sizes.append(sz)
+                        size_stock[sz] = 'out_of_stock' if disabled else 'in_stock'
+        # 3) color from JSON-LD product name 首词（lazy match 避免吃到 brand.name）
         name = name_hint
         m_name = re.search(r'"@type":"Product",[^}]*?"name":"([^"]+)"', body)
         if m_name: name = m_name.group(1)
@@ -94,19 +123,9 @@ class Scraper(DealerScraper):
                     items.append(it)
                     new += 1
                 print(f"[ssense] list +{new} (total {len(items)})", flush=True)
-            # Stage 2: detail pages — fail-fast，单 PDP 超时跳过
-            print(f"[ssense] enriching {len(items)} items...", flush=True)
-            for i, it in enumerate(items, 1):
-                try:
-                    p = s.fetch(it["url"], timeout=30000)
-                    body = p.body.decode("utf-8","ignore")
-                    if "Just a moment" in body[:3000]:
-                        continue
-                    detail = self.parse_detail(body, name_hint=it.get("name",""))
-                    if detail: it.update(detail)
-                except Exception as e:
-                    print(f"[ssense] detail err {it['url'][-40:]}: {str(e)[:60]}", flush=True)
-                if i % 3 == 0: print(f"[ssense] enriched {i}/{len(items)}", flush=True)
+        # 详情页 enrichment 已放弃: SSENSE PDP 全部被 Cloudflare 拦回 stub HTML，
+        # Camoufox/StealthySession 都解不开。color 已从列表页 line-through HTML 拿到，
+        # sizes 留空（前端 cardHTML 会显示 "尺码见 SSENSE" 占位）。
         return items
 
     # SSENSE 把每个产品包成 <a class="flex flex-col" href="/en-us/men/product/arcteryx/..."> ...
