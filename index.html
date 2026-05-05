@@ -1319,57 +1319,8 @@ async function init() {
             .map(p => ({ ...p, _series: extractSeries(cleanName(p.full_name || p.model)), _platform: platformKey(p) }));
     }
 
-    // ── 合并经销商数据（dealers/results.json）──────────────────────────────
-    // 来源：SSENSE / MEC / EVO / REI 抓取后产生的 JSON
-    try {
-        const r = await fetch('dealers/results.json', { cache: 'no-cache' });
-        if (r.ok) {
-            const js = await r.json();
-            const SYM = { USD: '$', CAD: 'C$', EUR: '€', GBP: '£', SEK: 'kr', CHF: 'CHF' };
-            const COLOR_PREFIX = /^(black|white|beige|brown|green|blue|red|yellow|orange|purple|pink|gr[ae]y|off-white|olive|khaki|navy|gold|silver|tan|cream|charcoal|burgundy|teal|sage|sand|coral|mint|rust|stone|cobalt|ivory|forest|graphite|peach|lavender)\s+/i;
-            const dealerProducts = [];
-            for (const dk of Object.keys(js.dealers || {})) {
-                const d = js.dealers[dk];
-                for (const it of (d.items || [])) {
-                    const name = it.name || '';
-                    // SSENSE/MEC 等会把颜色前缀进商品名，去除以便系列识别
-                    const cleanedForSeries = name.replace(COLOR_PREFIX, '').trim();
-                    dealerProducts.push({
-                        full_name:      name,
-                        model:          cleanedForSeries,
-                        url:            it.url,
-                        image_url:      it.image,
-                        original_price: it.original_price,
-                        sale_price:     it.sale_price,
-                        sale_price_max: it.sale_price,
-                        discount_pct:   it.discount_pct || 0,
-                        currency:       it.currency,
-                        symbol:         SYM[it.currency] || '$',
-                        gender:         it.gender || 'unknown',
-                        region:         (it.region || 'us').toLowerCase(),
-                        region_name:    (d.region || ''),
-                        category:       '',  // 由 inferCategory 推断
-                        description:    '',
-                        sizes:          Array.isArray(it.sizes) ? it.sizes : [],
-                        size_stock:     (it.size_stock && typeof it.size_stock === 'object') ? it.size_stock : {},
-                        color:          it.color || '',
-                        colors:         Array.isArray(it.colors) ? it.colors : [],
-                        last_updated:   js.generated_at || '',
-                        sku_id:         '',
-                        images:         [it.image].filter(Boolean),
-                        dealer:         it.dealer || dk,
-                        dealer_name:    it.dealer_name || d.name,
-                        _series:        extractSeries(cleanName(cleanedForSeries)),
-                        _platform:      it.dealer || dk,
-                    });
-                }
-            }
-            products = products.concat(dealerProducts);
-            console.info(`[dealers] merged ${dealerProducts.length} items from ${Object.keys(js.dealers||{}).length} dealers`);
-        }
-    } catch (e) {
-        console.warn('dealer data load failed:', e);
-    }
+    // dealer 数据 (SSENSE/MEC/EVO/REI) 现已并入 Supabase products 表 (dealer 列区分)
+    // 不再 fetch dealers/results.json — 单一数据源 = Supabase
 
     computeStats();
     initFilters();
