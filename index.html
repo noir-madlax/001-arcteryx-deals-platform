@@ -594,6 +594,159 @@
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
+
+        /* ─── 今日上新 弹窗 ───────────────────────────────── */
+        .na-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        .na-overlay.show { opacity: 1; pointer-events: auto; }
+        .na-card {
+            background: var(--surface);
+            border-radius: var(--r-lg);
+            box-shadow: var(--shadow-md);
+            max-width: 720px;
+            width: 100%;
+            max-height: 86vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(8px);
+            transition: transform 0.2s ease;
+        }
+        .na-overlay.show .na-card { transform: translateY(0); }
+        .na-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            padding: 18px 20px 12px;
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+        }
+        .na-title {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+        .na-meta {
+            font-size: 11.5px;
+            color: var(--text-3);
+            font-variant-numeric: tabular-nums;
+        }
+        .na-meta strong { color: var(--accent); font-weight: 600; }
+        .na-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-2);
+            font-size: 18px;
+            line-height: 1;
+            transition: background 0.15s;
+        }
+        .na-close:hover { background: var(--hover); color: var(--text); }
+        .na-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px 12px;
+            padding: 14px 18px;
+            overflow-y: auto;
+        }
+        @media (max-width: 720px) {
+            .na-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; }
+            .na-head { padding: 14px 14px 10px; }
+            .na-title { font-size: 15px; }
+        }
+        .na-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            border-radius: var(--r-md);
+            transition: transform 0.15s;
+        }
+        .na-item:hover { transform: translateY(-1px); }
+        .na-img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: #f0ece4;
+            border-radius: var(--r-md);
+            object-fit: cover;
+        }
+        .na-name {
+            font-size: 12.5px;
+            margin-top: 6px;
+            color: var(--text);
+            line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .na-pricerow {
+            margin-top: 4px;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+        .na-sale { font-size: 13px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+        .na-orig { font-size: 11px; text-decoration: line-through; color: var(--text-3); font-variant-numeric: tabular-nums; }
+        .na-disc {
+            font-size: 10px;
+            font-weight: 600;
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+        .na-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px 16px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            background: var(--bg);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .na-skip {
+            color: var(--text-3);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px 8px;
+            font: inherit;
+        }
+        .na-skip:hover { color: var(--text); }
+        .na-cta {
+            background: var(--text);
+            color: var(--surface);
+            padding: 8px 14px;
+            border-radius: var(--r-sm);
+            font-size: 12px;
+            font-weight: 500;
+            transition: background 0.15s;
+        }
+        .na-cta:hover { background: #000; }
     </style>
 </head>
 <body>
@@ -667,6 +820,24 @@
         等经销商 · 价格汇率仅供参考，以各平台实际为准。</p>
     <p style="margin-top:6px">© Arc'teryx Outlet Tracker · Non-affiliated</p>
 </footer>
+
+<!-- 今日上新弹窗 (有数据才显示) -->
+<div class="na-overlay" id="na-overlay" hidden>
+    <div class="na-card" role="dialog" aria-labelledby="na-title">
+        <button class="na-close" id="na-close" aria-label="关闭">×</button>
+        <div class="na-head">
+            <div>
+                <div class="na-title" id="na-title">🔥 今日上新</div>
+                <div class="na-meta">新加入折扣 <strong id="na-count">0</strong> 件 · <span id="na-date"></span></div>
+            </div>
+        </div>
+        <div class="na-grid" id="na-grid"></div>
+        <div class="na-foot">
+            <button class="na-skip" id="na-skip">今天不再提醒</button>
+            <a class="na-cta" id="na-cta" href="?sort=recent">查看全部 →</a>
+        </div>
+    </div>
+</div>
 
 <script>
 'use strict';
@@ -1315,6 +1486,85 @@ async function init() {
     computeStats();
     initFilters();
     render();
+    maybeShowNewArrivals();   // 今日上新弹窗（first_seen >= 今日 0 点）
+}
+
+// ── 今日上新弹窗 ──────────────────────────────────────────────────────────
+function todayKey() {
+    // YYYY-MM-DD（用本地时区，更贴近用户感知；first_seen 是 UTC tz-aware）
+    const d = new Date();
+    return d.getFullYear() + '-' +
+           String(d.getMonth() + 1).padStart(2, '0') + '-' +
+           String(d.getDate()).padStart(2, '0');
+}
+function maybeShowNewArrivals() {
+    const today = todayKey();
+    try {
+        if (localStorage.getItem('naDismissed') === today) return;
+    } catch (_) {}
+
+    // 今天 00:00 本地时间起新增的（first_seen 是 ISO，浏览器 Date 解析自动转本地）
+    const startMs = new Date(today + 'T00:00:00').getTime();
+    const newOnes = products.filter(p => {
+        if (!p.first_seen) return false;
+        const t = Date.parse(p.first_seen);
+        return !isNaN(t) && t >= startMs;
+    });
+    if (newOnes.length === 0) return;
+
+    // 取 top 12，按折扣率优先
+    const top = newOnes
+        .slice()
+        .sort((a, b) => (b.discount_pct || 0) - (a.discount_pct || 0))
+        .slice(0, 12);
+
+    const overlay = document.getElementById('na-overlay');
+    const grid = document.getElementById('na-grid');
+    document.getElementById('na-count').textContent = newOnes.length;
+    document.getElementById('na-date').textContent = today;
+    grid.innerHTML = top.map(p => {
+        const name = cleanName(p.full_name || p.model);
+        const sym = p.symbol || '$';
+        const sale = fmt(p.sale_price);
+        const orig = (p.original_price && p.original_price > p.sale_price)
+            ? `<span class="na-orig">${sym}${fmt(p.original_price)}</span>` : '';
+        const disc = p.discount_pct ? `<span class="na-disc">-${p.discount_pct}%</span>` : '';
+        const skuParam = p.sku_id ? `&sku=${encodeURIComponent(p.sku_id)}` : '';
+        const href = `product-detail.html?url=${encodeURIComponent(p.url || '')}${skuParam}`;
+        const img = p.image_url
+            ? `<img class="na-img" src="${p.image_url}" alt="${name.replace(/"/g, '&quot;')}" loading="lazy" onerror="this.style.display='none'">`
+            : `<div class="na-img"></div>`;
+        return `<a class="na-item" href="${href}">
+            ${img}
+            <div class="na-name">${name}</div>
+            <div class="na-pricerow">
+                <span class="na-sale">${sym}${sale}</span>
+                ${orig}${disc}
+            </div>
+        </a>`;
+    }).join('');
+
+    overlay.hidden = false;
+    requestAnimationFrame(() => overlay.classList.add('show'));
+
+    function close() {
+        overlay.classList.remove('show');
+        setTimeout(() => { overlay.hidden = true; }, 220);
+    }
+    document.getElementById('na-close').addEventListener('click', close, { once: true });
+    document.getElementById('na-skip').addEventListener('click', () => {
+        try { localStorage.setItem('naDismissed', today); } catch (_) {}
+        close();
+    }, { once: true });
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close();
+    });
+    document.addEventListener('keydown', function escClose(e) {
+        if (e.key === 'Escape') {
+            close();
+            document.removeEventListener('keydown', escClose);
+        }
+    });
 }
 
 init();
