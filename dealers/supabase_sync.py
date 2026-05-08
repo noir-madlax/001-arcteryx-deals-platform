@@ -105,6 +105,11 @@ def main():
         grand_total += ok
 
         # ── delete stale rows that are no longer in current scrape (scoped to this dealer)
+        # 但：如果本轮抓到 0 件，几乎肯定是抓取失败而不是该 dealer 真的没货，
+        # 跳过清理避免把 Supabase 里现存的几十~上百件全删光
+        if not rows:
+            print(f"[sync:{dkey}] 0 rows in scrape — skipping stale cleanup (likely scrape failure)")
+            continue
         try:
             synced_ids = {r["sku_id"] for r in rows}
             existing = []
