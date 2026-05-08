@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-08 16:08:55",
+  "generated_at": "2026-05-08 22:09:00",
   "dealers": {
     "mec": {
       "name": "MEC",
@@ -4706,7 +4706,7 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 13,
+      "count": 12,
       "items": [
         {
           "url": "https://www.rei.com/product/243175/arcteryx-atom-insulated-hoody-mens",
@@ -4984,13 +4984,11 @@
           "dealer_name": "REI",
           "region": "US",
           "sizes": [
-            "S",
             "L",
             "XL",
             "XXL"
           ],
           "size_stock": {
-            "S": "in_stock",
             "L": "in_stock",
             "XL": "in_stock",
             "XXL": "in_stock"
@@ -5114,11 +5112,11 @@
           "dealer_name": "REI",
           "region": "US",
           "sizes": [
-            "XL",
+            "S",
             "XXL"
           ],
           "size_stock": {
-            "XL": "in_stock",
+            "S": "in_stock",
             "XXL": "in_stock"
           },
           "colors": [
@@ -5127,7 +5125,7 @@
             "Copper Sky",
             "Black Sapphire"
           ],
-          "color": "Solitude"
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/235311/arcteryx-proton-insulated-hoody-mens",
@@ -5163,45 +5161,6 @@
             "Vitality/Black Sapphire"
           ],
           "color": "Vitality/Black Sapphire"
-        },
-        {
-          "url": "https://www.rei.com/product/235614/arcteryx-kyanite-hoody-womens",
-          "name": "Kyanite Hoody - Women's",
-          "image": "https://www.rei.com/media/ae28528d-fe79-47bb-933f-b815736a692f.jpg",
-          "original_price": 200.0,
-          "sale_price": 99.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "XXS",
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XXS": "in_stock",
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Moondrop",
-            "Black",
-            "Dark Stratus",
-            "Bliss/Mars"
-          ],
-          "color": "Black"
         }
       ]
     },
@@ -5647,5 +5606,5 @@
       ]
     }
   },
-  "total": 169
+  "total": 168
 }
