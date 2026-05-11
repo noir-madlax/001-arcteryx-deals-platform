@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-11 15:59:06",
+  "generated_at": "2026-05-11 22:08:22",
   "dealers": {
     "mec": {
       "name": "MEC",
@@ -2764,7 +2764,7 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 10,
+      "count": 9,
       "items": [
         {
           "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
@@ -2779,30 +2779,10 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Solitude",
-            "Pineberry",
-            "Moondrop",
-            "Azalea"
-          ],
-          "color": "Black"
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/243332/arcteryx-atom-insulated-hoody-womens",
@@ -2957,69 +2937,6 @@
           "color": "Cosmic Bloom"
         },
         {
-          "url": "https://www.rei.com/product/242856/arcteryx-gamma-pants-womens",
-          "name": "Gamma Pants - Women's",
-          "image": "https://www.rei.com/media/2a2f2faf-202c-42a3-9984-5b0383618cc0.jpg",
-          "original_price": 200.0,
-          "sale_price": 99.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "00",
-            "0 Short",
-            "0",
-            "2",
-            "4",
-            "4 Tall",
-            "6 Short",
-            "6",
-            "8 Short",
-            "8",
-            "8 Tall",
-            "10",
-            "10 Tall",
-            "12",
-            "12 Tall",
-            "14",
-            "14 Tall",
-            "16",
-            "16 Tall"
-          ],
-          "size_stock": {
-            "00": "in_stock",
-            "0 Short": "in_stock",
-            "0": "in_stock",
-            "2": "in_stock",
-            "4": "in_stock",
-            "4 Tall": "in_stock",
-            "6 Short": "in_stock",
-            "6": "in_stock",
-            "8 Short": "in_stock",
-            "8": "in_stock",
-            "8 Tall": "in_stock",
-            "10": "in_stock",
-            "10 Tall": "in_stock",
-            "12": "in_stock",
-            "12 Tall": "in_stock",
-            "14": "in_stock",
-            "14 Tall": "in_stock",
-            "16": "in_stock",
-            "16 Tall": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Habitat",
-            "Moondrop",
-            "Tatsu"
-          ],
-          "color": "Black"
-        },
-        {
           "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
           "name": "Cerium Down Hoody - Women's",
           "image": "https://www.rei.com/media/0ed9fca3-75c2-447a-b04b-6738627b6063.jpg",
@@ -3106,8 +3023,7 @@
             "Black",
             "Sea Salt/Habitat",
             "Black Sapphire/Dk Stratus",
-            "Vitality/Black Sapphire",
-            "Dynasty"
+            "Vitality/Black Sapphire"
           ],
           "color": "Vitality/Black Sapphire"
         },
@@ -3584,5 +3500,5 @@
       ]
     }
   },
-  "total": 170
+  "total": 169
 }
