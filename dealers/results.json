@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-11 22:08:22",
+  "generated_at": "2026-05-12 04:08:48",
   "dealers": {
     "mec": {
       "name": "MEC",
@@ -2764,8 +2764,48 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 9,
+      "count": 11,
       "items": [
+        {
+          "url": "https://www.rei.com/product/235112/arcteryx-beta-sl-jacket-mens",
+          "name": "Beta SL Jacket - Men's",
+          "image": "https://www.rei.com/media/8abb4f62-dc62-48b4-8255-6483def9a05c.jpg",
+          "original_price": 500.0,
+          "sale_price": 299.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 40,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Black Sapphire",
+            "Vitality Ii",
+            "Moon Drop",
+            "Stone Red",
+            "Mantis/Tatsu",
+            "Void"
+          ],
+          "color": "Black"
+        },
         {
           "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
           "name": "Beta SL Jacket - Women's",
@@ -2779,10 +2819,30 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Solitude",
+            "Pineberry",
+            "Moondrop",
+            "Azalea"
+          ],
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/243332/arcteryx-atom-insulated-hoody-womens",
@@ -2839,31 +2899,10 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL",
-            "XXXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock",
-            "XXXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Vitality",
-            "Nightscape"
-          ],
-          "color": "Nightscape"
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/251483/arcteryx-macai-down-jacket-mens",
@@ -2964,6 +3003,43 @@
             "Nightscape/Glacial"
           ],
           "color": "Nightscape/Glacial"
+        },
+        {
+          "url": "https://www.rei.com/product/249473/arcteryx-alpha-sv-jacket-mens",
+          "name": "Alpha SV Jacket - Men's",
+          "image": "https://www.rei.com/media/c49cba68-cc72-428d-8be8-3524fff495ea.jpg",
+          "original_price": 900.0,
+          "sale_price": 449.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 50,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "24K Black",
+            "Spotlight",
+            "Mantis/Black",
+            "Dynasty/Black"
+          ],
+          "color": "Spotlight"
         },
         {
           "url": "https://www.rei.com/product/235314/arcteryx-kyanite-jacket-mens",
@@ -3500,5 +3576,5 @@
       ]
     }
   },
-  "total": 169
+  "total": 171
 }
