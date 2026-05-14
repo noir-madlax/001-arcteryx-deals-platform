@@ -499,6 +499,15 @@
             display: flex;
             flex-wrap: wrap;
             gap: 3px;
+            min-width: 0;
+        }
+        .card-updated {
+            margin-left: auto;        /* push to right edge */
+            font-size: 10px;
+            color: var(--text-3);
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
         }
         .card-sz {
             font-size: 10px;
@@ -622,6 +631,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            position: relative;
             transform: translateY(8px);
             transition: transform 0.2s ease;
         }
@@ -670,9 +680,22 @@
             overflow-y: auto;
         }
         @media (max-width: 720px) {
-            .na-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; }
-            .na-head { padding: 14px 14px 10px; }
-            .na-title { font-size: 15px; }
+            .na-overlay { padding: 0; align-items: flex-end; }
+            .na-card { max-width: 100%; max-height: 82vh; border-radius: var(--r-lg) var(--r-lg) 0 0; }
+            .na-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 8px; padding: 10px 12px; }
+            .na-head { padding: 12px 14px 8px; }
+            .na-title { font-size: 14px; }
+            .na-meta { font-size: 10.5px; }
+            .na-close { top: 8px; right: 8px; width: 24px; height: 24px; font-size: 16px; }
+            .na-name { font-size: 11px; -webkit-line-clamp: 2; }
+            .na-sale { font-size: 12px; }
+            .na-orig { font-size: 10px; }
+            .na-disc { font-size: 9px; padding: 0 4px; }
+            .na-foot { padding: 8px 14px 10px; font-size: 11px; }
+            .na-cta { padding: 6px 10px; font-size: 11px; }
+        }
+        @media (max-width: 380px) {
+            .na-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         .na-item {
             display: flex;
@@ -970,6 +993,20 @@ const toCNY = (price, symbol, currency) => {
 
 const fmt = (n) => n.toLocaleString('en-US');
 
+// 相对时间: "今天" / "昨天" / "N 天前" / "MM-DD"
+// last_updated: "YYYY-MM-DD HH:MM:SS" 视为 UTC（来自 Supabase isoformat 截断）
+function relTime(ts) {
+    if (!ts) return '';
+    const t = Date.parse(ts.replace(' ', 'T') + (ts.endsWith('Z') ? '' : 'Z'));
+    if (isNaN(t)) return '';
+    const days = Math.floor((Date.now() - t) / 86400000);
+    if (days <= 0) return '今天';
+    if (days === 1) return '昨天';
+    if (days < 30) return `${days} 天前`;
+    // 远期: 显示 MM-DD
+    return ts.slice(5, 10);
+}
+
 // ── Clean product name (drop trailing description blob) ──
 const GENDER_MARKERS = ["Women's", "Men's", "Unisex", 'Damen', 'Herren', 'Femme', 'Homme'];
 const cleanName = (raw) => {
@@ -1174,15 +1211,19 @@ const buildCard = (p) => {
           (extra > 0 ? `<span class="card-sz more">+${extra}</span>` : '')
         : '';
 
-    // Color + sizes on same row
+    // Color + sizes on same row, update time pushed to right
     // Dealer 商品（EVO/REI/SSENSE/MEC）只抓了列表页，尺码/颜色要去原平台详情页查
     const isDealer = p.dealer && p.dealer !== 'arcteryx_outlet';
+    const upd = relTime(p.last_updated);
+    const updChip = upd ? `<span class="card-updated" title="${p.last_updated || ''}">${upd}</span>` : '';
     const metaRow = (colorDisplay || szChips) ? `
         <div class="card-meta-row">
             ${colorDisplay ? `<span class="card-color">${colorDisplay}</span>` : ''}
             ${szChips ? `<div class="card-sizes">${szChips}</div>` : ''}
+            ${updChip}
         </div>`
-        : (isDealer ? `<div class="card-meta-row card-meta-empty">尺码/颜色见 ${platform.label}</div>` : '');
+        : (isDealer ? `<div class="card-meta-row card-meta-empty">尺码/颜色见 ${platform.label}${updChip}</div>`
+                    : (updChip ? `<div class="card-meta-row">${updChip}</div>` : ''));
 
     return `
     <a class="card" href="${href}">
