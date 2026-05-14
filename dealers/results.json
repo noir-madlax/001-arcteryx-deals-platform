@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-14 09:44:32",
+  "generated_at": "2026-05-14 15:40:43",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -3233,7 +3233,7 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 13,
+      "count": 10,
       "items": [
         {
           "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
@@ -3270,48 +3270,6 @@
             "Pineberry",
             "Moondrop",
             "Azalea"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/235112/arcteryx-beta-sl-jacket-mens",
-          "name": "Beta SL Jacket - Men's",
-          "image": "https://www.rei.com/media/8abb4f62-dc62-48b4-8255-6483def9a05c.jpg",
-          "original_price": 500.0,
-          "sale_price": 299.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 40,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Stone Red",
-            "Moon Drop",
-            "Vitality Ii",
-            "Mantis/Tatsu",
-            "Void",
-            "Olive Moss/Euphoria",
-            "Dynasty"
           ],
           "color": "Black"
         },
@@ -3353,8 +3311,8 @@
             "Arctic Silk",
             "Shincha",
             "Dynasty",
-            "Azalea",
-            "Forage"
+            "Forage",
+            "Azalea"
           ],
           "color": "Black"
         },
@@ -3462,69 +3420,6 @@
           "color": "Nightscape/Glacial"
         },
         {
-          "url": "https://www.rei.com/product/242856/arcteryx-gamma-pants-womens",
-          "name": "Gamma Pants - Women's",
-          "image": "https://www.rei.com/media/2a2f2faf-202c-42a3-9984-5b0383618cc0.jpg",
-          "original_price": 200.0,
-          "sale_price": 99.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "00",
-            "0 Short",
-            "0",
-            "2",
-            "4",
-            "4 Tall",
-            "6 Short",
-            "6",
-            "8 Short",
-            "8",
-            "8 Tall",
-            "10",
-            "10 Tall",
-            "12",
-            "12 Tall",
-            "14",
-            "14 Tall",
-            "16",
-            "16 Tall"
-          ],
-          "size_stock": {
-            "00": "in_stock",
-            "0 Short": "in_stock",
-            "0": "in_stock",
-            "2": "in_stock",
-            "4": "in_stock",
-            "4 Tall": "in_stock",
-            "6 Short": "in_stock",
-            "6": "in_stock",
-            "8 Short": "in_stock",
-            "8": "in_stock",
-            "8 Tall": "in_stock",
-            "10": "in_stock",
-            "10 Tall": "in_stock",
-            "12": "in_stock",
-            "12 Tall": "in_stock",
-            "14": "in_stock",
-            "14 Tall": "in_stock",
-            "16": "in_stock",
-            "16 Tall": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Habitat",
-            "Moondrop",
-            "Tatsu"
-          ],
-          "color": "Black"
-        },
-        {
           "url": "https://www.rei.com/product/235314/arcteryx-kyanite-jacket-mens",
           "name": "Kyanite Jacket - Men's",
           "image": "https://www.rei.com/media/15d62df7-1f04-4562-9f98-fe80f1c30cb4.jpg",
@@ -3550,6 +3445,45 @@
             "Black Sapphire"
           ],
           "color": "Solitude"
+        },
+        {
+          "url": "https://www.rei.com/product/235614/arcteryx-kyanite-hoody-womens",
+          "name": "Kyanite Hoody - Women's",
+          "image": "https://www.rei.com/media/ae28528d-fe79-47bb-933f-b815736a692f.jpg",
+          "original_price": 200.0,
+          "sale_price": 99.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 50,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "XXS",
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XXS": "in_stock",
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Moondrop",
+            "Dark Stratus",
+            "Black",
+            "Bliss/Mars"
+          ],
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/242853/arcteryx-gamma-pants-mens",
@@ -3609,76 +3543,6 @@
             "Canvas"
           ],
           "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/235614/arcteryx-kyanite-hoody-womens",
-          "name": "Kyanite Hoody - Women's",
-          "image": "https://www.rei.com/media/ae28528d-fe79-47bb-933f-b815736a692f.jpg",
-          "original_price": 200.0,
-          "sale_price": 99.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "XXS",
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XXS": "in_stock",
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Moondrop",
-            "Dark Stratus",
-            "Black",
-            "Bliss/Mars"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/243326/arcteryx-atom-insulated-vest-womens",
-          "name": "Atom Insulated Vest - Women's",
-          "image": "https://www.rei.com/media/91313e04-6ecb-458a-8b2e-240a56a50d40.jpg",
-          "original_price": 200.0,
-          "sale_price": 140.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 30,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Azalea"
-          ],
-          "color": "Azalea"
         },
         {
           "url": "https://www.rei.com/product/235311/arcteryx-proton-insulated-hoody-mens",
@@ -4186,5 +4050,5 @@
       ]
     }
   },
-  "total": 173
+  "total": 170
 }
