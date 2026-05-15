@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-15 15:41:06",
+  "generated_at": "2026-05-15 21:42:19",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -2634,48 +2634,8 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 12,
+      "count": 11,
       "items": [
-        {
-          "url": "https://www.rei.com/product/235112/arcteryx-beta-sl-jacket-mens",
-          "name": "Beta SL Jacket - Men's",
-          "image": "https://www.rei.com/media/8abb4f62-dc62-48b4-8255-6483def9a05c.jpg",
-          "original_price": 500.0,
-          "sale_price": 299.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 40,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Stone Red",
-            "Moon Drop",
-            "Vitality Ii",
-            "Mantis/Tatsu",
-            "Void"
-          ],
-          "color": "Black"
-        },
         {
           "url": "https://www.rei.com/product/243332/arcteryx-atom-insulated-hoody-womens",
           "name": "Atom Insulated Hoody - Women's",
@@ -3521,5 +3481,5 @@
       ]
     }
   },
-  "total": 176
+  "total": 175
 }
