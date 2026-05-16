@@ -1186,6 +1186,13 @@ const buildCard = (p) => {
     const colorRaw = p.color || '';
     const colorDisplay = (() => {
         if (!colorRaw) return '';
+        // MEC/EVO 把全部 variant 颜色用逗号拼起来 ("Black, Canvas, White Light II")
+        // → 只展示首个 + "等 N 色" 指示
+        if (colorRaw.includes(',')) {
+            const list = colorRaw.split(',').map(s => s.trim()).filter(Boolean);
+            if (list.length > 1) return `${list[0]} 等 ${list.length} 色`;
+            if (list.length === 1) return list[0];
+        }
         const parts = colorRaw.split('/');
         if (parts.length === 2 && parts[0].trim() === parts[1].trim()) return parts[0].trim();
         return colorRaw;

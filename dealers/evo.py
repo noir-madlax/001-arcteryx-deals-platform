@@ -65,12 +65,12 @@ class Scraper:
                     if not sale:
                         continue  # 全部 variants 无价 (停产/下架), 跳过
                     if not orig or orig < sale: orig = sale
-                    # 库存按 size 聚合: in_stock 至少一个 variant 该尺码 available
+                    # 库存按 size 聚合: option2 才是尺码; option1 是颜色, 别 fallback
+                    # 否则 single-size 商品 (e.g. 配件/包) 会把颜色字符串当尺码塞进 sizes 数组
                     by_size = defaultdict(bool)
                     colors = set()
                     for v in variants:
-                        sz = v.get("option2") or v.get("option1") or ""
-                        sz = (sz or "").strip()
+                        sz = (v.get("option2") or "").strip()
                         if v.get("option1"):
                             colors.add(v["option1"])
                         if sz and v.get("available"):
