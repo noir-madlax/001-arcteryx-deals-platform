@@ -1545,8 +1545,11 @@ function maybeShowNewArrivals() {
     } catch (_) {}
 
     // 今天 00:00 本地时间起新增的（first_seen 是 ISO，浏览器 Date 解析自动转本地）
+    // 仅限当前选中国家 — 弹窗与用户筛选的国家一致, 避免用户在 US 站看到 DE/FR 上新
     const startMs = new Date(today + 'T00:00:00').getTime();
+    const regionFilter = state.region;
     const newOnes = products.filter(p => {
+        if (regionFilter !== 'all' && p.region !== regionFilter) return false;
         if (!p.first_seen) return false;
         const t = Date.parse(p.first_seen);
         return !isNaN(t) && t >= startMs;
@@ -1555,7 +1558,7 @@ function maybeShowNewArrivals() {
     // 阈值防炸: 单日 "新增" 超过 200 件几乎一定是 stale-delete+re-insert 把
     // first_seen 全刷新了，不是真新品。这种情况不弹（避免误报）
     if (newOnes.length > 200) {
-        console.warn(`[na] ${newOnes.length} items marked new today — likely false positive, skipping modal`);
+        console.warn(`[na] ${newOnes.length} items marked new today (region=${regionFilter}) — likely false positive, skipping modal`);
         return;
     }
 
@@ -1568,7 +1571,11 @@ function maybeShowNewArrivals() {
     const overlay = document.getElementById('na-overlay');
     const grid = document.getElementById('na-grid');
     document.getElementById('na-count').textContent = newOnes.length;
-    document.getElementById('na-date').textContent = today;
+    // 日期 + 当前国家标签 (e.g. "2026-05-16 · 🇺🇸 美国" / "2026-05-16 · 全部地区")
+    const regionLabel = regionFilter === 'all'
+        ? '全部地区'
+        : `${REGION_FLAG[regionFilter] || ''} ${REGION_LABEL[regionFilter] || regionFilter.toUpperCase()}`.trim();
+    document.getElementById('na-date').textContent = `${today} · ${regionLabel}`;
     grid.innerHTML = top.map(p => {
         const name = cleanName(p.full_name || p.model);
         const sym = p.symbol || '$';
