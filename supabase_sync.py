@@ -31,20 +31,27 @@ BATCH_SIZE = 50   # upsert N rows at a time
 def infer_category(name: str, url: str) -> str:
     u = (url or "").lower()
     n = (name or "").lower()
-    if "veilance" in u or "veilance" in n: return "Veilance商务系列"
-    if any(x in u for x in ["shell-jacket", "hardshell", "softshell"]): return "硬壳冲锋衣"
-    if any(x in u for x in ["insulated", "down-jacket", "down-coat", "hoody", "atom", "cerium", "proton", "nuclei", "thorium"]): return "保暖夹克"
-    if any(x in u for x in ["/pant", "-pant", "bib-", "short-"]): return "裤装"
-    if any(x in u for x in ["shoe", "boot", "footwear", "sandal"]): return "鞋类"
-    if any(x in u for x in ["/pack", "-pack", "backpack", "bag", "tote", "sling"]): return "背包"
-    if any(x in u for x in ["base-layer", "rho-", "-rho", "phase-", "merino"]): return "排汗内衣"
-    if any(x in u for x in ["fleece", "polar", "fortrez", "kyanite", "covert"]): return "抓绒/摇粒绒"
-    if any(x in u for x in ["vest", "gilet"]): return "背心"
-    if any(x in u for x in ["jacket", "-coat", "anorak", "parka"]): return "夹克/外套"
-    if any(x in u for x in ["blazer"]): return "西装/西服"
-    if any(x in u for x in ["shirt", "polo", "tee", "top-"]): return "上衣/T恤"
-    if any(x in u for x in ["dress", "skirt"]): return "裙装"
-    if any(x in u for x in ["hat", "cap", "headwear", "glove", "sock", "buff", "toque", "beanie"]): return "配件"
+    hay = u + " " + n
+    if "veilance" in hay: return "Veilance商务系列"
+    if any(x in hay for x in ["shell-jacket", "hardshell", "softshell"]): return "硬壳冲锋衣"
+    if any(x in hay for x in ["insulated", "down-jacket", "down-coat", "atom", "cerium", "proton", "nuclei", "thorium", "macai", "andessa", "decca", "therme", "sorin"]): return "保暖夹克"
+    # 抓绒/卫衣 — 先于通用 hoodie/jacket 匹配, 因为 hoodie 多数是 fleece/midlayer
+    if any(x in hay for x in ["fleece", "polar", "fortrez", "kyanite", "covert", "delta", "rho-", "-rho", "rho ",
+                              "hoody", "hoodie", "pullover", "crew", " 1/2 zip", "1-2-zip", "midlayer", "mid-layer",
+                              "cardigan", "sweater"]): return "抓绒/摇粒绒"
+    if any(x in hay for x in ["pants", "pant ", "-pant", "/pant", "bibs", "bib-", "bib ", "shorts", "short-",
+                              "jogger", "legging", "tights"]): return "裤装"
+    if any(x in hay for x in ["shoe", "boot", "footwear", "sandal", "sneaker"]): return "鞋类"
+    if any(x in hay for x in ["/pack", "-pack ", "-pack-", "backpack", "tote", "sling", "waistpack",
+                              "hip-pack", "duffel", "/bag", "-bag"]): return "背包"
+    if any(x in hay for x in ["base-layer", "baselayer", "phase-", "merino", "rho-lt", "boxer", "brief"]): return "排汗内衣"
+    if any(x in hay for x in ["vest", "gilet"]): return "背心"
+    if any(x in hay for x in ["jacket", "anorak", "parka", "-coat", " coat"]): return "夹克/外套"
+    if any(x in hay for x in ["blazer"]): return "西装/西服"
+    if any(x in hay for x in ["shirt", "polo", "tee", "top-", "tank", "t-shirt", "/top "]): return "上衣/T恤"
+    if any(x in hay for x in ["dress", "skirt"]): return "裙装"
+    if any(x in hay for x in ["hat", " cap", "-cap", "headwear", "glove", "mitten", "mitt-", "sock",
+                              "buff", "toque", "beanie", "headband", "scarf"]): return "配件"
     return "其他"
 
 # ── Junk color guard ──────────────────────────────────────────────────────────
