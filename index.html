@@ -1552,6 +1552,12 @@ function maybeShowNewArrivals() {
         return !isNaN(t) && t >= startMs;
     });
     if (newOnes.length === 0) return;
+    // 阈值防炸: 单日 "新增" 超过 200 件几乎一定是 stale-delete+re-insert 把
+    // first_seen 全刷新了，不是真新品。这种情况不弹（避免误报）
+    if (newOnes.length > 200) {
+        console.warn(`[na] ${newOnes.length} items marked new today — likely false positive, skipping modal`);
+        return;
+    }
 
     // 取 top 12，按折扣率优先
     const top = newOnes

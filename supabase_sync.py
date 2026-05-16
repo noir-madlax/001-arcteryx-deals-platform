@@ -122,25 +122,38 @@ def main():
     from supabase import create_client
     client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-    # ── Snapshot existing prices BEFORE upsert, so we can diff & log changes
-    old_prices = {}   # sku_id -> (original_price, sale_price)
+    # ── Snapshot existing prices + first_seen BEFORE upsert
+    # 关键: 把已有行的 first_seen 也加载，upsert 时塞回 row 里，
+    # 否则下面的 stale-delete + 下轮 re-insert 会让 first_seen 被 DB DEFAULT now() 刷新，
+    # 导致"今日上新"弹窗一炸 N 千件
+    old_prices = {}     # sku_id -> (original_price, sale_price)
+    first_seen_map = {} # sku_id -> first_seen (ISO str)
     try:
         page = 0
         while True:
             res = client.table("products").select(
-                "sku_id,original_price,sale_price"
-            ).range(page * 1000, page * 1000 + 999).execute()
+                "sku_id,original_price,sale_price,first_seen"
+            ).or_("dealer.is.null,dealer.eq.arcteryx_outlet") \
+             .range(page * 1000, page * 1000 + 999).execute()
             data = res.data or []
             if not data:
                 break
             for r in data:
                 old_prices[r["sku_id"]] = (r.get("original_price"), r.get("sale_price"))
+                if r.get("first_seen"):
+                    first_seen_map[r["sku_id"]] = r["first_seen"]
             if len(data) < 1000:
                 break
             page += 1
-        print(f"[sync] loaded {len(old_prices)} existing price snapshots")
+        print(f"[sync] loaded {len(old_prices)} existing rows ({len(first_seen_map)} with first_seen)")
     except Exception as e:
-        print(f"[WARN] could not preload prices (price_history may be incomplete): {e}", file=sys.stderr)
+        print(f"[WARN] could not preload prices: {e}", file=sys.stderr)
+
+    # 给每行注入 first_seen (如果该 sku_id 在 DB 已存在)；新行不设，让 DB DEFAULT now() 处理
+    for r in rows:
+        sid = r.get("sku_id")
+        if sid and sid in first_seen_map:
+            r["first_seen"] = first_seen_map[sid]
 
     total, errors = 0, 0
     for i in range(0, len(rows), BATCH_SIZE):

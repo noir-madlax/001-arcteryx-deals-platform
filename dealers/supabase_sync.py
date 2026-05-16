@@ -91,6 +91,25 @@ def main():
         rows = [r for r in rows if r["sku_id"] and r["url"]]
         print(f"\n[sync:{dkey}] {len(rows)} rows to upsert")
 
+        # ── 加载已有 first_seen，再注入到本轮 row，避免 delete+re-insert 刷新它
+        first_seen_map = {}
+        try:
+            page = 0
+            while True:
+                res = client.table("products").select("sku_id,first_seen") \
+                    .eq("dealer", dkey).range(page*1000, page*1000+999).execute()
+                data = res.data or []
+                for r in data:
+                    if r.get("first_seen"):
+                        first_seen_map[r["sku_id"]] = r["first_seen"]
+                if len(data) < 1000: break
+                page += 1
+        except Exception:
+            pass
+        for r in rows:
+            if r["sku_id"] in first_seen_map:
+                r["first_seen"] = first_seen_map[r["sku_id"]]
+
         # ── upsert in batches
         ok, err = 0, 0
         for i in range(0, len(rows), BATCH_SIZE):
