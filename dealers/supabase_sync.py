@@ -99,24 +99,34 @@ def main():
         rows = [r for r in rows if r["sku_id"] and r["url"]]
         print(f"\n[sync:{dkey}] {len(rows)} rows to upsert")
 
-        # ── 加载已有 first_seen，再注入到本轮 row，避免 delete+re-insert 刷新它
-        first_seen_map = {}
+        # ── 加载已有 first_seen + sizes + size_stock + color，
+        # 后续注入: first_seen 始终注入(防 stale-reset);
+        # sizes/size_stock/color 仅当本轮抓到空时保留DB老值(防 detail enrichment 临时失败导致数据丢失)
+        existing_map = {}
         try:
             page = 0
             while True:
-                res = client.table("products").select("sku_id,first_seen") \
-                    .eq("dealer", dkey).range(page*1000, page*1000+999).execute()
+                res = client.table("products").select(
+                    "sku_id,first_seen,sizes,size_stock,color"
+                ).eq("dealer", dkey).range(page*1000, page*1000+999).execute()
                 data = res.data or []
                 for r in data:
-                    if r.get("first_seen"):
-                        first_seen_map[r["sku_id"]] = r["first_seen"]
+                    existing_map[r["sku_id"]] = r
                 if len(data) < 1000: break
                 page += 1
         except Exception:
             pass
         for r in rows:
-            if r["sku_id"] in first_seen_map:
-                r["first_seen"] = first_seen_map[r["sku_id"]]
+            old = existing_map.get(r["sku_id"])
+            if not old: continue
+            if old.get("first_seen"):
+                r["first_seen"] = old["first_seen"]
+            # 保留非空 detail enrichment 数据
+            if not r.get("sizes") and old.get("sizes"):
+                r["sizes"] = old["sizes"]
+                r["size_stock"] = old.get("size_stock") or {}
+            if not (r.get("color") or "").strip() and (old.get("color") or "").strip():
+                r["color"] = old["color"]
 
         # ── upsert in batches
         ok, err = 0, 0

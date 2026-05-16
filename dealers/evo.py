@@ -1,150 +1,114 @@
-"""EVO (evo.com) — Cloudflare Turnstile, 必须用 StealthySession 暖首页才能进。"""
+"""EVO (evo.com) — 2026 起换成 Shopify 后端，旧的 data-productid HTML 抓法
+失效，直接打 Shopify 公开 JSON API: /collections/<slug>/products.json
+无需 Cloudflare/Camoufox，纯 HTTP 即可。"""
 from __future__ import annotations
-from .base import DealerScraper, normalize_price, discount_pct
-from scrapling.fetchers import StealthySession
-import re
+from .base import normalize_price, discount_pct
+import json, urllib.request, ssl, os
+from collections import defaultdict
 
 HOST = "https://www.evo.com"
+_CTX = ssl.create_default_context()
+_CTX.check_hostname = False
+_CTX.verify_mode = ssl.CERT_NONE
+_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
 
-class Scraper(DealerScraper):
+
+class Scraper:
     KEY    = "evo"
     NAME   = "EVO"
     REGION = "US"
-    TIER   = "session"   # 自定义 tier；不走 base.fetch
-    LIST_URLS = [
-        "https://www.evo.com/shop/clothing/arcteryx/mens?page={page}",
-        "https://www.evo.com/shop/clothing/arcteryx/womens?page={page}",
+
+    COLLECTIONS = [
+        ("men",   "mens-arcteryx-clothing"),
+        ("men",   "mens-arcteryx-footwear"),
+        ("men",   "mens-arcteryx-accessories"),
+        ("women", "womens-arcteryx-clothing"),
+        ("women", "womens-arcteryx-footwear"),
+        ("women", "womens-arcteryx-accessories"),
     ]
-    MAX_PAGES = 5
 
-    # 商品卡结构（来自 mens/womens 页）：
-    # <... data-productid="282426" ...>
-    #   <a href="/bike-jackets/arcteryx-rhoam-hybrid-jacket" class="product-thumb-link" ...>
-    #     <img src="..." alt="Arc'teryx Rhoam Hybrid Jacket">
-    #     <span class="product-thumb-title">Arc'teryx Rhoam Hybrid Jacket</span>
-    #     <span class="product-thumb-price">$450.00</span>
-    #   </a>
-    CARD_RE = re.compile(r'<div[^>]+data-productid="(\d+)"[^>]*>(.*?)</div>\s*(?=<div[^>]+data-productid|</main>|<footer)', re.S)
-    # backup: simpler split
-    LINK_RE  = re.compile(r'href="([^"]+)"[^>]+class="product-thumb-link', re.S)
-    IMG_RE   = re.compile(r'<img\s+src="([^"]+)"\s+class="product-thumb-image', re.S)
-    NAME_RE  = re.compile(r'<span class="product-thumb-title[^"]*">\s*([^<]+?)\s*</span>')
-    # price block can have one price OR was/now markup
-    PRICE_BLOCK = re.compile(r'<span class="product-thumb-price[^"]*">(.*?)</span>\s*(?:</a>|<div)', re.S)
-    PRICE_NUM   = re.compile(r"\$[\d,]+(?:\.\d{2})?")
-    WAS_RE      = re.compile(r'<span[^>]*class="[^"]*was[^"]*"[^>]*>\s*\$?([\d.,]+)\s*</span>')
-    NOW_RE      = re.compile(r'<span[^>]*class="[^"]*now[^"]*"[^>]*>\s*\$?([\d.,]+)\s*</span>')
+    def _fetch_json(self, url: str, retries: int = 2) -> dict | None:
+        last = None
+        for i in range(retries + 1):
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": _UA, "Accept": "application/json"})
+                with urllib.request.urlopen(req, context=_CTX, timeout=20) as r:
+                    return json.loads(r.read())
+            except Exception as e:
+                last = e
+        print(f"[evo] FETCH ERR {url}: {last}", flush=True)
+        return None
 
-    # PDP: <input class="pdp-selection-input" name="Size" value="XL" [disabled] [class*=sold-out]>
-    SIZE_RADIO_RE = re.compile(
-        r'<input[^>]+pdp-selection-input[^>]+name="Size"[^>]+value="([^"]+)"[^>]*>',
-    )
-    COLOR_RADIO_RE = re.compile(
-        r'<input[^>]+pdp-selection-input[^>]+name="Color"[^>]+value="([^"]+)"[^>]*>',
-    )
-
-    def parse_detail(self, body: str) -> dict:
-        sizes = []
-        size_stock = {}
-        for m in self.SIZE_RADIO_RE.finditer(body):
-            sz = m.group(1).strip()
-            tag = m.group(0)
-            sold_out = ('disabled' in tag.lower() or 'sold-out' in tag.lower() or 'unavailable' in tag.lower())
-            sizes.append(sz)
-            size_stock[sz] = 'out_of_stock' if sold_out else 'in_stock'
-        colors = [m.group(1).strip() for m in self.COLOR_RADIO_RE.finditer(body)]
-        return {
-            "sizes": sizes,
-            "size_stock": size_stock,
-            "colors": colors,
-            "color": colors[0] if colors else "",
-        }
-
-    # NOT using base.fetch — need session.
     def scrape(self) -> list[dict]:
-        items = []
+        out = []
         seen = set()
-        with StealthySession(headless=True, network_idle=True, solve_cloudflare=True) as s:
-            print(f"[evo] warm: home")
-            s.fetch(f"{HOST}/", timeout=45000)
-            for tmpl in self.LIST_URLS:
-                gender = "men" if "/mens" in tmpl else "women" if "/womens" in tmpl else "unisex"
-                for page in range(1, self.MAX_PAGES + 1):
-                    url = tmpl.format(page=page)
-                    print(f"[evo] {url}")
-                    try:
-                        p = s.fetch(url, timeout=45000)
-                        body = p.body.decode("utf-8","ignore")
-                    except Exception as e:
-                        print(f"[evo] FETCH ERR {e}")
-                        break
-                    new = 0
-                    # split body by data-productid markers
-                    pieces = re.split(r'(?=<div[^>]+data-productid="\d+")', body)
-                    for piece in pieces:
-                        m_pid = re.search(r'data-productid="(\d+)"', piece)
-                        if not m_pid:
-                            continue
-                        pid = m_pid.group(1)
-                        ml = self.LINK_RE.search(piece)
-                        if not ml:
-                            continue
-                        url_p = HOST + ml.group(1)
-                        if url_p in seen:
-                            continue
-                        seen.add(url_p)
-                        mname = self.NAME_RE.search(piece)
-                        name = mname.group(1).strip() if mname else ""
-                        if "arc" not in name.lower():
-                            continue
-                        mimg = self.IMG_RE.search(piece)
-                        img = mimg.group(1) if mimg else None
-                        # price
-                        sale = orig = None
-                        was = self.WAS_RE.search(piece)
-                        now = self.NOW_RE.search(piece)
-                        if was and now:
-                            orig = normalize_price(was.group(1))
-                            sale = normalize_price(now.group(1))
-                        else:
-                            mp = self.PRICE_BLOCK.search(piece)
-                            if mp:
-                                prices = [normalize_price(x) for x in self.PRICE_NUM.findall(mp.group(1))]
-                                prices = [x for x in prices if x]
-                                if len(prices) >= 2:
-                                    orig = max(prices); sale = min(prices)
-                                elif prices:
-                                    sale = orig = prices[0]
-                        items.append({
-                            "url": url_p,
-                            "name": name,
-                            "image": img,
-                            "original_price": orig,
-                            "sale_price": sale,
-                            "currency": "USD",
-                            "in_stock": True,
-                            "gender": gender,
-                            "discount_pct": discount_pct(orig, sale),
-                            "dealer": self.KEY,
-                            "dealer_name": self.NAME,
-                            "region": self.REGION,
-                        })
-                        new += 1
-                    print(f"[evo] list page {page} +{new} (total {len(items)})")
-                    if new == 0:
-                        break
-            # Stage 2: detail pages — within the same StealthySession (cookies保留)
-            print(f"[evo] enriching {len(items)} items...")
-            for i, it in enumerate(items, 1):
-                try:
-                    p = s.fetch(it["url"], timeout=45000)
-                    body = p.body.decode("utf-8","ignore")
-                    detail = self.parse_detail(body)
-                    if detail: it.update(detail)
-                except Exception as e:
-                    print(f"[evo] detail err {it['url']}: {str(e)[:60]}")
-                if i % 10 == 0: print(f"[evo] enriched {i}/{len(items)}")
-        return items
+        for gender, slug in self.COLLECTIONS:
+            for page in range(1, 6):  # max 5 pages = 1250 items per collection
+                url = f"{HOST}/collections/{slug}/products.json?limit=250&page={page}"
+                data = self._fetch_json(url)
+                if not data: break
+                products = data.get("products") or []
+                if not products:
+                    break
+                print(f"[evo] {gender}/{slug} page {page}: {len(products)} products", flush=True)
+                for p in products:
+                    handle = p.get("handle")
+                    if not handle or handle in seen:
+                        continue
+                    seen.add(handle)
+                    variants = p.get("variants") or []
+                    # 价格取所有 variants 的最低 (有时候不同颜色价不同, 用最低更适合 deal tracker)
+                    prices = [normalize_price(v.get("price")) for v in variants if v.get("price")]
+                    compares = [normalize_price(v.get("compare_at_price")) for v in variants if v.get("compare_at_price")]
+                    sale = min([p for p in prices if p], default=None)
+                    orig = max([c for c in compares if c], default=None)
+                    if not sale:
+                        continue  # 全部 variants 无价 (停产/下架), 跳过
+                    if not orig or orig < sale: orig = sale
+                    # 库存按 size 聚合: in_stock 至少一个 variant 该尺码 available
+                    by_size = defaultdict(bool)
+                    colors = set()
+                    for v in variants:
+                        sz = v.get("option2") or v.get("option1") or ""
+                        sz = (sz or "").strip()
+                        if v.get("option1"):
+                            colors.add(v["option1"])
+                        if sz and v.get("available"):
+                            by_size[sz] = True
+                        elif sz:
+                            by_size[sz] = by_size[sz] or False
+                    sizes = sorted([s for s in by_size if s], key=lambda x: (len(x), x))
+                    size_stock = {s: ("in_stock" if by_size[s] else "out_of_stock") for s in sizes}
+                    # 图片: 取第一个 variant 的 featured_image
+                    img = None
+                    for v in variants:
+                        fi = v.get("featured_image")
+                        if fi and fi.get("src"):
+                            img = fi["src"]; break
+                    if not img:
+                        imgs = p.get("images") or []
+                        if imgs: img = imgs[0].get("src")
+                    out.append({
+                        "url":            f"{HOST}/products/{handle}",
+                        "name":           p.get("title") or "",
+                        "image":          img,
+                        "original_price": orig,
+                        "sale_price":     sale,
+                        "currency":       "USD",
+                        "in_stock":       any(by_size.values()),
+                        "gender":         gender,
+                        "sizes":          sizes,
+                        "size_stock":     size_stock,
+                        "color":          ", ".join(sorted(colors)[:3]),
+                        "colors":         sorted(colors),
+                        "discount_pct":   discount_pct(orig, sale),
+                        "dealer":         self.KEY,
+                        "dealer_name":    self.NAME,
+                        "region":         self.REGION,
+                        "category":       p.get("product_type") or "",
+                    })
+                if len(products) < 250: break
+        return out
 
 
 if __name__ == "__main__":
