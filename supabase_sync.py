@@ -109,6 +109,19 @@ def main():
     rows = [sku_to_row(s) for s in skus if not is_junk_color(s.get("color", ""))]
     print(f"[sync] {len(skus)} SKUs loaded → {len(rows)} valid rows")
 
+    # ── 数据完整性 guard: 拒绝 sale > orig 的行（scraper bug, 不写入 DB）
+    bad = []
+    for r in rows:
+        o = r.get("original_price") or 0
+        s = r.get("sale_price") or 0
+        if o > 0 and s > 0 and s > o:
+            bad.append(r)
+    if bad:
+        print(f"[sync] 拒绝 {len(bad)} 行 sale>orig (scraper bug, 详情见 stderr)")
+        for r in bad[:8]:
+            print(f"   ✗ {r['sku_id']} orig=${r.get('original_price')} sale=${r.get('sale_price')}", file=sys.stderr)
+        rows = [r for r in rows if r not in bad]
+
     if args.dry_run:
         import pprint
         pprint.pprint(rows[:3])

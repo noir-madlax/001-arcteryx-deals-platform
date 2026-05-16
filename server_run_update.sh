@@ -65,7 +65,7 @@ git reset --hard HEAD 2>&1 | tee -a "$LOG_FILE" || true
 git checkout -B main origin/main 2>&1 | tee -a "$LOG_FILE"
 git reset --hard origin/main 2>&1 | tee -a "$LOG_FILE"
 # Remove untracked files that would conflict (but preserve state files)
-git clean -fd -e .last_run_start -e .last_sync -e .sku_progress.json -e update.log -e update_global.log -e .arcteryx_secrets 2>&1 | tee -a "$LOG_FILE" || true
+git clean -fd -e .last_run_start -e .last_sync -e .sku_progress.json -e update.log -e update_global.log -e dealers.log -e dealers/_partial -e .arcteryx_secrets 2>&1 | tee -a "$LOG_FILE" || true
 
 for f in data.js arcteryx_skus.json global_data.json; do
   [ -f "$TMPDIR/$f" ] && cp "$TMPDIR/$f" "$f"

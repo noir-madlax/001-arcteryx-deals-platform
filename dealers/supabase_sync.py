@@ -38,10 +38,18 @@ def make_sku_id(dealer: str, url: str) -> str:
     # fallback hash
     return f"{dealer}:" + hashlib.sha1((url or "").encode()).hexdigest()[:12]
 
+def _infer_cat(name: str, url: str) -> str:
+    """Dealer 行也归类, 避免 100% 都是 '其他'。复用 outlet 的逻辑。"""
+    try:
+        from supabase_sync import infer_category   # parent module
+        return infer_category(name, url)
+    except Exception:
+        return ""
+
 def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
     name = it.get("name") or ""
-    sku_id = make_sku_id(dealer, it.get("url",""))
-    # 前端做 cat 推断；DB 留 category 空字符串即可
+    url = it.get("url","")
+    sku_id = make_sku_id(dealer, url)
     return {
         "sku_id":         sku_id,
         "dealer":         dealer,
@@ -58,8 +66,8 @@ def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
         "gender":         it.get("gender") or "unknown",
         "region":         (it.get("region") or "us").lower(),
         "region_name":    "",
-        "category":       "",
-        "url":            it.get("url"),
+        "category":       _infer_cat(name, url),
+        "url":            url,
         "image_url":      it.get("image"),
         "images":         [it["image"]] if it.get("image") else [],
         "description":    "",
