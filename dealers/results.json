@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-17 15:38:31",
+  "generated_at": "2026-05-17 21:37:10",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -140,7 +140,7 @@
           "original_price": 700.0,
           "sale_price": 299.99,
           "currency": "USD",
-          "in_stock": false,
+          "in_stock": true,
           "gender": "men",
           "sizes": [
             "L",
@@ -152,7 +152,7 @@
             "XXS"
           ],
           "size_stock": {
-            "L": "out_of_stock",
+            "L": "in_stock",
             "M": "out_of_stock",
             "S": "out_of_stock",
             "XL": "out_of_stock",
@@ -1749,7 +1749,7 @@
           ],
           "size_stock": {
             "L": "out_of_stock",
-            "M": "in_stock",
+            "M": "out_of_stock",
             "S": "out_of_stock",
             "XL": "in_stock",
             "XS": "out_of_stock",
@@ -40823,11 +40823,9 @@
           "dealer_name": "REI",
           "region": "US",
           "sizes": [
-            "XS",
             "XXL"
           ],
           "size_stock": {
-            "XS": "in_stock",
             "XXL": "in_stock"
           },
           "colors": [
