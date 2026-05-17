@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16 21:39:06",
+  "generated_at": "2026-05-17 03:39:20",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -22103,7 +22103,7 @@
           ],
           "size_stock": {
             "L": "in_stock",
-            "M": "in_stock",
+            "M": "out_of_stock",
             "S": "in_stock",
             "XL": "out_of_stock",
             "XS": "in_stock",
@@ -40492,7 +40492,7 @@
         {
           "url": "https://www.rei.com/product/243326/arcteryx-atom-insulated-vest-womens",
           "name": "Atom Insulated Vest - Women's",
-          "image": "https://www.rei.com/media/91313e04-6ecb-458a-8b2e-240a56a50d40.jpg",
+          "image": "https://www.rei.com/media/e1616cf3-9000-4e53-8c47-f6e9d66575c5.jpg",
           "original_price": 200.0,
           "sale_price": 140.83,
           "currency": "USD",
@@ -40503,23 +40503,33 @@
           "dealer_name": "REI",
           "region": "US",
           "sizes": [
+            "XXS",
+            "XS",
             "S",
-            "M"
+            "M",
+            "L",
+            "XL",
+            "XXL"
           ],
           "size_stock": {
+            "XXS": "in_stock",
+            "XS": "in_stock",
             "S": "in_stock",
-            "M": "in_stock"
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
           },
           "colors": [
             "Black",
             "Azalea"
           ],
-          "color": "Azalea"
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/235314/arcteryx-kyanite-jacket-mens",
           "name": "Kyanite Jacket - Men's",
-          "image": "https://www.rei.com/media/15d62df7-1f04-4562-9f98-fe80f1c30cb4.jpg",
+          "image": "https://www.rei.com/media/d86f362e-e236-49d4-bfa0-775ccf34f666.jpg",
           "original_price": 180.0,
           "sale_price": 99.83,
           "currency": "USD",
@@ -40529,19 +40539,13 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "sizes": [
-            "XXL"
-          ],
-          "size_stock": {
-            "XXL": "in_stock"
-          },
+          "sizes": [],
+          "size_stock": {},
           "colors": [
             "Black",
-            "Black Sapphire",
-            "Copper Sky",
-            "Solitude"
+            "Black Sapphire"
           ],
-          "color": "Solitude"
+          "color": "Black Sapphire"
         },
         {
           "url": "https://www.rei.com/product/235311/arcteryx-proton-insulated-hoody-mens",
@@ -40582,9 +40586,9 @@
       "count": 30,
       "items": [
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/off-white-granville-30-carryall-tote/18786671",
+          "url": "https://www.ssense.com/men/product/arcteryx/off-white-granville-30-carryall-tote/18786671",
           "name": "Off-White Granville 30 Carryall Tote",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M172002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M172002_1/arcteryx-off-white-granville-30-carryall-tote.jpg",
           "original_price": 160.0,
           "sale_price": 160.0,
           "currency": "USD",
@@ -40596,9 +40600,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-alpha-sv-jacket/18785591",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-alpha-sv-jacket/18785591",
           "name": "Black Alpha SV Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180022_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M180022_1/arcteryx-black-alpha-sv-jacket.jpg",
           "original_price": 900.0,
           "sale_price": 900.0,
           "currency": "USD",
@@ -40610,9 +40614,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-cotton-lithographica-ss-t-shirt/18785761",
+          "url": "https://www.ssense.com/men/product/arcteryx/white-kragg-cotton-lithographica-ss-t-shirt/18785761",
           "name": "White Kragg Cotton Lithographica S/S T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213015_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M213015_1/arcteryx-white-kragg-cotton-lithographica-ss-t-shirt.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -40624,9 +40628,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-sl-cotton-bird-word-ss-t-shirt/18785471",
+          "url": "https://www.ssense.com/men/product/arcteryx/white-kragg-sl-cotton-bird-word-ss-t-shirt/18785471",
           "name": "White Kragg SL Cotton Bird Word S/S T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213007_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M213007_1/arcteryx-white-kragg-sl-cotton-bird-word-ss-t-shirt.jpg",
           "original_price": 70.0,
           "sale_price": 70.0,
           "currency": "USD",
@@ -40638,9 +40642,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/green-norvan-ld-4-sneakers/18786551",
+          "url": "https://www.ssense.com/men/product/arcteryx/green-norvan-ld-4-sneakers/18786551",
           "name": "Green Norvan LD 4 Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237011_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237011_1/arcteryx-green-norvan-ld-4-sneakers.jpg",
           "original_price": 170.0,
           "sale_price": 170.0,
           "currency": "USD",
@@ -40652,9 +40656,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-norvan-ld-4-gtx-sneakers/18786511",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-norvan-ld-4-gtx-sneakers/18786511",
           "name": "Black Norvan LD 4 GTX Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237009_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237009_1/arcteryx-black-norvan-ld-4-gtx-sneakers.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
@@ -40666,9 +40670,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/off-white-norvan-ld-4-gtx-sneakers/18786521",
+          "url": "https://www.ssense.com/men/product/arcteryx/off-white-norvan-ld-4-gtx-sneakers/18786521",
           "name": "Off-White Norvan LD 4 GTX Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237010_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237010_1/arcteryx-off-white-norvan-ld-4-gtx-sneakers.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
@@ -40680,9 +40684,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-norvan-ld-4-sneakers/18786601",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-norvan-ld-4-sneakers/18786601",
           "name": "Black Norvan LD 4 Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237014_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237014_1/arcteryx-black-norvan-ld-4-sneakers.jpg",
           "original_price": 170.0,
           "sale_price": 170.0,
           "currency": "USD",
@@ -40694,9 +40698,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/beige-kragg-insulated-sneakers/17580101",
+          "url": "https://www.ssense.com/men/product/arcteryx/beige-kragg-insulated-sneakers/17580101",
           "name": "Beige Kragg Insulated Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M236000_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M236000_1/arcteryx-beige-kragg-insulated-sneakers.jpg",
           "original_price": 180.0,
           "sale_price": 180.0,
           "currency": "USD",
@@ -40708,9 +40712,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-kragg-insulated-sneakers/17580111",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-kragg-insulated-sneakers/17580111",
           "name": "Black Kragg Insulated Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M236001_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M236001_1/arcteryx-black-kragg-insulated-sneakers.jpg",
           "original_price": 260.0,
           "sale_price": 260.0,
           "currency": "USD",
@@ -40722,9 +40726,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-norvan-4-nivalis-gtx-sneakers/17580151",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-norvan-4-nivalis-gtx-sneakers/17580151",
           "name": "Black Norvan 4 Nivalis GTX Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M236003_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M236003_1/arcteryx-black-norvan-4-nivalis-gtx-sneakers.jpg",
           "original_price": 205.0,
           "sale_price": 205.0,
           "currency": "USD",
@@ -40736,9 +40740,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/pink-kragg-sneakers/17580181",
+          "url": "https://www.ssense.com/men/product/arcteryx/pink-kragg-sneakers/17580181",
           "name": "Pink Kragg Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M237000_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M237000_1/arcteryx-pink-kragg-sneakers.jpg",
           "original_price": 225.0,
           "sale_price": 225.0,
           "currency": "USD",
@@ -40750,9 +40754,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/beige-kragg-sneakers/17580191",
+          "url": "https://www.ssense.com/men/product/arcteryx/beige-kragg-sneakers/17580191",
           "name": "Beige Kragg Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M237001_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M237001_1/arcteryx-beige-kragg-sneakers.jpg",
           "original_price": 225.0,
           "sale_price": 225.0,
           "currency": "USD",
@@ -40764,9 +40768,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-kragg-sneakers/17580201",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-kragg-sneakers/17580201",
           "name": "Black Kragg Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M237002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M237002_1/arcteryx-black-kragg-sneakers.jpg",
           "original_price": 225.0,
           "sale_price": 225.0,
           "currency": "USD",
@@ -40778,9 +40782,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-beta-sl-jacket/17521401",
+          "url": "https://www.ssense.com/men/product/arcteryx/khaki-beta-sl-jacket/17521401",
           "name": "Khaki Beta SL Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180008_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180008_1/arcteryx-khaki-beta-sl-jacket.jpg",
           "original_price": 455.0,
           "sale_price": 455.0,
           "currency": "USD",
@@ -40792,9 +40796,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-alpha-jacket/17521431",
+          "url": "https://www.ssense.com/men/product/arcteryx/khaki-alpha-jacket/17521431",
           "name": "Khaki Alpha Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180011_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180011_1/arcteryx-khaki-alpha-jacket.jpg",
           "original_price": 890.0,
           "sale_price": 890.0,
           "currency": "USD",
@@ -40806,9 +40810,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/gray-beta-ar-jacket/17521411",
+          "url": "https://www.ssense.com/men/product/arcteryx/gray-beta-ar-jacket/17521411",
           "name": "Gray Beta AR Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180009_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180009_1/arcteryx-gray-beta-ar-jacket.jpg",
           "original_price": 835.0,
           "sale_price": 835.0,
           "currency": "USD",
@@ -40820,9 +40824,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-beta-insulated-jacket/17521311",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-beta-insulated-jacket/17521311",
           "name": "Black Beta Insulated Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M178011_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M178011_1/arcteryx-black-beta-insulated-jacket.jpg",
           "original_price": 945.0,
           "sale_price": 945.0,
           "currency": "USD",
@@ -40834,9 +40838,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/navy-beta-insulated-jacket/17521321",
+          "url": "https://www.ssense.com/men/product/arcteryx/navy-beta-insulated-jacket/17521321",
           "name": "Navy Beta Insulated Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M178012_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M178012_1/arcteryx-navy-beta-insulated-jacket.jpg",
           "original_price": 940.0,
           "sale_price": 940.0,
           "currency": "USD",
@@ -40848,9 +40852,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-alpha-jacket/17521441",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-alpha-jacket/17521441",
           "name": "Black Alpha Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180012_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180012_1/arcteryx-black-alpha-jacket.jpg",
           "original_price": 700.0,
           "sale_price": 700.0,
           "currency": "USD",
@@ -40862,9 +40866,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-and-navy-alpha-sv-jacket/17521451",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-and-navy-alpha-sv-jacket/17521451",
           "name": "Black & Navy Alpha SV Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180013_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180013_1/arcteryx-black-and-navy-alpha-sv-jacket.jpg",
           "original_price": 900.0,
           "sale_price": 900.0,
           "currency": "USD",
@@ -40876,9 +40880,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-alpha-sv-jacket/17521461",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-alpha-sv-jacket/17521461",
           "name": "Black Alpha SV Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180014_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180014_1/arcteryx-black-alpha-sv-jacket.jpg",
           "original_price": 1150.0,
           "sale_price": 1150.0,
           "currency": "USD",
@@ -40890,9 +40894,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-sl-cotton-ss-t-shirt/17520991",
+          "url": "https://www.ssense.com/men/product/arcteryx/white-kragg-sl-cotton-ss-t-shirt/17520991",
           "name": "White Kragg SL Cotton SS T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M213002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M213002_1/arcteryx-white-kragg-sl-cotton-ss-t-shirt.jpg",
           "original_price": 75.0,
           "sale_price": 75.0,
           "currency": "USD",
@@ -40904,9 +40908,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-cronin-trousers/19258161",
+          "url": "https://www.ssense.com/men/product/arcteryx/khaki-cronin-trousers/19258161",
           "name": "Khaki Cronin Trousers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M191004_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M191004_1/arcteryx-khaki-cronin-trousers.jpg",
           "original_price": 230.0,
           "sale_price": 230.0,
           "currency": "USD",
@@ -40918,9 +40922,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-venta-gtx-gloves/17523701",
+          "url": "https://www.ssense.com/men/product/arcteryx/black-venta-gtx-gloves/17523701",
           "name": "Black Venta GTX Gloves",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M135000_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M135000_1/arcteryx-black-venta-gtx-gloves.jpg",
           "original_price": 190.0,
           "sale_price": 190.0,
           "currency": "USD",
@@ -40932,9 +40936,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/women/product/arcteryx/off-white-sonii-utility-vest/18774931",
+          "url": "https://www.ssense.com/women/product/arcteryx/off-white-sonii-utility-vest/18774931",
           "name": "Off-White Sonii Utility Vest",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F068000_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F068000_1/arcteryx-off-white-sonii-utility-vest.jpg",
           "original_price": 240.0,
           "sale_price": 240.0,
           "currency": "USD",
@@ -40946,9 +40950,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/women/product/arcteryx/off-white-bird-head-beanie/18774621",
+          "url": "https://www.ssense.com/women/product/arcteryx/off-white-bird-head-beanie/18774621",
           "name": "Off-White Bird Head Beanie",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F014002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F014002_1/arcteryx-off-white-bird-head-beanie.jpg",
           "original_price": 60.0,
           "sale_price": 60.0,
           "currency": "USD",
@@ -40960,9 +40964,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-granville-30-carryall-tote/18774491",
+          "url": "https://www.ssense.com/women/product/arcteryx/black-granville-30-carryall-tote/18774491",
           "name": "Black Granville 30 Carryall Tote",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F049001_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F049001_1/arcteryx-black-granville-30-carryall-tote.jpg",
           "original_price": 160.0,
           "sale_price": 160.0,
           "currency": "USD",
@@ -40974,9 +40978,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/women/product/arcteryx/gray-norvan-ld-4-gtx-sneakers/18774691",
+          "url": "https://www.ssense.com/women/product/arcteryx/gray-norvan-ld-4-gtx-sneakers/18774691",
           "name": "Gray Norvan LD 4 GTX Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F128005_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F128005_1/arcteryx-gray-norvan-ld-4-gtx-sneakers.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
@@ -40988,9 +40992,9 @@
           "region": "US"
         },
         {
-          "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-kragg-sneakers/18774651",
+          "url": "https://www.ssense.com/women/product/arcteryx/black-kragg-sneakers/18774651",
           "name": "Black Kragg Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F128002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F128002_1/arcteryx-black-kragg-sneakers.jpg",
           "original_price": 160.0,
           "sale_price": 160.0,
           "currency": "USD",
