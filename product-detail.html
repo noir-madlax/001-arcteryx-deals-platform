@@ -352,6 +352,85 @@
         }
         .lightbox.open { display: flex; }
         .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        /* ─── 降价提醒 按钮 + Modal ─── */
+        .alert-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-2);
+            font-size: 13px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .alert-btn:hover { border-color: var(--text); color: var(--text); background: var(--hover); }
+        .alert-btn svg { color: var(--accent); }
+
+        .pa-overlay {
+            position: fixed; inset: 0; z-index: 100;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .pa-overlay.show { opacity: 1; pointer-events: auto; }
+        .pa-card {
+            background: var(--surface);
+            border-radius: var(--r-lg);
+            box-shadow: var(--shadow-md);
+            max-width: 420px; width: 100%;
+            padding: 22px 22px 18px;
+            position: relative;
+            transform: translateY(8px);
+            transition: transform 0.2s;
+        }
+        .pa-overlay.show .pa-card { transform: translateY(0); }
+        .pa-close {
+            position: absolute; top: 12px; right: 12px;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-2); font-size: 17px;
+            background: none; border: none; cursor: pointer;
+        }
+        .pa-close:hover { background: var(--hover); color: var(--text); }
+        .pa-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .pa-sub { font-size: 12px; color: var(--text-3); margin-bottom: 14px; line-height: 1.5; }
+        .pa-sub strong { color: var(--accent); font-weight: 600; }
+        .pa-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+        .pa-field label { font-size: 12px; color: var(--text-2); }
+        .pa-field input {
+            height: 38px; padding: 0 12px;
+            background: #fafaf8;
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            font-size: 13.5px;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+        .pa-field input:focus { border-color: var(--text); background: var(--surface); }
+        .pa-hint { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+        .pa-submit {
+            width: 100%; height: 40px;
+            background: var(--text); color: var(--surface);
+            border: none; border-radius: var(--r-sm);
+            font-size: 14px; font-weight: 500;
+            cursor: pointer; transition: background 0.15s;
+            margin-top: 4px;
+        }
+        .pa-submit:hover { background: #000; }
+        .pa-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .pa-msg { font-size: 12.5px; padding: 8px 10px; border-radius: var(--r-sm); margin-top: 8px; display: none; }
+        .pa-msg.ok { display: block; background: #e6f4ec; color: #1f7a3d; }
+        .pa-msg.err { display: block; background: #fbeae7; color: var(--accent-strong); }
     </style>
 </head>
 <body>
@@ -587,6 +666,22 @@ function ctaBlock(url, klass = '') {
     </a>`;
 }
 
+function alertBlock(p) {
+    // 内嵌商品信息到按钮 data-* 属性, modal 打开后读取
+    return `<button class="alert-btn" onclick="openAlertModal()"
+            data-sku="${esc(p.sku_id || '')}"
+            data-name="${esc(cleanName(p.full_name || p.model || ''))}"
+            data-symbol="${esc(p.symbol || '$')}"
+            data-currency="${esc(p.currency || 'USD')}"
+            data-sale="${p.sale_price || ''}"
+            data-region="${esc(p.region || '')}"
+            data-url="${esc(p.url || '')}"
+            data-image="${esc(p.image_url || '')}">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 4 3 4 5.5v3l-1.5 2h11L12 8.5v-3C12 3 10.5 1.5 8 1.5zM6.5 13a1.5 1.5 0 003 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        降价提醒
+    </button>`;
+}
+
 function stickyCTA(p) {
     const cny = toCNY(p.sale_price, p.symbol);
     return `
@@ -635,6 +730,7 @@ function renderSKU(current, all, outletUrl) {
                 ${(() => { const d = resolveDesc(current); return d ? `<p class="desc">${esc(d)}</p>` : ''; })()}
             </div>
             ${priceBlock(current)}
+            ${alertBlock(current)}
             ${colors.length ? `
             <div class="section">
                 <h3>颜色 <span class="val">${esc(cleanColor(current.color || ''))}</span></h3>
@@ -691,6 +787,7 @@ function renderBase(p) {
                 ${(() => { const d = resolveDesc(p); return d ? `<p class="desc">${esc(d)}</p>` : ''; })()}
             </div>
             ${priceBlock(p)}
+            ${alertBlock(p)}
             ${p.colors && p.colors.length ? `
             <div class="section">
                 <h3>可选颜色 <span class="val">${p.colors.length} 种</span></h3>
@@ -757,6 +854,141 @@ document.getElementById('back-link').addEventListener('click', (e) => {
 });
 
 loadProduct();
+
+// ── 降价提醒订阅 ─────────────────────────────────────────────
+const SUPABASE_URL_PUBLIC  = 'https://bupqagkrcvrezjkdbald.supabase.co';
+const SUPABASE_ANON_PUBLIC = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDU1NTMsImV4cCI6MjA5MjAyMTU1M30.oszdUJIEKMCvpD9XFzTYTCYXj078uwjzFx84tfStfRU';
+
+function uuid4() {
+    return crypto?.randomUUID ? crypto.randomUUID() : ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
+
+function openAlertModal() {
+    const btn = document.querySelector('.alert-btn');
+    if (!btn) return;
+    const d = btn.dataset;
+    const sale = parseFloat(d.sale) || 0;
+    const sugTarget = sale ? Math.floor(sale * 0.85) : '';
+
+    // 注入数据到 modal
+    const titleEl = document.getElementById('pa-product');
+    titleEl.textContent = d.name;
+    const subEl = document.getElementById('pa-sub-info');
+    subEl.innerHTML = `当前价 <strong>${d.symbol}${sale}</strong> · ${d.currency}`;
+    document.getElementById('pa-target').value = sugTarget;
+    document.getElementById('pa-target').placeholder = `不低于 ${d.symbol}${sugTarget}`;
+    document.getElementById('pa-symbol').textContent = d.symbol;
+    document.getElementById('pa-msg').className = 'pa-msg';
+    document.getElementById('pa-msg').textContent = '';
+
+    const overlay = document.getElementById('pa-overlay');
+    overlay.hidden = false;
+    requestAnimationFrame(() => overlay.classList.add('show'));
+    try { document.getElementById('pa-email').focus(); } catch (_) {}
+}
+
+function closeAlertModal() {
+    const o = document.getElementById('pa-overlay');
+    o.classList.remove('show');
+    setTimeout(() => o.hidden = true, 220);
+}
+
+async function submitAlert() {
+    const btn = document.querySelector('.alert-btn');
+    const d = btn.dataset;
+    const email = (document.getElementById('pa-email').value || '').trim().toLowerCase();
+    const targetRaw = (document.getElementById('pa-target').value || '').trim();
+    const target = targetRaw ? parseFloat(targetRaw) : null;
+    const msgEl = document.getElementById('pa-msg');
+    msgEl.className = 'pa-msg';
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        msgEl.className = 'pa-msg err';
+        msgEl.textContent = '邮箱格式不正确';
+        return;
+    }
+    const sale = parseFloat(d.sale) || 0;
+    if (target !== null && (isNaN(target) || target <= 0 || target >= sale)) {
+        msgEl.className = 'pa-msg err';
+        msgEl.textContent = `目标价必须低于当前价 ${d.symbol}${sale}`;
+        return;
+    }
+    const submitBtn = document.getElementById('pa-submit');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '提交中…';
+    try {
+        const r = await fetch(`${SUPABASE_URL_PUBLIC}/rest/v1/price_alerts`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_ANON_PUBLIC,
+                'Authorization': `Bearer ${SUPABASE_ANON_PUBLIC}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal',
+            },
+            body: JSON.stringify({
+                email,
+                sku_id: d.sku,
+                target_price: target,
+                last_price_seen: sale,
+                currency: d.currency,
+                region: d.region,
+                product_name: d.name,
+                product_url: d.url,
+                image_url: d.image,
+                unsubscribe_token: uuid4(),
+            }),
+        });
+        if (!r.ok) {
+            const txt = await r.text();
+            throw new Error(`HTTP ${r.status}: ${txt.slice(0, 120)}`);
+        }
+        msgEl.className = 'pa-msg ok';
+        msgEl.textContent = `✓ 已订阅. 价格降到 ${d.symbol}${target ?? sale} 时会邮件通知你`;
+        setTimeout(closeAlertModal, 2000);
+    } catch (e) {
+        msgEl.className = 'pa-msg err';
+        msgEl.textContent = `订阅失败: ${e.message || e}`;
+        console.error(e);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '订阅降价提醒';
+    }
+}
+</script>
+
+<!-- 降价提醒 modal -->
+<div class="pa-overlay" id="pa-overlay" hidden>
+    <div class="pa-card" role="dialog" aria-labelledby="pa-title">
+        <button class="pa-close" onclick="closeAlertModal()" aria-label="关闭">×</button>
+        <div class="pa-title" id="pa-title">🔔 降价提醒</div>
+        <div class="pa-sub" id="pa-sub-info">—</div>
+        <div class="pa-sub" id="pa-product" style="font-weight:500;color:var(--text);margin-top:-8px"></div>
+        <div class="pa-field">
+            <label>邮箱</label>
+            <input type="email" id="pa-email" placeholder="you@example.com" autocomplete="email" inputmode="email">
+        </div>
+        <div class="pa-field">
+            <label>目标价（<span id="pa-symbol">$</span>）</label>
+            <input type="number" id="pa-target" placeholder="留空 = 任何下跌都通知" step="0.01" min="0">
+            <div class="pa-hint">价格 ≤ 此值时发邮件给你，发完自动取消订阅</div>
+        </div>
+        <button class="pa-submit" id="pa-submit" onclick="submitAlert()">订阅降价提醒</button>
+        <div class="pa-msg" id="pa-msg"></div>
+    </div>
+</div>
+
+<script>
+// ESC + 点空白关闭
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        const o = document.getElementById('pa-overlay');
+        if (o && !o.hidden) closeAlertModal();
+    }
+});
+document.getElementById('pa-overlay')?.addEventListener('click', e => {
+    if (e.target.id === 'pa-overlay') closeAlertModal();
+});
 </script>
 
 </body>

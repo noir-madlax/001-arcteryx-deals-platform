@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>取消订阅 · Arc'teryx Deals Tracker</title>
+    <meta name="robots" content="noindex,nofollow">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+            background: #fafaf8;
+            color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            margin: 0;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px 28px;
+            box-shadow: 0 8px 28px rgba(28,25,22,0.08);
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 { font-size: 18px; margin: 0 0 12px; }
+        p  { font-size: 14px; color: #5e5e5e; line-height: 1.6; margin: 8px 0; }
+        a  { color: #c8362a; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .ok { color: #1f7a3d; }
+        .err { color: #c8362a; }
+        .pending { color: #9a948a; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>降价提醒 - 取消订阅</h1>
+    <p id="status" class="pending">正在处理…</p>
+    <p><a href="/">← 返回首页</a></p>
+</div>
+<script>
+const SUPABASE_URL  = 'https://bupqagkrcvrezjkdbald.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDU1NTMsImV4cCI6MjA5MjAyMTU1M30.oszdUJIEKMCvpD9XFzTYTCYXj078uwjzFx84tfStfRU';
+
+(async () => {
+    const s = document.getElementById('status');
+    const t = new URLSearchParams(location.search).get('t');
+    if (!t) {
+        s.className = 'err';
+        s.textContent = '链接缺少 token, 无法取消订阅';
+        return;
+    }
+    // 调 unsubscribe_alert RPC (SECURITY DEFINER 函数 — 安全删除指定 token 的行)
+    try {
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/unsubscribe_alert`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_ANON,
+                'Authorization': `Bearer ${SUPABASE_ANON}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: t }),
+        });
+        if (!r.ok) throw new Error(`HTTP ${r.status}: ${(await r.text()).slice(0,140)}`);
+        const n = await r.json();
+        if (n > 0) {
+            s.className = 'ok';
+            s.textContent = `✓ 已取消 ${n} 个订阅`;
+        } else {
+            s.className = 'pending';
+            s.textContent = '该 token 已无对应订阅 (可能已过期或已退订)';
+        }
+    } catch (e) {
+        s.className = 'err';
+        s.textContent = `取消失败: ${e.message || e}`;
+    }
+})();
+</script>
+</body>
+</html>

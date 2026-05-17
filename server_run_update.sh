@@ -80,8 +80,12 @@ else
   log "No data changes to commit"
 fi
 
-# 5. Telegram notification with stats report
-log "Step 5: Telegram notification"
+# 5. 检查降价提醒订阅 (price_alerts) 并发邮件
+log "Step 5: Price alerts check"
+$PYTHON check_price_alerts.py 2>&1 | tee -a "$LOG_FILE" || log "price alerts check failed (non-fatal)"
+
+# 6. Telegram notification with stats report
+log "Step 6: Telegram notification"
 $PYTHON notify_telegram.py 2>&1 | tee -a "$LOG_FILE" || log "telegram notification failed (non-fatal)"
 
 log "===== UPDATE DONE ====="

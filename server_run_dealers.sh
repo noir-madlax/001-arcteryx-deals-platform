@@ -50,6 +50,10 @@ $PYTHON -m dealers.merge_partial 2>&1 | tee -a "$LOG"
 log "sync → Supabase"
 $PYTHON -m dealers.supabase_sync 2>&1 | tee -a "$LOG" || log "supabase sync 失败 (non-fatal)"
 
+# 检查降价提醒
+log "price alerts check"
+$PYTHON check_price_alerts.py 2>&1 | tee -a "$LOG" || log "price alerts check 失败 (non-fatal)"
+
 # 推到 GitHub（只 commit results.json，dealers/_partial/ 在 .gitignore）
 log "git commit + push"
 git config user.email "bot@arcteryx-deals.local"
