@@ -57,26 +57,29 @@ class Scraper:
                         continue
                     seen.add(handle)
                     variants = p.get("variants") or []
-                    # 价格取所有 variants 的最低 (有时候不同颜色价不同, 用最低更适合 deal tracker)
-                    prices = [normalize_price(v.get("price")) for v in variants if v.get("price")]
-                    compares = [normalize_price(v.get("compare_at_price")) for v in variants if v.get("compare_at_price")]
-                    sale = min([p for p in prices if p], default=None)
-                    orig = max([c for c in compares if c], default=None)
+                    # 关键: 只看 available=True 的 variants 取价。否则 EVO 会把
+                    # 历史清仓色 (e.g. 7 个 $29.99 "Paradox" 已停产 variants)
+                    # min 出来当成今日 -88% 假折扣
+                    avail_variants = [v for v in variants if v.get("available")]
+                    if not avail_variants:
+                        continue  # 整品都缺货, 跳过 (不是 deal)
+                    prices = [normalize_price(v.get("price")) for v in avail_variants if v.get("price")]
+                    compares = [normalize_price(v.get("compare_at_price")) for v in avail_variants if v.get("compare_at_price")]
+                    sale = min([x for x in prices if x], default=None)
+                    orig = max([x for x in compares if x], default=None)
                     if not sale:
-                        continue  # 全部 variants 无价 (停产/下架), 跳过
+                        continue
                     if not orig or orig < sale: orig = sale
                     # 库存按 size 聚合: option2 才是尺码; option1 是颜色, 别 fallback
-                    # 否则 single-size 商品 (e.g. 配件/包) 会把颜色字符串当尺码塞进 sizes 数组
+                    # sizes/colors 只统计在售 variants, 跟价格逻辑保持一致
                     by_size = defaultdict(bool)
                     colors = set()
-                    for v in variants:
+                    for v in avail_variants:
                         sz = (v.get("option2") or "").strip()
                         if v.get("option1"):
                             colors.add(v["option1"])
-                        if sz and v.get("available"):
+                        if sz:
                             by_size[sz] = True
-                        elif sz:
-                            by_size[sz] = by_size[sz] or False
                     sizes = sorted([s for s in by_size if s], key=lambda x: (len(x), x))
                     size_stock = {s: ("in_stock" if by_size[s] else "out_of_stock") for s in sizes}
                     # 图片: 取第一个 variant 的 featured_image
