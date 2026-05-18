@@ -224,34 +224,37 @@ def main():
             print(f"[ERROR] price_history batch {i//BATCH_SIZE + 1}: {e}", file=sys.stderr)
     print(f"[sync] price_history: inserted {hist_inserted}")
 
-    # ── Stale-row cleanup (unconditional) ─────────────────────────────────
-    # The scrape (sku_scraper --reset) is a full re-crawl, so arcteryx_skus.json
-    # IS the source of truth. Any row in Supabase not present here = product
-    # went out of stock, was removed from outlet, or is a leftover from old
-    # schema. On a deals site, showing expired/stale data is worse than
-    # temporarily missing a product — upsert batch errors will be re-healed
-    # on the next cron run (6h later) anyway.
+    # ── Stale-row cleanup (only if last_updated > 14 天) ──────────────────
+    # 改:  原本"不在本次 scrape 里"立即删, 导致单次抓取失败的商品被删, 下次又被
+    # 当新品 re-insert, 刷新 first_seen 弹窗误报. 现在需要 last_updated 老于
+    # 14 天才删, 给抓取波动留缓冲, 真正下架 / 缺货长期不在的商品 14 天后才清掉
+    from datetime import timedelta
+    STALE_AFTER_DAYS = 14
+    stale_cutoff = (datetime.now(timezone.utc) - timedelta(days=STALE_AFTER_DAYS)).isoformat()
     synced_ids = {r["sku_id"] for r in rows if r.get("sku_id")}
     if synced_ids:
         try:
-            existing = []
+            existing = []  # 待删候选: (sku_id, last_updated)
             page = 0
-            # 只选 outlet 的行（dealer='arcteryx_outlet' 或旧数据 NULL）
-            # 避免把 dealer 经销商的行（ssense:/mec:/evo:/rei:）误删
             while True:
-                res = client.table("products").select("sku_id,dealer").or_(
+                res = client.table("products").select("sku_id,dealer,last_updated").or_(
                     "dealer.is.null,dealer.eq.arcteryx_outlet"
                 ).range(page * 1000, page * 1000 + 999).execute()
                 data = res.data or []
                 if not data:
                     break
-                existing.extend(r["sku_id"] for r in data)
+                # 保留 (sku_id, last_updated) 二元组
+                existing.extend((r["sku_id"], r.get("last_updated")) for r in data)
                 if len(data) < 1000:
                     break
                 page += 1
 
-            stale = [sid for sid in existing if sid not in synced_ids]
-            print(f"[sync] stale outlet rows to delete: {len(stale)} (existing={len(existing)}, synced={len(synced_ids)})")
+            # 满足两个条件才标 stale: (1) 不在本次 scrape (2) last_updated 老于 cutoff
+            stale = [sid for sid, lu in existing
+                     if sid not in synced_ids and (lu is None or lu < stale_cutoff)]
+            preserve = sum(1 for sid, lu in existing
+                           if sid not in synced_ids and lu and lu >= stale_cutoff)
+            print(f"[sync] stale outlet rows to delete: {len(stale)} (existing={len(existing)}, synced={len(synced_ids)}, preserve_recent={preserve})")
 
             deleted = 0
             for i in range(0, len(stale), BATCH_SIZE):

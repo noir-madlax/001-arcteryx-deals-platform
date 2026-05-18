@@ -148,18 +148,24 @@ def main():
             print(f"[sync:{dkey}] 0 rows in scrape — skipping stale cleanup (likely scrape failure)")
             continue
         try:
+            from datetime import datetime, timezone, timedelta
+            stale_cutoff = (datetime.now(timezone.utc) - timedelta(days=14)).isoformat()
             synced_ids = {r["sku_id"] for r in rows}
-            existing = []
+            existing = []   # (sku_id, last_updated)
             page = 0
             while True:
-                res = client.table("products").select("sku_id") \
+                res = client.table("products").select("sku_id,last_updated") \
                     .eq("dealer", dkey).range(page*1000, page*1000+999).execute()
                 data = res.data or []
-                existing.extend(r["sku_id"] for r in data)
+                existing.extend((r["sku_id"], r.get("last_updated")) for r in data)
                 if len(data) < 1000: break
                 page += 1
-            stale = [s for s in existing if s not in synced_ids]
-            print(f"[sync:{dkey}] existing={len(existing)} stale={len(stale)}")
+            # 同 outlet: 只删 14 天没刷新过的过期行, 给单次抓取波动留缓冲
+            stale = [sid for sid, lu in existing
+                     if sid not in synced_ids and (lu is None or lu < stale_cutoff)]
+            preserve = sum(1 for sid, lu in existing
+                           if sid not in synced_ids and lu and lu >= stale_cutoff)
+            print(f"[sync:{dkey}] existing={len(existing)} stale={len(stale)} preserve_recent={preserve}")
             if stale:
                 # batch delete
                 for i in range(0, len(stale), 100):
