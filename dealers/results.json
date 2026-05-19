@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-19 03:38:20",
+  "generated_at": "2026-05-19 09:38:34",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -11103,10 +11103,29 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock"
+          },
+          "colors": [
+            "Alpine Blue",
+            "Cosmic Bloom",
+            "Black",
+            "Nightscape/Glacial",
+            "Tatsu/Olive Moss",
+            "Arctic Silk/Solitude"
+          ],
+          "color": "Cosmic Bloom"
         },
         {
           "url": "https://www.rei.com/product/242853/arcteryx-gamma-pants-mens",
@@ -11222,7 +11241,7 @@
         {
           "url": "https://www.rei.com/product/235311/arcteryx-proton-insulated-hoody-mens",
           "name": "Proton Insulated Hoody - Men's",
-          "image": "https://www.rei.com/media/d91bfab1-b1fd-476a-a312-d92d14ddfbdc.jpg",
+          "image": "https://www.rei.com/media/221f0c58-6ae7-4feb-bdc6-74feba5b64cd.jpg",
           "original_price": 350.0,
           "sale_price": 245.83,
           "currency": "USD",
@@ -11233,11 +11252,19 @@
           "dealer_name": "REI",
           "region": "US",
           "sizes": [
+            "XS",
+            "S",
+            "M",
             "L",
+            "XL",
             "XXL"
           ],
           "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
             "L": "in_stock",
+            "XL": "in_stock",
             "XXL": "in_stock"
           },
           "colors": [
@@ -11246,7 +11273,7 @@
             "Black Sapphire/Dk Stratus",
             "Vitality/Black Sapphire"
           ],
-          "color": "Vitality/Black Sapphire"
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/242921/arcteryx-atom-insulated-vest-mens",
