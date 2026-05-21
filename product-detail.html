@@ -431,6 +431,90 @@
         .pa-msg { font-size: 12.5px; padding: 8px 10px; border-radius: var(--r-sm); margin-top: 8px; display: none; }
         .pa-msg.ok { display: block; background: #e6f4ec; color: #1f7a3d; }
         .pa-msg.err { display: block; background: #fbeae7; color: var(--accent-strong); }
+
+        /* ─── 历史价格图 ───────────────────────────────────────────── */
+        .ph-card {
+            margin-top: 18px;
+            padding: 14px 14px 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-md);
+        }
+        .ph-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .ph-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .ph-range {
+            font-size: 11px;
+            color: var(--text-3);
+        }
+        .ph-svg {
+            width: 100%;
+            display: block;
+            font-variant-numeric: tabular-nums;
+        }
+        .ph-line-sale {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .ph-line-orig {
+            fill: none;
+            stroke: var(--text-3);
+            stroke-width: 1.2;
+            stroke-dasharray: 3 3;
+            opacity: 0.7;
+        }
+        .ph-area { fill: var(--accent); opacity: 0.06; }
+        .ph-grid { stroke: var(--border); stroke-width: 1; opacity: 0.6; }
+        .ph-axis-text { font-size: 10px; fill: var(--text-3); }
+        .ph-dot {
+            fill: var(--accent);
+            stroke: var(--surface);
+            stroke-width: 1.5;
+        }
+        .ph-tooltip {
+            position: absolute;
+            background: rgba(28,25,22,0.92);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            line-height: 1.5;
+            pointer-events: none;
+            white-space: nowrap;
+            transform: translate(-50%, -120%);
+            opacity: 0;
+            transition: opacity 0.1s;
+            font-variant-numeric: tabular-nums;
+        }
+        .ph-legend {
+            display: flex;
+            gap: 14px;
+            margin-top: 6px;
+            font-size: 10.5px;
+            color: var(--text-3);
+        }
+        .ph-legend i { display: inline-block; width: 12px; height: 2px; vertical-align: middle; margin-right: 4px; }
+        .ph-legend .sale i { background: var(--accent); }
+        .ph-legend .orig i { background: var(--text-3); height: 0; border-top: 2px dashed var(--text-3); }
+        .ph-empty {
+            font-size: 12px;
+            color: var(--text-3);
+            text-align: center;
+            padding: 28px 0;
+        }
     </style>
 </head>
 <body>
@@ -666,6 +750,126 @@ function ctaBlock(url, klass = '') {
     </a>`;
 }
 
+// ──────────────────────────────────────────────────────────────
+// 历史价格图 (price_history 表)
+// 仅占位 + container; 实际 data 由 loadPriceHistory 异步填充
+function priceHistoryBlock(skuId) {
+    if (!skuId) return '';
+    return `<div class="ph-card" id="ph-${esc(skuId)}">
+        <div class="ph-head">
+            <span class="ph-title">📈 历史价格</span>
+            <span class="ph-range">最近 90 天</span>
+        </div>
+        <div class="ph-body"><div class="ph-empty">加载中…</div></div>
+    </div>`;
+}
+
+async function loadPriceHistory(skuId, currentRow) {
+    const card = document.getElementById(`ph-${skuId}`);
+    if (!card || !skuId) return;
+    const body = card.querySelector('.ph-body');
+    try {
+        const since = new Date(Date.now() - 90 * 86400000).toISOString();
+        const url = `${SUPABASE_URL}/rest/v1/price_history?select=sale_price,original_price,recorded_at&sku_id=eq.${encodeURIComponent(skuId)}&recorded_at=gte.${since}&order=recorded_at.asc`;
+        const r = await fetch(url, {
+            headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` }
+        });
+        const rows = (await r.json()) || [];
+        // 补充当前价当 "今天" 节点（即使 history 没记录到今天）
+        if (currentRow && currentRow.sale_price) {
+            rows.push({
+                sale_price: currentRow.sale_price,
+                original_price: currentRow.original_price,
+                recorded_at: currentRow.last_updated || new Date().toISOString(),
+            });
+        }
+        body.innerHTML = renderPriceHistorySvg(rows, currentRow);
+    } catch (e) {
+        console.warn('price_history load failed:', e);
+        body.innerHTML = `<div class="ph-empty">暂无历史数据</div>`;
+    }
+}
+
+function renderPriceHistorySvg(rows, currentRow) {
+    // 至少 2 个点才画图
+    if (!rows || rows.length < 2) {
+        return `<div class="ph-empty">暂无足够的价格历史记录</div>`;
+    }
+    // 排序 + 去重 (同一天保留最后一条)
+    const byDay = {};
+    rows.forEach(r => {
+        const day = (r.recorded_at || '').slice(0, 10);
+        if (!day) return;
+        byDay[day] = r;
+    });
+    const points = Object.keys(byDay).sort().map(d => ({
+        day: d,
+        sale: +byDay[d].sale_price || 0,
+        orig: +byDay[d].original_price || 0,
+    }));
+    if (points.length < 2) return `<div class="ph-empty">暂无足够的价格历史记录</div>`;
+
+    const W = 600, H = 160;
+    const PAD_L = 40, PAD_R = 12, PAD_T = 10, PAD_B = 24;
+    const innerW = W - PAD_L - PAD_R;
+    const innerH = H - PAD_T - PAD_B;
+    const allPrices = points.flatMap(p => [p.sale, p.orig].filter(x => x > 0));
+    const minP = Math.min(...allPrices);
+    const maxP = Math.max(...allPrices);
+    const range = Math.max(maxP - minP, 1);
+    // 留 10% margin
+    const yMin = Math.max(0, minP - range * 0.1);
+    const yMax = maxP + range * 0.1;
+    const yRange = yMax - yMin;
+
+    const xOf = i => PAD_L + (points.length === 1 ? innerW / 2 : (i / (points.length - 1)) * innerW);
+    const yOf = v => PAD_T + innerH - ((v - yMin) / yRange) * innerH;
+
+    const salePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${xOf(i).toFixed(1)} ${yOf(p.sale).toFixed(1)}`).join(' ');
+    const origPath = points.filter(p => p.orig > 0).map((p, i, arr) => {
+        const realIdx = points.indexOf(p);
+        return `${i === 0 ? 'M' : 'L'} ${xOf(realIdx).toFixed(1)} ${yOf(p.orig).toFixed(1)}`;
+    }).join(' ');
+    const areaPath = salePath + ` L ${xOf(points.length - 1).toFixed(1)} ${PAD_T + innerH} L ${xOf(0).toFixed(1)} ${PAD_T + innerH} Z`;
+
+    // 网格 + Y 轴标签 (3 条)
+    const yTicks = [yMin, (yMin + yMax) / 2, yMax];
+    const gridLines = yTicks.map(y => {
+        const yy = yOf(y).toFixed(1);
+        return `<line class="ph-grid" x1="${PAD_L}" y1="${yy}" x2="${W - PAD_R}" y2="${yy}"/>
+                <text class="ph-axis-text" x="${PAD_L - 4}" y="${yy}" text-anchor="end" dominant-baseline="middle">${Math.round(y)}</text>`;
+    }).join('');
+
+    // X 轴标签: 起 / 中 / 终
+    const dayLabel = idx => {
+        const d = points[idx].day;
+        return d.slice(5);  // MM-DD
+    };
+    const xTicks = [0, Math.floor(points.length / 2), points.length - 1];
+    const xLabels = xTicks.map(i => {
+        const x = xOf(i).toFixed(1);
+        return `<text class="ph-axis-text" x="${x}" y="${H - 6}" text-anchor="middle">${dayLabel(i)}</text>`;
+    }).join('');
+
+    // 数据点(只渲染当前的 last 一个)
+    const lastI = points.length - 1;
+    const lastDot = `<circle class="ph-dot" cx="${xOf(lastI).toFixed(1)}" cy="${yOf(points[lastI].sale).toFixed(1)}" r="3.5"/>`;
+
+    return `<svg class="ph-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+        ${gridLines}
+        <path class="ph-area" d="${areaPath}"/>
+        ${origPath ? `<path class="ph-line-orig" d="${origPath}"/>` : ''}
+        <path class="ph-line-sale" d="${salePath}"/>
+        ${lastDot}
+        ${xLabels}
+    </svg>
+    <div class="ph-legend">
+        <span class="sale"><i></i>实际售价</span>
+        ${points.some(p => p.orig > 0) ? '<span class="orig"><i></i>吊牌原价</span>' : ''}
+        <span style="margin-left:auto;color:var(--text-3)">共 ${points.length} 个数据点</span>
+    </div>`;
+}
+
 function alertBlock(p) {
     // 内嵌商品信息到按钮 data-* 属性, modal 打开后读取
     return `<button class="alert-btn" onclick="openAlertModal()"
@@ -753,6 +957,7 @@ function renderSKU(current, all, outletUrl) {
             </div>` : ''}
             ${ctaBlock(ctaUrl, 'cta-inline')}
             ${metaBlock(current, { sku: current.sku_id })}
+            ${priceHistoryBlock(current.sku_id)}
         </div>
     </div>
     <div class="sticky-cta">
@@ -764,6 +969,8 @@ function renderSKU(current, all, outletUrl) {
     </div>`;
 
     document.getElementById('main').innerHTML = html;
+    // 异步加载 history 价格图 (不阻塞首屏)
+    loadPriceHistory(current.sku_id, current);
 }
 
 function renderBase(p) {
@@ -810,10 +1017,12 @@ function renderBase(p) {
             </div>` : ''}
             ${ctaBlock(p.url, 'cta-inline')}
             ${metaBlock(p)}
+            ${priceHistoryBlock(p.sku_id)}
         </div>
     </div>
     ${stickyCTA(p)}`;
     document.getElementById('main').innerHTML = html;
+    loadPriceHistory(p.sku_id, p);
 }
 
 function renderNotFound() {
