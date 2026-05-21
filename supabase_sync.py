@@ -169,11 +169,17 @@ def main():
     except Exception as e:
         print(f"[WARN] could not preload prices: {e}", file=sys.stderr)
 
-    # 给每行注入 first_seen (如果该 sku_id 在 DB 已存在)；新行不设，让 DB DEFAULT now() 处理
+    # 给每行注入 first_seen
+    # 关键: 必须显式写, 不能依赖 DB DEFAULT now()
+    # 因为 PostgREST 批量 upsert 时, 若 batch 内其他行有 first_seen 字段,
+    # 没字段的行 INSERT 时填 NULL 而非触发 DEFAULT (PostgREST 把 batch 各 row 字段并集当列集)
+    now_iso = datetime.now(timezone.utc).isoformat()
     for r in rows:
         sid = r.get("sku_id")
         if sid and sid in first_seen_map:
-            r["first_seen"] = first_seen_map[sid]
+            r["first_seen"] = first_seen_map[sid]   # 已存在: 保留原值
+        else:
+            r["first_seen"] = now_iso                # 真新 SKU: 显式设今天
 
     total, errors = 0, 0
     for i in range(0, len(rows), BATCH_SIZE):

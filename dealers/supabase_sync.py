@@ -116,17 +116,22 @@ def main():
                 page += 1
         except Exception:
             pass
+        from datetime import datetime as _dt, timezone as _tz
+        now_iso = _dt.now(_tz.utc).isoformat()
         for r in rows:
             old = existing_map.get(r["sku_id"])
-            if not old: continue
-            if old.get("first_seen"):
-                r["first_seen"] = old["first_seen"]
-            # 保留非空 detail enrichment 数据
-            if not r.get("sizes") and old.get("sizes"):
-                r["sizes"] = old["sizes"]
-                r["size_stock"] = old.get("size_stock") or {}
-            if not (r.get("color") or "").strip() and (old.get("color") or "").strip():
-                r["color"] = old["color"]
+            if old:
+                # 存在: 保留 first_seen (若 DB 老值为空则补今天)
+                r["first_seen"] = old.get("first_seen") or now_iso
+                # 保留非空 detail enrichment 数据
+                if not r.get("sizes") and old.get("sizes"):
+                    r["sizes"] = old["sizes"]
+                    r["size_stock"] = old.get("size_stock") or {}
+                if not (r.get("color") or "").strip() and (old.get("color") or "").strip():
+                    r["color"] = old["color"]
+            else:
+                # 真新 SKU: 显式设今天 (避免 PostgREST batch upsert 字段不齐 → NULL)
+                r["first_seen"] = now_iso
 
         # ── upsert in batches
         ok, err = 0, 0
