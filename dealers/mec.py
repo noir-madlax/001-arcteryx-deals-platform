@@ -1,9 +1,10 @@
-"""MEC (mec.ca) — Arc'teryx 品牌过滤页，全 SSR HTML，结构清晰。
-列表页拿到 url/name/price 后，再访问每个详情页拿 size×color×availability 矩阵。
+"""MEC (mec.ca) — Arc'teryx 品牌过滤页, 全 SSR HTML。
+2026-05 起 StealthyFetcher 在 EC2 上被 CF 卡 30 min, 改用 Camoufox 真 Firefox
+指纹（与 SSENSE/REI 一致），暖首页后串行抓 list + detail。
 """
 from __future__ import annotations
 from .base import DealerScraper, normalize_price, discount_pct
-from scrapling.fetchers import StealthyFetcher
+from camoufox.sync_api import Camoufox
 import re, json, time
 
 HOST = "https://www.mec.ca"
@@ -105,51 +106,58 @@ class Scraper(DealerScraper):
             }
         return {}
 
-    # 重写 scrape：列表 + 详情两阶段
+    # 重写 scrape：列表 + 详情两阶段, 都跑在同一个 Camoufox session 复用 CF cookies
     def scrape(self) -> list[dict]:
         items = []
         seen = set()
-        # 阶段 1：list pages
-        for tmpl in self.LIST_URLS:
-            for page in range(1, self.MAX_PAGES + 1):
-                url = tmpl.format(page=page)
+        with Camoufox(headless=True, humanize=True, geoip=True) as br:
+            page = br.new_page()
+            print("[mec] warm: home", flush=True)
+            page.goto(f"{HOST}/en/", wait_until="networkidle", timeout=60000)
+            time.sleep(2)
+            # 阶段 1: list pages
+            for tmpl in self.LIST_URLS:
+                for pg in range(1, self.MAX_PAGES + 1):
+                    url = tmpl.format(page=pg)
+                    try:
+                        page.goto(url, wait_until="networkidle", timeout=60000)
+                        time.sleep(2)
+                        body = page.content()
+                    except Exception as e:
+                        print(f"[mec] LIST ERR {url}: {e}", flush=True)
+                        break
+                    page_items = self.parse_list(body, url)
+                    if not page_items:
+                        break
+                    new = 0
+                    for it in page_items:
+                        if not it.get("url") or it["url"] in seen:
+                            continue
+                        seen.add(it["url"])
+                        it["dealer"] = self.KEY
+                        it["dealer_name"] = self.NAME
+                        it["region"] = self.REGION
+                        it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
+                        items.append(it)
+                        new += 1
+                    print(f"[mec] list page {pg} +{new} (total {len(items)})", flush=True)
+                    if new == 0:
+                        break
+                    time.sleep(0.5)
+            # 阶段 2: 详情页
+            print(f"[mec] enriching {len(items)} items via detail pages...", flush=True)
+            for i, it in enumerate(items, 1):
                 try:
-                    p = self.fetch(url)
-                    body = p.body.decode("utf-8","ignore")
+                    page.goto(it["url"], wait_until="networkidle", timeout=45000)
+                    time.sleep(1)
+                    body = page.content()
+                    detail = self.parse_detail(body)
+                    it.update(detail)
+                    if i % 10 == 0:
+                        print(f"[mec] enriched {i}/{len(items)}", flush=True)
                 except Exception as e:
-                    print(f"[mec] LIST ERR {url}: {e}")
-                    break
-                page_items = self.parse_list(body, url)
-                if not page_items:
-                    break
-                new = 0
-                for it in page_items:
-                    if not it.get("url") or it["url"] in seen:
-                        continue
-                    seen.add(it["url"])
-                    it["dealer"] = self.KEY
-                    it["dealer_name"] = self.NAME
-                    it["region"] = self.REGION
-                    it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
-                    items.append(it)
-                    new += 1
-                print(f"[mec] list page {page} +{new} (total {len(items)})")
-                if new == 0:
-                    break
-                time.sleep(0.5)
-        # 阶段 2：每个商品的详情页
-        print(f"[mec] enriching {len(items)} items via detail pages...")
-        for i, it in enumerate(items, 1):
-            try:
-                p = self.fetch(it["url"])
-                body = p.body.decode("utf-8","ignore")
-                detail = self.parse_detail(body)
-                it.update(detail)
-                if i % 10 == 0:
-                    print(f"[mec] enriched {i}/{len(items)}")
-            except Exception as e:
-                print(f"[mec] DETAIL ERR {it['url']}: {str(e)[:80]}")
-            time.sleep(0.4)
+                    print(f"[mec] DETAIL ERR {it['url'][-50:]}: {str(e)[:80]}", flush=True)
+                time.sleep(0.3)
         return items
 
 
