@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-20 21:28:22",
+  "generated_at": "2026-05-21 03:39:13",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -1658,31 +1658,6 @@
           "category": "Long Underwear Tops"
         },
         {
-          "url": "https://www.evo.com/products/255342-arc-teryx-rho-insulated-3-4-pants-men-s",
-          "name": "Arc'teryx Rho Insulated 3/4 Pants - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1142446.jpg?v=1767734876",
-          "original_price": 200.0,
-          "sale_price": 150.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [
-            "L"
-          ],
-          "size_stock": {
-            "L": "in_stock"
-          },
-          "color": "Stratus",
-          "colors": [
-            "Stratus"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": "Long Underwear Bottoms"
-        },
-        {
           "url": "https://www.evo.com/products/263953-arc-teryx-atom-sl-hoodie-men-s",
           "name": "Arc'teryx Atom SL Hoodie - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285950.jpg?v=1774909960",
@@ -2728,26 +2703,23 @@
           "name": "Arc'teryx Fission SV Gloves",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1247718.jpg?v=1767739060",
           "original_price": 200.0,
-          "sale_price": 160.0,
+          "sale_price": 200.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
           "sizes": [
-            "M",
             "S",
             "XS"
           ],
           "size_stock": {
-            "M": "in_stock",
             "S": "in_stock",
             "XS": "in_stock"
           },
-          "color": "Black, Forage/Canvas",
+          "color": "Black",
           "colors": [
-            "Black",
-            "Forage/Canvas"
+            "Black"
           ],
-          "discount_pct": 20,
+          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -8080,6 +8052,31 @@
           "category": "Shell Jackets"
         },
         {
+          "url": "https://www.evo.com/products/272507-arc-teryx-clarkia-sl-cotton-overshirt-women-s",
+          "name": "Arc'teryx Clarkia SL Cotton Overshirt - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1286080.jpg?v=1774909962",
+          "original_price": 180.0,
+          "sale_price": 180.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [
+            "L"
+          ],
+          "size_stock": {
+            "L": "in_stock"
+          },
+          "color": "Stone Red",
+          "colors": [
+            "Stone Red"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": "Fashion Tops"
+        },
+        {
           "url": "https://www.evo.com/products/264014-arc-teryx-rush-tall-pants-women-s",
           "name": "Arc'teryx Rush Tall Bib Pants - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1284985.jpg?v=1774668688",
@@ -10945,7 +10942,7 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 11,
+      "count": 10,
       "items": [
         {
           "url": "https://www.rei.com/product/243332/arcteryx-atom-insulated-hoody-womens",
@@ -11043,7 +11040,6 @@
           "sizes": [
             "XS",
             "S",
-            "L",
             "XL",
             "XXL",
             "XXXL"
@@ -11051,7 +11047,6 @@
           "size_stock": {
             "XS": "in_stock",
             "S": "in_stock",
-            "L": "in_stock",
             "XL": "in_stock",
             "XXL": "in_stock",
             "XXXL": "in_stock"
@@ -11149,45 +11144,6 @@
             "Canvas"
           ],
           "color": "Canvas"
-        },
-        {
-          "url": "https://www.rei.com/product/249474/arcteryx-beta-ar-jacket-mens",
-          "name": "Beta AR Jacket - Men's",
-          "image": "https://www.rei.com/media/f95d0b93-106a-4d70-92ea-846ca9cfcc19.jpg",
-          "original_price": 650.0,
-          "sale_price": 399.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 38,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL",
-            "XXXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock",
-            "XXXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Solitude/Void",
-            "Fluidity/Vitality",
-            "Mantis/Tatsu"
-          ],
-          "color": "Solitude/Void"
         },
         {
           "url": "https://www.rei.com/product/243257/arcteryx-atom-sl-hoody-mens",
@@ -11340,29 +11296,10 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "sizes": [
-            "XXS",
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XXS": "in_stock",
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Nightscape"
-          ],
-          "color": "Black"
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         }
       ]
     },
@@ -11794,5 +11731,5 @@
       ]
     }
   },
-  "total": 427
+  "total": 426
 }
