@@ -509,6 +509,10 @@
             font-variant-numeric: tabular-nums;
             flex-shrink: 0;
         }
+        .card-updated.stale {
+            color: #c8362a;            /* 数据 >3 天: 标红警示 */
+            font-weight: 500;
+        }
         .card-sz {
             font-size: 10px;
             padding: 1px 4px;
@@ -1222,7 +1226,9 @@ const buildCard = (p) => {
     // Dealer 商品（EVO/REI/SSENSE/MEC）只抓了列表页，尺码/颜色要去原平台详情页查
     const isDealer = p.dealer && p.dealer !== 'arcteryx_outlet';
     const upd = relTime(p.last_updated);
-    const updChip = upd ? `<span class="card-updated" title="${p.last_updated || ''}">${upd}</span>` : '';
+    // 数据超 3 天没刷新 = 标红警示, 提示用户去原平台核对
+    const updAgeDays = p.last_updated ? Math.floor((Date.now() - Date.parse(p.last_updated.replace(' ','T') + (p.last_updated.endsWith('Z')?'':'Z'))) / 86400000) : 0;
+    const updChip = upd ? `<span class="card-updated${updAgeDays > 3 ? ' stale' : ''}" title="${p.last_updated || ''}${updAgeDays > 3 ? ' · 数据已过期, 请去原平台确认价格' : ''}">${upd}</span>` : '';
     const metaRow = (colorDisplay || szChips) ? `
         <div class="card-meta-row">
             ${colorDisplay ? `<span class="card-color">${colorDisplay}</span>` : ''}
@@ -1493,9 +1499,35 @@ async function init() {
     document.getElementById('grid').innerHTML =
         `<div class="empty"><p style="color:var(--text-3);font-size:14px">加载数据中…</p></div>`;
 
+    const CACHE_KEY = 'products_cache_v1';
+    const CACHE_TTL_MS = 10 * 60 * 1000;   // 10 分钟内重访直接走缓存
+    const decorate = p => ({
+        ...p,
+        last_updated: normTs(p.last_updated),
+        sizes:      Array.isArray(p.sizes)      ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
+        size_stock: typeof p.size_stock === 'object' ? p.size_stock : (p.size_stock ? JSON.parse(p.size_stock) : {}),
+        _series:    extractSeries(cleanName(p.full_name || p.model)),
+        _platform:  platformKey(p),
+    });
+
+    // 1) 先尝试 cache - 让首屏秒出 (不到 100ms)
+    let renderedFromCache = false;
+    try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            const { ts, rows } = JSON.parse(cached);
+            if (Date.now() - ts < CACHE_TTL_MS && Array.isArray(rows) && rows.length > 100) {
+                products = rows.map(decorate);
+                computeStats(); initFilters(); render();
+                renderedFromCache = true;
+                console.info(`[cache] hit (${rows.length} rows, age ${Math.round((Date.now()-ts)/1000)}s)`);
+            }
+        }
+    } catch (_) {}
+
+    // 2) 后台拉新数据 (cache miss 时阻塞渲染, 命中时静默刷新)
     try {
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-        // PostgREST caps at 1000 rows per response; paginate via .range() until exhausted.
         const PAGE = 1000;
         let all = [];
         for (let offset = 0; ; offset += PAGE) {
@@ -1506,14 +1538,9 @@ async function init() {
             if (data.length < PAGE) break;
             if (offset > 50000) break; // safety
         }
-        products = all.map(p => ({
-            ...p,
-            last_updated: normTs(p.last_updated),
-            sizes:      Array.isArray(p.sizes)      ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
-            size_stock: typeof p.size_stock === 'object' ? p.size_stock : (p.size_stock ? JSON.parse(p.size_stock) : {}),
-            _series:    extractSeries(cleanName(p.full_name || p.model)),
-            _platform:  platformKey(p),
-        }));
+        // 写回 cache
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), rows: all })); } catch (_) {}
+        products = all.map(decorate);
     } catch (e) {
         console.warn('Supabase load failed, falling back to data.js:', e);
         // Graceful fallback: load data.js dynamically
@@ -1531,10 +1558,13 @@ async function init() {
     // dealer 数据 (SSENSE/MEC/EVO/REI) 现已并入 Supabase products 表 (dealer 列区分)
     // 不再 fetch dealers/results.json — 单一数据源 = Supabase
 
+    // 若首屏已从 cache 渲染过, 这次只是刷新数据 - 静默重渲染避免闪烁
     computeStats();
     initFilters();
     render();
-    maybeShowNewArrivals();   // 今日上新弹窗（first_seen >= 今日 0 点）
+    if (!renderedFromCache) {
+        maybeShowNewArrivals();   // 仅首次访问弹今日上新（cache hit 时 skip 避免每次刷新都弹）
+    }
 }
 
 // ── 今日上新弹窗 ──────────────────────────────────────────────────────────
