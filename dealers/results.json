@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-21 21:10:20",
+  "generated_at": "2026-05-22 03:09:06",
   "dealers": {
     "evo": {
       "name": "EVO",
       "region": "US",
-      "count": 261,
+      "count": 260,
       "items": [
         {
           "url": "https://www.evo.com/products/264090-arc-teryx-beta-ar-stormhood-jacket-men-s",
@@ -298,13 +298,11 @@
           "sizes": [
             "L",
             "S",
-            "XL",
             "XS"
           ],
           "size_stock": {
             "L": "in_stock",
             "S": "in_stock",
-            "XL": "in_stock",
             "XS": "in_stock"
           },
           "color": "Olive Moss/Euphoria",
@@ -1910,31 +1908,6 @@
           "category": "Insulated Jackets"
         },
         {
-          "url": "https://www.evo.com/products/264026-arc-teryx-konseal-pullover-hoodie-men-s",
-          "name": "Arc'teryx Konseal Pullover Hoodie - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212338.jpg?v=1767737629",
-          "original_price": 200.0,
-          "sale_price": 150.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [
-            "XL"
-          ],
-          "size_stock": {
-            "XL": "in_stock"
-          },
-          "color": "Lt Nightscape/Night",
-          "colors": [
-            "Lt Nightscape/Night"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": "Fleece"
-        },
-        {
           "url": "https://www.evo.com/products/263878-arc-teryx-granville-16l-backpack",
           "name": "Arc'teryx Granville 16L Backpack",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236572.jpg?v=1767738606",
@@ -2100,7 +2073,7 @@
         {
           "url": "https://www.evo.com/products/257647-arc-teryx-aerios-5-panel-cap",
           "name": "Arc'teryx Aerios 5 Panel Cap",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1234666.jpg?v=1767738522",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1299750.jpg?v=1779399444",
           "original_price": 75.0,
           "sale_price": 75.0,
           "currency": "USD",
@@ -2849,8 +2822,9 @@
           "gender": "men",
           "sizes": [],
           "size_stock": {},
-          "color": "Tatsu",
+          "color": "Black, Tatsu",
           "colors": [
+            "Black",
             "Tatsu"
           ],
           "discount_pct": 25,
@@ -5160,9 +5134,8 @@
           "size_stock": {
             "L": "in_stock"
           },
-          "color": "Black, Tatsu",
+          "color": "Tatsu",
           "colors": [
-            "Black",
             "Tatsu"
           ],
           "discount_pct": 25,
@@ -8333,6 +8306,7 @@
           "sizes": [
             "XS",
             "S",
+            "L",
             "XL",
             "XXL",
             "XXXL"
@@ -8340,6 +8314,7 @@
           "size_stock": {
             "XS": "in_stock",
             "S": "in_stock",
+            "L": "in_stock",
             "XL": "in_stock",
             "XXL": "in_stock",
             "XXXL": "in_stock"
@@ -8491,11 +8466,9 @@
           "dealer_name": "REI",
           "region": "US",
           "sizes": [
-            "XS",
             "XXL"
           ],
           "size_stock": {
-            "XS": "in_stock",
             "XXL": "in_stock"
           },
           "colors": [
@@ -9008,5 +8981,5 @@
       ]
     }
   },
-  "total": 300
+  "total": 299
 }
