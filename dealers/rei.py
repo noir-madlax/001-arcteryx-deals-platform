@@ -89,21 +89,27 @@ class Scraper:
                     # cleanup name
                     name = re.sub(r"^Arc'?teryx\s+", "", name, flags=re.I)
                     # prices
+                    # REI 5/18 后改了搜索结果 markup:
+                    # - 在售商品: <sale-price>X</sale-price> + <full-price>Y</full-price>  → sale=X orig=Y
+                    # - 满价商品: 只有 <full-price>Y</full-price>                          → sale=orig=Y, disc=0
+                    # 之前逻辑 "if mfull: orig=Y else: sale=orig=full" 在满价场景把 Y 写成
+                    # 一个无意义的 orig (无 sale), 然后 fall back 取整片 chunk min, 偶尔抓到
+                    # 隔壁商品价格当 sale → 形成假折扣 (例: Kyanite 抓到 $99.83 -50%)
                     msale = self.SALE_RE.search(chunk)
                     mfull = self.FULL_RE.search(chunk)
                     mreg  = self.REG_RE.search(chunk)
                     sale = orig = None
-                    if msale:
+                    if msale and mfull:
                         sale = normalize_price(msale.group(1))
-                    if mfull:
                         orig = normalize_price(mfull.group(1))
+                    elif mfull:
+                        # 满价: full-price 即当前价, 不打折
+                        sale = orig = normalize_price(mfull.group(1))
                     elif mreg:
-                        orig = sale = normalize_price(mreg.group(1))
-                    if not sale and not orig:
-                        # try any $XXX in chunk
-                        ps = [normalize_price(x) for x in re.findall(r'\$([\d,]+\.\d{2})', chunk)][:2]
-                        ps = [x for x in ps if x]
-                        if ps: sale = orig = min(ps)
+                        sale = orig = normalize_price(mreg.group(1))
+                    elif msale:
+                        # 只有 sale 标签 (奇葩, 缺 full): 当成单一价
+                        sale = orig = normalize_price(msale.group(1))
                     if not sale: continue
                     if not orig: orig = sale
                     # image
