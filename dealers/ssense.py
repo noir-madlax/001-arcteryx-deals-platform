@@ -1,13 +1,10 @@
 """SSENSE — Arc'teryx 男女款；
-试过双引擎 (StealthySession 列表 + Camoufox PDP)，Camoufox 也过不了
-SSENSE 每页 Cloudflare Turnstile，详情页全返 CF stub。
-
-最终采用：StealthySession + solve_cloudflare 跑列表页（提取 color +
-基本信息）；详情页放弃，sizes 留空。"""
+2026-05 起切 curl_cffi (impersonate=chrome) 模拟 Chrome TLS 指纹绕过
+CF Turnstile, 不再需要 StealthySession+solve_cloudflare 或 Camoufox.
+PDP 也能直接抓, 之前抓不到的 sizes (inline GraphQL variants[]) 现可拿."""
 from __future__ import annotations
-import re, json, time
+import re, json, time, sys
 from .base import DealerScraper, normalize_price, discount_pct
-from scrapling.fetchers import StealthySession
 
 HOST = "https://www.ssense.com"
 
@@ -92,41 +89,61 @@ class Scraper(DealerScraper):
         return {"sizes": sizes, "size_stock": size_stock, "color": color, "colors": [color] if color else []}
 
     def scrape(self) -> list[dict]:
+        from curl_cffi import requests as cffi
         items = []
         seen = set()
-        with StealthySession(headless=True, network_idle=True, solve_cloudflare=True) as s:
-            print("[ssense] warm: home", flush=True)
-            s.fetch(f"{HOST}/", timeout=45000)
-            # Stage 1: list pages
-            for url in self.LIST_URLS:
-                print(f"[ssense] list {url}", flush=True)
-                try:
-                    p = s.fetch(url, timeout=60000)
-                    body = p.body.decode("utf-8","ignore")
-                except Exception as e:
-                    print(f"[ssense] list fetch err: {str(e)[:80]}", flush=True)
-                    continue
-                if "Just a moment" in body[:5000]:
-                    print("[ssense] CF still blocking — skip", flush=True)
-                    continue
-                page_items = self.parse_list(body, url)
-                new = 0
-                for it in page_items:
-                    if not it.get("url") or it["url"] in seen:
-                        continue
-                    seen.add(it["url"])
-                    it["dealer"] = self.KEY
-                    it["dealer_name"] = self.NAME
-                    it["region"] = self.REGION
-                    if "discount_pct" not in it:
-                        it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
-                    items.append(it)
-                    new += 1
-                print(f"[ssense] list +{new} (total {len(items)})", flush=True)
-        # 详情页 enrichment 已放弃: SSENSE PDP 全部被 Cloudflare 拦回 stub HTML，
-        # Camoufox/StealthySession 都解不开。color 已从列表页 line-through HTML 拿到，
-        # sizes 留空（前端 cardHTML 会显示 "尺码见 SSENSE" 占位）。
+        s = cffi.Session(impersonate="chrome")
+        # warm
+        print("[ssense] warm: home", flush=True)
+        for _ in range(3):
+            try:
+                r = s.get(f"{HOST}/", timeout=25)
+                if r.status_code == 200: break
+            except Exception: pass
+            time.sleep(2)
+        time.sleep(2)
+        # Stage 1: list pages
+        for url in self.LIST_URLS:
+            print(f"[ssense] list {url}", flush=True)
+            body = self._fetch(s, url)
+            if not body:
+                print("[ssense] list fetch failed", flush=True)
+                continue
+            page_items = self.parse_list(body, url)
+            new = 0
+            for it in page_items:
+                if not it.get("url") or it["url"] in seen: continue
+                seen.add(it["url"])
+                it["dealer"] = self.KEY
+                it["dealer_name"] = self.NAME
+                it["region"] = self.REGION
+                if "discount_pct" not in it:
+                    it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
+                items.append(it)
+                new += 1
+            print(f"[ssense] list +{new} (total {len(items)})", flush=True)
+        # Stage 2: PDP enrich (sizes - 之前 CF 拦不到, 现在可)
+        print(f"[ssense] enriching {len(items)} PDPs via curl_cffi...", flush=True)
+        for i, it in enumerate(items, 1):
+            body = self._fetch(s, it["url"])
+            if body:
+                detail = self.parse_detail(body, name_hint=it.get("name",""))
+                if detail: it.update(detail)
+            if i % 5 == 0: print(f"[ssense] enriched {i}/{len(items)}", flush=True)
+            time.sleep(0.4)
         return items
+
+    @staticmethod
+    def _fetch(session, url: str, retries: int = 3) -> str:
+        for i in range(retries):
+            try:
+                r = session.get(url, timeout=25)
+                if r.status_code == 200 and "Just a moment" not in r.text[:5000]:
+                    return r.text
+                time.sleep(1.5 + i)
+            except Exception:
+                time.sleep(1.5 + i)
+        return ""
 
     # SSENSE 把每个产品包成 <a class="flex flex-col" href="/en-us/men/product/arcteryx/..."> ...
     # 内含 <h3> 品牌+名字, 价格在 data-test="regularPriceText"/"salePriceText".
@@ -153,6 +170,10 @@ class Scraper(DealerScraper):
             url = d.get("url") or d.get("@id") or ""
             if url and not url.startswith("http"):
                 url = HOST + url
+            # SSENSE JSON-LD 的 url 缺 locale 前缀 (e.g. /men/product/...) → 注入 /en-us/
+            # 否则 PDP 返回 404 (但仍 ~400KB fallback) 导致 variants[] 抓不到
+            if "/en-us/" not in url:
+                url = url.replace("/men/product/", "/en-us/men/product/").replace("/women/product/", "/en-us/women/product/")
             items.append({
                 "url": url,
                 "name": d.get("name", ""),
