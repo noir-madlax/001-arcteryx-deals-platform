@@ -68,10 +68,23 @@ class Scraper:
             page.goto(f"{HOST}/", wait_until="networkidle", timeout=60000)
             time.sleep(2)
             for list_url in self.LIST_URLS:
-                print(f"[rei] {list_url}")
+                print(f"[rei] {list_url}", flush=True)
                 page.goto(list_url, wait_until="networkidle", timeout=60000)
-                time.sleep(8)  # let products render
-                body = page.content()
+                # 等到 /product/<id>/arcteryx-* 真出现在 DOM, 再额外 sleep 让全部卡片
+                # 渲染. 之前固定 sleep 8s, EC2 上偶发不够导致 list=0.
+                body = ""
+                seen_first = False
+                for waited in range(0, 25):
+                    time.sleep(1)
+                    body = page.content()
+                    if re.search(r'/product/\d+/arcteryx', body):
+                        seen_first = True
+                        # 第一张卡片到了, 再等 3s 让兄弟卡片全部填进 DOM
+                        time.sleep(3)
+                        body = page.content()
+                        break
+                if not seen_first:
+                    print(f"[rei] WARNING: 25s 后仍没看到 arcteryx 商品 DOM", flush=True)
                 # find all product anchor positions
                 positions = [(m.start(), m.group(1), m.group(2)) for m in self.URL_RE.finditer(body)]
                 # de-dup by id
