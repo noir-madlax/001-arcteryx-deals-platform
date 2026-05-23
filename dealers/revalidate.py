@@ -107,42 +107,21 @@ def fetch_rei_pdp(page, url: str) -> dict | None:
     if not orig: orig = sale
     return {"sale_price": sale, "original_price": orig, "discount_pct": _disc(orig, sale)}
 
-def fetch_mec_pdp(page, url: str) -> dict | None:
-    """MEC Camoufox PDP. JSON-LD Product schema + 兜底 HTML 价格元素."""
-    try:
-        page.goto(url, wait_until="networkidle", timeout=45000)
-        time.sleep(2)
-        body = page.content()
-    except Exception:
-        return None
-    if len(body) < 20000: return {"_err": "cf_stub"}
-    if "page not found" in body.lower() or "/404" in body: return {"_unavailable": True}
-    # 1) JSON-LD: 找 Product schema 的 offers.price
-    for m in re.finditer(r'<script[^>]+type="application/ld\+json"[^>]*>(.+?)</script>', body, re.S):
-        try:
-            d = json.loads(m.group(1))
-            if not isinstance(d, dict): continue
-            if "Product" not in str(d.get("@type","")): continue
-            offers = d.get("offers")
-            if isinstance(offers, dict):
-                price = _num(offers.get("price"))
-                if price:
-                    return {"sale_price": price, "original_price": price, "discount_pct": 0}
-            elif isinstance(offers, list):
-                ps = [_num(o.get("price")) for o in offers if isinstance(o, dict)]
-                ps = [x for x in ps if x]
-                if ps:
-                    sale = min(ps)
-                    return {"sale_price": sale, "original_price": sale, "discount_pct": 0}
-        except Exception:
-            pass
-    # 2) 兜底 HTML 价格元素
-    prices = [_num(x) for x in re.findall(r'\$([\d,]+(?:\.\d{2})?)', body)]
-    prices = sorted(set(p for p in prices if p and 10 < p < 5000))
-    if prices:
-        sale = prices[0]
-        return {"sale_price": sale, "original_price": sale, "discount_pct": 0}
-    return None
+def fetch_mec_pdp(session, url: str) -> dict | None:
+    """MEC curl_cffi (impersonate=chrome). 解 __NEXT_DATA__.product 的 price.
+    priceType=clearance → 有折扣; 否则满价 disc=0."""
+    from dealers.mec import _get, _next_data, _parse_pdp_price
+    r = _get(session, url)
+    if not r: return {"_err": "http_failed"}
+    d = _next_data(r.text)
+    if not d: return {"_err": "no_next_data"}
+    p = d.get("props",{}).get("pageProps",{}).get("product")
+    if not p: return {"_err": "no_product"}
+    if p.get("availabilityStatus") in ("Unavailable","SoldOut","Discontinued"):
+        return {"_unavailable": True}
+    sale, orig, disc = _parse_pdp_price(p)
+    if not sale: return None
+    return {"sale_price": float(sale), "original_price": float(orig or sale), "discount_pct": disc}
 
 def fetch_ssense_pdp(session, url: str) -> dict | None:
     """SSENSE StealthySession PDP. JSON-LD Product schema."""
@@ -264,17 +243,17 @@ def main():
         except Exception as e:
             print(f"  REI Camoufox launch err: {e}", file=sys.stderr)
 
-    # ── MEC: Camoufox ──
+    # ── MEC: curl_cffi (Chrome TLS 指纹, 不用浏览器) ──
     if by_dealer.get("mec"):
-        print(f"\n[reval] MEC ({len(by_dealer['mec'])}) — Camoufox", flush=True)
+        print(f"\n[reval] MEC ({len(by_dealer['mec'])}) — curl_cffi", flush=True)
         try:
-            from camoufox.sync_api import Camoufox
-            with Camoufox(headless=True, humanize=True, geoip=True) as br:
-                page = br.new_page()
-                page.goto("https://www.mec.ca/en/", wait_until="networkidle", timeout=60000)
-                time.sleep(2)
+            from dealers.mec import _make_session, _warm
+            mec_s = _make_session()
+            if not _warm(mec_s):
+                print("  [mec] warm failed, skip", file=sys.stderr)
+            else:
                 for i, r in enumerate(by_dealer["mec"], 1):
-                    new = fetch_mec_pdp(page, r["url"])
+                    new = fetch_mec_pdp(mec_s, r["url"])
                     if not new: stats["mec"]["err"] += 1
                     elif new.get("_unavailable"): stats["mec"]["unavail"] += 1
                     elif new.get("_err"): stats["mec"]["err"] += 1
@@ -284,9 +263,9 @@ def main():
                             if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
                                 stats["mec"]["diff"] += 1
                     if i % 20 == 0: print(f"  mec {i}/{len(by_dealer['mec'])}", flush=True)
-                    time.sleep(0.3)
+                    time.sleep(0.4)
         except Exception as e:
-            print(f"  MEC Camoufox launch err: {e}", file=sys.stderr)
+            print(f"  MEC fetch err: {e}", file=sys.stderr)
 
     # ── SSENSE: StealthySession + solve_cloudflare ──
     if by_dealer.get("ssense"):
