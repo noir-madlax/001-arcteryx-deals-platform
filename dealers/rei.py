@@ -1,13 +1,6 @@
-"""REI (rei.com) — 2026-05 起切 curl_cffi (impersonate=chrome) 模拟 Chrome TLS 指纹
-绕过 Akamai 反爬, 不再需要 Camoufox (省 ~600MB RAM, 30min → 3min).
-
-必须流程:
-1. GET / (warm)
-2. sleep 2 秒
-3. GET 任意业务 URL → 200 (search / PDP)
-
-注: 同 SSENSE/MEC, 同 session 内复用 cookies."""
+"""REI (rei.com) — 用 Camoufox 才能进，普通 search 直接 403。"""
 from __future__ import annotations
+from camoufox.sync_api import Camoufox
 import re, time
 from .base import normalize_price, discount_pct
 
@@ -67,27 +60,18 @@ class Scraper:
         }
 
     def scrape(self) -> list[dict]:
-        from curl_cffi import requests as cffi
         items = []
         seen = set()
-        s = cffi.Session(impersonate="chrome")
-        # warm: 必须先访问首页, Akamai 才下发 session cookies
-        print("[rei] warm: home", flush=True)
-        for _ in range(3):
-            try:
-                r = s.get(f"{HOST}/", timeout=25)
-                if r.status_code == 200: break
-            except Exception: pass
+        with Camoufox(headless=True, humanize=True, geoip=True) as browser:
+            page = browser.new_page()
+            print("[rei] warm: home")
+            page.goto(f"{HOST}/", wait_until="networkidle", timeout=60000)
             time.sleep(2)
-        time.sleep(2)
-        # ── 阶段 1: list pages ──────────────────────────────────────────
-        for list_url in self.LIST_URLS:
-            print(f"[rei] {list_url}", flush=True)
-            body = self._fetch(s, list_url)
-            if not body:
-                print(f"[rei] list FAIL {list_url}", flush=True)
-                continue
-            if True:
+            for list_url in self.LIST_URLS:
+                print(f"[rei] {list_url}")
+                page.goto(list_url, wait_until="networkidle", timeout=60000)
+                time.sleep(8)  # let products render
+                body = page.content()
                 # find all product anchor positions
                 positions = [(m.start(), m.group(1), m.group(2)) for m in self.URL_RE.finditer(body)]
                 # de-dup by id
@@ -148,28 +132,19 @@ class Scraper:
                         "region":         self.REGION,
                     })
                 print(f"[rei] list +{len(items)} (total)")
-        # ── 阶段 2: PDP enrichment (curl_cffi 复用同 session, 不再启浏览器) ──
-        print(f"[rei] enriching {len(items)} PDPs via curl_cffi...", flush=True)
-        for i, it in enumerate(items, 1):
-            body = self._fetch(s, it["url"])
-            if body:
-                detail = self.parse_detail(body)
-                if detail: it.update(detail)
-            if i % 10 == 0: print(f"[rei] enriched {i}/{len(items)}", flush=True)
-            time.sleep(0.3)
+            # Stage 2: detail enrichment
+            print(f"[rei] enriching {len(items)} items...")
+            for i, it in enumerate(items, 1):
+                try:
+                    page.goto(it["url"], wait_until="networkidle", timeout=45000)
+                    time.sleep(3)
+                    body = page.content()
+                    detail = self.parse_detail(body)
+                    if detail: it.update(detail)
+                except Exception as e:
+                    print(f"[rei] detail err {it['url']}: {str(e)[:60]}")
+                if i % 3 == 0: print(f"[rei] enriched {i}/{len(items)}")
         return items
-
-    @staticmethod
-    def _fetch(session, url: str, retries: int = 3) -> str:
-        for i in range(retries):
-            try:
-                r = session.get(url, timeout=25)
-                if r.status_code == 200 and len(r.text) > 5000:
-                    return r.text
-                time.sleep(1.5 + i)
-            except Exception:
-                time.sleep(1.5 + i)
-        return ""
 
 
 if __name__ == "__main__":

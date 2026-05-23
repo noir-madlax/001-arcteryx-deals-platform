@@ -6,7 +6,7 @@ DB 里旧价就僵在那里. 本脚本针对已知 dealer URL 重新拉 PDP 验�
 策略 (按 dealer 分组, 复用浏览器 session):
 - EVO    : Shopify /products/{handle}.json (纯 HTTP, 最快)
 - MEC    : curl_cffi (impersonate=chrome), __NEXT_DATA__.product 价格
-- REI    : curl_cffi (impersonate=chrome), data-ui="sale-price"/"full-price" 标签
+- REI    : Camoufox (curl_cffi 在 AWS Lightsail 被 Akamai 拒), data-ui="sale-price"/"full-price"
 - SSENSE : curl_cffi (impersonate=chrome), JSON-LD "@type":"Product" offers.price
 
 更新逻辑:
@@ -79,17 +79,18 @@ def fetch_evo_pdp(url: str) -> dict | None:
     if orig < sale: orig = sale
     return {"sale_price": round(sale, 2), "original_price": round(orig, 2), "discount_pct": _disc(orig, sale)}
 
-def fetch_rei_pdp(session, url: str) -> dict | None:
-    """REI curl_cffi (impersonate=chrome) PDP. data-ui="sale-price" + "full-price" 标签."""
+def fetch_rei_pdp(page, url: str) -> dict | None:
+    """REI Camoufox PDP. data-ui="sale-price" + "full-price" 标签.
+    注: curl_cffi 在 AWS Lightsail 上被 Akamai 拒 (全路径返 2.7KB stub),
+    所以 REI 必须用 Camoufox; SSENSE/MEC 不受影响."""
     try:
-        r = session.get(url, timeout=25)
-        if r.status_code != 200:
-            return {"_err": f"http {r.status_code}"}
-        body = r.text
+        page.goto(url, wait_until="networkidle", timeout=45000)
+        time.sleep(2)
+        body = page.content()
     except Exception as e:
-        return {"_err": f"{type(e).__name__}"}
-    if len(body) < 20000:  # Akamai stub
-        return {"_err": "akamai_stub"}
+        return {"_err": f"goto {type(e).__name__}"}
+    if len(body) < 20000:  # CF stub
+        return {"_err": "cf_stub"}
     if "page-not-found" in body.lower() or "page not found" in body.lower():
         return {"_unavailable": True}
     msale = re.search(r'data-ui="sale-price">\s*\$?([0-9.,]+)', body)
@@ -226,33 +227,29 @@ def main():
         if i % 50 == 0: print(f"  evo {i}/{len(by_dealer['evo'])}", flush=True)
         time.sleep(0.1)
 
-    # ── REI: curl_cffi (Chrome TLS 指纹, 不用浏览器) ──
+    # ── REI: Camoufox (curl_cffi 在 AWS Lightsail 上被 Akamai 拒) ──
     if by_dealer.get("rei"):
-        print(f"\n[reval] REI ({len(by_dealer['rei'])}) — curl_cffi", flush=True)
+        print(f"\n[reval] REI ({len(by_dealer['rei'])}) — Camoufox", flush=True)
         try:
-            from curl_cffi import requests as _cffi
-            rei_s = _cffi.Session(impersonate="chrome")
-            # warm
-            for _ in range(3):
-                try:
-                    if rei_s.get("https://www.rei.com/", timeout=25).status_code == 200: break
-                except Exception: pass
+            from camoufox.sync_api import Camoufox
+            with Camoufox(headless=True, humanize=True, geoip=True) as br:
+                page = br.new_page()
+                page.goto("https://www.rei.com/", wait_until="networkidle", timeout=60000)
                 time.sleep(2)
-            time.sleep(2)
-            for i, r in enumerate(by_dealer["rei"], 1):
-                new = fetch_rei_pdp(rei_s, r["url"])
-                if not new: stats["rei"]["err"] += 1
-                elif new.get("_unavailable"): stats["rei"]["unavail"] += 1
-                elif new.get("_err"): stats["rei"]["err"] += 1
-                else:
-                    if update_row(client, r["sku_id"], new, r):
-                        stats["rei"]["ok"] += 1
-                        if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
-                            stats["rei"]["diff"] += 1
-                if i % 10 == 0: print(f"  rei {i}/{len(by_dealer['rei'])}", flush=True)
-                time.sleep(0.3)
+                for i, r in enumerate(by_dealer["rei"], 1):
+                    new = fetch_rei_pdp(page, r["url"])
+                    if not new: stats["rei"]["err"] += 1
+                    elif new.get("_unavailable"): stats["rei"]["unavail"] += 1
+                    elif new.get("_err"): stats["rei"]["err"] += 1
+                    else:
+                        if update_row(client, r["sku_id"], new, r):
+                            stats["rei"]["ok"] += 1
+                            if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
+                                stats["rei"]["diff"] += 1
+                    if i % 5 == 0: print(f"  rei {i}/{len(by_dealer['rei'])}", flush=True)
+                    time.sleep(0.5)
         except Exception as e:
-            print(f"  REI curl_cffi err: {e}", file=sys.stderr)
+            print(f"  REI Camoufox launch err: {e}", file=sys.stderr)
 
     # ── MEC: curl_cffi (Chrome TLS 指纹, 不用浏览器) ──
     if by_dealer.get("mec"):
