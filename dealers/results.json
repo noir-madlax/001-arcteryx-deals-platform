@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-25 15:09:06",
+  "generated_at": "2026-05-25 21:08:26",
   "dealers": {
     "evo": {
       "name": "EVO",
       "region": "US",
-      "count": 259,
+      "count": 258,
       "items": [
         {
           "url": "https://www.evo.com/products/264090-arc-teryx-beta-ar-stormhood-jacket-men-s",
@@ -4930,7 +4930,7 @@
           "name": "Arc'teryx Beta SL Jacket - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1272426.jpg?v=1770851768",
           "original_price": 500.0,
-          "sale_price": 375.0,
+          "sale_price": 500.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
@@ -4946,13 +4946,12 @@
             "S": "in_stock",
             "XS": "in_stock"
           },
-          "color": "Black, Carob, Moondrop",
+          "color": "Black, Moondrop",
           "colors": [
             "Black",
-            "Carob",
             "Moondrop"
           ],
-          "discount_pct": 25,
+          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5651,31 +5650,6 @@
           "dealer_name": "EVO",
           "region": "US",
           "category": "Shell Jackets"
-        },
-        {
-          "url": "https://www.evo.com/products/270443-arc-teryx-covert-zip-neck-crew-women-s",
-          "name": "Arc'teryx Covert Zip Neck Crew - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1229368.jpg?v=1767738301",
-          "original_price": 160.0,
-          "sale_price": 120.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [
-            "L"
-          ],
-          "size_stock": {
-            "L": "in_stock"
-          },
-          "color": "Midnight Frost Heather",
-          "colors": [
-            "Midnight Frost Heather"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": "Sweatshirts"
         },
         {
           "url": "https://www.evo.com/products/267686-arc-teryx-beta-sl-jacket-women-s",
@@ -8176,7 +8150,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 129,
+      "count": 131,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6038-082/arcteryx-sylan-2-trail-running-shoes-womens",
@@ -8222,7 +8196,7 @@
           "url": "https://www.mec.ca/en/product/6037-621/arcteryx-covert-cardigan-womens",
           "name": "Arc'teryx Covert Cardigan - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529334_source_1773163235.jpg",
-          "color": "Atmos  Heather, Black, Mallow Heather",
+          "color": "Black, Mallow Heather",
           "sale_price": 230.0,
           "original_price": 230.0,
           "discount_pct": 0,
@@ -8248,7 +8222,6 @@
             "XX-Large": "in_stock"
           },
           "colors": [
-            "Atmos  Heather",
             "Black",
             "Mallow Heather"
           ]
@@ -8528,7 +8501,7 @@
           "url": "https://www.mec.ca/en/product/6032-659/arcteryx-kopec-mid-gore-tex-hiking-boots-womens",
           "name": "Arc'teryx Kopec Mid Gore-Tex Hiking Boots - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/536452_source_1771544474.jpg",
-          "color": "Black/Black, Forage/Rune, Velocity/Lt Black Sapphir",
+          "color": "Black/Black, Velocity/Lt Black Sapphir",
           "sale_price": 156.0,
           "original_price": 260.0,
           "discount_pct": 40,
@@ -8577,7 +8550,6 @@
           },
           "colors": [
             "Black/Black",
-            "Forage/Rune",
             "Velocity/Lt Black Sapphir"
           ]
         },
@@ -8615,7 +8587,7 @@
           "url": "https://www.mec.ca/en/product/6037-637/arcteryx-sunna-crew-long-sleeve-womens",
           "name": "Arc'teryx Sunna Crew Long Sleeve - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533663_source_1774267280.jpg",
-          "color": "Alpine Blue, Black, Moondrop",
+          "color": "Black, Moondrop",
           "sale_price": 100.0,
           "original_price": 100.0,
           "discount_pct": 0,
@@ -8641,10 +8613,28 @@
             "XX-Large": "in_stock"
           },
           "colors": [
-            "Alpine Blue",
             "Black",
             "Moondrop"
           ]
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
+          "name": "Arc'teryx Heliad 15 Backpack - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520622_source_1773871544.jpg",
+          "color": "",
+          "sale_price": 100.0,
+          "original_price": 100.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "One Size"
+          ],
+          "size_stock": {
+            "One Size": "in_stock"
+          },
+          "colors": []
         },
         {
           "url": "https://www.mec.ca/en/product/6029-804/arcteryx-skaha-harness-womens",
@@ -8677,7 +8667,7 @@
           "url": "https://www.mec.ca/en/product/6032-550/arcteryx-gamma-pant-womens",
           "name": "Arc'teryx Gamma Pant - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518196_source_1771544533.jpg",
-          "color": "Black, Black Sapphire, HABITAT",
+          "color": "Black, HABITAT",
           "sale_price": 144.0,
           "original_price": 260.0,
           "discount_pct": 45,
@@ -8738,7 +8728,6 @@
           },
           "colors": [
             "Black",
-            "Black Sapphire",
             "HABITAT"
           ]
         },
@@ -11300,7 +11289,7 @@
           "url": "https://www.mec.ca/en/product/6042-487/arcteryx-kragg-approach-shoes-womens",
           "name": "Arc'teryx Kragg Approach Shoes - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/548694_source_1772583639.jpg",
-          "color": "Black/Black",
+          "color": "",
           "sale_price": 200.0,
           "original_price": 200.0,
           "discount_pct": 0,
@@ -11331,9 +11320,7 @@
             "UK 8": "in_stock",
             "UK 8.5": "in_stock"
           },
-          "colors": [
-            "Black/Black"
-          ]
+          "colors": []
         },
         {
           "url": "https://www.mec.ca/en/product/6039-140/arcteryx-sunna-speed-bird-crop-womens",
@@ -11511,7 +11498,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-525/arcteryx-cormac-crew-short-sleeve-mens",
           "name": "Arc'teryx Cormac Crew Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534017_source_1776709234.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534039_source_1776709234.jpg",
           "color": "Dk Stratus, HABITAT",
           "sale_price": 90.0,
           "original_price": 90.0,
@@ -11540,7 +11527,7 @@
           "url": "https://www.mec.ca/en/product/6032-525/arcteryx-kragg-superlight-cotton-short-sleeve-mens",
           "name": "Arc'teryx Kragg Superlight Cotton Short Sleeve - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517314_source_1778799969.jpg",
-          "color": "Black, Stone Red, Void",
+          "color": "Stone Red, Void",
           "sale_price": 39.94,
           "original_price": 80.0,
           "discount_pct": 50,
@@ -11562,7 +11549,6 @@
             "XX-Large": "in_stock"
           },
           "colors": [
-            "Black",
             "Stone Red",
             "Void"
           ]
@@ -11734,7 +11720,7 @@
           "url": "https://www.mec.ca/en/product/6034-755/arcteryx-color-block-toque-unisex",
           "name": "Arc'teryx Color Block Toque - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/526400_source_1760059554.jpg",
-          "color": "Blaze/Copper Sky, Mars/ Dynasty, Void/Black",
+          "color": "Blaze/Copper Sky, Void/Black",
           "sale_price": 42.0,
           "original_price": 70.0,
           "discount_pct": 40,
@@ -11749,7 +11735,6 @@
           },
           "colors": [
             "Blaze/Copper Sky",
-            "Mars/ Dynasty",
             "Void/Black"
           ]
         },
@@ -11973,6 +11958,31 @@
           ]
         },
         {
+          "url": "https://www.mec.ca/en/product/6036-207/arcteryx-konseal-pullover-hoodie-mens",
+          "name": "Arc'teryx Konseal Pullover Hoodie - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/522898_source_1762416982.jpg",
+          "color": "",
+          "sale_price": 119.94,
+          "original_price": 240.0,
+          "discount_pct": 50,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large"
+          ],
+          "size_stock": {
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock"
+          },
+          "colors": []
+        },
+        {
           "url": "https://www.mec.ca/en/product/5039-684/arcteryx-ar-385a-harness-womens",
           "name": "Arc'teryx AR 385a Harness - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/430982_source_1706263150.jpg",
@@ -12121,7 +12131,7 @@
           "url": "https://www.mec.ca/en/product/6029-956/arcteryx-beta-coat-womens",
           "name": "Arc'teryx Beta Coat - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/490109_source_1753980933.jpg",
-          "color": "Nightscape",
+          "color": "",
           "sale_price": 450.0,
           "original_price": 750.0,
           "discount_pct": 40,
@@ -12142,9 +12152,7 @@
             "Large": "in_stock",
             "X-Large": "in_stock"
           },
-          "colors": [
-            "Nightscape"
-          ]
+          "colors": []
         },
         {
           "url": "https://www.mec.ca/en/product/6030-115/arcteryx-gamma-mx-pant-womens",
@@ -12308,7 +12316,7 @@
           "url": "https://www.mec.ca/en/product/6032-374/arcteryx-sinsola-shade-hat-unisex",
           "name": "Arc'teryx Sinsola Shade Hat - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/508631_source_1744881682.jpg",
-          "color": "Black",
+          "color": "",
           "sale_price": 80.0,
           "original_price": 100.0,
           "discount_pct": 20,
@@ -12323,9 +12331,7 @@
             "Small/Medium": "in_stock",
             "Large/X-Large": "in_stock"
           },
-          "colors": [
-            "Black"
-          ]
+          "colors": []
         }
       ]
     },
@@ -12754,7 +12760,7 @@
         {
           "url": "https://www.rei.com/product/785251/arcteryx-bird-head-toque-beanie",
           "name": "Bird Head Toque Beanie",
-          "image": "https://www.rei.com/media/3c5c3384-999d-45ad-9051-2932a7e82f8d.jpg",
+          "image": "https://www.rei.com/media/product/7852510058",
           "original_price": 60.0,
           "sale_price": 60.0,
           "currency": "USD",
@@ -12767,10 +12773,9 @@
           "sizes": [],
           "size_stock": {},
           "colors": [
-            "Sea Salt/Habitat",
             "Mantis/Arctic Silk"
           ],
-          "color": "Sea Salt/Habitat"
+          "color": "Mantis/Arctic Silk"
         },
         {
           "url": "https://www.rei.com/product/249474/arcteryx-beta-ar-jacket-mens",
@@ -14336,5 +14341,5 @@
       ]
     }
   },
-  "total": 440
+  "total": 441
 }
