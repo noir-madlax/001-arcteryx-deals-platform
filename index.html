@@ -1146,7 +1146,10 @@ const inferCategory = (name, url) => {
     if (/veilance/.test(n) || /veilance/.test(u)) return 'Veilance';
     if (/shoe|boot|sandal|kragg|konseal|aerios|bora|acrux|vertex|kopec|norvan\s*sl|sylan/.test(n)) return '鞋类';
     if (/\bpack\b|backpack|bag|mantis|arro|brize|khard|\bindex\b/.test(n)) return '背包';
-    if (/\bpants?\b|bib\s*pants?|bib\s*shorts?|\bshorts?\b|leggings?/.test(n)) return '裤装';
+    if (/\bpants?\b|bib\s*pants?|bib\s*shorts?|\bshorts?\b|leggings?|tights?|\bliner\b|trousers?/.test(n)) return '裤装';
+    if (/one\s*piece|onesie|coverall/.test(n)) return '连体雪衣';
+    if (/harness|belay|carabiner|sling|rope|cordelette/.test(n)) return '攀岩装备';
+    if (/bandana|belt|visor|conveyor|scarf|gaiter|sleeve/.test(n)) return '配饰';
     if (/down\s*jacket|insulated\s*jacket|cerium|thorium|nuclei|calidum|proton\s*lt\s*j/.test(n)) return '保暖羽绒';
     if (/jacket|shell/.test(n)) return '冲锋衣';
     if (/hoody|hoodie|fleece|zip.*neck|pullover|crew|cardigan|sweater/.test(n)) return '卫衣/抓绒';
