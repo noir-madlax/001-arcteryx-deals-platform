@@ -13,6 +13,12 @@ ROOT = Path(__file__).resolve().parent.parent
 RESULTS_FILE = ROOT / "dealers" / "results.json"
 BATCH_SIZE = 50
 SYM = {"USD":"$", "CAD":"C$", "EUR":"€", "GBP":"£", "SEK":"kr", "CHF":"CHF"}
+REGION_NAME = {
+    "us":"美国","ca":"加拿大","gb":"英国","de":"德国","fr":"法国","nl":"荷兰",
+    "at":"奥地利","ch":"瑞士","it":"意大利","es":"西班牙","be":"比利时",
+    "dk":"丹麦","se":"瑞典","no":"挪威","fi":"芬兰","ie":"爱尔兰","pl":"波兰",
+    "jp":"日本","au":"澳大利亚","nz":"新西兰","kr":"韩国","hk":"香港",
+}
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://bupqagkrcvrezjkdbald.supabase.co")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")  # service_role
@@ -65,7 +71,7 @@ def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
         "symbol":         SYM.get(it.get("currency",""), "$"),
         "gender":         it.get("gender") or "unknown",
         "region":         (it.get("region") or "us").lower(),
-        "region_name":    "",
+        "region_name":    REGION_NAME.get((it.get("region") or "us").lower(), ""),
         "category":       _infer_cat(name, url),
         "url":            url,
         "image_url":      it.get("image"),
