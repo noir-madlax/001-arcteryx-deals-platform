@@ -718,7 +718,9 @@ const SEASON_LABEL = { F: '秋冬', W: '秋冬', S: '春夏' };
 function releaseSeason(p) {
     const urls = [p.image_url, ...(Array.isArray(p.images) ? p.images : [])].filter(Boolean);
     for (const u of urls) {
-        const m = u.match(/\/([FSWfsw])(\d{2})[-_]/);
+        // 命中 /F25-..., /S22/..., F25_X000... 等多种分隔; 季度码必须紧跟 /
+        // (?=\d 排除像 "Front-View" 这种误匹配)
+        const m = u.match(/\/([FSWfsw])(\d{2})(?=[-_/])/);
         if (m) return `20${m[2]} ${SEASON_LABEL[m[1].toUpperCase()] || ''}`.trim();
     }
     return null;
