@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-24 21:08:27",
+  "generated_at": "2026-05-25 03:04:05",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -1866,14 +1866,12 @@
           "gender": "men",
           "sizes": [
             "L",
-            "M",
             "S",
             "XL",
             "XS"
           ],
           "size_stock": {
             "L": "in_stock",
-            "M": "in_stock",
             "S": "in_stock",
             "XL": "in_stock",
             "XS": "in_stock"
@@ -8184,7 +8182,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 130,
+      "count": 129,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6038-082/arcteryx-sylan-2-trail-running-shoes-womens",
@@ -12084,33 +12082,6 @@
           ]
         },
         {
-          "url": "https://www.mec.ca/en/product/5039-685/arcteryx-ar-395a-harness-mens",
-          "name": "Arc'teryx AR 395a Harness - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/430974_source_1707472291.jpg",
-          "color": "Yukon/Edziza",
-          "sale_price": 99.5,
-          "original_price": 200.0,
-          "discount_pct": 50,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large"
-          ],
-          "size_stock": {
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock"
-          },
-          "colors": [
-            "Yukon/Edziza"
-          ]
-        },
-        {
           "url": "https://www.mec.ca/en/product/6027-403/arcteryx-sylan-trail-running-shoes-womens",
           "name": "Arc'teryx Sylan Trail Running Shoes - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/484800_source_1772539305.jpg",
@@ -14356,5 +14327,5 @@
       ]
     }
   },
-  "total": 441
+  "total": 440
 }
