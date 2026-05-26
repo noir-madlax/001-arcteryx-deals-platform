@@ -113,7 +113,7 @@ def main():
             page = 0
             while True:
                 res = client.table("products").select(
-                    "sku_id,first_seen,sizes,size_stock,color"
+                    "sku_id,first_seen,sizes,size_stock,color,original_price,sale_price"
                 ).eq("dealer", dkey).range(page*1000, page*1000+999).execute()
                 data = res.data or []
                 for r in data:
@@ -151,6 +151,42 @@ def main():
                 print(f"  ERR batch {i//BATCH_SIZE+1}: {str(e)[:200]}", file=sys.stderr)
         print(f"[sync:{dkey}] upserted {ok}/{len(rows)} ({err} batch errors)")
         grand_total += ok
+
+        # ── price_history (append-only): 价格变化的 SKU 记录历史 ────────
+        # 之前 dealer sync 完全不写 price_history, 导致前端详情页折线图
+        # 只对 outlet 有数据. revalidate.py (06:30 UTC) 顺手写一点 MEC,
+        # 但 evo/ssense/rei 完全没历史. 现在 dealer sync 也补上.
+        hist_rows = []
+        for r in rows:
+            sid = r["sku_id"]
+            new_sp, new_op = r.get("sale_price"), r.get("original_price")
+            if new_sp is None: continue
+            old = existing_map.get(sid)
+            if old is None: continue  # 新 SKU, 首次入库不算价格"变化"
+            old_sp, old_op = old.get("sale_price"), old.get("original_price")
+            if old_sp is None: continue
+            if abs((new_sp or 0) - (old_sp or 0)) < 0.01 and abs((new_op or 0) - (old_op or 0)) < 0.01:
+                continue  # 价格未变
+            hist_rows.append({
+                "sku_id":         sid,
+                "sale_price":     new_sp,
+                "original_price": new_op,
+                "discount_pct":   r.get("discount_pct"),
+                "currency":       r.get("currency"),
+                "recorded_at":    r.get("last_updated") or now_iso,
+            })
+        if hist_rows:
+            hi_ok = 0
+            for i in range(0, len(hist_rows), BATCH_SIZE):
+                batch = hist_rows[i:i+BATCH_SIZE]
+                try:
+                    client.table("price_history").insert(batch).execute()
+                    hi_ok += len(batch)
+                except Exception as e:
+                    print(f"  HIST ERR batch {i//BATCH_SIZE+1}: {str(e)[:200]}", file=sys.stderr)
+            print(f"[sync:{dkey}] price_history: +{hi_ok} 价变事件")
+        else:
+            print(f"[sync:{dkey}] price_history: 0 价变 (无新事件)")
 
         # ── delete stale rows that are no longer in current scrape (scoped to this dealer)
         # 但：如果本轮抓到 0 件，几乎肯定是抓取失败而不是该 dealer 真的没货，
