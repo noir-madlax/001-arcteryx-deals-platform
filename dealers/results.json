@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-26 03:04:12",
+  "generated_at": "2026-05-26 09:08:37",
   "dealers": {
     "evo": {
       "name": "EVO",
       "region": "US",
-      "count": 258,
+      "count": 257,
       "items": [
         {
           "url": "https://www.evo.com/products/264090-arc-teryx-beta-ar-stormhood-jacket-men-s",
@@ -2290,13 +2290,11 @@
           "sizes": [
             "L",
             "M",
-            "S",
             "XL"
           ],
           "size_stock": {
             "L": "in_stock",
             "M": "in_stock",
-            "S": "in_stock",
             "XL": "in_stock"
           },
           "color": "Arctic Silk, Habitat",
@@ -4186,31 +4184,6 @@
           "dealer_name": "EVO",
           "region": "US",
           "category": "Day Packs"
-        },
-        {
-          "url": "https://www.evo.com/products/247080-arc-teryx-beta-ar-jacket-women-s",
-          "name": "Arc'teryx Beta AR Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1178327.jpg?v=1767736398",
-          "original_price": 600.0,
-          "sale_price": 359.99,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [
-            "XXS"
-          ],
-          "size_stock": {
-            "XXS": "in_stock"
-          },
-          "color": "Black Sapphire",
-          "colors": [
-            "Black Sapphire"
-          ],
-          "discount_pct": 40,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": "Shell Jackets"
         },
         {
           "url": "https://www.evo.com/products/277490-arc-teryx-beta-ar-jacket-women-s",
@@ -11394,7 +11367,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-638/arcteryx-sunna-crew-short-sleeve-womens",
           "name": "Arc'teryx Sunna Crew Short Sleeve - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533713_source_1776945690.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533808_source_1776945690.jpg",
           "color": "Alpine Blue, Moondrop, Pineberry",
           "sale_price": 90.0,
           "original_price": 90.0,
@@ -12420,9 +12393,9 @@
           "colors": [
             "Black",
             "Black Sapphire",
-            "Vitality Ii",
             "Moon Drop",
             "Mantis/Tatsu",
+            "Vitality Ii",
             "Stone Red",
             "Void"
           ],
@@ -12561,6 +12534,7 @@
             "0 Short",
             "0",
             "2",
+            "4 Short",
             "4",
             "4 Tall",
             "6",
@@ -12581,6 +12555,7 @@
             "0 Short": "in_stock",
             "0": "in_stock",
             "2": "in_stock",
+            "4 Short": "in_stock",
             "4": "in_stock",
             "4 Tall": "in_stock",
             "6": "in_stock",
@@ -12653,7 +12628,7 @@
         {
           "url": "https://www.rei.com/product/785251/arcteryx-bird-head-toque-beanie",
           "name": "Bird Head Toque Beanie",
-          "image": "https://www.rei.com/media/product/7852510058",
+          "image": "https://www.rei.com/media/2330c296-5fa7-41c2-8ac3-6f4eec3a132f.jpg",
           "original_price": 60.0,
           "sale_price": 60.0,
           "currency": "USD",
@@ -12666,7 +12641,8 @@
           "sizes": [],
           "size_stock": {},
           "colors": [
-            "Mantis/Arctic Silk"
+            "Mantis/Arctic Silk",
+            "Mallow/Euphoria"
           ],
           "color": "Mantis/Arctic Silk"
         },
@@ -14234,5 +14210,5 @@
       ]
     }
   },
-  "total": 437
+  "total": 436
 }
