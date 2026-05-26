@@ -1,11 +1,36 @@
 {
-  "generated_at": "2026-05-26 15:10:07",
+  "generated_at": "2026-05-26 21:08:41",
   "dealers": {
     "evo": {
       "name": "EVO",
       "region": "US",
       "count": 257,
       "items": [
+        {
+          "url": "https://www.evo.com/products/255308-arc-teryx-alpha-sv-jacket-men-s",
+          "name": "Arc'teryx Alpha SV Jacket - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236778.jpg?v=1767738616",
+          "original_price": 900.0,
+          "sale_price": 524.99,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [
+            "M"
+          ],
+          "size_stock": {
+            "M": "in_stock"
+          },
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 42,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": "Shell Jackets"
+        },
         {
           "url": "https://www.evo.com/products/264090-arc-teryx-beta-ar-stormhood-jacket-men-s",
           "name": "Arc'teryx Beta AR - StormHood Jacket - Men's",
@@ -814,9 +839,8 @@
             "M": "in_stock",
             "S": "in_stock"
           },
-          "color": "Black, Canvas",
+          "color": "Canvas",
           "colors": [
-            "Black",
             "Canvas"
           ],
           "discount_pct": 0,
@@ -2372,10 +2396,9 @@
           "gender": "men",
           "sizes": [],
           "size_stock": {},
-          "color": "Black Sapphire/Vitality, Blaze/Copper Sky, Mars/Dynasty",
+          "color": "Black Sapphire/Vitality, Mars/Dynasty, Rune/Arctic Silk",
           "colors": [
             "Black Sapphire/Vitality",
-            "Blaze/Copper Sky",
             "Mars/Dynasty",
             "Rune/Arctic Silk"
           ],
@@ -2601,27 +2624,6 @@
           "dealer_name": "EVO",
           "region": "US",
           "category": "Day Packs"
-        },
-        {
-          "url": "https://www.evo.com/products/262863-arc-teryx-ribbed-toque-beanie",
-          "name": "Arc'teryx Ribbed Toque Beanie",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236383.jpg?v=1767738600",
-          "original_price": 65.0,
-          "sale_price": 45.5,
-          "currency": "USD",
-          "in_stock": false,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Mars/Dynasty",
-          "colors": [
-            "Mars/Dynasty"
-          ],
-          "discount_pct": 30,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": "Beanies"
         },
         {
           "url": "https://www.evo.com/products/279539-arc-teryx-rho-lt-print-bottom-men-s",
@@ -3326,7 +3328,6 @@
           "gender": "men",
           "sizes": [
             "28\"",
-            "30\"",
             "32\"",
             "34\"",
             "36\"",
@@ -3334,7 +3335,6 @@
           ],
           "size_stock": {
             "28\"": "in_stock",
-            "30\"": "in_stock",
             "32\"": "in_stock",
             "34\"": "in_stock",
             "36\"": "in_stock",
@@ -4326,7 +4326,6 @@
             "Black",
             "Dk Stratus/Blk Sapphire",
             "Forage II",
-            "Midnight Frost",
             "Phosphorescent",
             "Pineberry"
           ],
@@ -10837,6 +10836,39 @@
           ]
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-652/arcteryx-norvan-windshell-hoodie-womens",
+          "name": "Arc'teryx Norvan Windshell Hoodie - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519353_source_1777379731.jpg",
+          "color": "Mallow",
+          "sale_price": 280.0,
+          "original_price": 280.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large",
+            "X-Small",
+            "XX-Small"
+          ],
+          "size_stock": {
+            "XX-Small": "in_stock",
+            "X-Small": "in_stock",
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock"
+          },
+          "colors": [
+            "Mallow"
+          ]
+        },
+        {
           "url": "https://www.mec.ca/en/product/6032-523/arcteryx-kragg-superlight-cotton-bird-tile-long-sleeve-mens",
           "name": "Arc'teryx Kragg Superlight Cotton Bird Tile Long Sleeve - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504292_source_1765926401.jpg",
@@ -11194,39 +11226,6 @@
           ]
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-652/arcteryx-norvan-windshell-hoodie-womens",
-          "name": "Arc'teryx Norvan Windshell Hoodie - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519353_source_1777379731.jpg",
-          "color": "Mallow",
-          "sale_price": 280.0,
-          "original_price": 280.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small",
-            "XX-Small"
-          ],
-          "size_stock": {
-            "XX-Small": "in_stock",
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Mallow"
-          ]
-        },
-        {
           "url": "https://www.mec.ca/en/product/6037-648/arcteryx-squamish-hoodie-womens",
           "name": "Arc'teryx Squamish Hoodie - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519017_source_1776715537.jpg",
@@ -11344,7 +11343,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-638/arcteryx-sunna-crew-short-sleeve-womens",
           "name": "Arc'teryx Sunna Crew Short Sleeve - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533808_source_1776945690.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533713_source_1776945690.jpg",
           "color": "Alpine Blue, Moondrop, Pineberry",
           "sale_price": 90.0,
           "original_price": 90.0,
@@ -11379,7 +11378,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-525/arcteryx-cormac-crew-short-sleeve-mens",
           "name": "Arc'teryx Cormac Crew Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534039_source_1776709234.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534017_source_1776709234.jpg",
           "color": "Dk Stratus, HABITAT",
           "sale_price": 90.0,
           "original_price": 90.0,
@@ -13108,7 +13107,7 @@
             "US 11": "in_stock",
             "US 11.5": "in_stock",
             "US 12": "in_stock",
-            "US 12.5": "out_of_stock"
+            "US 12.5": "in_stock"
           },
           "color": "Gray",
           "colors": [
