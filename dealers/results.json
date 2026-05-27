@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-26 21:08:41",
+  "generated_at": "2026-05-27 03:08:34",
   "dealers": {
     "evo": {
       "name": "EVO",
       "region": "US",
-      "count": 257,
+      "count": 256,
       "items": [
         {
           "url": "https://www.evo.com/products/255308-arc-teryx-alpha-sv-jacket-men-s",
@@ -1823,11 +1823,9 @@
           "in_stock": true,
           "gender": "men",
           "sizes": [
-            "L",
             "XXL"
           ],
           "size_stock": {
-            "L": "in_stock",
             "XXL": "in_stock"
           },
           "color": "Black Sapphire",
@@ -4002,31 +4000,6 @@
           "category": "Bike Pants"
         },
         {
-          "url": "https://www.evo.com/products/272462-arc-teryx-granville-25-backpack-used",
-          "name": "Arc'teryx Granville 25 Backpack - Used",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1264484.jpg?v=1767739712",
-          "original_price": 230.0,
-          "sale_price": 218.5,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [
-            "Damaged Packaging"
-          ],
-          "size_stock": {
-            "Damaged Packaging": "in_stock"
-          },
-          "color": "Dk Stratus",
-          "colors": [
-            "Dk Stratus"
-          ],
-          "discount_pct": 5,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": "Day Packs"
-        },
-        {
           "url": "https://www.evo.com/products/285855-arc-teryx-delta-1-2-zip-up-men-s",
           "name": "Arc'teryx Delta 1/2 Zip Up - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285676.jpg?v=1774909950",
@@ -4902,7 +4875,7 @@
           "name": "Arc'teryx Beta SL Jacket - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1272426.jpg?v=1770851768",
           "original_price": 500.0,
-          "sale_price": 375.0,
+          "sale_price": 500.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
@@ -4918,13 +4891,12 @@
             "S": "in_stock",
             "XS": "in_stock"
           },
-          "color": "Black, Carob, Moondrop",
+          "color": "Black, Moondrop",
           "colors": [
             "Black",
-            "Carob",
             "Moondrop"
           ],
-          "discount_pct": 25,
+          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -8120,7 +8092,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 127,
+      "count": 129,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6038-082/arcteryx-sylan-2-trail-running-shoes-womens",
@@ -11259,6 +11231,29 @@
           ]
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-606/arcteryx-sinsolo-bucket-hat-unisex",
+          "name": "Arc'teryx Sinsolo Bucket Hat - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/549503_source_1773706828.jpg",
+          "color": "Black",
+          "sale_price": 110.0,
+          "original_price": 110.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Large/X-Large",
+            "Small/Medium"
+          ],
+          "size_stock": {
+            "Small/Medium": "in_stock",
+            "Large/X-Large": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ]
+        },
+        {
           "url": "https://www.mec.ca/en/product/6039-140/arcteryx-sunna-speed-bird-crop-womens",
           "name": "Arc'teryx Sunna Speed Bird Crop - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533718_source_1777397748.jpg",
@@ -12195,6 +12190,35 @@
           "colors": [
             "Nightscape"
           ]
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6037-569/arcteryx-norvan-tank-womens",
+          "name": "Arc'teryx Norvan Tank - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/521296_source_1749074344.jpg",
+          "color": "Black",
+          "sale_price": 60.0,
+          "original_price": 100.0,
+          "discount_pct": 40,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "X-Small"
+          ],
+          "size_stock": {
+            "X-Small": "in_stock",
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ]
         }
       ]
     },
@@ -12625,7 +12649,7 @@
         {
           "url": "https://www.rei.com/product/785251/arcteryx-bird-head-toque-beanie",
           "name": "Bird Head Toque Beanie",
-          "image": "https://www.rei.com/media/df7ff53e-aeba-4974-9886-8313b3b664a2.jpg",
+          "image": "https://www.rei.com/media/2330c296-5fa7-41c2-8ac3-6f4eec3a132f.jpg",
           "original_price": 60.0,
           "sale_price": 60.0,
           "currency": "USD",
@@ -12638,10 +12662,9 @@
           "sizes": [],
           "size_stock": {},
           "colors": [
-            "Mallow/Euphoria",
             "Mantis/Arctic Silk"
           ],
-          "color": "Mallow/Euphoria"
+          "color": "Mantis/Arctic Silk"
         },
         {
           "url": "https://www.rei.com/product/249474/arcteryx-beta-ar-jacket-mens",
@@ -14207,5 +14230,5 @@
       ]
     }
   },
-  "total": 436
+  "total": 437
 }
