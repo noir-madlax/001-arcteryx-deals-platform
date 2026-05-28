@@ -1,36 +1,39 @@
 {
-  "generated_at": "2026-05-28 15:05:24",
+  "generated_at": "2026-05-28 21:31:08",
   "dealers": {
     "evo": {
       "name": "EVO",
       "region": "US",
-      "count": 256,
+      "count": 255,
       "items": [
         {
           "url": "https://www.evo.com/products/264090-arc-teryx-beta-ar-stormhood-jacket-men-s",
           "name": "Arc'teryx Beta AR - StormHood Jacket - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236844.jpg?v=1767738617",
           "original_price": 600.0,
-          "sale_price": 450.0,
+          "sale_price": 379.99,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
           "sizes": [
+            "L",
             "XL",
             "XS",
             "XXL"
           ],
           "size_stock": {
+            "L": "in_stock",
             "XL": "in_stock",
             "XS": "in_stock",
             "XXL": "in_stock"
           },
-          "color": "Black Sapphire, Dynasty",
+          "color": "Black, Black Sapphire, Dynasty",
           "colors": [
+            "Black",
             "Black Sapphire",
             "Dynasty"
           ],
-          "discount_pct": 25,
+          "discount_pct": 37,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -2139,31 +2142,6 @@
           "category": "Shell Pants"
         },
         {
-          "url": "https://www.evo.com/products/263956-arc-teryx-atom-sv-hoodie-men-s",
-          "name": "Arc'teryx Atom SV Hoodie - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256163.jpg?v=1767739391",
-          "original_price": 350.0,
-          "sale_price": 262.5,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [
-            "XXL"
-          ],
-          "size_stock": {
-            "XXL": "in_stock"
-          },
-          "color": "Vitality",
-          "colors": [
-            "Vitality"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": "Synthetic"
-        },
-        {
           "url": "https://www.evo.com/products/272459-arc-teryx-mantis-16l-backpack",
           "name": "Arc'teryx Mantis 16L Backpack",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1275916.jpg?v=1772649450",
@@ -4145,11 +4123,15 @@
           "gender": "women",
           "sizes": [
             "L",
-            "XL"
+            "M",
+            "XL",
+            "XS"
           ],
           "size_stock": {
             "L": "in_stock",
-            "XL": "in_stock"
+            "M": "in_stock",
+            "XL": "in_stock",
+            "XS": "in_stock"
           },
           "color": "Black Sapphire",
           "colors": [
@@ -4745,11 +4727,13 @@
           "gender": "women",
           "sizes": [
             "L",
+            "M",
             "S",
             "XS"
           ],
           "size_stock": {
             "L": "in_stock",
+            "M": "in_stock",
             "S": "in_stock",
             "XS": "in_stock"
           },
@@ -4878,7 +4862,7 @@
           "name": "Arc'teryx Beta SL Jacket - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1272426.jpg?v=1770851768",
           "original_price": 500.0,
-          "sale_price": 500.0,
+          "sale_price": 375.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
@@ -4894,12 +4878,13 @@
             "S": "in_stock",
             "XS": "in_stock"
           },
-          "color": "Black, Moondrop",
+          "color": "Black, Carob, Moondrop",
           "colors": [
             "Black",
+            "Carob",
             "Moondrop"
           ],
-          "discount_pct": 0,
+          "discount_pct": 25,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5497,9 +5482,8 @@
             "L": "in_stock",
             "XS": "in_stock"
           },
-          "color": "Black, White Light",
+          "color": "White Light",
           "colors": [
-            "Black",
             "White Light"
           ],
           "discount_pct": 0,
@@ -6176,6 +6160,7 @@
             "M",
             "S",
             "XL",
+            "XS",
             "XXL",
             "XXS"
           ],
@@ -6184,6 +6169,7 @@
             "M": "in_stock",
             "S": "in_stock",
             "XL": "in_stock",
+            "XS": "in_stock",
             "XXL": "in_stock",
             "XXS": "in_stock"
           },
@@ -9193,7 +9179,7 @@
           ],
           "size_stock": {
             "US 6.5": "out_of_stock",
-            "US 7": "in_stock",
+            "US 7": "out_of_stock",
             "US 7.5": "out_of_stock",
             "US 8": "in_stock",
             "US 8.5": "out_of_stock",
@@ -10164,5 +10150,5 @@
       ]
     }
   },
-  "total": 309
+  "total": 308
 }
