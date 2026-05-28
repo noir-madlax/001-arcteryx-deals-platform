@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27 21:10:00",
+  "generated_at": "2026-05-28 03:08:30",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -4168,11 +4168,9 @@
           "in_stock": true,
           "gender": "women",
           "sizes": [
-            "S",
             "XL"
           ],
           "size_stock": {
-            "S": "in_stock",
             "XL": "in_stock"
           },
           "color": "Black Sapphire",
@@ -8118,7 +8116,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 129,
+      "count": 128,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6038-082/arcteryx-sylan-2-trail-running-shoes-womens",
@@ -8548,27 +8546,6 @@
           },
           "colors": [
             "Black"
-          ]
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
-          "name": "Arc'teryx Heliad 15 Backpack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520628_source_1773730234.jpg",
-          "color": "Forage",
-          "sale_price": 100.0,
-          "original_price": 100.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "One Size"
-          ],
-          "size_stock": {
-            "One Size": "in_stock"
-          },
-          "colors": [
-            "Forage"
           ]
         },
         {
@@ -11735,7 +11712,7 @@
           "url": "https://www.mec.ca/en/product/6030-494/arcteryx-mantis-2-waist-pack-unisex",
           "name": "Arc'teryx Mantis 2 Waist Pack - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520626_source_1773265260.jpg",
-          "color": "24k Black, Moondrop, Rune",
+          "color": "24k Black, Rune",
           "sale_price": 60.0,
           "original_price": 60.0,
           "discount_pct": 0,
@@ -11750,7 +11727,6 @@
           },
           "colors": [
             "24k Black",
-            "Moondrop",
             "Rune"
           ]
         },
@@ -11921,8 +11897,8 @@
         {
           "url": "https://www.mec.ca/en/product/6032-948/arcteryx-sylan-gore-tex-running-shoes-mens",
           "name": "Arc'teryx Sylan Gore-Tex Running Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/484768_source_1736505247.jpg",
-          "color": "Black/Arctic, Black/Black, Forage/Tatsu",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/484794_source_1726735963.jpg",
+          "color": "Black/Arctic, Forage/Tatsu",
           "sale_price": 134.4,
           "original_price": 280.0,
           "discount_pct": 52,
@@ -11961,7 +11937,6 @@
           },
           "colors": [
             "Black/Arctic",
-            "Black/Black",
             "Forage/Tatsu"
           ]
         },
@@ -14273,5 +14248,5 @@
       ]
     }
   },
-  "total": 438
+  "total": 437
 }
