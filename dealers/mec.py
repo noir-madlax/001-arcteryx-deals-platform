@@ -164,6 +164,7 @@ class Scraper:
     def scrape(self) -> list[dict]:
         s = _make_session()
         scrapling_ctx = None  # 持有 StealthySession context 防 GC
+        using_scrapling = False
         if not _warm(s):
             print("[mec] curl_cffi warm 失败 → 切 scrapling+solve_cloudflare", file=sys.stderr)
             try:
@@ -172,7 +173,9 @@ class Scraper:
                 ss = scrapling_ctx.__enter__()
                 ss.fetch(f"{HOST}/en/", timeout=90000)  # warm + solve turnstile
                 s = _ScraplingShim(ss)
-                print("[mec] scrapling 已就绪", flush=True)
+                using_scrapling = True
+                print("[mec] scrapling 已就绪 (注意: PDP enrich 会跳过,"
+                      " 因为 scrapling 每次 fetch 重解 CF 太慢, list 数据足够)", flush=True)
             except Exception as e:
                 print(f"[mec] scrapling fallback 也挂: {type(e).__name__} {str(e)[:100]}", file=sys.stderr)
                 if scrapling_ctx:
@@ -212,22 +215,28 @@ class Scraper:
                 if new == 0: break
                 time.sleep(1)
         # ── 阶段 2: PDP enrich (sizes / 精确 sale vs orig 区分)
-        print(f"[mec] enriching {len(items)} PDPs via curl_cffi...", flush=True)
-        for i, it in enumerate(items, 1):
-            detail = fetch_pdp(s, it["url"])
-            if detail and not detail.get("_err") and not detail.get("_unavailable"):
-                # 移除 _hit (sync 不需要)
-                it.pop("_hit", None)
-                it.update(detail)
-            elif detail and detail.get("_unavailable"):
-                # 整品下架, 跳过 (不写入 items? 还是保留含 list 价?)
-                # 保留, 让 14 天 stale 兜底; 但移除 _hit
-                it.pop("_hit", None)
-            else:
-                it.pop("_hit", None)
-            if i % 20 == 0:
-                print(f"[mec] enriched {i}/{len(items)}", flush=True)
-            time.sleep(0.3)
+        # scrapling 模式跳过: 每次 fetch 重解 CF turnstile ~5min/PDP, 不可行.
+        # list 数据已经够 (url/model/price/image/color), sizes 由 sync 的
+        # preserve-existing 逻辑保留 DB 老值.
+        if using_scrapling:
+            print(f"[mec] scrapling 模式跳过 PDP enrich, 仅用 list 数据 ({len(items)} 件)", flush=True)
+            for it in items: it.pop("_hit", None)
+        else:
+            print(f"[mec] enriching {len(items)} PDPs via curl_cffi...", flush=True)
+            for i, it in enumerate(items, 1):
+                detail = fetch_pdp(s, it["url"])
+                if detail and not detail.get("_err") and not detail.get("_unavailable"):
+                    it.pop("_hit", None)
+                    it.update(detail)
+                elif detail and detail.get("_unavailable"):
+                    # 整品下架, 跳过 (不写入 items? 还是保留含 list 价?)
+                    # 保留, 让 14 天 stale 兜底; 但移除 _hit
+                    it.pop("_hit", None)
+                else:
+                    it.pop("_hit", None)
+                if i % 20 == 0:
+                    print(f"[mec] enriched {i}/{len(items)}", flush=True)
+                time.sleep(0.3)
         # 主动关掉 scrapling (StealthySession 持有 Camoufox 进程, 不关浪费 RAM)
         if scrapling_ctx is not None:
             try: scrapling_ctx.__exit__(None, None, None)
