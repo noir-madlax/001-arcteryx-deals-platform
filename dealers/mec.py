@@ -58,6 +58,25 @@ def _get(session, url, retries=3):
     return None
 
 
+class _ScraplingShim:
+    """让 scrapling.StealthySession 暴露成 curl_cffi.Session 同接口 —
+    避免 scrape() 主逻辑 fork. fetch(url) → r-like 对象 (有 .text/.status_code).
+
+    背景: 2026-06 起 EC2 (AWS Lightsail) IP 被 Cloudflare 加严, curl_cffi
+    chrome impersonate 在 MEC 上直接 403. scrapling+solve_cloudflare 慢但能过."""
+    def __init__(self, sess):
+        self._s = sess
+    def get(self, url, timeout=25):
+        # scrapling 单位是 ms
+        p = self._s.fetch(url, timeout=max(60000, int(timeout) * 1000))
+        body = p.body.decode("utf-8", "ignore") if isinstance(p.body, (bytes, bytearray)) else (p.body or "")
+        # status 在 scrapling 是 p.status, 兼容 200/3xx
+        status = getattr(p, "status", 200) or 200
+        class _R: pass
+        r = _R(); r.text = body; r.status_code = status
+        return r
+
+
 def _next_data(html: str) -> dict | None:
     m = NEXT_RE.search(html)
     if not m: return None
@@ -144,9 +163,22 @@ class Scraper:
 
     def scrape(self) -> list[dict]:
         s = _make_session()
+        scrapling_ctx = None  # 持有 StealthySession context 防 GC
         if not _warm(s):
-            print("[mec] warm failed", file=sys.stderr)
-            return []
+            print("[mec] curl_cffi warm 失败 → 切 scrapling+solve_cloudflare", file=sys.stderr)
+            try:
+                from scrapling.fetchers import StealthySession
+                scrapling_ctx = StealthySession(headless=True, network_idle=True, solve_cloudflare=True)
+                ss = scrapling_ctx.__enter__()
+                ss.fetch(f"{HOST}/en/", timeout=90000)  # warm + solve turnstile
+                s = _ScraplingShim(ss)
+                print("[mec] scrapling 已就绪", flush=True)
+            except Exception as e:
+                print(f"[mec] scrapling fallback 也挂: {type(e).__name__} {str(e)[:100]}", file=sys.stderr)
+                if scrapling_ctx:
+                    try: scrapling_ctx.__exit__(None, None, None)
+                    except Exception: pass
+                return []
         # ── 阶段 1: list pages
         items = []
         seen = set()
@@ -196,6 +228,10 @@ class Scraper:
             if i % 20 == 0:
                 print(f"[mec] enriched {i}/{len(items)}", flush=True)
             time.sleep(0.3)
+        # 主动关掉 scrapling (StealthySession 持有 Camoufox 进程, 不关浪费 RAM)
+        if scrapling_ctx is not None:
+            try: scrapling_ctx.__exit__(None, None, None)
+            except Exception: pass
         return items
 
 
