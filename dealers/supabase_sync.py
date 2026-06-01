@@ -113,7 +113,7 @@ def main():
             page = 0
             while True:
                 res = client.table("products").select(
-                    "sku_id,first_seen,sizes,size_stock,color,original_price,sale_price"
+                    "sku_id,first_seen,sizes,size_stock,color,original_price,sale_price,discount_pct"
                 ).eq("dealer", dkey).range(page*1000, page*1000+999).execute()
                 data = res.data or []
                 for r in data:
@@ -135,6 +135,16 @@ def main():
                     r["size_stock"] = old.get("size_stock") or {}
                 if not (r.get("color") or "").strip() and (old.get("color") or "").strip():
                     r["color"] = old["color"]
+                # 保留 DB 老的真折扣价: 若本轮 disc=0 (list-only fallback 模式)
+                # 但 DB 老值有 sale < orig (PDP enrich 抓到的真折扣), 保留 DB 老价格.
+                # 避免 mec scrapling fallback 覆盖掉之前的折扣信息 → 前端假满价.
+                new_sp, new_op = r.get("sale_price"), r.get("original_price")
+                old_sp, old_op = old.get("sale_price"), old.get("original_price")
+                if (new_sp and new_op and abs(new_sp - new_op) < 0.01
+                        and old_sp and old_op and old_sp < old_op - 0.01):
+                    r["sale_price"] = old_sp
+                    r["original_price"] = old_op
+                    r["discount_pct"] = old.get("discount_pct") or 0
             else:
                 # 真新 SKU: 显式设今天 (避免 PostgREST batch upsert 字段不齐 → NULL)
                 r["first_seen"] = now_iso
