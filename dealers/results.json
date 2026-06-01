@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31 21:31:17",
+  "generated_at": "2026-06-01 03:05:39",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -8120,8 +8120,8 @@
             "Black Sapphire",
             "Black",
             "Spotlight",
-            "Stone Red",
             "Habitat",
+            "Stone Red",
             "Fluidity/Black Sapphire",
             "Cloud/Black"
           ],
@@ -8199,8 +8199,8 @@
             "XXL": "in_stock"
           },
           "colors": [
-            "Black",
             "Moondrop",
+            "Black",
             "Solitude",
             "Pineberry",
             "Azalea"
@@ -8233,8 +8233,8 @@
             "XXXL": "in_stock"
           },
           "colors": [
-            "Black Sapphire",
             "Black",
+            "Black Sapphire",
             "Vitality",
             "Nightscape"
           ],
@@ -8243,13 +8243,13 @@
         {
           "url": "https://www.rei.com/product/235112/arcteryx-beta-sl-jacket-mens",
           "name": "Beta SL Jacket - Men's",
-          "image": "https://www.rei.com/media/8abb4f62-dc62-48b4-8255-6483def9a05c.jpg",
+          "image": "https://www.rei.com/media/26b75ca0-e198-4228-8706-e86550e0a6dd.jpg",
           "original_price": 500.0,
-          "sale_price": 299.83,
+          "sale_price": 500.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 40,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -8270,15 +8270,15 @@
             "XXL": "in_stock"
           },
           "colors": [
-            "Black",
             "Black Sapphire",
+            "Black",
             "Moon Drop",
             "Mantis/Tatsu",
             "Stone Red",
             "Vitality Ii",
             "Void"
           ],
-          "color": "Black"
+          "color": "Black Sapphire"
         },
         {
           "url": "https://www.rei.com/product/249381/arcteryx-beta-ar-jacket-womens",
@@ -8308,8 +8308,8 @@
             "XL": "in_stock"
           },
           "colors": [
-            "Black",
             "Alpine Blue",
+            "Black",
             "Cosmic Bloom",
             "Nightscape/Glacial",
             "Tatsu/Olive Moss",
@@ -8352,8 +8352,8 @@
             "Black",
             "Black Sapphire",
             "Spotlight",
-            "Alpine Blue",
-            "Blaze"
+            "Blaze",
+            "Alpine Blue"
           ],
           "color": "Black Sapphire"
         },
@@ -8389,8 +8389,8 @@
             "XXL": "in_stock"
           },
           "colors": [
-            "Moondrop",
             "Dark Stratus",
+            "Moondrop",
             "Black"
           ],
           "color": "Black"
@@ -8400,11 +8400,11 @@
           "name": "Gamma Pants - Women's",
           "image": "https://www.rei.com/media/2a2f2faf-202c-42a3-9984-5b0383618cc0.jpg",
           "original_price": 200.0,
-          "sale_price": 99.83,
+          "sale_price": 200.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
-          "discount_pct": 50,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -8451,8 +8451,7 @@
           "colors": [
             "Black",
             "Habitat",
-            "Moondrop",
-            "Tatsu"
+            "Moondrop"
           ],
           "color": "Black"
         },
@@ -8612,7 +8611,7 @@
         {
           "url": "https://www.rei.com/product/249477/arcteryx-gamma-hoody-mens",
           "name": "Gamma Hoody - Men's",
-          "image": "https://www.rei.com/media/fab7a3b8-9956-4225-a609-ccd46da45f70.jpg",
+          "image": "https://www.rei.com/media/044c059b-7f92-4f28-b600-46892c688efb.jpg",
           "original_price": 300.0,
           "sale_price": 300.0,
           "currency": "USD",
@@ -8623,22 +8622,26 @@
           "dealer_name": "REI",
           "region": "US",
           "sizes": [
+            "XS",
+            "M",
             "L",
             "XL",
             "XXL"
           ],
           "size_stock": {
+            "XS": "in_stock",
+            "M": "in_stock",
             "L": "in_stock",
             "XL": "in_stock",
             "XXL": "in_stock"
           },
           "colors": [
-            "Black",
             "Moon Drop",
             "Forage",
-            "Sea Salt"
+            "Sea Salt",
+            "Black"
           ],
-          "color": "Black"
+          "color": "Moon Drop"
         },
         {
           "url": "https://www.rei.com/product/250405/arcteryx-kragg-sl-cotton-bird-word-t-shirt-mens",
@@ -8742,8 +8745,7 @@
           "colors": [
             "Black",
             "Sea Salt/Habitat",
-            "Black Sapphire/Dk Stratus",
-            "Vitality/Black Sapphire"
+            "Black Sapphire/Dk Stratus"
           ],
           "color": "Black"
         },
@@ -8847,6 +8849,36 @@
           "color": "Black"
         },
         {
+          "url": "https://www.rei.com/product/229268/arcteryx-incendo-pants-mens",
+          "name": "Incendo Pants - Men's",
+          "image": "https://www.rei.com/media/644ff120-bfee-48f0-bbb2-3f389bf2e93a.jpg",
+          "original_price": 130.0,
+          "sale_price": 130.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "size_stock": {
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ],
+          "color": "Black"
+        },
+        {
           "url": "https://www.rei.com/product/249482/arcteryx-atom-sv-insulated-jacket-womens",
           "name": "Atom SV Insulated Jacket - Women's",
           "image": "https://www.rei.com/media/a3b3a6d2-9a36-4fde-a134-b939b7dd742a.jpg",
@@ -8880,36 +8912,6 @@
           "colors": [
             "Black",
             "Nightscape"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/229268/arcteryx-incendo-pants-mens",
-          "name": "Incendo Pants - Men's",
-          "image": "https://www.rei.com/media/644ff120-bfee-48f0-bbb2-3f389bf2e93a.jpg",
-          "original_price": 130.0,
-          "sale_price": 130.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock"
-          },
-          "colors": [
-            "Black"
           ],
           "color": "Black"
         },
