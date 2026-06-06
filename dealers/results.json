@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-05 21:16:33",
+  "generated_at": "2026-06-06 03:08:10",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -3535,7 +3535,7 @@
           "url": "https://www.mec.ca/en/product/6021-378/arcteryx-mantis-1-waist-pack-unisex",
           "name": "Arc'teryx Mantis 1 Waist Pack - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520640_source_1777397745.jpg",
-          "color": "24k Black, Pineberry, Rune/Sea Salt",
+          "color": "24k Black, Rune/Sea Salt",
           "sale_price": 37.5,
           "original_price": 50.0,
           "discount_pct": 25,
@@ -3550,7 +3550,6 @@
           },
           "colors": [
             "24k Black",
-            "Pineberry",
             "Rune/Sea Salt"
           ]
         },
@@ -3680,37 +3679,6 @@
           "colors": [
             "Black",
             "Forage"
-          ]
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6034-688/arcteryx-cerium-mid-coat-womens",
-          "name": "Arc'teryx Cerium Mid Coat - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/522903_source_1761583818.jpg",
-          "color": "Black",
-          "sale_price": 360.0,
-          "original_price": 600.0,
-          "discount_pct": 40,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small"
-          ],
-          "size_stock": {
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Black"
           ]
         },
         {
@@ -4035,6 +4003,51 @@
           ]
         },
         {
+          "url": "https://www.mec.ca/en/product/6033-384/arcteryx-vertex-alpine-approach-shoes-mens",
+          "name": "Arc'teryx Vertex Alpine Approach Shoes - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/484749_source_1726735956.jpg",
+          "color": "Black/Black",
+          "sale_price": 156.0,
+          "original_price": 290.0,
+          "discount_pct": 46,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "UK 10",
+            "UK 10.5",
+            "UK 11",
+            "UK 11.5",
+            "UK 12",
+            "UK 12.5",
+            "UK 6.5",
+            "UK 7",
+            "UK 7.5",
+            "UK 8",
+            "UK 8.5",
+            "UK 9",
+            "UK 9.5"
+          ],
+          "size_stock": {
+            "UK 6.5": "in_stock",
+            "UK 7": "in_stock",
+            "UK 7.5": "in_stock",
+            "UK 8": "in_stock",
+            "UK 8.5": "in_stock",
+            "UK 9": "in_stock",
+            "UK 9.5": "in_stock",
+            "UK 10": "in_stock",
+            "UK 10.5": "in_stock",
+            "UK 11": "in_stock",
+            "UK 11.5": "in_stock",
+            "UK 12": "in_stock",
+            "UK 12.5": "in_stock"
+          },
+          "colors": [
+            "Black/Black"
+          ]
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-788/arcteryx-kragg-cotton-lithographica-short-sleeve-mens",
           "name": "Arc'teryx Kragg Cotton Lithographica Short Sleeve - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533925_source_1763157970.jpg",
@@ -4312,10 +4325,29 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Alpine Blue",
+            "Cosmic Bloom",
+            "Tatsu/Olive Moss",
+            "Nightscape/Glacial",
+            "Arctic Silk/Solitude"
+          ],
+          "color": "Cosmic Bloom"
         },
         {
           "url": "https://www.rei.com/product/228617/arcteryx-beta-jacket-mens",
@@ -4433,7 +4465,52 @@
           "discount_pct": 20,
           "dealer": "rei",
           "dealer_name": "REI",
-          "region": "US"
+          "region": "US",
+          "sizes": [
+            "28 IN Waist",
+            "28 Short",
+            "30 IN Waist",
+            "30 Short",
+            "30 Tall",
+            "32 IN Waist",
+            "32 Short",
+            "32 Tall",
+            "34 IN Waist",
+            "34 Short",
+            "34 Tall",
+            "36 IN Waist",
+            "36 Short",
+            "36 Tall",
+            "38 IN Waist",
+            "38 Short",
+            "38 Tall"
+          ],
+          "size_stock": {
+            "28 IN Waist": "in_stock",
+            "28 Short": "in_stock",
+            "30 IN Waist": "in_stock",
+            "30 Short": "in_stock",
+            "30 Tall": "in_stock",
+            "32 IN Waist": "in_stock",
+            "32 Short": "in_stock",
+            "32 Tall": "in_stock",
+            "34 IN Waist": "in_stock",
+            "34 Short": "in_stock",
+            "34 Tall": "in_stock",
+            "36 IN Waist": "in_stock",
+            "36 Short": "in_stock",
+            "36 Tall": "in_stock",
+            "38 IN Waist": "in_stock",
+            "38 Short": "in_stock",
+            "38 Tall": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Black Sapphire",
+            "Void",
+            "Canvas"
+          ],
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/242856/arcteryx-gamma-pants-womens",
@@ -4689,7 +4766,26 @@
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
-          "region": "US"
+          "region": "US",
+          "sizes": [
+            "0",
+            "10",
+            "12",
+            "14",
+            "16"
+          ],
+          "size_stock": {
+            "0": "in_stock",
+            "10": "in_stock",
+            "12": "in_stock",
+            "14": "in_stock",
+            "16": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Light Moondrop"
+          ],
+          "color": "Light Moondrop"
         },
         {
           "url": "https://www.rei.com/product/242921/arcteryx-atom-insulated-vest-mens",
@@ -4703,7 +4799,30 @@
           "discount_pct": 50,
           "dealer": "rei",
           "dealer_name": "REI",
-          "region": "US"
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Black Sapphire",
+            "Habitat",
+            "Mars"
+          ],
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/248405/arcteryx-beta-jacket-womens",
@@ -4778,11 +4897,11 @@
           "name": "Proton Insulated Hoody - Men's",
           "image": "https://www.rei.com/media/221f0c58-6ae7-4feb-bdc6-74feba5b64cd.jpg",
           "original_price": 350.0,
-          "sale_price": 199.83,
+          "sale_price": 262.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 43,
+          "discount_pct": 25,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
