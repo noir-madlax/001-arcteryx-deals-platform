@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-07 03:33:52",
+  "generated_at": "2026-06-07 09:03:59",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -10,7 +10,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 127,
+      "count": 126,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6038-082/arcteryx-sylan-2-trail-running-shoes-womens",
@@ -1788,34 +1788,13 @@
           "url": "https://www.mec.ca/en/product/6037-695/arcteryx-beta-sl-jacket-mens",
           "name": "Arc'teryx Beta SL Jacket - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519532_source_1779210371.jpg",
-          "color": "Black, Mantis/Tatsu, Stone Red",
-          "sale_price": 510.0,
+          "color": "Stone Red",
+          "sale_price": 600.0,
           "original_price": 600.0,
-          "discount_pct": 15,
+          "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small"
-          ],
-          "size_stock": {
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Mantis/Tatsu",
-            "Stone Red"
-          ]
+          "region": "CA"
         },
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
@@ -3854,7 +3833,7 @@
           "url": "https://www.mec.ca/en/product/6034-675/arcteryx-beta-ar-jacket-mens",
           "name": "Arc'teryx Beta AR Jacket - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519018_source_1771544470.jpg",
-          "color": "Fluidity/Vitality, Olive Moss / Euphoria",
+          "color": "Fluidity/Vitality",
           "sale_price": 400.0,
           "original_price": 800.0,
           "discount_pct": 50,
@@ -3880,8 +3859,7 @@
             "XXX-Large": "in_stock"
           },
           "colors": [
-            "Fluidity/Vitality",
-            "Olive Moss / Euphoria"
+            "Fluidity/Vitality"
           ]
         },
         {
@@ -4044,33 +4022,6 @@
           },
           "colors": [
             "Black/Black"
-          ]
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6036-207/arcteryx-konseal-pullover-hoodie-mens",
-          "name": "Arc'teryx Konseal Pullover Hoodie - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/522911_source_1762416983.jpg",
-          "color": "Lt Nightscape/Night",
-          "sale_price": 119.94,
-          "original_price": 240.0,
-          "discount_pct": 50,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large"
-          ],
-          "size_stock": {
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock"
-          },
-          "colors": [
-            "Lt Nightscape/Night"
           ]
         },
         {
@@ -5601,5 +5552,5 @@
       ]
     }
   },
-  "total": 181
+  "total": 180
 }
