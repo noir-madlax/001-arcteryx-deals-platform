@@ -125,7 +125,7 @@ class Scraper(DealerScraper):
         # Stage 2: PDP enrich (sizes - 之前 CF 拦不到, 现在可)
         print(f"[ssense] enriching {len(items)} PDPs via curl_cffi...", flush=True)
         for i, it in enumerate(items, 1):
-            body = self._fetch(s, it["url"])
+            body = self._fetch(s, it["url"], is_pdp=True)
             if body:
                 detail = self.parse_detail(body, name_hint=it.get("name",""))
                 if detail: it.update(detail)
@@ -134,15 +134,23 @@ class Scraper(DealerScraper):
         return items
 
     @staticmethod
-    def _fetch(session, url: str, retries: int = 3) -> str:
+    def _fetch(session, url: str, retries: int = 4, is_pdp: bool = False) -> str:
+        """SSENSE 边缘 cache 偶尔对 datacenter IP 返一个精简版 PDP (~220KB,
+        缺 variants[] / pdpSizeDropdown), 之前直接接受导致 sizes=[].
+        is_pdp=True 时要求 body 含 PDP 必须的标记之一, 否则 retry."""
         for i in range(retries):
             try:
                 r = session.get(url, timeout=25)
                 if r.status_code == 200 and "Just a moment" not in r.text[:5000]:
-                    return r.text
-                time.sleep(1.5 + i)
+                    if not is_pdp:
+                        return r.text
+                    # PDP 完整页应有 variants[] 或 pdpSizeDropdown 之一
+                    if '"variants":[' in r.text or 'pdpSizeDropdown' in r.text:
+                        return r.text
+                    # 精简版 → retry
+                time.sleep(2 + i)
             except Exception:
-                time.sleep(1.5 + i)
+                time.sleep(2 + i)
         return ""
 
     # SSENSE 把每个产品包成 <a class="flex flex-col" href="/en-us/men/product/arcteryx/..."> ...
