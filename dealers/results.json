@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-10 03:08:14",
+  "generated_at": "2026-06-10 09:07:40",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -2022,33 +2022,13 @@
           "url": "https://www.mec.ca/en/product/6032-432/arcteryx-atom-sl-hoodie-mens",
           "name": "Arc'teryx Atom SL Hoodie - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504643_source_1744881650.jpg",
-          "color": "Black, Forage",
-          "sale_price": 238.0,
+          "color": "Forage",
+          "sale_price": 340.0,
           "original_price": 340.0,
-          "discount_pct": 30,
+          "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small"
-          ],
-          "size_stock": {
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Forage"
-          ]
+          "region": "CA"
         },
         {
           "url": "https://www.mec.ca/en/product/6037-652/arcteryx-norvan-windshell-hoodie-womens",
@@ -4017,49 +3997,18 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 21,
+      "count": 16,
       "items": [
         {
-          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
-          "name": "Cerium Down Hoody - Men's",
-          "image": "https://www.rei.com/media/a5e732fb-efb1-4154-b99c-9464c52a748f.jpg",
-          "original_price": 400.0,
-          "sale_price": 249.83,
+          "url": "https://www.rei.com/product/235112/arcteryx-beta-sl-jacket-mens",
+          "name": "Beta SL Jacket - Men's",
+          "image": "https://www.rei.com/media/b084c24a-9204-48f7-8b43-f8945e1c954d.jpg",
+          "original_price": 425.93,
+          "sale_price": 425.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 38,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "S",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Vitality",
-            "Nightscape"
-          ],
-          "color": "Nightscape"
-        },
-        {
-          "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
-          "name": "Beta SL Jacket - Women's",
-          "image": "https://www.rei.com/media/76400c1d-ce0f-4dc0-b363-f6778b24840b.jpg",
-          "original_price": 500.0,
-          "sale_price": 249.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 50,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -4081,23 +4030,25 @@
           },
           "colors": [
             "Black",
-            "Solitude",
-            "Pineberry",
-            "Moondrop",
-            "Azalea"
+            "Black Sapphire",
+            "Moon Drop",
+            "Stone Red",
+            "Vitality Ii",
+            "Mantis/Tatsu",
+            "Void"
           ],
           "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/243332/arcteryx-atom-insulated-hoody-womens",
           "name": "Atom Insulated Hoody - Women's",
-          "image": "https://www.rei.com/media/84ddea9b-e1f5-47cc-b58c-531b790bbc3b.jpg",
-          "original_price": 300.0,
-          "sale_price": 149.83,
+          "image": "https://www.rei.com/media/0401585a-a2ca-4e8b-af3d-4b3c98981c80.jpg",
+          "original_price": 255.93,
+          "sale_price": 255.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
-          "discount_pct": 50,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -4122,23 +4073,136 @@
           "colors": [
             "Cosmic Bloom",
             "Black",
-            "Arctic Silk",
             "Shincha",
+            "Arctic Silk",
             "Mallow",
             "Forage"
+          ],
+          "color": "Cosmic Bloom"
+        },
+        {
+          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
+          "name": "Cerium Down Hoody - Men's",
+          "image": "https://www.rei.com/media/a5e732fb-efb1-4154-b99c-9464c52a748f.jpg",
+          "original_price": 249.83,
+          "sale_price": 249.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Black Sapphire",
+            "Vitality",
+            "Nightscape"
+          ],
+          "color": "Nightscape"
+        },
+        {
+          "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
+          "name": "Beta SL Jacket - Women's",
+          "image": "https://www.rei.com/media/651e4f3c-758e-4bdd-b345-742aa1283330.jpg",
+          "original_price": 249.83,
+          "sale_price": 249.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Solitude",
+            "Black",
+            "Pineberry",
+            "Moondrop",
+            "Azalea"
           ],
           "color": "Black"
         },
         {
+          "url": "https://www.rei.com/product/243175/arcteryx-atom-insulated-hoody-mens",
+          "name": "Atom Insulated Hoody - Men's",
+          "image": "https://www.rei.com/media/dffee23f-5895-4931-8c4e-3709a50433b6.jpg",
+          "original_price": 300.0,
+          "sale_price": 300.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL",
+            "XXXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock",
+            "XXXL": "in_stock"
+          },
+          "colors": [
+            "Black Sapphire",
+            "Black",
+            "Habitat",
+            "Stone Red",
+            "Fluidity/Black Sapphire",
+            "Spotlight",
+            "Cloud/Black"
+          ],
+          "color": "Black Sapphire"
+        },
+        {
           "url": "https://www.rei.com/product/249381/arcteryx-beta-ar-jacket-womens",
           "name": "Beta AR Jacket - Women's",
-          "image": "https://www.rei.com/media/6c754dff-a9f9-4e84-88b5-785599a3d82f.jpg",
-          "original_price": 650.0,
+          "image": "https://www.rei.com/media/397b723d-23c7-48b2-ba6f-9db4835c3af1.jpg",
+          "original_price": 324.83,
           "sale_price": 324.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
-          "discount_pct": 50,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -4158,8 +4222,8 @@
           },
           "colors": [
             "Black",
-            "Alpine Blue",
             "Cosmic Bloom",
+            "Alpine Blue",
             "Tatsu/Olive Moss",
             "Arctic Silk/Solitude",
             "Nightscape/Glacial"
@@ -4167,77 +4231,15 @@
           "color": "Cosmic Bloom"
         },
         {
-          "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
-          "name": "Rho LT Crew Neck Base Layer Top - Men's",
-          "image": "https://www.rei.com/media/b158a77c-1312-4e16-a4d8-7e86bd4dd352.jpg",
-          "original_price": 100.0,
-          "sale_price": 75.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 24,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Mantis",
-            "Forage/Tatsu"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
-          "name": "Cerium Down Hoody - Women's",
-          "image": "https://www.rei.com/media/0ed9fca3-75c2-447a-b04b-6738627b6063.jpg",
-          "original_price": 400.0,
-          "sale_price": 199.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Nightscape/Glacial"
-          ],
-          "color": "Nightscape/Glacial"
-        },
-        {
           "url": "https://www.rei.com/product/242853/arcteryx-gamma-pants-mens",
           "name": "Gamma Pants - Men's",
           "image": "https://www.rei.com/media/4d33a0af-f0c0-479f-9743-1eec555ee069.jpg",
           "original_price": 200.0,
-          "sale_price": 159.93,
+          "sale_price": 200.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 20,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -4288,15 +4290,77 @@
           "color": "Black"
         },
         {
-          "url": "https://www.rei.com/product/249474/arcteryx-beta-ar-jacket-mens",
-          "name": "Beta AR Jacket - Men's",
-          "image": "https://www.rei.com/media/f95d0b93-106a-4d70-92ea-846ca9cfcc19.jpg",
-          "original_price": 650.0,
-          "sale_price": 552.93,
+          "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
+          "name": "Rho LT Crew Neck Base Layer Top - Men's",
+          "image": "https://www.rei.com/media/b158a77c-1312-4e16-a4d8-7e86bd4dd352.jpg",
+          "original_price": 100.0,
+          "sale_price": 100.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 15,
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Black Sapphire",
+            "Mantis",
+            "Forage/Tatsu"
+          ],
+          "color": "Black"
+        },
+        {
+          "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
+          "name": "Cerium Down Hoody - Women's",
+          "image": "https://www.rei.com/media/0ed9fca3-75c2-447a-b04b-6738627b6063.jpg",
+          "original_price": 199.83,
+          "sale_price": 199.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Nightscape/Glacial"
+          ],
+          "color": "Nightscape/Glacial"
+        },
+        {
+          "url": "https://www.rei.com/product/249474/arcteryx-beta-ar-jacket-mens",
+          "name": "Beta AR Jacket - Men's",
+          "image": "https://www.rei.com/media/77e2e077-8eb5-4adf-97c7-929ec8d2deaa.jpg",
+          "original_price": 650.0,
+          "sale_price": 650.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -4325,6 +4389,78 @@
             "Mantis/Tatsu"
           ],
           "color": "Solitude/Void"
+        },
+        {
+          "url": "https://www.rei.com/product/209280/arcteryx-covert-fleece-cardigan-womens",
+          "name": "Covert Fleece Cardigan - Women's",
+          "image": "https://www.rei.com/media/c62dfa86-a02b-4eb3-8024-255e26dac988.jpg",
+          "original_price": 153.93,
+          "sale_price": 153.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "XXS",
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XXS": "in_stock",
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Atmos Heather",
+            "Moondrop Heather",
+            "Mallow Heather",
+            "Black"
+          ],
+          "color": "Black"
+        },
+        {
+          "url": "https://www.rei.com/product/235311/arcteryx-proton-insulated-hoody-mens",
+          "name": "Proton Insulated Hoody - Men's",
+          "image": "https://www.rei.com/media/d91bfab1-b1fd-476a-a312-d92d14ddfbdc.jpg",
+          "original_price": 199.83,
+          "sale_price": 199.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XXL"
+          ],
+          "size_stock": {
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Black Sapphire/Dk Stratus",
+            "Sea Salt/Habitat",
+            "Vitality/Black Sapphire"
+          ],
+          "color": "Sea Salt/Habitat"
         },
         {
           "url": "https://www.rei.com/product/249386/arcteryx-patera-down-parka-womens",
@@ -4363,15 +4499,50 @@
           "color": "Nightscape"
         },
         {
+          "url": "https://www.rei.com/product/193584/arcteryx-rho-lt-zip-neck-base-layer-top-mens",
+          "name": "Rho LT Zip-Neck Base Layer Top - Men's",
+          "image": "https://www.rei.com/media/d7151804-6779-4271-a736-03cc9d191799.jpg",
+          "original_price": 96.93,
+          "sale_price": 96.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Black Sapphire",
+            "Mantis",
+            "Mars"
+          ],
+          "color": "Black"
+        },
+        {
           "url": "https://www.rei.com/product/235146/arcteryx-gamma-mx-hoody-mens",
           "name": "Gamma MX Hoody - Men's",
           "image": "https://www.rei.com/media/7d0a01da-3551-4f27-b5b5-83b0f46f8143.jpg",
           "original_price": 400.0,
-          "sale_price": 340.93,
+          "sale_price": 400.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 15,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -4402,13 +4573,13 @@
         {
           "url": "https://www.rei.com/product/249482/arcteryx-atom-sv-insulated-jacket-womens",
           "name": "Atom SV Insulated Jacket - Women's",
-          "image": "https://www.rei.com/media/a3b3a6d2-9a36-4fde-a134-b939b7dd742a.jpg",
-          "original_price": 300.0,
+          "image": "https://www.rei.com/media/c3b9fa21-b6cf-474a-acdc-6057a340b899.jpg",
+          "original_price": 149.83,
           "sale_price": 149.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
-          "discount_pct": 50,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -4433,358 +4604,6 @@
           "colors": [
             "Black",
             "Nightscape"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/217942/arcteryx-kyanite-lightweight-fleece-jacket-mens",
-          "name": "Kyanite Lightweight Fleece Jacket - Men's",
-          "image": "https://www.rei.com/media/ae90a0a0-3c2e-4179-8dc2-8e1db27a660e.jpg",
-          "original_price": 140.0,
-          "sale_price": 140.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black X",
-            "Black Sapphire X",
-            "Fluidity",
-            "Tatsu"
-          ],
-          "color": "Black X"
-        },
-        {
-          "url": "https://www.rei.com/product/228617/arcteryx-beta-jacket-mens",
-          "name": "Beta Jacket - Men's",
-          "image": "https://www.rei.com/media/cb27ab2b-b627-416c-9862-6d5834880f26.jpg",
-          "original_price": 400.0,
-          "sale_price": 340.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 15,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL",
-            "XXXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock",
-            "XXXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Spotlight",
-            "Blaze",
-            "Alpine Blue"
-          ],
-          "color": "Spotlight"
-        },
-        {
-          "url": "https://www.rei.com/product/243260/arcteryx-aerios-18-pack",
-          "name": "Aerios 18 Pack",
-          "image": "https://www.rei.com/media/e534ed4c-7f9f-4de8-973c-19a9d392465d.jpg",
-          "original_price": 180.0,
-          "sale_price": 180.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [
-            "Black",
-            "Fluidity",
-            "Forage"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/193584/arcteryx-rho-lt-zip-neck-base-layer-top-mens",
-          "name": "Rho LT Zip-Neck Base Layer Top - Men's",
-          "image": "https://www.rei.com/media/4d850d39-5aa8-42f3-b07d-0eb8d2aa0297.jpg",
-          "original_price": 120.0,
-          "sale_price": 96.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 19,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Mantis",
-            "Mars"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/242921/arcteryx-atom-insulated-vest-mens",
-          "name": "Atom Insulated Vest - Men's",
-          "image": "https://www.rei.com/media/51e3ef48-d78e-43b8-a59a-41c26589cb17.jpg",
-          "original_price": 200.0,
-          "sale_price": 99.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Habitat",
-            "Mars"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/242826/arcteryx-norvan-ld-4-gtx-trail-running-shoes-mens",
-          "name": "Norvan LD 4 GTX Trail-Running Shoes - Men's",
-          "image": "https://www.rei.com/media/4c245727-96ce-4ad9-8acd-3600fb4b1124.jpg",
-          "original_price": 200.0,
-          "sale_price": 149.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 25,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "9",
-            "9.5",
-            "10",
-            "10.5",
-            "11",
-            "11.5",
-            "12",
-            "13"
-          ],
-          "size_stock": {
-            "9": "in_stock",
-            "9.5": "in_stock",
-            "10": "in_stock",
-            "10.5": "in_stock",
-            "11": "in_stock",
-            "11.5": "in_stock",
-            "12": "in_stock",
-            "13": "in_stock"
-          },
-          "colors": [
-            "Rune/Rune",
-            "Mid Bracken/Mid Bracken",
-            "Black/Black"
-          ],
-          "color": "Black/Black"
-        },
-        {
-          "url": "https://www.rei.com/product/243328/arcteryx-coelle-shell-jacket-womens",
-          "name": "Coelle Shell Jacket - Women's",
-          "image": "https://www.rei.com/media/de980a74-40bb-4b47-8eb9-dcaf44fdefc7.jpg",
-          "original_price": 400.0,
-          "sale_price": 340.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 15,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Cosmic Bloom",
-            "Black",
-            "Alpine Blue"
-          ],
-          "color": "Cosmic Bloom"
-        },
-        {
-          "url": "https://www.rei.com/product/785251/arcteryx-bird-head-toque-beanie",
-          "name": "Bird Head Toque Beanie",
-          "image": "https://www.rei.com/media/2330c296-5fa7-41c2-8ac3-6f4eec3a132f.jpg",
-          "original_price": 60.0,
-          "sale_price": 60.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [
-            "Mantis/Arctic Silk",
-            "Sea Salt/Habitat"
-          ],
-          "color": "Mantis/Arctic Silk"
-        },
-        {
-          "url": "https://www.rei.com/product/235311/arcteryx-proton-insulated-hoody-mens",
-          "name": "Proton Insulated Hoody - Men's",
-          "image": "https://www.rei.com/media/b5b81476-95b2-4c42-b1ab-4bb1747aa77f.jpg",
-          "original_price": 350.0,
-          "sale_price": 262.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 25,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire/Dk Stratus",
-            "Sea Salt/Habitat"
-          ],
-          "color": "Sea Salt/Habitat"
-        },
-        {
-          "url": "https://www.rei.com/product/242856/arcteryx-gamma-pants-womens",
-          "name": "Gamma Pants - Women's",
-          "image": "https://www.rei.com/media/2a2f2faf-202c-42a3-9984-5b0383618cc0.jpg",
-          "original_price": 200.0,
-          "sale_price": 200.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "sizes": [
-            "00",
-            "0 Short",
-            "0",
-            "2",
-            "4 Tall",
-            "4",
-            "6",
-            "8 Short",
-            "8",
-            "8 Tall",
-            "10",
-            "10 Tall",
-            "12",
-            "12 Tall",
-            "14",
-            "14 Tall",
-            "16",
-            "16 Tall"
-          ],
-          "size_stock": {
-            "00": "in_stock",
-            "0 Short": "in_stock",
-            "0": "in_stock",
-            "2": "in_stock",
-            "4 Tall": "in_stock",
-            "4": "in_stock",
-            "6": "in_stock",
-            "8 Short": "in_stock",
-            "8": "in_stock",
-            "8 Tall": "in_stock",
-            "10": "in_stock",
-            "10 Tall": "in_stock",
-            "12": "in_stock",
-            "12 Tall": "in_stock",
-            "14": "in_stock",
-            "14 Tall": "in_stock",
-            "16": "in_stock",
-            "16 Tall": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Habitat",
-            "Moondrop"
           ],
           "color": "Black"
         }
@@ -5970,5 +5789,5 @@
       ]
     }
   },
-  "total": 176
+  "total": 171
 }
