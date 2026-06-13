@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-12 21:09:49",
+  "generated_at": "2026-06-13 03:33:45",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -10,7 +10,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 128,
+      "count": 127,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-633/arcteryx-olera-zip-neck-womens",
@@ -1884,7 +1884,34 @@
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
-          "region": "CA"
+          "region": "CA",
+          "sizes": [
+            "0",
+            "00",
+            "2",
+            "4",
+            "6",
+            "8",
+            "10",
+            "12",
+            "14",
+            "16"
+          ],
+          "size_stock": {
+            "00": "in_stock",
+            "0": "in_stock",
+            "2": "in_stock",
+            "4": "in_stock",
+            "6": "in_stock",
+            "8": "in_stock",
+            "10": "in_stock",
+            "12": "in_stock",
+            "14": "in_stock",
+            "16": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ]
         },
         {
           "url": "https://www.mec.ca/en/product/6037-542/arcteryx-norvan-liner-shorts-7in-mens",
@@ -1896,7 +1923,22 @@
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
-          "region": "CA"
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large"
+          ],
+          "size_stock": {
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ]
         },
         {
           "url": "https://www.mec.ca/en/product/6037-233/arcteryx-gamma-tapered-pant-womens",
@@ -3847,49 +3889,6 @@
           ]
         },
         {
-          "url": "https://www.mec.ca/en/product/6032-948/arcteryx-sylan-gore-tex-running-shoes-mens",
-          "name": "Arc'teryx Sylan Gore-Tex Running Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/484779_source_1736505248.jpg",
-          "color": "",
-          "sale_price": 114.24,
-          "original_price": 280.0,
-          "discount_pct": 59,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "UK 10",
-            "UK 10.5",
-            "UK 11",
-            "UK 11.5",
-            "UK 12",
-            "UK 12.5",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 9",
-            "UK 9.5"
-          ],
-          "size_stock": {
-            "UK 6.5": "in_stock",
-            "UK 7": "in_stock",
-            "UK 7.5": "in_stock",
-            "UK 8": "in_stock",
-            "UK 8.5": "in_stock",
-            "UK 9": "in_stock",
-            "UK 9.5": "in_stock",
-            "UK 10": "in_stock",
-            "UK 10.5": "in_stock",
-            "UK 11": "in_stock",
-            "UK 11.5": "in_stock",
-            "UK 12": "in_stock",
-            "UK 12.5": "in_stock"
-          },
-          "colors": []
-        },
-        {
           "url": "https://www.mec.ca/en/product/6037-719/arcteryx-norvan-windshell-hoodie-mens",
           "name": "Arc'teryx Norvan Windshell Hoodie - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519428_source_1774267282.jpg",
@@ -5131,7 +5130,7 @@
             "US 9.5": "out_of_stock",
             "US 10": "out_of_stock",
             "US 10.5": "out_of_stock",
-            "US 11": "in_stock",
+            "US 11": "out_of_stock",
             "US 11.5": "in_stock",
             "US 12": "in_stock",
             "US 12.5": "in_stock"
@@ -5964,5 +5963,5 @@
       ]
     }
   },
-  "total": 178
+  "total": 177
 }
