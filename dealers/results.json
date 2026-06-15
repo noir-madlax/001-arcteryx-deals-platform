@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15 15:42:44",
+  "generated_at": "2026-06-15 22:09:40",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -10,13 +10,13 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 127,
+      "count": 126,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-633/arcteryx-olera-zip-neck-womens",
           "name": "Arc'teryx Olera Zip Neck - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/530588_source_1755617354.jpg",
-          "color": "Alpine Blue, Solitude",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/530580_source_1771544465.jpg",
+          "color": "Alpine Blue",
           "sale_price": 230.0,
           "original_price": 230.0,
           "discount_pct": 0,
@@ -42,8 +42,7 @@
             "XX-Large": "in_stock"
           },
           "colors": [
-            "Alpine Blue",
-            "Solitude"
+            "Alpine Blue"
           ]
         },
         {
@@ -1145,7 +1144,7 @@
           "url": "https://www.mec.ca/en/product/6032-550/arcteryx-gamma-pant-womens",
           "name": "Arc'teryx Gamma Pant - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518196_source_1771544533.jpg",
-          "color": "Black, HABITAT",
+          "color": "Black, Black Sapphire, HABITAT",
           "sale_price": 144.0,
           "original_price": 260.0,
           "discount_pct": 45,
@@ -1206,6 +1205,7 @@
           },
           "colors": [
             "Black",
+            "Black Sapphire",
             "HABITAT"
           ]
         },
@@ -3009,7 +3009,7 @@
           "url": "https://www.mec.ca/en/product/6034-784/arcteryx-rho-crew-neck-long-sleeve-base-layer-womens",
           "name": "Arc'teryx Rho Crew Neck Long Sleeve Base Layer - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509256_source_1740824527.jpg",
-          "color": "Black",
+          "color": "",
           "sale_price": 120.0,
           "original_price": 120.0,
           "discount_pct": 0,
@@ -3030,9 +3030,7 @@
             "Large": "in_stock",
             "X-Large": "in_stock"
           },
-          "colors": [
-            "Black"
-          ]
+          "colors": []
         },
         {
           "url": "https://www.mec.ca/en/product/6029-959/arcteryx-cerium-hoody-womens",
@@ -3285,31 +3283,10 @@
           ]
         },
         {
-          "url": "https://www.mec.ca/en/product/6030-494/arcteryx-mantis-2-waist-pack-unisex",
-          "name": "Arc'teryx Mantis 2 Waist Pack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/493670_source_1745313831.jpg",
-          "color": "24k Black",
-          "sale_price": 60.0,
-          "original_price": 60.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "One Size"
-          ],
-          "size_stock": {
-            "One Size": "in_stock"
-          },
-          "colors": [
-            "24k Black"
-          ]
-        },
-        {
           "url": "https://www.mec.ca/en/product/6032-371/arcteryx-bird-word-cap-unisex",
           "name": "Arc'teryx Bird Word Cap - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517192_source_1773265259.jpg",
-          "color": "24k Black, Dk Stratus/Habitat",
+          "color": "Dk Stratus/Habitat",
           "sale_price": 42.0,
           "original_price": 60.0,
           "discount_pct": 30,
@@ -3325,7 +3302,6 @@
             "Large/X-Large": "in_stock"
           },
           "colors": [
-            "24k Black",
             "Dk Stratus/Habitat"
           ]
         },
@@ -5263,5 +5239,5 @@
       ]
     }
   },
-  "total": 177
+  "total": 176
 }
