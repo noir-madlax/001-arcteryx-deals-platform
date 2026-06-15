@@ -65,7 +65,12 @@ ALTER TABLE price_history ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "public_read_price_history" ON price_history;
 CREATE POLICY "public_read_price_history"
   ON price_history FOR SELECT
+  TO anon, authenticated
   USING (true);
+
+-- 关键: Supabase PostgREST 要 GRANT + RLS policy 都通过才能读. 之前漏 GRANT
+-- 导致 anon 401, 详情页价格历史折线图全部空白. 修复 2026-06-11.
+GRANT SELECT ON TABLE price_history TO anon, authenticated;
 
 -- 5. Quick sanity check
 SELECT COUNT(*) AS row_count FROM products;
