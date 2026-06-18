@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18 15:40:18",
+  "generated_at": "2026-06-18 21:37:26",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -10,7 +10,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 127,
+      "count": 128,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-621/arcteryx-covert-cardigan-womens",
@@ -398,6 +398,40 @@
           ]
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-633/arcteryx-olera-zip-neck-womens",
+          "name": "Arc'teryx Olera Zip Neck - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/530580_source_1771544465.jpg",
+          "color": "Alpine Blue, Solitude",
+          "sale_price": 230.0,
+          "original_price": 230.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large",
+            "X-Small",
+            "XX-Small"
+          ],
+          "size_stock": {
+            "XX-Small": "in_stock",
+            "X-Small": "in_stock",
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock"
+          },
+          "colors": [
+            "Alpine Blue",
+            "Solitude"
+          ]
+        },
+        {
           "url": "https://www.mec.ca/en/product/6037-622/arcteryx-delta-jacket-womens",
           "name": "Arc'teryx Delta Jacket - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529277_source_1756911280.jpg",
@@ -589,7 +623,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-623/arcteryx-emblem-fleece-crew-womens",
           "name": "Arc'teryx Emblem Fleece Crew - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533812_source_1773731129.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534001_source_1773731134.jpg",
           "color": "Arctic Silk",
           "sale_price": 150.0,
           "original_price": 150.0,
@@ -1726,41 +1760,13 @@
           "url": "https://www.mec.ca/en/product/6038-079/arcteryx-sylan-2-trail-running-shoes-mens",
           "name": "Arc'teryx Sylan 2 Trail Running Shoes - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533804_source_1773265264.jpg",
-          "color": "Habitat/Habitat, Mantis/Mantis",
+          "color": "Mantis/Mantis",
           "sale_price": 280.0,
           "original_price": 280.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "UK 10",
-            "UK 10.5",
-            "UK 11",
-            "UK 11.5",
-            "UK 12",
-            "UK 12.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 9",
-            "UK 9.5"
-          ],
-          "size_stock": {
-            "UK 8": "in_stock",
-            "UK 8.5": "in_stock",
-            "UK 9": "in_stock",
-            "UK 9.5": "in_stock",
-            "UK 10": "in_stock",
-            "UK 10.5": "in_stock",
-            "UK 11": "in_stock",
-            "UK 11.5": "in_stock",
-            "UK 12": "in_stock",
-            "UK 12.5": "in_stock"
-          },
-          "colors": [
-            "Habitat/Habitat",
-            "Mantis/Mantis"
-          ]
+          "region": "CA"
         },
         {
           "url": "https://www.mec.ca/en/product/6020-674/arcteryx-kyanite-hoodie-womens",
@@ -2243,7 +2249,7 @@
           "url": "https://www.mec.ca/en/product/6032-943/arcteryx-norvan-ld-4-trail-running-shoes-mens",
           "name": "Arc'teryx Norvan LD 4 Trail Running Shoes - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/538115_source_1773265264.jpg",
-          "color": "Black/Cloud, Black/Graphite, Lt Mantis/Mid Mantis, Ray/Olive Moss",
+          "color": "Black/Cloud, Black/Graphite, Lt Mantis/Mid Mantis",
           "sale_price": 89.76,
           "original_price": 220.0,
           "discount_pct": 59,
@@ -2279,8 +2285,7 @@
           "colors": [
             "Black/Cloud",
             "Black/Graphite",
-            "Lt Mantis/Mid Mantis",
-            "Ray/Olive Moss"
+            "Lt Mantis/Mid Mantis"
           ]
         },
         {
@@ -2335,6 +2340,86 @@
           },
           "colors": [
             "Moondrop"
+          ]
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6042-487/arcteryx-kragg-approach-shoes-womens",
+          "name": "Arc'teryx Kragg Approach Shoes - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/548700_source_1772583644.jpg",
+          "color": "Arctic Silk/Arctic Silk, Black/Black",
+          "sale_price": 200.0,
+          "original_price": 200.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "UK 4",
+            "UK 4.5",
+            "UK 5",
+            "UK 5.5",
+            "UK 6",
+            "UK 6.5",
+            "UK 7",
+            "UK 7.5",
+            "UK 8",
+            "UK 8.5"
+          ],
+          "size_stock": {
+            "UK 4": "in_stock",
+            "UK 4.5": "in_stock",
+            "UK 5": "in_stock",
+            "UK 5.5": "in_stock",
+            "UK 6": "in_stock",
+            "UK 6.5": "in_stock",
+            "UK 7": "in_stock",
+            "UK 7.5": "in_stock",
+            "UK 8": "in_stock",
+            "UK 8.5": "in_stock"
+          },
+          "colors": [
+            "Arctic Silk/Arctic Silk",
+            "Black/Black"
+          ]
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6042-488/arcteryx-kragg-approach-shoes-mens",
+          "name": "Arc'teryx Kragg Approach Shoes - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/548553_source_1772497235.jpg",
+          "color": "Black/Black, Void/Black",
+          "sale_price": 200.0,
+          "original_price": 200.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "UK 10",
+            "UK 10.5",
+            "UK 11",
+            "UK 11.5",
+            "UK 12",
+            "UK 12.5",
+            "UK 8",
+            "UK 8.5",
+            "UK 9",
+            "UK 9.5"
+          ],
+          "size_stock": {
+            "UK 8": "in_stock",
+            "UK 8.5": "in_stock",
+            "UK 9": "in_stock",
+            "UK 9.5": "in_stock",
+            "UK 10": "in_stock",
+            "UK 10.5": "in_stock",
+            "UK 11": "in_stock",
+            "UK 11.5": "in_stock",
+            "UK 12": "in_stock",
+            "UK 12.5": "in_stock"
+          },
+          "colors": [
+            "Black/Black",
+            "Void/Black"
           ]
         },
         {
@@ -2504,45 +2589,6 @@
           ]
         },
         {
-          "url": "https://www.mec.ca/en/product/6042-488/arcteryx-kragg-approach-shoes-mens",
-          "name": "Arc'teryx Kragg Approach Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/549279_source_1773265262.jpg",
-          "color": "Void/Black",
-          "sale_price": 200.0,
-          "original_price": 200.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "UK 10",
-            "UK 10.5",
-            "UK 11",
-            "UK 11.5",
-            "UK 12",
-            "UK 12.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 9",
-            "UK 9.5"
-          ],
-          "size_stock": {
-            "UK 8": "in_stock",
-            "UK 8.5": "in_stock",
-            "UK 9": "in_stock",
-            "UK 9.5": "in_stock",
-            "UK 10": "in_stock",
-            "UK 10.5": "in_stock",
-            "UK 11": "in_stock",
-            "UK 11.5": "in_stock",
-            "UK 12": "in_stock",
-            "UK 12.5": "in_stock"
-          },
-          "colors": [
-            "Void/Black"
-          ]
-        },
-        {
           "url": "https://www.mec.ca/en/product/6037-696/arcteryx-norvan-jacket-mens",
           "name": "Arc'teryx Norvan Jacket - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519424_source_1774267281.jpg",
@@ -2602,6 +2648,41 @@
           },
           "colors": [
             "Black"
+          ]
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6032-431/arcteryx-atom-hoodie-mens",
+          "name": "Arc'teryx Atom Hoodie - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509923_source_1748037140.jpg",
+          "color": "Black, Fluidity/Black Sapphire, Stone Red",
+          "sale_price": 198.0,
+          "original_price": 360.0,
+          "discount_pct": 45,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large",
+            "X-Small",
+            "XXX-Large"
+          ],
+          "size_stock": {
+            "X-Small": "in_stock",
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock",
+            "XXX-Large": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Fluidity/Black Sapphire",
+            "Stone Red"
           ]
         },
         {
@@ -2742,41 +2823,6 @@
           },
           "colors": [
             "Black"
-          ]
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6032-431/arcteryx-atom-hoodie-mens",
-          "name": "Arc'teryx Atom Hoodie - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518717_source_1775168458.jpg",
-          "color": "Black, Fluidity/Black Sapphire, Stone Red",
-          "sale_price": 198.0,
-          "original_price": 360.0,
-          "discount_pct": 45,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small",
-            "XXX-Large"
-          ],
-          "size_stock": {
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock",
-            "XXX-Large": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Fluidity/Black Sapphire",
-            "Stone Red"
           ]
         },
         {
@@ -3083,45 +3129,6 @@
           ]
         },
         {
-          "url": "https://www.mec.ca/en/product/6042-487/arcteryx-kragg-approach-shoes-womens",
-          "name": "Arc'teryx Kragg Approach Shoes - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/548694_source_1772583639.jpg",
-          "color": "Black/Black",
-          "sale_price": 200.0,
-          "original_price": 200.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "UK 4",
-            "UK 4.5",
-            "UK 5",
-            "UK 5.5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5"
-          ],
-          "size_stock": {
-            "UK 4": "in_stock",
-            "UK 4.5": "in_stock",
-            "UK 5": "in_stock",
-            "UK 5.5": "in_stock",
-            "UK 6": "in_stock",
-            "UK 6.5": "in_stock",
-            "UK 7": "in_stock",
-            "UK 7.5": "in_stock",
-            "UK 8": "in_stock",
-            "UK 8.5": "in_stock"
-          },
-          "colors": [
-            "Black/Black"
-          ]
-        },
-        {
           "url": "https://www.mec.ca/en/product/6037-781/arcteryx-lithos-sl-harness-unisex",
           "name": "Arc'teryx Lithos SL Harness - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/549239_source_1773265250.jpg",
@@ -3246,8 +3253,8 @@
         {
           "url": "https://www.mec.ca/en/product/6034-790/arcteryx-kragg-superlight-cotton-bird-word-short-sleeve-mens",
           "name": "Arc'teryx Kragg Superlight Cotton Bird Word Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529346_source_1758559545.jpg",
-          "color": "24k Black",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529373_source_1758559547.jpg",
+          "color": "24k Black, Alpine Blue/Stone Red",
           "sale_price": 44.94,
           "original_price": 90.0,
           "discount_pct": 50,
@@ -3269,7 +3276,8 @@
             "XX-Large": "in_stock"
           },
           "colors": [
-            "24k Black"
+            "24k Black",
+            "Alpine Blue/Stone Red"
           ]
         },
         {
@@ -3397,7 +3405,7 @@
           "url": "https://www.mec.ca/en/product/6034-755/arcteryx-color-block-toque-unisex",
           "name": "Arc'teryx Color Block Toque - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/526400_source_1760059554.jpg",
-          "color": "Blaze/Copper Sky, Void/Black",
+          "color": "Void/Black",
           "sale_price": 42.0,
           "original_price": 70.0,
           "discount_pct": 40,
@@ -3411,7 +3419,6 @@
             "One Size": "in_stock"
           },
           "colors": [
-            "Blaze/Copper Sky",
             "Void/Black"
           ]
         },
@@ -3475,7 +3482,7 @@
           "url": "https://www.mec.ca/en/product/6032-371/arcteryx-bird-word-cap-unisex",
           "name": "Arc'teryx Bird Word Cap - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517192_source_1773265259.jpg",
-          "color": "Dk Stratus/Habitat",
+          "color": "24k Black, Dk Stratus/Habitat",
           "sale_price": 42.0,
           "original_price": 60.0,
           "discount_pct": 30,
@@ -3491,6 +3498,7 @@
             "Large/X-Large": "in_stock"
           },
           "colors": [
+            "24k Black",
             "Dk Stratus/Habitat"
           ]
         },
@@ -3644,7 +3652,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-638/arcteryx-sunna-crew-short-sleeve-womens",
           "name": "Arc'teryx Sunna Crew Short Sleeve - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534061_source_1776945697.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533713_source_1776945690.jpg",
           "color": "Alpine Blue, Moondrop, Pineberry",
           "sale_price": 90.0,
           "original_price": 90.0,
@@ -4533,7 +4541,7 @@
     "ssense": {
       "name": "SSENSE",
       "region": "US",
-      "count": 29,
+      "count": 40,
       "items": [
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/gray-sylan-2-sneakers/18786481",
@@ -4581,6 +4589,112 @@
           "color": "Gray",
           "colors": [
             "Gray"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-beta-sv-jacket/18785301",
+          "name": "Khaki Beta SV Jacket",
+          "image": "https://img.ssensemedia.com/images/261340M180021_1/arcteryx-khaki-beta-sv-jacket.jpg",
+          "original_price": 800.0,
+          "sale_price": 560.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 30,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL",
+            "XXXL"
+          ],
+          "size_stock": {
+            "XS": "out_of_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock",
+            "XXXL": "out_of_stock"
+          },
+          "color": "Khaki",
+          "colors": [
+            "Khaki"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/navy-beta-ar-jacket/18785271",
+          "name": "Navy Beta AR Jacket",
+          "image": "https://img.ssensemedia.com/images/261340M180019_1/arcteryx-navy-beta-ar-jacket.jpg",
+          "original_price": 615.0,
+          "sale_price": 615.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL",
+            "XXXL"
+          ],
+          "size_stock": {
+            "XS": "out_of_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "out_of_stock",
+            "XXXL": "out_of_stock"
+          },
+          "color": "Navy",
+          "colors": [
+            "Navy"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/purple-kragg-cotton-lithographica-ss-t-shirt/18785781",
+          "name": "Purple Kragg Cotton Lithographica S/S T-shirt",
+          "image": "https://img.ssensemedia.com/images/261340M213016_1/arcteryx-purple-kragg-cotton-lithographica-ss-t-shirt.jpg",
+          "original_price": 80.0,
+          "sale_price": 80.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "out_of_stock",
+            "S": "out_of_stock",
+            "M": "out_of_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "out_of_stock"
+          },
+          "color": "Purple",
+          "colors": [
+            "Purple"
           ]
         },
         {
@@ -4687,6 +4801,134 @@
           "color": "Green",
           "colors": [
             "Green"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/beige-cronin-cotton-trousers/18785431",
+          "name": "Beige Cronin Cotton Trousers",
+          "image": "https://img.ssensemedia.com/images/261340M191004_1/arcteryx-beige-cronin-cotton-trousers.jpg",
+          "original_price": 180.0,
+          "sale_price": 180.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "WAIST US 28",
+            "WAIST US 30",
+            "WAIST US 32",
+            "WAIST US 34",
+            "WAIST US 36",
+            "WAIST US 38"
+          ],
+          "size_stock": {
+            "WAIST US 28": "in_stock",
+            "WAIST US 30": "in_stock",
+            "WAIST US 32": "out_of_stock",
+            "WAIST US 34": "out_of_stock",
+            "WAIST US 36": "in_stock",
+            "WAIST US 38": "in_stock"
+          },
+          "color": "Beige",
+          "colors": [
+            "Beige"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-sinsolo-bucket-hat/18786891",
+          "name": "Black Sinsolo Bucket Hat",
+          "image": "https://img.ssensemedia.com/images/261340M140000_1/arcteryx-black-sinsolo-bucket-hat.jpg",
+          "original_price": 85.0,
+          "sale_price": 85.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "S-M",
+            "L-XL"
+          ],
+          "size_stock": {
+            "S-M": "in_stock",
+            "L-XL": "in_stock"
+          },
+          "color": "Black",
+          "colors": [
+            "Black"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-kragg-cotton-ls-t-shirt/18785001",
+          "name": "Black Kragg Cotton LS T-shirt",
+          "image": "https://img.ssensemedia.com/images/261340M213004_1/arcteryx-black-kragg-cotton-ls-t-shirt.jpg",
+          "original_price": 80.0,
+          "sale_price": 80.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "out_of_stock",
+            "S": "out_of_stock",
+            "M": "out_of_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "out_of_stock"
+          },
+          "color": "Black",
+          "colors": [
+            "Black"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-cotton-ls-t-shirt/18785011",
+          "name": "White Kragg Cotton LS T-shirt",
+          "image": "https://img.ssensemedia.com/images/261340M213005_1/arcteryx-white-kragg-cotton-ls-t-shirt.jpg",
+          "original_price": 80.0,
+          "sale_price": 80.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "out_of_stock",
+            "S": "out_of_stock",
+            "M": "out_of_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "out_of_stock"
+          },
+          "color": "White",
+          "colors": [
+            "White"
           ]
         },
         {
@@ -4957,6 +5199,40 @@
             "US 11.5": "in_stock",
             "US 12": "in_stock",
             "US 12.5": "in_stock"
+          },
+          "color": "Black",
+          "colors": [
+            "Black"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-cronin-cotton-trousers/18785411",
+          "name": "Black Cronin Cotton Trousers",
+          "image": "https://img.ssensemedia.com/images/261340M191003_1/arcteryx-black-cronin-cotton-trousers.jpg",
+          "original_price": 180.0,
+          "sale_price": 180.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "WAIST US 28",
+            "WAIST US 30",
+            "WAIST US 32",
+            "WAIST US 34",
+            "WAIST US 36",
+            "WAIST US 38"
+          ],
+          "size_stock": {
+            "WAIST US 28": "out_of_stock",
+            "WAIST US 30": "out_of_stock",
+            "WAIST US 32": "out_of_stock",
+            "WAIST US 34": "out_of_stock",
+            "WAIST US 36": "in_stock",
+            "WAIST US 38": "out_of_stock"
           },
           "color": "Black",
           "colors": [
@@ -5542,6 +5818,38 @@
           ]
         },
         {
+          "url": "https://www.ssense.com/en-us/women/product/arcteryx/navy-beta-ar-jacket/18774481",
+          "name": "Navy Beta AR Jacket",
+          "image": "https://img.ssensemedia.com/images/261340F063006_1/arcteryx-navy-beta-ar-jacket.jpg",
+          "original_price": 650.0,
+          "sale_price": 650.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "size_stock": {
+            "XS": "out_of_stock",
+            "S": "in_stock",
+            "M": "out_of_stock",
+            "L": "out_of_stock",
+            "XL": "out_of_stock"
+          },
+          "color": "Navy",
+          "colors": [
+            "Navy"
+          ]
+        },
+        {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-naya-cropped-jacket/18774991",
           "name": "Black Naya Cropped Jacket",
           "image": "https://img.ssensemedia.com/images/261340F063012_1/arcteryx-black-naya-cropped-jacket.jpg",
@@ -5573,6 +5881,76 @@
           "color": "Black",
           "colors": [
             "Black"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-rula-t-shirt/439746312",
+          "name": "Black Rula T-shirt",
+          "image": "https://img.ssensemedia.com/images/261340F110005_1/arcteryx-black-rula-t-shirt.jpg",
+          "original_price": 80.0,
+          "sale_price": 80.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "XXS",
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XXS": "out_of_stock",
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "out_of_stock"
+          },
+          "color": "Black",
+          "colors": [
+            "Black"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/women/product/arcteryx/white-kragg-cotton-little-bird-crew-ss-t-shirt/18774771",
+          "name": "White Kragg Cotton Little Bird Crew S/S T-shirt",
+          "image": "https://img.ssensemedia.com/images/261340F110002_1/arcteryx-white-kragg-cotton-little-bird-crew-ss-t-shirt.jpg",
+          "original_price": 70.0,
+          "sale_price": 70.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "XXS",
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "size_stock": {
+            "XXS": "out_of_stock",
+            "XS": "in_stock",
+            "S": "out_of_stock",
+            "M": "out_of_stock",
+            "L": "out_of_stock",
+            "XL": "out_of_stock"
+          },
+          "color": "White",
+          "colors": [
+            "White"
           ]
         },
         {
@@ -5690,5 +6068,5 @@
       ]
     }
   },
-  "total": 169
+  "total": 181
 }
