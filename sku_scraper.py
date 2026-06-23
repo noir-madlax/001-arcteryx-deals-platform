@@ -50,6 +50,46 @@ def sku_id(slug: str, color: str, region: str = '') -> str:
     base = f"{slug}_{normalize_color(color)}"
     return f"{base}_{region}" if region else base
 
+def gender_from_url(url: str) -> str | None:
+    u = (url or '').lower()
+    if re.search(r'/womens?/', u):
+        return 'women'
+    if re.search(r'/mens?/', u):
+        return 'men'
+    return None
+
+def product_key(product: dict) -> str:
+    slug = slug_from_url(product.get('url', ''))
+    gender = gender_from_url(product.get('url', '')) or product.get('gender', '')
+    return f"{slug}::{gender}" if gender else slug
+
+def _replace_gender_marker(text: str | None, gender: str | None) -> str | None:
+    if not text or gender not in ('men', 'women'):
+        return text
+    if gender == 'women':
+        return re.sub(r"(?<!Wo)Men'?s", "Women's", text, flags=re.IGNORECASE)
+    return re.sub(r"Women'?s", "Men's", text, flags=re.IGNORECASE)
+
+def calc_discount(original_price, sale_price) -> int:
+    try:
+        orig = float(original_price or 0)
+        sale = float(sale_price or 0)
+    except (TypeError, ValueError):
+        return 0
+    if orig <= 0 or sale <= 0 or sale > orig:
+        return 0
+    return round((1 - sale / orig) * 100)
+
+def normalize_outlet_sku(sku: dict) -> dict:
+    out = dict(sku)
+    url_gender = gender_from_url(out.get('url', ''))
+    if url_gender:
+        out['gender'] = url_gender
+        out['full_name'] = _replace_gender_marker(out.get('full_name'), url_gender)
+        out['model'] = _replace_gender_marker(out.get('model'), url_gender)
+    out['discount_pct'] = calc_discount(out.get('original_price'), out.get('sale_price'))
+    return out
+
 def is_junk_color(color: str) -> bool:
     """Reject entries that look like mis-scraped size values or placeholders."""
     import re as _re
@@ -72,20 +112,20 @@ def save_json(path, data, indent=None):
         json.dump(data, f, ensure_ascii=False, indent=indent)
 
 
-# ── 从 global_data.json 按 slug 整理，支持多地区 ──────────────────────────────
+# ── 从 global_data.json 按 slug + gender 整理，支持多地区 ─────────────────────
 REGION_PRIORITY = ['us', 'ca', 'gb', 'au', 'de', 'fr', 'nl', 'se', 'at', 'ch', 'jp', 'it', 'es', 'dk', 'be']
 
-def best_product_per_slug(products: list) -> dict:
-    """返回 {slug: product_record}，每个商品只保留最优地区版本（用于确定访问哪个 URL）"""
-    by_slug: dict = {}
+def best_product_per_key(products: list) -> dict:
+    """返回 {slug::gender: product_record}，每个商品性别只保留最优地区版本。"""
+    by_key: dict = {}
     for p in products:
-        s = slug_from_url(p.get('url', ''))
-        if not s:
+        key = product_key(p)
+        if not key:
             continue
-        if s not in by_slug:
-            by_slug[s] = p
+        if key not in by_key:
+            by_key[key] = p
         else:
-            existing = by_slug[s]
+            existing = by_key[key]
             try:
                 pr_new = REGION_PRIORITY.index(p.get('region', ''))
             except ValueError:
@@ -95,25 +135,25 @@ def best_product_per_slug(products: list) -> dict:
             except ValueError:
                 pr_old = 99
             if pr_new < pr_old:
-                by_slug[s] = p
-    return by_slug
+                by_key[key] = p
+    return by_key
 
 
-def all_regions_per_slug(products: list) -> dict:
-    """返回 {slug: {region: product_record}}，每个 slug 保留所有地区版本的价格信息"""
-    by_slug: dict = {}
+def all_regions_per_key(products: list) -> dict:
+    """返回 {slug::gender: {region: product_record}}，保留同一性别的地区价格信息。"""
+    by_key: dict = {}
     for p in products:
-        s = slug_from_url(p.get('url', ''))
+        key = product_key(p)
         region = p.get('region', '')
-        if not s or not region:
+        if not key or not region:
             continue
-        if s not in by_slug:
-            by_slug[s] = {}
-        existing = by_slug[s].get(region)
+        if key not in by_key:
+            by_key[key] = {}
+        existing = by_key[key].get(region)
         # 同地区有多条时，保留折扣最高的（通常 sale_price 最低）
         if existing is None or p.get('discount_pct', 0) >= existing.get('discount_pct', 0):
-            by_slug[s][region] = p
-    return by_slug
+            by_key[key][region] = p
+    return by_key
 
 
 # ── 页面抓取 ─────────────────────────────────────────────────────────────────
@@ -139,7 +179,7 @@ async def scrape_product(page, product: dict) -> list[dict]:
         return []
 
     # ── 读取基础信息 ────────────────────────────────────────────────────────
-    base_info = await page.evaluate("""() => {
+    base_info = await page.evaluate(r"""() => {
         const title = document.querySelector('h1')?.textContent?.trim() || '';
         // description
         const descEl = document.querySelector('[data-testid="product-description"] p, .product-description p, .pdp-description p');
@@ -329,9 +369,9 @@ async def scrape_product(page, product: dict) -> list[dict]:
 async def run(args):
     # 加载现有数据
     products_raw = load_json(DATA_FILE, [])
-    product_map   = best_product_per_slug(products_raw)   # {slug: best_product} 用于访问页面
-    regions_map   = all_regions_per_slug(products_raw)    # {slug: {region: product}} 用于展开多地区
-    print(f"商品总数（去重后）: {len(product_map)}")
+    product_map   = best_product_per_key(products_raw)   # {slug::gender: best_product} 用于访问页面
+    regions_map   = all_regions_per_key(products_raw)    # {slug::gender: {region: product}} 用于展开多地区
+    print(f"商品总数（按 slug+gender 去重后）: {len(product_map)}")
     print(f"地区版本总数: {sum(len(v) for v in regions_map.values())}")
 
     # 加载已有 SKU（支持断点续抓）
@@ -343,9 +383,13 @@ async def run(args):
 
     # 过滤目标
     if args.slug:
-        targets = {args.slug: product_map[args.slug]} if args.slug in product_map else {}
+        targets = {
+            key: product
+            for key, product in product_map.items()
+            if slug_from_url(product.get('url', '')) == args.slug
+        }
     else:
-        targets = {s: p for s, p in product_map.items() if s not in done_slugs}
+        targets = {key: p for key, p in product_map.items() if key not in done_slugs}
     if args.limit:
         keys = list(targets.keys())[:args.limit]
         targets = {k: targets[k] for k in keys}
@@ -359,7 +403,11 @@ async def run(args):
         return
 
     # sku_id 格式：{slug}_{color}_{region}
-    new_skus_map = {s['sku_id']: s for s in existing_skus if s.get('sku_id')}
+    new_skus_map = {}
+    for s in existing_skus:
+        if s.get('sku_id'):
+            normalized = normalize_outlet_sku(s)
+            new_skus_map[normalized['sku_id']] = normalized
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(
@@ -374,14 +422,15 @@ async def run(args):
         page = await context.new_page()
 
         processed = 0
-        for slug, product in targets.items():
+        for key, product in targets.items():
             processed += 1
-            print(f"[{processed}/{len(targets)}] {slug} ({product.get('region','')})")
+            slug = slug_from_url(product.get('url', ''))
+            print(f"[{processed}/{len(targets)}] {key} ({product.get('region','')})")
             skus = await scrape_product(page, product)
 
             if skus:
                 # 获取该 slug 的所有地区价格信息
-                region_variants = regions_map.get(slug, {})
+                region_variants = regions_map.get(key, {})
 
                 added = 0
                 for sku in skus:
@@ -393,7 +442,7 @@ async def run(args):
                         # 方案B：为每个地区生成一条 SKU 记录
                         for region_code, region_product in region_variants.items():
                             sid = sku_id(slug, sku['color'], region_code)
-                            new_skus_map[sid] = {
+                            new_skus_map[sid] = normalize_outlet_sku({
                                 **sku,
                                 "sku_id":         sid,
                                 "region":         region_code,
@@ -405,16 +454,16 @@ async def run(args):
                                 "currency":       region_product.get('currency', sku.get('currency', '')),
                                 "symbol":         region_product.get('symbol',   sku.get('symbol', '')),
                                 "url":            region_product.get('url',      sku.get('url', '')),
-                            }
+                            })
                             added += 1
                     else:
                         # 无多地区数据，退回单条
                         sid = sku_id(slug, sku['color'], sku.get('region', ''))
-                        new_skus_map[sid] = {**sku, "sku_id": sid}
+                        new_skus_map[sid] = normalize_outlet_sku({**sku, "sku_id": sid})
                         added += 1
 
                 # 标记完成
-                done_slugs.add(slug)
+                done_slugs.add(key)
                 save_json(PROGRESS_FILE, list(done_slugs))
 
                 # 增量保存 SKU 文件
@@ -446,6 +495,7 @@ def expand_data_js(skus: list, fallback_products: list):
 
     # SKU → PRODUCTS 格式
     def sku_to_product(s):
+        s = normalize_outlet_sku(s)
         return {
             "model":          s['model'],
             "full_name":      s['full_name'],
@@ -477,10 +527,14 @@ def expand_data_js(skus: list, fallback_products: list):
     expanded = [sku_to_product(s) for s in skus if not is_junk_color(s.get('color', ''))]
 
     # 补充未抓到 SKU 的原始商品
-    fallback_map = best_product_per_slug(fallback_products)
-    for slug, p in fallback_map.items():
+    fallback_map = best_product_per_key(fallback_products)
+    for key, p in fallback_map.items():
+        slug = slug_from_url(p.get('url', ''))
         if slug not in slug_has_sku:
-            expanded.append(p)
+            fallback = normalize_outlet_sku(p)
+            if not fallback.get('sku_id'):
+                fallback['sku_id'] = sku_id(slug, fallback.get('color', '') or 'default', fallback.get('region', ''))
+            expanded.append(fallback)
 
     print(f"\n📦 写入 data.js: {len(expanded)} 条（{len(skus)} SKU + {len(expanded)-len(skus)} 无SKU原始条目）")
     js_payload = f"const PRODUCTS = {json.dumps(expanded, ensure_ascii=False)};\n"

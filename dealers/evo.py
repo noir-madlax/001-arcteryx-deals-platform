@@ -6,6 +6,11 @@ from .base import normalize_price, discount_pct
 import json, urllib.request, ssl, os
 from collections import defaultdict
 
+try:
+    from curl_cffi import requests as curl_requests
+except Exception:  # pragma: no cover - runtime dependency fallback
+    curl_requests = None
+
 HOST = "https://www.evo.com"
 _CTX = ssl.create_default_context()
 _CTX.check_hostname = False
@@ -31,6 +36,19 @@ class Scraper:
         last = None
         for i in range(retries + 1):
             try:
+                if curl_requests is not None:
+                    r = curl_requests.get(
+                        url,
+                        impersonate="chrome124",
+                        timeout=30,
+                        headers={
+                            "accept": "application/json,text/plain,*/*",
+                            "referer": "https://www.evo.com/shop/arcteryx",
+                        },
+                    )
+                    if r.status_code == 200:
+                        return r.json()
+                    raise RuntimeError(f"HTTP {r.status_code}: {r.text[:120]}")
                 req = urllib.request.Request(url, headers={"User-Agent": _UA, "Accept": "application/json"})
                 with urllib.request.urlopen(req, context=_CTX, timeout=20) as r:
                     return json.loads(r.read())

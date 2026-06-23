@@ -123,7 +123,13 @@ def fetch_mec_pdp(session, url: str) -> dict | None:
         return {"_unavailable": True}
     sale, orig, disc = _parse_pdp_price(p)
     if not sale: return None
-    return {"sale_price": float(sale), "original_price": float(orig or sale), "discount_pct": disc}
+    return {
+        "sale_price": float(sale),
+        "original_price": float(orig or sale),
+        "discount_pct": disc,
+        "currency": "CAD",
+        "symbol": "C$",
+    }
 
 def fetch_ssense_pdp(session, url: str) -> dict | None:
     """SSENSE curl_cffi (impersonate=chrome) PDP. JSON-LD Product schema.

@@ -13,6 +13,12 @@ ROOT = Path(__file__).resolve().parent.parent
 RESULTS_FILE = ROOT / "dealers" / "results.json"
 BATCH_SIZE = 50
 SYM = {"USD":"$", "CAD":"C$", "EUR":"€", "GBP":"£", "SEK":"kr", "CHF":"CHF"}
+DEFAULT_CURRENCY_BY_DEALER = {
+    "mec": "CAD",
+    "evo": "USD",
+    "rei": "USD",
+    "ssense": "USD",
+}
 REGION_NAME = {
     "us":"美国","ca":"加拿大","gb":"英国","de":"德国","fr":"法国","nl":"荷兰",
     "at":"奥地利","ch":"瑞士","it":"意大利","es":"西班牙","be":"比利时",
@@ -52,10 +58,30 @@ def _infer_cat(name: str, url: str) -> str:
     except Exception:
         return ""
 
+def _currency_for_item(it: dict, dealer: str) -> str:
+    region = (it.get("region") or "").lower()
+    currency = (it.get("currency") or "").upper()
+    if dealer == "mec" and region == "ca":
+        return "CAD"
+    return currency or DEFAULT_CURRENCY_BY_DEALER.get(dealer, "USD")
+
+def _discount_pct(orig, sale) -> int:
+    try:
+        o = float(orig or 0)
+        s = float(sale or 0)
+    except (TypeError, ValueError):
+        return 0
+    if o <= 0 or s <= 0 or s > o:
+        return 0
+    return round((1 - s / o) * 100)
+
 def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
     name = it.get("name") or ""
     url = it.get("url","")
     sku_id = make_sku_id(dealer, url)
+    currency = _currency_for_item(it, dealer)
+    original_price = it.get("original_price")
+    sale_price = it.get("sale_price")
     return {
         "sku_id":         sku_id,
         "dealer":         dealer,
@@ -64,11 +90,11 @@ def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
         "color":          it.get("color") or "",
         "sizes":          it.get("sizes") or [],
         "size_stock":     it.get("size_stock") or {},
-        "original_price": it.get("original_price"),
-        "sale_price":     it.get("sale_price"),
-        "discount_pct":   it.get("discount_pct") or 0,
-        "currency":       it.get("currency") or "USD",
-        "symbol":         SYM.get(it.get("currency",""), "$"),
+        "original_price": original_price,
+        "sale_price":     sale_price,
+        "discount_pct":   _discount_pct(original_price, sale_price),
+        "currency":       currency,
+        "symbol":         SYM.get(currency, "$"),
         "gender":         it.get("gender") or "unknown",
         "region":         (it.get("region") or "us").lower(),
         "region_name":    REGION_NAME.get((it.get("region") or "us").lower(), ""),

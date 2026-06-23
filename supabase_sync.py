@@ -15,6 +15,7 @@ import json
 import os
 import sys
 import argparse
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -56,7 +57,6 @@ def infer_category(name: str, url: str) -> str:
 
 # ── Junk color guard ──────────────────────────────────────────────────────────
 def is_junk_color(color: str) -> bool:
-    import re
     c = (color or "").strip()
     if not c or c.lower() in ("unknown", "default"):
         return True
@@ -64,9 +64,47 @@ def is_junk_color(color: str) -> bool:
         return True
     return False
 
+def calc_discount(original_price, sale_price) -> int:
+    """Return an internally consistent integer discount percentage."""
+    try:
+        orig = float(original_price or 0)
+        sale = float(sale_price or 0)
+    except (TypeError, ValueError):
+        return 0
+    if orig <= 0 or sale <= 0 or sale > orig:
+        return 0
+    return round((1 - sale / orig) * 100)
+
+def gender_from_url(url: str) -> str | None:
+    u = (url or "").lower()
+    if re.search(r"/womens?/", u):
+        return "women"
+    if re.search(r"/mens?/", u):
+        return "men"
+    return None
+
+def _replace_gender_marker(text: str | None, gender: str | None) -> str | None:
+    if not text or gender not in ("men", "women"):
+        return text
+    if gender == "women":
+        return re.sub(r"(?<!Wo)Men'?s", "Women's", text, flags=re.IGNORECASE)
+    return re.sub(r"Women'?s", "Men's", text, flags=re.IGNORECASE)
+
+def normalize_outlet_sku(sku: dict) -> dict:
+    """Normalize fields that should be determined by authoritative URL/price data."""
+    out = dict(sku)
+    url_gender = gender_from_url(out.get("url", ""))
+    if url_gender:
+        out["gender"] = url_gender
+        out["full_name"] = _replace_gender_marker(out.get("full_name"), url_gender)
+        out["model"] = _replace_gender_marker(out.get("model"), url_gender)
+    out["discount_pct"] = calc_discount(out.get("original_price"), out.get("sale_price"))
+    return out
+
 # ── Row builder ───────────────────────────────────────────────────────────────
 def sku_to_row(sku: dict) -> dict:
     """Convert a SKU dict (arcteryx_skus.json format) → Supabase row dict."""
+    sku = normalize_outlet_sku(sku)
     # Parse last_updated string → ISO timestamp
     lu_str = sku.get("last_updated", "")
     try:

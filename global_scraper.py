@@ -21,6 +21,7 @@ import re
 import sys
 import ssl
 import urllib.request
+from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
@@ -204,7 +205,7 @@ async def scroll_to_load_all(page) -> int:
 
 async def extract_tiles(page, region: dict, gender: str) -> list:
     """从已完全加载的列表页提取商品瓦片数据"""
-    return await page.evaluate("""(args) => {
+    return await page.evaluate(r"""(args) => {
         const { regionCode, regionLang, regionName, currency, symbol, gender } = args;
         const results = [];
         const seen = new Set();
@@ -622,7 +623,7 @@ def _filter_redirected(products: list, today_only: bool = True, max_workers: int
         return products
 
     print(f"[validate] HEAD {len(to_check)} URLs to detect cross-region redirects...", flush=True)
-    bad_indices = set()
+    redirect_hits = []
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
         futures = {ex.submit(_final_region, url): (i, url, region) for (i, url, region) in to_check}
         for fut in as_completed(futures):
@@ -630,11 +631,48 @@ def _filter_redirected(products: list, today_only: bool = True, max_workers: int
             final_region = fut.result()
             # final_region is None on network error — keep the record (fail open)
             if final_region and final_region != region:
-                bad_indices.add(i)
-                print(f"  ✗ phantom: {url} → {final_region} (expected {region})", flush=True)
+                redirect_hits.append((i, url, region, final_region))
+
+    if not redirect_hits:
+        print("[validate] no phantom entries found", flush=True)
+        return products
+
+    # Region-gated fail-open: Arc'teryx often redirects HEAD requests from this
+    # server to a location fallback even when the listing page itself served
+    # valid regional products. Only remove sparse mismatches; skip mass,
+    # same-destination redirects that look like geolocation behavior.
+    checked_by_region = Counter(region for _, _, region in to_check)
+    hits_by_region = defaultdict(list)
+    for hit in redirect_hits:
+        hits_by_region[hit[2]].append(hit)
+
+    bad_indices = set()
+    skipped = 0
+    for region, hits in sorted(hits_by_region.items()):
+        final_counts = Counter(hit[3] for hit in hits)
+        dominant_region, dominant_count = final_counts.most_common(1)[0]
+        total_checked = checked_by_region[region]
+        dominant_ratio = dominant_count / max(total_checked, 1)
+
+        if dominant_count >= 20 and dominant_ratio >= 0.25:
+            skipped += len(hits)
+            print(
+                "[validate] skip mass redirect "
+                f"{region} → {dominant_region}: {dominant_count}/{total_checked} "
+                "HEAD results; likely geo fallback",
+                flush=True,
+            )
+            continue
+
+        for i, url, expected_region, final_region in hits:
+            bad_indices.add(i)
+            print(f"  ✗ phantom: {url} → {final_region} (expected {expected_region})", flush=True)
+
+    if skipped:
+        print(f"[validate] kept {skipped} mass-redirect records", flush=True)
 
     if not bad_indices:
-        print("[validate] no phantom entries found", flush=True)
+        print("[validate] no actionable phantom entries found", flush=True)
         return products
 
     print(f"[validate] removing {len(bad_indices)} phantom entries", flush=True)

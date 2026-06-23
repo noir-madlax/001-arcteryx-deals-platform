@@ -33,6 +33,7 @@ git reset --hard origin/main 2>&1 | tee -a "$LOG"
 
 # 4 个 dealer 串行跑（EC2 1.6GB RAM 不够并行 + Camoufox/Chromium 开销大）
 mkdir -p dealers/_partial
+rm -f dealers/_partial/*.json
 for d in mec evo rei ssense; do
     log "→ dealers.$d"
     if timeout 1800 $PYTHON -m dealers.$d >> "$LOG" 2>&1; then
@@ -49,6 +50,10 @@ $PYTHON -m dealers.merge_partial 2>&1 | tee -a "$LOG"
 # 同步到 Supabase（products 表 dealer 列）
 log "sync → Supabase"
 $PYTHON -m dealers.supabase_sync 2>&1 | tee -a "$LOG" || log "supabase sync 失败 (non-fatal)"
+
+# 硬性质量闸门：避免 stale partial / 币种错误 / 折扣不一致继续被当作健康数据
+log "data quality check"
+$PYTHON tools/check_data_quality.py --online --dealer mec --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --min-rows 50 2>&1 | tee -a "$LOG"
 
 # 检查降价提醒
 log "price alerts check"
