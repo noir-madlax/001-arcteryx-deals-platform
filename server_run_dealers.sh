@@ -6,20 +6,19 @@
 # ============================================================
 set -euo pipefail
 
-PROJ_DIR="$HOME/arcteryx"
-LOG="$PROJ_DIR/dealers.log"
-PYTHON=python3.12
+PROJ_DIR="${PROJ_DIR:-$HOME/arcteryx}"
+LOG="${LOG:-$PROJ_DIR/dealers.log}"
+PYTHON="${PYTHON:-python3.12}"
 
 GITHUB_REPO="noir-madlax/001-arcteryx-deals-platform"
-
-# Supabase service_role key — 与 server_run_update.sh 保持一致
-export SUPABASE_URL="https://bupqagkrcvrezjkdbald.supabase.co"
-export SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjQ0NTU1MywiZXhwIjoyMDkyMDIxNTUzfQ.QPg4iHNEix_uB1Dlo6ONz2fBq59XhV9NZdEIsXc95_k"
 
 if [ -f "$HOME/.arcteryx_secrets" ]; then
   # shellcheck disable=SC1091
   source "$HOME/.arcteryx_secrets"
 fi
+export SUPABASE_URL="${SUPABASE_URL:-https://bupqagkrcvrezjkdbald.supabase.co}"
+: "${SUPABASE_KEY:?SUPABASE_KEY env required}"
+export SUPABASE_KEY
 
 cd "$PROJ_DIR"
 

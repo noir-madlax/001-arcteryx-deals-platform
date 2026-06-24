@@ -21,7 +21,7 @@ from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://bupqagkrcvrezjkdbald.supabase.co")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjQ0NTU1MywiZXhwIjoyMDkyMDIxNTUzfQ.QPg4iHNEix_uB1Dlo6ONz2fBq59XhV9NZdEIsXc95_k")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
 
 BASE_DIR  = Path(__file__).parent
 SKUS_FILE = BASE_DIR / "arcteryx_skus.json"
@@ -173,8 +173,8 @@ def main():
         print("[dry-run] done, nothing uploaded")
         return
 
-    if SUPABASE_URL == "YOUR_SUPABASE_URL":
-        print("[ERROR] Set SUPABASE_URL and SUPABASE_KEY env vars (or edit this file)", file=sys.stderr)
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        print("[ERROR] Set SUPABASE_URL and SUPABASE_KEY env vars", file=sys.stderr)
         sys.exit(1)
 
     from supabase import create_client

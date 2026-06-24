@@ -1,0 +1,86 @@
+name: Refresh Dealer Data
+
+on:
+  schedule:
+    - cron: "47 5,17 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arcteryx-production-refresh-writes
+  cancel-in-progress: false
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+  SITE_URL: https://001.100app.dev
+
+jobs:
+  refresh-dealers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+          python -m camoufox fetch
+
+      - name: Verify required secrets
+        run: |
+          test -n "$SUPABASE_URL"
+          test -n "$SUPABASE_KEY"
+
+      - name: Refresh dealer scrape and sync
+        run: |
+          git pull --ff-only origin main
+          mkdir -p dealers/_partial
+          rm -f dealers/_partial/*.json
+          failed=0
+          for dealer in mec evo rei ssense; do
+            echo "[dealers] $dealer"
+            if ! timeout 1800 python -u -m "dealers.$dealer"; then
+              failed=1
+            fi
+          done
+          if [ "$failed" -ne 0 ]; then
+            echo "At least one dealer scraper failed; refusing to publish partial dealer data"
+            exit 1
+          fi
+          python -m dealers.merge_partial
+          python -u -m dealers.supabase_sync
+          python tools/check_data_quality.py --online --dealer mec --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --min-rows 50
+
+      - name: Optional price alerts
+        run: python check_price_alerts.py || echo "price alerts check failed"
+
+      - name: Commit refreshed dealer static data
+        run: |
+          git config user.email "bot@arcteryx-deals.local"
+          git config user.name "ArcBot"
+          git add dealers/results.json
+          if git diff --cached --quiet; then
+            echo "No dealer data changes to commit"
+            exit 0
+          fi
+          git commit -m "data(dealers): auto refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Verify production freshness
+        run: |
+          python tools/check_data_quality.py --online --dealer mec --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --min-rows 50
+          curl -fsS https://001.100app.dev/dealers/results.json | python -c 'import json,sys; data=json.load(sys.stdin); print("generated_at", data.get("generated_at")); print({k:v.get("count") for k,v in data.get("dealers",{}).items()})'
