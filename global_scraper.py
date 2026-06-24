@@ -17,6 +17,7 @@ Arc'teryx 全球 Outlet 数据采集器 (Playwright 版)
 import argparse
 import asyncio
 import json
+import os
 import re
 import sys
 import ssl
@@ -577,7 +578,14 @@ async def run(args):
     # 这种"幻影"条目会让前端详情页跳错国家。这里做一次并发 HEAD 检查，凡是
     # 最终 URL 的地区段与 record.region 不一致的直接丢弃。
     # 只验证今天刚更新的记录，避免每次全量 ~3700 次 HEAD。
-    existing = _filter_redirected(existing)
+    if args.skip_redirect_validation:
+        print("[validate] skipped redirect validation by flag", flush=True)
+    else:
+        existing = _filter_redirected(
+            existing,
+            max_workers=args.redirect_workers,
+            request_timeout=args.redirect_timeout,
+        )
 
     save_json(DATA_FILE, existing)
     print(f"[global_scraper] 已写入 {DATA_FILE}")
@@ -603,7 +611,12 @@ def _final_region(url: str, timeout: float = 8.0):
         return None
 
 
-def _filter_redirected(products: list, today_only: bool = True, max_workers: int = 30) -> list:
+def _filter_redirected(
+    products: list,
+    today_only: bool = True,
+    max_workers: int = 30,
+    request_timeout: float = 8.0,
+) -> list:
     """Remove products whose URL redirects to a different region (phantom entries).
 
     today_only: only validate records updated today (much cheaper than full ~3700 HEADs).
@@ -625,7 +638,7 @@ def _filter_redirected(products: list, today_only: bool = True, max_workers: int
     print(f"[validate] HEAD {len(to_check)} URLs to detect cross-region redirects...", flush=True)
     redirect_hits = []
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
-        futures = {ex.submit(_final_region, url): (i, url, region) for (i, url, region) in to_check}
+        futures = {ex.submit(_final_region, url, request_timeout): (i, url, region) for (i, url, region) in to_check}
         for fut in as_completed(futures):
             i, url, region = futures[fut]
             final_region = fut.result()
@@ -687,6 +700,15 @@ def main():
                         help="只抓指定地区代码，如 --region us ca gb")
     parser.add_argument("--start-from", metavar="CODE",
                         help="从指定地区代码开始（跳过之前的地区）")
+    parser.add_argument("--skip-redirect-validation", action="store_true",
+                        default=os.environ.get("SKIP_REDIRECT_VALIDATION") == "1",
+                        help="跳过最终 HEAD 重定向校验")
+    parser.add_argument("--redirect-timeout", type=float,
+                        default=float(os.environ.get("REDIRECT_VALIDATION_TIMEOUT", "8")),
+                        help="单个 HEAD 重定向校验超时时间（秒）")
+    parser.add_argument("--redirect-workers", type=int,
+                        default=int(os.environ.get("REDIRECT_VALIDATION_WORKERS", "30")),
+                        help="HEAD 重定向校验并发数")
     args = parser.parse_args()
 
     asyncio.run(run(args))

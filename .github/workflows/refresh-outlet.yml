@@ -47,7 +47,7 @@ jobs:
         run: |
           git pull --ff-only origin main
           date -u '+%Y-%m-%d %H:%M:%S' > .last_run_start
-          python -u global_scraper.py
+          python -u global_scraper.py --redirect-timeout 3 --redirect-workers 50
           python -u sku_scraper.py --reset --update-data
           python -u supabase_sync.py
           python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100
