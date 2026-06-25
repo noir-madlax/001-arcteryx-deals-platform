@@ -990,11 +990,26 @@ function inferPlatform(p) {
     return PLATFORM[platformKey(p)] || PLATFORM.arcteryx_outlet;
 }
 
+function parseMaybeJson(value, fallback) {
+    if (value == null || value === '') return fallback;
+    if (typeof value === 'object') return value;
+    try { return JSON.parse(value); } catch (_) { return fallback; }
+}
+
+function allKnownSizesOutOfStock(p) {
+    const sizes = parseMaybeJson(p.sizes, []);
+    const stock = parseMaybeJson(p.size_stock, {});
+    const keys = Array.isArray(sizes) && sizes.length ? sizes : Object.keys(stock || {});
+    if (!keys.length) return false;
+    return keys.every(sz => (stock || {})[sz] === 'out_of_stock');
+}
+
 function isBlockedProduct(p) {
     const dealer = p.dealer || platformKey(p);
     if (dealer !== 'arcteryx_outlet') return false;
     const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
-    return /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url);
+    return /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url)
+        || allKnownSizesOutOfStock(p);
 }
 
 const visibleProducts = rows => (rows || []).filter(p => !isBlockedProduct(p));

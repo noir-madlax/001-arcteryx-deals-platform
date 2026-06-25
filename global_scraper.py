@@ -242,6 +242,8 @@ def shopify_product_records(product: dict, region: dict, now: str) -> list[dict]
     records = []
     model = re.sub(r"\s+(?:Men|Women)'?s$", "", title, flags=re.IGNORECASE).strip() or title
     for color, data in by_color.items():
+        if data["sizes"] and all(data["size_stock"].get(size) == "out_of_stock" for size in data["sizes"]):
+            continue
         images = list(dict.fromkeys([u for u in data["images"] if u]))
         image_url = images[0] if images else ""
         original_price = data["original_price"]

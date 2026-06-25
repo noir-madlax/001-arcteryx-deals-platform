@@ -63,8 +63,17 @@ def is_blocked_outlet_url(url: str) -> bool:
     u = (url or '').split('?', 1)[0].rstrip('/').lower()
     return bool(re.search(r'outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$', u))
 
+def all_sizes_out_of_stock(item: dict) -> bool:
+    stock = item.get('size_stock') or {}
+    if not isinstance(stock, dict):
+        return False
+    sizes = item.get('sizes') or list(stock.keys())
+    if not isinstance(sizes, list) or not sizes:
+        return False
+    return all(stock.get(str(size)) == 'out_of_stock' for size in sizes)
+
 def is_blocked_outlet_product(product: dict) -> bool:
-    return is_blocked_outlet_url(product.get('url', ''))
+    return is_blocked_outlet_url(product.get('url', '')) or all_sizes_out_of_stock(product)
 
 def product_key(product: dict) -> str:
     slug = slug_from_url(product.get('url', ''))
@@ -445,6 +454,13 @@ async def run(args):
         done_slugs = set(load_json(PROGRESS_FILE, []))
     print(f"已完成 slug: {len(done_slugs)}")
 
+    # sku_id 格式：{slug}_{color}_{region}
+    new_skus_map = {}
+    for s in existing_skus:
+        if s.get('sku_id') and not is_blocked_outlet_product(s):
+            normalized = normalize_outlet_sku(s)
+            new_skus_map[normalized['sku_id']] = normalized
+
     # 过滤目标
     if args.slug:
         targets = {
@@ -462,16 +478,12 @@ async def run(args):
 
     if not targets:
         print("无待抓取商品，退出。")
-        # 仍输出当前 SKU 总数
-        print(f"\n✅ 抓取完成! 总 SKU: {len(existing_skus)}")
+        final_skus = list(new_skus_map.values())
+        save_json(SKU_FILE, final_skus, indent=2)
+        print(f"\n✅ 抓取完成! 总 SKU: {len(final_skus)}")
+        if args.update_data:
+            expand_data_js(final_skus, products_raw)
         return
-
-    # sku_id 格式：{slug}_{color}_{region}
-    new_skus_map = {}
-    for s in existing_skus:
-        if s.get('sku_id') and not is_blocked_outlet_product(s):
-            normalized = normalize_outlet_sku(s)
-            new_skus_map[normalized['sku_id']] = normalized
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(
@@ -504,6 +516,9 @@ async def run(args):
                 for sku in skus:
                     if is_junk_color(sku.get('color', '')):
                         print(f"    ⚠ 跳过无效颜色: {sku.get('color','')!r}")
+                        continue
+                    if is_blocked_outlet_product(sku):
+                        print(f"    ⚠ 跳过全尺码缺货 SKU: {sku.get('sku_id','')}")
                         continue
 
                     if region_variants:
@@ -609,7 +624,7 @@ def expand_data_js(skus: list, fallback_products: list):
             expanded.append(fallback)
 
     print(f"\n📦 写入 data.js: {len(expanded)} 条（{len(skus)} SKU + {len(expanded)-len(skus)} 无SKU原始条目）")
-    js_payload = f"const PRODUCTS = {json.dumps(expanded, ensure_ascii=False)};\n"
+    js_payload = f"const PRODUCTS = {json.dumps(expanded, ensure_ascii=False, separators=(',', ':'))};\n"
     with open(ROOT_DATA_JS, 'w', encoding='utf-8') as f:
         f.write(js_payload)
     with open(H5_DATA_JS, 'w', encoding='utf-8') as f:

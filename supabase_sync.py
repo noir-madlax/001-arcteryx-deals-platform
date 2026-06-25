@@ -102,6 +102,26 @@ def is_blocked_outlet_url(url: str) -> bool:
     u = (url or "").split("?", 1)[0].rstrip("/").lower()
     return bool(re.search(r"outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$", u))
 
+def _jsonish(value, default):
+    if value is None or value == "":
+        return default
+    if isinstance(value, (list, dict)):
+        return value
+    try:
+        return json.loads(value)
+    except Exception:
+        return default
+
+def all_sizes_out_of_stock(item: dict) -> bool:
+    sizes = _jsonish(item.get("sizes"), [])
+    stock = _jsonish(item.get("size_stock"), {})
+    if not isinstance(stock, dict):
+        return False
+    keys = sizes if isinstance(sizes, list) and sizes else list(stock.keys())
+    if not keys:
+        return False
+    return all(stock.get(str(size)) == "out_of_stock" for size in keys)
+
 def _replace_gender_marker(text: str | None, gender: str | None) -> str | None:
     if not text or gender not in ("men", "women"):
         return text
@@ -173,12 +193,16 @@ def main():
     blocked_sku_ids = [
         s.get("sku_id")
         for s in skus
-        if s.get("sku_id") and is_blocked_outlet_url(s.get("url", ""))
+        if s.get("sku_id") and (is_blocked_outlet_url(s.get("url", "")) or all_sizes_out_of_stock(s))
     ]
     rows = [
         sku_to_row(s)
         for s in skus
-        if not is_junk_color(s.get("color", "")) and not is_blocked_outlet_url(s.get("url", ""))
+        if (
+            not is_junk_color(s.get("color", ""))
+            and not is_blocked_outlet_url(s.get("url", ""))
+            and not all_sizes_out_of_stock(s)
+        )
     ]
     print(f"[sync] {len(skus)} SKUs loaded → {len(rows)} valid rows")
     if blocked_sku_ids:
@@ -214,16 +238,16 @@ def main():
         existing_blocked = []
         page = 0
         while True:
-            res = client.table("products").select("sku_id,url,dealer").or_(
+            res = client.table("products").select("sku_id,url,dealer,sizes,size_stock").or_(
                 "dealer.is.null,dealer.eq.arcteryx_outlet"
-            ).like("url", "%/shop/womens/rush-bib-pant").range(
+            ).range(
                 page * 1000, page * 1000 + 999
             ).execute()
             data = res.data or []
             existing_blocked.extend(
                 r["sku_id"]
                 for r in data
-                if r.get("sku_id") and is_blocked_outlet_url(r.get("url", ""))
+                if r.get("sku_id") and (is_blocked_outlet_url(r.get("url", "")) or all_sizes_out_of_stock(r))
             )
             if len(data) < 1000:
                 break
