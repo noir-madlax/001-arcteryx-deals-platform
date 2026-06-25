@@ -97,6 +97,11 @@ def gender_from_url(url: str) -> str | None:
         return "men"
     return None
 
+def is_blocked_outlet_url(url: str) -> bool:
+    """True for known bad Arc'teryx Outlet PDP links that should not be shown."""
+    u = (url or "").split("?", 1)[0].rstrip("/").lower()
+    return bool(re.search(r"outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$", u))
+
 def _replace_gender_marker(text: str | None, gender: str | None) -> str | None:
     if not text or gender not in ("men", "women"):
         return text
@@ -165,8 +170,19 @@ def main():
         sys.exit(1)
 
     skus = json.loads(SKUS_FILE.read_text())
-    rows = [sku_to_row(s) for s in skus if not is_junk_color(s.get("color", ""))]
+    blocked_sku_ids = [
+        s.get("sku_id")
+        for s in skus
+        if s.get("sku_id") and is_blocked_outlet_url(s.get("url", ""))
+    ]
+    rows = [
+        sku_to_row(s)
+        for s in skus
+        if not is_junk_color(s.get("color", "")) and not is_blocked_outlet_url(s.get("url", ""))
+    ]
     print(f"[sync] {len(skus)} SKUs loaded → {len(rows)} valid rows")
+    if blocked_sku_ids:
+        print(f"[sync] blocked known-bad outlet rows: {len(blocked_sku_ids)}")
 
     # ── 数据完整性 guard: 拒绝 sale > orig 的行（scraper bug, 不写入 DB）
     bad = []
@@ -193,6 +209,40 @@ def main():
 
     from supabase import create_client
     client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+    try:
+        existing_blocked = []
+        page = 0
+        while True:
+            res = client.table("products").select("sku_id,url,dealer").or_(
+                "dealer.is.null,dealer.eq.arcteryx_outlet"
+            ).like("url", "%/shop/womens/rush-bib-pant").range(
+                page * 1000, page * 1000 + 999
+            ).execute()
+            data = res.data or []
+            existing_blocked.extend(
+                r["sku_id"]
+                for r in data
+                if r.get("sku_id") and is_blocked_outlet_url(r.get("url", ""))
+            )
+            if len(data) < 1000:
+                break
+            page += 1
+        blocked_delete_ids = sorted(set(blocked_sku_ids) | set(existing_blocked))
+    except Exception as e:
+        print(f"[WARN] could not load existing blocked rows: {e}", file=sys.stderr)
+        blocked_delete_ids = sorted(set(blocked_sku_ids))
+
+    if blocked_delete_ids:
+        deleted_blocked = 0
+        for i in range(0, len(blocked_delete_ids), BATCH_SIZE):
+            batch = blocked_delete_ids[i : i + BATCH_SIZE]
+            try:
+                client.table("products").delete().in_("sku_id", batch).execute()
+                deleted_blocked += len(batch)
+            except Exception as e:
+                print(f"[ERROR] blocked delete batch {i//BATCH_SIZE + 1}: {e}", file=sys.stderr)
+        print(f"[sync] deleted {deleted_blocked} blocked rows")
 
     # ── Snapshot existing prices + first_seen BEFORE upsert
     # 关键: 把已有行的 first_seen 也加载，upsert 时塞回 row 里，

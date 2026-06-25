@@ -645,6 +645,13 @@ const getParam = (k) => new URLSearchParams(location.search).get(k);
 // ── Normalize ISO timestamp → "YYYY-MM-DD HH:MM:SS" ──
 const normTs = (ts) => ts ? ts.replace('T', ' ').slice(0, 19) : '';
 
+const isBlockedProduct = (p) => {
+    const dealer = p.dealer || '';
+    const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
+    return (!dealer || dealer === 'arcteryx_outlet') &&
+        /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url);
+};
+
 // ── Load product from Supabase ─────────────────────────────────────────────
 async function loadProduct() {
     const skuId = getParam('sku');
@@ -679,7 +686,7 @@ async function loadProduct() {
             }
         }
 
-        skuMatches = (data || []).map(p => ({
+        skuMatches = (data || []).filter(p => !isBlockedProduct(p)).map(p => ({
             ...p,
             last_updated: normTs(p.last_updated),
             sizes:      Array.isArray(p.sizes)           ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),

@@ -36,6 +36,14 @@ date -u '+%Y-%m-%d %H:%M:%S' > "$PROJ_DIR/.last_run_start"
 
 log "===== UPDATE START ====="
 
+# 0. Pull latest code before scraping/syncing. The job writes data later, but
+# scraper/sync fixes must be active before Step 1 starts.
+log "Step 0: GitHub pull latest code"
+git fetch origin main 2>&1 | tee -a "$LOG_FILE"
+git checkout -B main origin/main 2>&1 | tee -a "$LOG_FILE"
+git reset --hard origin/main 2>&1 | tee -a "$LOG_FILE"
+git clean -fd -e .last_run_start -e .last_sync -e .sku_progress.json -e update.log -e update_global.log -e dealers.log -e dealers/_partial -e .arcteryx_secrets 2>&1 | tee -a "$LOG_FILE" || true
+
 # 1. Refresh product list
 log "Step 1: Global scraper (product list)"
 $PYTHON global_scraper.py 2>&1 | tee -a "$LOG_FILE"

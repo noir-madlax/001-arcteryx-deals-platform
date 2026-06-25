@@ -58,6 +58,14 @@ def gender_from_url(url: str) -> str | None:
         return 'men'
     return None
 
+def is_blocked_outlet_url(url: str) -> bool:
+    """True for known bad Arc'teryx Outlet PDP links that should not be shown."""
+    u = (url or '').split('?', 1)[0].rstrip('/').lower()
+    return bool(re.search(r'outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$', u))
+
+def is_blocked_outlet_product(product: dict) -> bool:
+    return is_blocked_outlet_url(product.get('url', ''))
+
 def product_key(product: dict) -> str:
     slug = slug_from_url(product.get('url', ''))
     gender = gender_from_url(product.get('url', '')) or product.get('gender', '')
@@ -167,6 +175,8 @@ def best_product_per_key(products: list) -> dict:
     """返回 {slug::gender: product_record}，每个商品性别只保留最优地区版本。"""
     by_key: dict = {}
     for p in products:
+        if is_blocked_outlet_product(p):
+            continue
         key = product_key(p)
         if not key:
             continue
@@ -191,6 +201,8 @@ def all_regions_per_key(products: list) -> dict:
     """返回 {slug::gender: {region: product_record}}，保留同一性别的地区价格信息。"""
     by_key: dict = {}
     for p in products:
+        if is_blocked_outlet_product(p):
+            continue
         key = product_key(p)
         region = p.get('region', '')
         if not key or not region:
@@ -417,6 +429,10 @@ async def scrape_product(page, product: dict) -> list[dict]:
 async def run(args):
     # 加载现有数据
     products_raw = load_json(DATA_FILE, [])
+    blocked_products = sum(1 for p in products_raw if is_blocked_outlet_product(p))
+    if blocked_products:
+        products_raw = [p for p in products_raw if not is_blocked_outlet_product(p)]
+        print(f"跳过已知错误商品链接: {blocked_products} 条")
     product_map   = best_product_per_key(products_raw)   # {slug::gender: best_product} 用于访问页面
     regions_map   = all_regions_per_key(products_raw)    # {slug::gender: {region: product}} 用于展开多地区
     print(f"商品总数（按 slug+gender 去重后）: {len(product_map)}")
@@ -453,7 +469,7 @@ async def run(args):
     # sku_id 格式：{slug}_{color}_{region}
     new_skus_map = {}
     for s in existing_skus:
-        if s.get('sku_id'):
+        if s.get('sku_id') and not is_blocked_outlet_product(s):
             normalized = normalize_outlet_sku(s)
             new_skus_map[normalized['sku_id']] = normalized
 
@@ -576,7 +592,11 @@ def expand_data_js(skus: list, fallback_products: list):
             "sku_id":         s['sku_id'],
         }
 
-    expanded = [sku_to_product(s) for s in skus if not is_junk_color(s.get('color', ''))]
+    expanded = [
+        sku_to_product(s)
+        for s in skus
+        if not is_junk_color(s.get('color', '')) and not is_blocked_outlet_product(s)
+    ]
 
     # 补充未抓到 SKU 的原始商品
     fallback_map = best_product_per_key(fallback_products)

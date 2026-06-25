@@ -990,6 +990,15 @@ function inferPlatform(p) {
     return PLATFORM[platformKey(p)] || PLATFORM.arcteryx_outlet;
 }
 
+function isBlockedProduct(p) {
+    const dealer = p.dealer || platformKey(p);
+    if (dealer !== 'arcteryx_outlet') return false;
+    const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
+    return /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url);
+}
+
+const visibleProducts = rows => (rows || []).filter(p => !isBlockedProduct(p));
+
 const toCNY = (price, symbol, currency) => {
     const ccy = currency || SYMBOL_TO_CCY[symbol] || 'USD';
     return Math.round(price * (RATES[ccy] || 7.25));
@@ -1520,7 +1529,7 @@ async function init() {
         if (cached) {
             const { ts, rows } = JSON.parse(cached);
             if (Date.now() - ts < CACHE_TTL_MS && Array.isArray(rows) && rows.length > 100) {
-                products = rows.map(decorate);
+                products = visibleProducts(rows).map(decorate);
                 computeStats(); initFilters(); render();
                 renderedFromCache = true;
                 console.info(`[cache] hit (${rows.length} rows, age ${Math.round((Date.now()-ts)/1000)}s)`);
@@ -1541,6 +1550,7 @@ async function init() {
             if (data.length < PAGE) break;
             if (offset > 50000) break; // safety
         }
+        all = visibleProducts(all);
         // 写回 cache
         try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), rows: all })); } catch (_) {}
         products = all.map(decorate);
@@ -1555,6 +1565,7 @@ async function init() {
             document.head.appendChild(s);
         }).catch(() => {});
         products = (typeof PRODUCTS !== 'undefined' ? PRODUCTS : [])
+            .filter(p => !isBlockedProduct(p))
             .map(p => ({ ...p, _series: extractSeries(cleanName(p.full_name || p.model)), _platform: platformKey(p) }));
     }
 

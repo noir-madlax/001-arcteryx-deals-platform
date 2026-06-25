@@ -131,6 +131,11 @@ def url_gender(url: str) -> str | None:
     return None
 
 
+def is_blocked_outlet_url(url: str) -> bool:
+    u = (url or "").split("?", 1)[0].rstrip("/").lower()
+    return bool(re.search(r"outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$", u))
+
+
 def name_gender(name: str) -> str | None:
     if re.search(r"Women'?s|\bDamen\b|\bFemme\b", name or "", re.IGNORECASE):
         return "women"
@@ -200,6 +205,9 @@ def validate(
 
         if forbidden_regions and dealer == "arcteryx_outlet" and region in forbidden_regions:
             errors["forbidden_region"].append(row)
+
+        if dealer == "arcteryx_outlet" and is_blocked_outlet_url(row.get("url") or ""):
+            errors["blocked_outlet_url"].append(row)
 
         if dealer == "arcteryx_outlet" and region == "jp":
             if (sale is not None and sale < 1000) or (orig is not None and orig < 1000):
