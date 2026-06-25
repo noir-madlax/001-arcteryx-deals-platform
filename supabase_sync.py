@@ -25,8 +25,22 @@ SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
 
 BASE_DIR  = Path(__file__).parent
 SKUS_FILE = BASE_DIR / "arcteryx_skus.json"
+SKIPPED_REGIONS_FILE = BASE_DIR / ".skipped_regions.json"
 
 BATCH_SIZE = 50   # upsert N rows at a time
+
+def load_skipped_regions() -> set[str]:
+    if not SKIPPED_REGIONS_FILE.exists():
+        return set()
+    try:
+        raw = json.loads(SKIPPED_REGIONS_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    return {
+        str(item.get("region", "")).lower()
+        for item in raw
+        if isinstance(item, dict) and item.get("region")
+    }
 
 # ── Category inference (re-run on every sync so old "其他" rows get backfilled) ──
 def infer_category(name: str, url: str) -> str:
@@ -276,33 +290,43 @@ def main():
     STALE_AFTER_DAYS = 14
     stale_cutoff = (datetime.now(timezone.utc) - timedelta(days=STALE_AFTER_DAYS)).isoformat()
     synced_ids = {r["sku_id"] for r in rows if r.get("sku_id")}
+    skipped_regions = load_skipped_regions()
     if synced_ids:
         try:
-            existing = []  # 待删候选: (sku_id, last_updated)
+            existing = []  # 待删候选: (sku_id, last_updated, region)
             page = 0
             while True:
-                res = client.table("products").select("sku_id,dealer,last_updated").or_(
+                res = client.table("products").select("sku_id,dealer,last_updated,region").or_(
                     "dealer.is.null,dealer.eq.arcteryx_outlet"
                 ).range(page * 1000, page * 1000 + 999).execute()
                 data = res.data or []
                 if not data:
                     break
-                # 保留 (sku_id, last_updated) 二元组
-                existing.extend((r["sku_id"], r.get("last_updated")) for r in data)
+                # 保留 (sku_id, last_updated, region) 三元组
+                existing.extend((r["sku_id"], r.get("last_updated"), (r.get("region") or "").lower()) for r in data)
                 if len(data) < 1000:
                     break
                 page += 1
 
             # 满足两个条件才标 stale: (1) 不在本次 scrape (2) last_updated 老于 cutoff
-            stale = [sid for sid, lu in existing
+            stale = [sid for sid, lu, _region in existing
                      if sid not in synced_ids and (lu is None or lu < stale_cutoff)]
-            preserve = sum(1 for sid, lu in existing
-                           if sid not in synced_ids and lu and lu >= stale_cutoff)
-            print(f"[sync] stale outlet rows to delete: {len(stale)} (existing={len(existing)}, synced={len(synced_ids)}, preserve_recent={preserve})")
+            forced_region_delete = [
+                sid for sid, _lu, region in existing
+                if sid not in synced_ids and region in skipped_regions
+            ]
+            delete_ids = sorted(set(stale) | set(forced_region_delete))
+            preserve = sum(1 for sid, lu, region in existing
+                           if sid not in synced_ids and lu and lu >= stale_cutoff and region not in skipped_regions)
+            print(
+                "[sync] stale outlet rows to delete: "
+                f"{len(delete_ids)} (existing={len(existing)}, synced={len(synced_ids)}, "
+                f"preserve_recent={preserve}, redirected_region={len(forced_region_delete)})"
+            )
 
             deleted = 0
-            for i in range(0, len(stale), BATCH_SIZE):
-                batch = stale[i : i + BATCH_SIZE]
+            for i in range(0, len(delete_ids), BATCH_SIZE):
+                batch = delete_ids[i : i + BATCH_SIZE]
                 try:
                     client.table("products").delete().in_("sku_id", batch).execute()
                     deleted += len(batch)

@@ -32,6 +32,7 @@ de_*.json
 crawl_state.json
 crawl_log.json
 arcteryx_skus.json
+.skipped_regions.json
 
 # 图片（太大，不入版本库）
 images/

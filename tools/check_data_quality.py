@@ -154,6 +154,7 @@ def validate(
     max_age_hours: float | None,
     min_rows: int,
     required_dealers: set[str] | None = None,
+    forbidden_regions: set[str] | None = None,
 ) -> int:
     errors: dict[str, list[dict]] = defaultdict(list)
     seen = set()
@@ -173,6 +174,8 @@ def validate(
 
         sale = num(row.get("sale_price"))
         orig = num(row.get("original_price"))
+        dealer = row.get("dealer") or "arcteryx_outlet"
+        region = (row.get("region") or "").lower()
         if sale is None:
             errors["missing_sale_price"].append(row)
         if orig is None:
@@ -194,6 +197,13 @@ def validate(
             ccy, sym = expected_ccy
             if row.get("currency") != ccy or row.get("symbol") != sym:
                 errors["currency_mismatch"].append({**row, "expected_currency": ccy, "expected_symbol": sym})
+
+        if forbidden_regions and dealer == "arcteryx_outlet" and region in forbidden_regions:
+            errors["forbidden_region"].append(row)
+
+        if dealer == "arcteryx_outlet" and region == "jp":
+            if (sale is not None and sale < 1000) or (orig is not None and orig < 1000):
+                errors["jpy_price_scale_suspect"].append(row)
 
         ug = url_gender(row.get("url") or "")
         ng = name_gender(row.get("full_name") or row.get("model") or "")
@@ -275,13 +285,20 @@ def main() -> int:
     parser.add_argument("--dealer", action="append", default=[], help="Dealer key to include; can be repeated")
     parser.add_argument("--max-age-hours", type=float, default=None, help="Fail if newest last_updated is older")
     parser.add_argument("--min-rows", type=int, default=1)
+    parser.add_argument("--forbid-region", action="append", default=[], help="Outlet region code that must not appear")
     args = parser.parse_args()
 
     rows = load_online_rows() if args.online else load_file_rows(args.file)
     if args.dealer:
         wanted = set(args.dealer)
         rows = [row for row in rows if (row.get("dealer") or "arcteryx_outlet") in wanted]
-    return validate(rows, args.max_age_hours, args.min_rows, set(args.dealer) if args.dealer else None)
+    return validate(
+        rows,
+        args.max_age_hours,
+        args.min_rows,
+        set(args.dealer) if args.dealer else None,
+        {r.lower() for r in args.forbid_region},
+    )
 
 
 if __name__ == "__main__":

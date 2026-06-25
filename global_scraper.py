@@ -32,6 +32,7 @@ from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 # ========== 配置 ==========
 PROJECT   = Path(__file__).parent
 DATA_FILE = PROJECT / "global_data.json"
+SKIPPED_REGIONS_FILE = PROJECT / ".skipped_regions.json"
 
 REGIONS = [
     {"code": "us", "lang": "en", "name": "美国",   "currency": "USD", "symbol": "$"},
@@ -76,6 +77,10 @@ def save_json(path, data):
 
 def slug_from_url(url: str) -> str:
     return url.rstrip("/").split("/")[-1]
+
+def region_from_url(url: str) -> str | None:
+    m = re.match(r"https?://outlet\.arcteryx\.com/([a-z]{2})/", url or "")
+    return m.group(1) if m else None
 
 def parse_price(text: str) -> float:
     """从含货币符号的字符串中提取数字，日元去逗号"""
@@ -361,7 +366,7 @@ async def extract_tiles(page, region: dict, gender: str) -> list:
            "gender": gender})
 
 
-async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> list:
+async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> tuple[list, bool]:
     """抓取单个地区的所有性别分类页"""
     context = await browser.new_context(
         user_agent=(
@@ -392,6 +397,14 @@ async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> 
             except Exception as e:
                 print(f"    ⚠ 导航失败: {e}", flush=True)
                 continue
+
+            final_region = region_from_url(page.url)
+            if final_region and final_region != region["code"]:
+                print(
+                    f"    ⚠ 地区重定向 {region['code']} → {final_region}，跳过该地区以避免币种/价格错配",
+                    flush=True,
+                )
+                return [], True
 
             # 等待页面基本内容加载
             await asyncio.sleep(4.0)
@@ -436,7 +449,7 @@ async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> 
             if dry_run:
                 break  # dry-run 只抓第一个 gender
 
-        return all_products
+        return all_products, False
 
     finally:
         await context.close()
@@ -484,12 +497,13 @@ async def run(args):
 
         total_new = 0
         total_updated = 0
+        skipped_redirect_regions = set()
 
         for region in regions:
             print(f"\n🌍 [{region['code'].upper()}] {region['name']} ({region['currency']})", flush=True)
 
             try:
-                products = await scrape_region(
+                products, redirected = await scrape_region(
                     browser, region,
                     genders=GENDERS,
                     dry_run=args.dry_run,
@@ -497,6 +511,19 @@ async def run(args):
             except Exception as e:
                 print(f"  ⚠ 地区抓取失败: {e}", flush=True)
                 products = []
+                redirected = False
+
+            if redirected:
+                skipped_redirect_regions.add(region["code"])
+                if not args.dry_run:
+                    before = len(existing)
+                    existing = [p for p in existing if p.get("region") != region["code"]]
+                    existing_by_url = {p["url"]: i for i, p in enumerate(existing)}
+                    removed = before - len(existing)
+                    if removed:
+                        print(f"  → 已从本地数据移除 {removed} 条 {region['code']} 旧记录", flush=True)
+                        save_json(DATA_FILE, existing)
+                continue
 
             for p in products:
                 url = p["url"]
@@ -571,6 +598,15 @@ async def run(args):
         import pprint
         pprint.pprint((new_items or existing)[:3])
         return
+
+    if skipped_redirect_regions:
+        save_json(
+            SKIPPED_REGIONS_FILE,
+            [{"region": code, "reason": "cross_region_redirect"} for code in sorted(skipped_redirect_regions)],
+        )
+        print(f"[validate] skipped redirected regions: {', '.join(sorted(skipped_redirect_regions))}", flush=True)
+    elif SKIPPED_REGIONS_FILE.exists():
+        SKIPPED_REGIONS_FILE.unlink()
 
     # ── URL 重定向验证（剔除跨地区幻影条目） ─────────────────────────────────
     # Arc'teryx 有时在 JP/EU 列表页显示不在该地区销售的商品，点击后静默重定向到

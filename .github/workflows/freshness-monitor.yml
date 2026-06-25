@@ -30,7 +30,7 @@ jobs:
 
       - name: Check production Supabase freshness
         run: |
-          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100
+          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 --forbid-region au --forbid-region jp
           python tools/check_data_quality.py --online --dealer mec --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --min-rows 50
 
       - name: Check production static fallbacks
