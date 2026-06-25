@@ -50,7 +50,7 @@ jobs:
           python -u global_scraper.py --redirect-timeout 3 --redirect-workers 50
           python -u sku_scraper.py --reset --update-data
           python -u supabase_sync.py
-          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 --forbid-region au --forbid-region jp
+          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 --forbid-region jp
 
       - name: Optional notifications
         run: |
@@ -72,5 +72,5 @@ jobs:
 
       - name: Verify production freshness
         run: |
-          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 --forbid-region au --forbid-region jp
+          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 --forbid-region jp
           curl -fsS https://001.100app.dev/data.js | python -c 'import sys; s=sys.stdin.read(); assert "sku_id" in s; print("data.js bytes", len(s), "sku_entries", s.count("\"sku_id\""))'

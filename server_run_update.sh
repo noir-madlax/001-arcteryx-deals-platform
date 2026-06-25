@@ -50,7 +50,7 @@ $PYTHON supabase_sync.py 2>&1 | tee -a "$LOG_FILE"
 
 # 3b. Hard quality gate: do not treat stale or inconsistent data as healthy
 log "Step 3b: Data quality check"
-$PYTHON tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 2>&1 | tee -a "$LOG_FILE"
+$PYTHON tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 --forbid-region jp 2>&1 | tee -a "$LOG_FILE"
 
 # 4. Push data files to GitHub (backup + Vercel static fallback)
 log "Step 4: GitHub sync + push"

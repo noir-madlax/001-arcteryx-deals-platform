@@ -16,11 +16,13 @@ Arc'teryx 全球 Outlet 数据采集器 (Playwright 版)
 
 import argparse
 import asyncio
+import html as html_lib
 import json
 import os
 import re
 import sys
 import ssl
+import urllib.parse
 import urllib.request
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -60,6 +62,7 @@ SCROLL_PAUSE = 2.5
 MAX_SCROLL_ROUNDS = 40
 # 两个地区之间间隔
 REGION_PAUSE = 3.0
+AU_SHOPIFY_SALE_API = "https://arcteryx.com.au/collections/sale/products.json"
 
 
 # ========== 工具函数 ==========
@@ -117,6 +120,189 @@ def infer_category(name: str, url: str) -> str:
     if any(x in u for x in ["hat", "cap", "headwear", "glove", "sock", "buff"]):
         return "配件"
     return "其他"
+
+
+def normalize_token(text: str) -> str:
+    return re.sub(r"[^a-zA-Z0-9]+", "_", text or "").strip("_") or "default"
+
+
+def clean_html(text: str) -> str:
+    text = re.sub(r"<[^>]+>", " ", text or "")
+    text = html_lib.unescape(text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def to_float(value) -> float:
+    try:
+        return float(str(value).replace(",", ""))
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def option_value(product: dict, variant: dict, names: tuple[str, ...]) -> str:
+    options = product.get("options") or []
+    for opt in options:
+        opt_name = str(opt.get("name", "")).lower()
+        if any(name in opt_name for name in names):
+            pos = opt.get("position")
+            if pos in (1, 2, 3):
+                return str(variant.get(f"option{pos}") or "").strip()
+    return ""
+
+
+def infer_shopify_gender(product: dict) -> str:
+    tags = {str(t).lower() for t in product.get("tags") or []}
+    if "gender:women" in tags and "gender:men" not in tags:
+        return "women"
+    if "gender:men" in tags and "gender:women" not in tags:
+        return "men"
+    title = product.get("title", "")
+    if re.search(r"women'?s", title, re.IGNORECASE):
+        return "women"
+    if re.search(r"men'?s", title, re.IGNORECASE):
+        return "men"
+    return ""
+
+
+def release_from_images(images: list[str]) -> tuple[int | None, str | None]:
+    for url in images:
+        m = re.search(r"/([FSWfsw])(\d{2})[-_]", url or "")
+        if m:
+            return 2000 + int(m.group(2)), {"F": "Fall", "W": "Winter", "S": "Spring"}[m.group(1).upper()]
+    return None, None
+
+
+def fetch_json(url: str, timeout: float = 30.0) -> dict:
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0",
+            "Accept": "application/json",
+        },
+    )
+    context = ssl._create_unverified_context()
+    with urllib.request.urlopen(req, context=context, timeout=timeout) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def shopify_product_records(product: dict, region: dict, now: str) -> list[dict]:
+    """Map Arc'teryx Australia Shopify sale products into our color-level schema."""
+    handle = product.get("handle") or ""
+    if not handle:
+        return []
+
+    title = product.get("title") or handle.replace("-", " ").title()
+    gender = infer_shopify_gender(product)
+    product_url = f"https://arcteryx.com.au/products/{handle}"
+    description = clean_html(product.get("body_html", ""))
+    product_images = [
+        img.get("src")
+        for img in (product.get("images") or [])
+        if isinstance(img, dict) and img.get("src")
+    ]
+
+    by_color: dict[str, dict] = {}
+    for variant in product.get("variants") or []:
+        sale = to_float(variant.get("price"))
+        orig = to_float(variant.get("compare_at_price"))
+        if sale <= 0 or orig <= 0 or sale >= orig:
+            continue
+
+        color = (
+            option_value(product, variant, ("colour", "color"))
+            or str(variant.get("option1") or "").strip()
+            or "Default"
+        )
+        size = option_value(product, variant, ("size",)) or str(variant.get("option2") or "").strip()
+        if not size or size == color:
+            size = str(variant.get("title") or "One Size").split(" / ")[-1].strip() or "One Size"
+
+        group = by_color.setdefault(
+            color,
+            {
+                "sizes": [],
+                "size_stock": {},
+                "original_price": orig,
+                "sale_price": sale,
+                "images": list(product_images),
+            },
+        )
+        if sale < group["sale_price"] or group["original_price"] <= 0:
+            group["sale_price"] = sale
+            group["original_price"] = orig
+
+        if size not in group["sizes"]:
+            group["sizes"].append(size)
+        group["size_stock"][size] = "in_stock" if variant.get("available") else "out_of_stock"
+
+        featured = variant.get("featured_image") or {}
+        if featured.get("src"):
+            group["images"].insert(0, featured["src"])
+
+    records = []
+    model = re.sub(r"\s+(?:Men|Women)'?s$", "", title, flags=re.IGNORECASE).strip() or title
+    for color, data in by_color.items():
+        images = list(dict.fromkeys([u for u in data["images"] if u]))
+        image_url = images[0] if images else ""
+        original_price = data["original_price"]
+        sale_price = data["sale_price"]
+        release_year, release_season = release_from_images(images)
+        records.append({
+            "url": product_url,
+            "full_name": title,
+            "model": model,
+            "description": description,
+            "gender": gender,
+            "region": region["code"],
+            "region_name": region["name"],
+            "currency": region["currency"],
+            "symbol": region["symbol"],
+            "original_price": original_price,
+            "sale_price": sale_price,
+            "sale_price_max": sale_price,
+            "discount_pct": round((1 - sale_price / original_price) * 100) if original_price else 0,
+            "category": infer_category(title, f"{product_url} {product.get('product_type', '')}"),
+            "outlet_category": "Sale",
+            "image_url": image_url,
+            "colors": [color],
+            "sizes": data["sizes"],
+            "size_stock": data["size_stock"],
+            "images": images,
+            "local_image": "",
+            "color": color,
+            "sku_id": f"{handle}_{normalize_token(color)}_{region['code']}",
+            "release_year": release_year,
+            "release_season": release_season,
+            "last_updated": now,
+            "source": "arcteryx_au_shopify_sale",
+        })
+    return records
+
+
+def scrape_au_shopify_sale(region: dict) -> list[dict]:
+    """Fetch Australia from the official local Shopify sale collection.
+
+    outlet.arcteryx.com does not expose AU as a SWAG country, while Arc'teryx's
+    own support page routes Australian shoppers to arcteryx.com.au. Use the
+    public Shopify collection JSON and only keep rows with real sale prices.
+    """
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    products = []
+    page = 1
+    while True:
+        url = f"{AU_SHOPIFY_SALE_API}?{urllib.parse.urlencode({'limit': 250, 'page': page})}"
+        payload = fetch_json(url)
+        batch = payload.get("products") or []
+        if not batch:
+            break
+        for product in batch:
+            products.extend(shopify_product_records(product, region, now))
+        if len(batch) < 250:
+            break
+        page += 1
+
+    print(f"    ✓ AU Shopify sale: {len(products)} 个颜色级折扣商品", flush=True)
+    return products
 
 
 # ========== 主抓取逻辑 ==========
@@ -368,6 +554,9 @@ async def extract_tiles(page, region: dict, gender: str) -> list:
 
 async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> tuple[list, bool]:
     """抓取单个地区的所有性别分类页"""
+    if region["code"] == "au":
+        return await asyncio.to_thread(scrape_au_shopify_sale, region), False
+
     context = await browser.new_context(
         user_agent=(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -557,14 +746,21 @@ async def run(args):
                         # 新抓取整体失败 → 保持旧值
                         final_orig, final_sale, final_disc = old_orig, old_sale, old_disc
 
-                    old.update({
-                        "original_price": final_orig,
-                        "sale_price":     final_sale,
-                        "sale_price_max": p["sale_price_max"] or final_sale,
-                        "discount_pct":   final_disc,
-                        "image_url":      p["image_url"]      or old.get("image_url", ""),
-                        "last_updated":   p["last_updated"],
-                    })
+                    if p.get("source") == "arcteryx_au_shopify_sale":
+                        # AU comes from authoritative Shopify JSON with color,
+                        # size, stock, images, and source metadata already
+                        # hydrated. Keep the full row fresh so sku_scraper can
+                        # bypass outlet.arcteryx.com PDP selectors next run.
+                        old.update(p)
+                    else:
+                        old.update({
+                            "original_price": final_orig,
+                            "sale_price":     final_sale,
+                            "sale_price_max": p["sale_price_max"] or final_sale,
+                            "discount_pct":   final_disc,
+                            "image_url":      p["image_url"]      or old.get("image_url", ""),
+                            "last_updated":   p["last_updated"],
+                        })
                     existing[idx] = old
                     total_updated += 1
                 else:

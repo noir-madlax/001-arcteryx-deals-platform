@@ -101,6 +101,54 @@ def is_junk_color(color: str) -> bool:
         return True
     return False
 
+def is_prehydrated_product(product: dict) -> bool:
+    """True when global_data already contains color/size/image data.
+
+    Arc'teryx Australia is sourced from the official local Shopify sale JSON,
+    not the outlet.arcteryx.com PDP. Its JSON already has the SKU facts we need,
+    and the Outlet page selectors below do not apply to that site.
+    """
+    return (
+        product.get("source") == "arcteryx_au_shopify_sale"
+        or (
+            "arcteryx.com.au/products/" in (product.get("url") or "")
+            and product.get("color")
+            and product.get("sizes")
+        )
+    )
+
+def prehydrated_product_skus(product: dict) -> list[dict]:
+    color = product.get("color") or (product.get("colors") or ["Default"])[0]
+    slug = slug_from_url(product.get("url", ""))
+    region = product.get("region", "")
+    sid = product.get("sku_id") or sku_id(slug, color, region)
+    sku = {
+        "sku_id": sid,
+        "model": product.get("model", ""),
+        "full_name": product.get("full_name", ""),
+        "color": color,
+        "sizes": product.get("sizes", []),
+        "size_stock": product.get("size_stock", {}),
+        "original_price": product.get("original_price", 0),
+        "sale_price": product.get("sale_price", 0),
+        "sale_price_max": product.get("sale_price_max") or product.get("sale_price", 0),
+        "discount_pct": product.get("discount_pct", 0),
+        "currency": product.get("currency", ""),
+        "symbol": product.get("symbol", ""),
+        "gender": product.get("gender", ""),
+        "region": region,
+        "region_name": product.get("region_name", ""),
+        "category": product.get("category", ""),
+        "url": product.get("url", ""),
+        "image_url": product.get("image_url", ""),
+        "images": product.get("images", []),
+        "description": product.get("description", ""),
+        "release_year": product.get("release_year"),
+        "release_season": product.get("release_season"),
+        "last_updated": product.get("last_updated") or datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    return [normalize_outlet_sku(sku)]
+
 def load_json(path, default):
     if Path(path).exists():
         with open(path, encoding='utf-8') as f:
@@ -426,7 +474,11 @@ async def run(args):
             processed += 1
             slug = slug_from_url(product.get('url', ''))
             print(f"[{processed}/{len(targets)}] {key} ({product.get('region','')})")
-            skus = await scrape_product(page, product)
+            if is_prehydrated_product(product):
+                skus = prehydrated_product_skus(product)
+                print(f"    ✓ 使用预解析 SKU 数据: {product.get('source', 'prehydrated')}")
+            else:
+                skus = await scrape_product(page, product)
 
             if skus:
                 # 获取该 slug 的所有地区价格信息
