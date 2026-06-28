@@ -1,10 +1,25 @@
 """REI (rei.com) — 用 Camoufox 才能进，普通 search 直接 403。"""
 from __future__ import annotations
 from camoufox.sync_api import Camoufox
-import re, time
+import os, re, time
 from .base import normalize_price, discount_pct
 
 HOST = "https://www.rei.com"
+
+def _env_bool(name: str, default: bool = False) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+def _env_int(name: str, default: int, minimum: int | None = None) -> int:
+    try:
+        value = int(os.environ.get(name, default))
+    except (TypeError, ValueError):
+        value = default
+    if minimum is not None:
+        value = max(minimum, value)
+    return value
 
 class Scraper:
     KEY    = "rei"
@@ -37,6 +52,9 @@ class Scraper:
     # current selected color label
     SELECTED_COLOR_RE = re.compile(r'class="color-selector-wrapper__selected-color"[^>]*>([^<]+)</span>')
 
+    NAV_TIMEOUT_MS = 45000
+    DETAIL_TIMEOUT_MS = 20000
+
     def parse_detail(self, body: str) -> dict:
         """REI PDP: 抓 size buttons + color swatch"""
         sizes = []
@@ -59,32 +77,86 @@ class Scraper:
             "color": primary_color,
         }
 
+    def enrich_details(self, browser, items: list[dict]) -> None:
+        """Optional PDP enrichment.
+
+        REI PDP scripts can crash the Camoufox/Playwright driver on some ARM
+        Linux builds. Keep this stage isolated and skippable so list data still
+        gets written when PDP enrichment is flaky.
+        """
+        if not items:
+            return
+        limit = min(len(items), _env_int("REI_DETAIL_LIMIT", len(items), 1))
+        timeout_ms = _env_int("REI_DETAIL_TIMEOUT_MS", self.DETAIL_TIMEOUT_MS, 5000)
+        page = browser.new_page()
+        page.set_default_timeout(timeout_ms)
+        page.set_default_navigation_timeout(timeout_ms)
+        print(f"[rei] enriching {limit}/{len(items)} items...", flush=True)
+        try:
+            for i, it in enumerate(items[:limit], 1):
+                try:
+                    page.goto(it["url"], wait_until="domcontentloaded", timeout=timeout_ms)
+                    time.sleep(1.5)
+                    detail = self.parse_detail(page.content())
+                    if detail:
+                        it.update(detail)
+                except Exception as e:
+                    msg = str(e)
+                    print(f"[rei] detail err {it['url']}: {msg[:120]}", flush=True)
+                    if "Connection closed" in msg or "Browser has been closed" in msg or "Target page" in msg:
+                        print("[rei] browser closed during detail enrichment; skipping remaining details", flush=True)
+                        break
+                if i % 3 == 0:
+                    print(f"[rei] enriched {i}/{limit}", flush=True)
+        finally:
+            try:
+                page.close()
+            except Exception:
+                pass
+
     def scrape(self) -> list[dict]:
         items = []
         seen = set()
         with Camoufox(headless=True, humanize=True, geoip=True) as browser:
             page = browser.new_page()
+            page.set_default_timeout(30000)
+            page.set_default_navigation_timeout(self.NAV_TIMEOUT_MS)
             print("[rei] warm: home")
-            page.goto(f"{HOST}/", wait_until="networkidle", timeout=60000)
+            page.goto(f"{HOST}/", wait_until="domcontentloaded", timeout=self.NAV_TIMEOUT_MS)
             time.sleep(2)
             for list_url in self.LIST_URLS:
                 print(f"[rei] {list_url}", flush=True)
-                page.goto(list_url, wait_until="networkidle", timeout=60000)
+                try:
+                    page.goto(list_url, wait_until="domcontentloaded", timeout=self.NAV_TIMEOUT_MS)
+                except Exception as e:
+                    print(f"[rei] list nav err {list_url}: {str(e)[:120]}", flush=True)
+                    continue
                 # 等到 /product/<id>/arcteryx-* 真出现在 DOM, 再额外 sleep 让全部卡片
                 # 渲染. 之前固定 sleep 8s, EC2 上偶发不够导致 list=0.
                 body = ""
                 seen_first = False
-                for waited in range(0, 25):
+                wait_seconds = _env_int("REI_LIST_WAIT_SECONDS", 25, 1)
+                for waited in range(0, wait_seconds):
                     time.sleep(1)
-                    body = page.content()
+                    try:
+                        body = page.content()
+                    except Exception as e:
+                        msg = str(e)
+                        print(f"[rei] list content err: {msg[:120]}", flush=True)
+                        if "navigating and changing the content" in msg:
+                            continue
+                        break
                     if re.search(r'/product/\d+/arcteryx', body):
                         seen_first = True
                         # 第一张卡片到了, 再等 3s 让兄弟卡片全部填进 DOM
                         time.sleep(3)
-                        body = page.content()
+                        try:
+                            body = page.content()
+                        except Exception as e:
+                            print(f"[rei] list content err: {str(e)[:120]}", flush=True)
                         break
                 if not seen_first:
-                    print(f"[rei] WARNING: 25s 后仍没看到 arcteryx 商品 DOM", flush=True)
+                    print(f"[rei] WARNING: {wait_seconds}s 后仍没看到 arcteryx 商品 DOM", flush=True)
                 # find all product anchor positions
                 positions = [(m.start(), m.group(1), m.group(2)) for m in self.URL_RE.finditer(body)]
                 # de-dup by id
@@ -145,18 +217,10 @@ class Scraper:
                         "region":         self.REGION,
                     })
                 print(f"[rei] list +{len(items)} (total)")
-            # Stage 2: detail enrichment
-            print(f"[rei] enriching {len(items)} items...")
-            for i, it in enumerate(items, 1):
-                try:
-                    page.goto(it["url"], wait_until="networkidle", timeout=45000)
-                    time.sleep(3)
-                    body = page.content()
-                    detail = self.parse_detail(body)
-                    if detail: it.update(detail)
-                except Exception as e:
-                    print(f"[rei] detail err {it['url']}: {str(e)[:60]}")
-                if i % 3 == 0: print(f"[rei] enriched {i}/{len(items)}")
+            if _env_bool("REI_ENRICH_DETAILS", False):
+                self.enrich_details(browser, items)
+            else:
+                print("[rei] detail enrichment disabled (set REI_ENRICH_DETAILS=1 to enable)", flush=True)
         return items
 
 
@@ -166,6 +230,8 @@ if __name__ == "__main__":
     for it in items[:8]:
         d = it.get("discount_pct", 0)
         print(f"  -{d}%  ${it.get('sale_price')}/{it.get('original_price')}  {it.get('name')[:60]}")
+    if not items:
+        raise SystemExit("[rei] no items scraped; not writing dealers/_partial/rei.json")
     import json as _json, os as _os, time as _time
     _os.makedirs("dealers/_partial", exist_ok=True)
     _json.dump({"name":"REI","region":"US","count":len(items),"items":items,"saved_at":_time.strftime("%Y-%m-%d %H:%M:%S")},

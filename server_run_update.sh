@@ -7,7 +7,12 @@ set -euo pipefail
 
 PROJ_DIR="${PROJ_DIR:-$HOME/arcteryx}"
 LOG_FILE="${LOG_FILE:-$PROJ_DIR/update.log}"
-PYTHON="${PYTHON:-python3}"
+DEFAULT_PYTHON="$HOME/arcteryx-venv/bin/python"
+if [ -x "$DEFAULT_PYTHON" ]; then
+  PYTHON="${PYTHON:-$DEFAULT_PYTHON}"
+else
+  PYTHON="${PYTHON:-python3.12}"
+fi
 
 GITHUB_REPO="noir-madlax/001-arcteryx-deals-platform"
 # GITHUB_TOKEN is sourced from ~/.arcteryx_secrets below
