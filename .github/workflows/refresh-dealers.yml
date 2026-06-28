@@ -49,19 +49,23 @@ jobs:
           git pull --ff-only origin main
           mkdir -p dealers/_partial
           rm -f dealers/_partial/*.json
-          failed=0
+          failed_dealers=""
           for dealer in mec evo rei ssense; do
             echo "[dealers] $dealer"
             if ! timeout 1800 python -u -m "dealers.$dealer"; then
-              failed=1
+              echo "[dealers] $dealer FAILED"
+              failed_dealers="$failed_dealers $dealer"
             fi
           done
-          if [ "$failed" -ne 0 ]; then
-            echo "At least one dealer scraper failed; refusing to publish partial dealer data"
-            exit 1
-          fi
+          # 发布成功抓到的 dealer。merge_partial 用上一轮 results.json 播种，失败的
+          # dealer 保留上次数据；supabase_sync 对缺失 dealer 直接跳过（14 天 stale
+          # buffer 兜底，不删存量行）。不再因单个 dealer 失败就整体拒绝发布。
           python -m dealers.merge_partial
           python -u -m dealers.supabase_sync
+          if [ -n "$failed_dealers" ]; then
+            echo "::warning::dealer scrape failed for:$failed_dealers — 已发布其余 dealer；下面的每 dealer 新鲜度门决定 build 状态"
+          fi
+          # 真正的守门员：每个 dealer 必须存在且最新数据 <=36h（REI 失败 >36h 才让 build 红）。
           python tools/check_data_quality.py --online --dealer mec --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --min-rows 50
 
       - name: Optional price alerts
