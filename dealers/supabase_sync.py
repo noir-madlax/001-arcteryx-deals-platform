@@ -170,7 +170,7 @@ def main():
                         and old_sp and old_op and old_sp < old_op - 0.01):
                     r["sale_price"] = old_sp
                     r["original_price"] = old_op
-                    r["discount_pct"] = old.get("discount_pct") or 0
+                    r["discount_pct"] = _discount_pct(old_op, old_sp)
             else:
                 # 真新 SKU: 显式设今天 (避免 PostgREST batch upsert 字段不齐 → NULL)
                 r["first_seen"] = now_iso
