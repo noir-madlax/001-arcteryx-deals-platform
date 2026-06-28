@@ -4,4 +4,5 @@ playwright>=1.50,<2
 patchright>=1.52,<2
 requests>=2.32,<3
 scrapling>=0.4,<1
+msgspec>=0.19,<1
 supabase>=2.15,<3
