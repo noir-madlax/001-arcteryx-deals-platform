@@ -24,11 +24,18 @@ def main():
     for path in sorted(glob.glob(f"{PARTIAL_DIR}/*.json")):
         d = json.load(open(path))
         key = KEY_BY_NAME.get(d.get("name"), os.path.basename(path).replace(".json",""))
+        items = d.get("items") or []
+        # 空 partial（dealer 成功退出但抓到 0 件, 如 EVO 偶发被限流）也当"无新数据":
+        # 保留上一轮的非空区块, 不让静态 results.json 退化成 0 件。
+        # (Supabase 侧 supabase_sync 对 0 行本就跳过 stale cleanup, 存量行不动。)
+        if not items and key in out["dealers"] and (out["dealers"][key].get("items")):
+            print(f"  {key}: 0 件 [empty scrape — 保留上一轮 {out['dealers'][key].get('count')} 件]")
+            continue
         out["dealers"][key] = {
             "name":   d.get("name"),
             "region": d.get("region"),
             "count":  d.get("count", 0),
-            "items":  d.get("items", []),
+            "items":  items,
         }
         fresh_keys.append(key)
         print(f"  {key}: {d.get('count')} 件 ({d.get('saved_at')}) [fresh]")
