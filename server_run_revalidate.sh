@@ -19,6 +19,9 @@ fi
 export SUPABASE_URL="${SUPABASE_URL:-https://bupqagkrcvrezjkdbald.supabase.co}"
 : "${SUPABASE_KEY:?SUPABASE_KEY env required}"
 export SUPABASE_KEY
+export FEISHU_APP_ID="${FEISHU_APP_ID:-}"
+export FEISHU_APP_SECRET="${FEISHU_APP_SECRET:-}"
+export FEISHU_CHAT_ID="${FEISHU_CHAT_ID:-}"
 
 cd "$PROJ_DIR"
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG"; }
@@ -28,5 +31,8 @@ git fetch origin main 2>&1 | tee -a "$LOG"
 git reset --hard origin/main 2>&1 | tee -a "$LOG"
 
 timeout 3600 $PYTHON -m dealers.revalidate 2>&1 | tee -a "$LOG" || log "revalidate timeout/error (non-fatal)"
+
+log "feishu notification"
+$PYTHON notify_feishu.py --mode revalidate 2>&1 | tee -a "$LOG" || log "feishu notification failed (non-fatal)"
 
 log "===== REVALIDATE END ====="

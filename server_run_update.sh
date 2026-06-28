@@ -31,6 +31,9 @@ export SUPABASE_URL="${SUPABASE_URL:-https://bupqagkrcvrezjkdbald.supabase.co}"
 export SUPABASE_KEY
 export TELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN:-}"
 export TELEGRAM_CHAT_ID="${TELEGRAM_CHAT_ID:-}"
+export FEISHU_APP_ID="${FEISHU_APP_ID:-}"
+export FEISHU_APP_SECRET="${FEISHU_APP_SECRET:-}"
+export FEISHU_CHAT_ID="${FEISHU_CHAT_ID:-}"
 
 cd "$PROJ_DIR"
 
@@ -104,5 +107,9 @@ $PYTHON check_price_alerts.py 2>&1 | tee -a "$LOG_FILE" || log "price alerts che
 # 6. Telegram notification with stats report
 log "Step 6: Telegram notification"
 $PYTHON notify_telegram.py 2>&1 | tee -a "$LOG_FILE" || log "telegram notification failed (non-fatal)"
+
+# 7. Feishu notification with stats report
+log "Step 7: Feishu notification"
+$PYTHON notify_feishu.py --mode outlet 2>&1 | tee -a "$LOG_FILE" || log "feishu notification failed (non-fatal)"
 
 log "===== UPDATE DONE ====="
