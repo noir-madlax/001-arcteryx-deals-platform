@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "30 6 * * *"
   workflow_dispatch:
+    inputs:
+      repair_only:
+        description: "Only repair derived dealer discount fields and run quality checks"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -41,7 +47,14 @@ jobs:
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_KEY"
 
-      - name: Revalidate known dealer URLs
+      - name: Repair derived dealer discounts
         run: |
-          python -u -m dealers.revalidate
+          python tools/repair_dealer_discounts.py --dealer mec --dealer evo --dealer rei --dealer ssense
+
+      - name: Revalidate known dealer URLs
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.repair_only != true }}
+        run: python -u -m dealers.revalidate
+
+      - name: Verify dealer data quality
+        run: |
           python tools/check_data_quality.py --online --dealer mec --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --min-rows 50
