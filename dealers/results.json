@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-29 07:34:43",
+  "generated_at": "2026-06-29 10:35:11",
   "dealers": {
     "evo": {
       "name": "EVO",
       "region": "US",
-      "count": 254,
+      "count": 253,
       "items": [
         {
           "url": "https://www.evo.com/products/264090-arc-teryx-beta-ar-stormhood-jacket-men-s",
@@ -2824,31 +2824,6 @@
           "dealer_name": "EVO",
           "region": "US",
           "category": "Ski Snowboard Backpacks"
-        },
-        {
-          "url": "https://www.evo.com/products/277299-arc-teryx-beta-insulated-jacket-men-s",
-          "name": "Arc'teryx Beta Insulated Jacket - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265027.jpg?v=1767739730",
-          "original_price": 750.0,
-          "sale_price": 600.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [
-            "XL"
-          ],
-          "size_stock": {
-            "XL": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ],
-          "discount_pct": 20,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": "Insulated Jackets"
         },
         {
           "url": "https://www.evo.com/products/272619-arc-teryx-cormac-long-sleeve-crew-men-s",
@@ -12280,20 +12255,6 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/249381/arcteryx-beta-ar-jacket-womens",
-          "name": "Beta AR Jacket - Women's",
-          "image": "https://www.rei.com/media/e0783221-54d4-45d1-a9cb-7ea682b5a53a.jpg",
-          "original_price": 324.83,
-          "sale_price": 324.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
           "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
           "name": "Cerium Down Hoody - Women's",
           "image": "https://www.rei.com/media/0ed9fca3-75c2-447a-b04b-6738627b6063.jpg",
@@ -12338,9 +12299,9 @@
         {
           "url": "https://www.rei.com/product/209280/arcteryx-covert-fleece-cardigan-womens",
           "name": "Covert Fleece Cardigan - Women's",
-          "image": "https://www.rei.com/media/dfc4354d-96c7-4733-82ce-65443ece4c46.jpg",
-          "original_price": 180.0,
-          "sale_price": 180.0,
+          "image": "https://www.rei.com/media/c62dfa86-a02b-4eb3-8024-255e26dac988.jpg",
+          "original_price": 135.83,
+          "sale_price": 135.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
@@ -12428,6 +12389,20 @@
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/249381/arcteryx-beta-ar-jacket-womens",
+          "name": "Beta AR Jacket - Women's",
+          "image": "https://www.rei.com/media/6c754dff-a9f9-4e84-88b5-785599a3d82f.jpg",
+          "original_price": 650.0,
+          "sale_price": 650.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -13965,5 +13940,5 @@
       ]
     }
   },
-  "total": 441
+  "total": 440
 }
