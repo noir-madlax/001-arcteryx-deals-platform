@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29 19:34:35",
+  "generated_at": "2026-06-29 22:34:37",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -8013,7 +8013,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 131,
+      "count": 130,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-621/arcteryx-covert-cardigan-womens",
@@ -8534,8 +8534,8 @@
         {
           "url": "https://www.mec.ca/en/product/6032-526/arcteryx-kyanite-lightweight-hoodie-mens",
           "name": "Arc'teryx Kyanite Lightweight Hoodie - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/506032_source_1738231999.jpg",
-          "color": "Black, Stone Red, Tatsu",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517273_source_1782759983.png",
+          "color": "Black, Fluidity, Stone Red, Tatsu",
           "sale_price": 99.93,
           "original_price": 190.0,
           "discount_pct": 47,
@@ -8556,6 +8556,7 @@
           },
           "colors": [
             "Black",
+            "Fluidity",
             "Stone Red",
             "Tatsu"
           ]
@@ -9881,7 +9882,7 @@
           "url": "https://www.mec.ca/en/product/6037-527/arcteryx-cormac-hoodie-mens",
           "name": "Arc'teryx Cormac Hoodie - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533785_source_1779743141.jpg",
-          "color": "Black",
+          "color": "Black, Fluidity",
           "sale_price": 120.0,
           "original_price": 120.0,
           "discount_pct": 0,
@@ -9901,7 +9902,8 @@
             "X-Large": "in_stock"
           },
           "colors": [
-            "Black"
+            "Black",
+            "Fluidity"
           ]
         },
         {
@@ -9936,25 +9938,6 @@
           "colors": [
             "Sea Salt"
           ]
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6030-493/arcteryx-mantis-26-daypack-unisex",
-          "name": "Arc'teryx Mantis 26 Daypack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520613_source_1777118972.jpg",
-          "color": "",
-          "sale_price": 190.0,
-          "original_price": 200.0,
-          "discount_pct": 5,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "One Size"
-          ],
-          "size_stock": {
-            "One Size": "in_stock"
-          },
-          "colors": []
         },
         {
           "url": "https://www.mec.ca/en/product/6037-528/arcteryx-cormac-logo-short-sleeve-mens",
@@ -11395,7 +11378,7 @@
         {
           "url": "https://www.mec.ca/en/product/6030-494/arcteryx-mantis-2-waist-pack-unisex",
           "name": "Arc'teryx Mantis 2 Waist Pack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/493670_source_1745313831.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555758_source_1782402643.png",
           "color": "24k Black, Headwaters",
           "sale_price": 60.0,
           "original_price": 60.0,
@@ -13925,5 +13908,5 @@
       ]
     }
   },
-  "total": 440
+  "total": 439
 }
