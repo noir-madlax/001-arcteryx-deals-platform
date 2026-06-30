@@ -61,7 +61,7 @@ jobs:
         run: |
           git config user.email "bot@arcteryx-deals.local"
           git config user.name "ArcBot"
-          git add .last_sync .sku_progress.json data.js h5/data.js
+          git add .last_sync .sku_progress.json arcteryx_skus.json global_data.json data.js h5/data.js
           if git diff --cached --quiet; then
             echo "No Outlet data changes to commit"
             exit 0
