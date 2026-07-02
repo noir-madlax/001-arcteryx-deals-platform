@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02 19:08:12",
+  "generated_at": "2026-07-02 19:35:16",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -10139,7 +10139,7 @@
           "url": "https://www.mec.ca/en/product/6038-079/arcteryx-sylan-2-trail-running-shoes-mens",
           "name": "Arc'teryx Sylan 2 Trail Running Shoes - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533804_source_1773265264.jpg",
-          "color": "Habitat/Habitat, Mantis/Mantis",
+          "color": "Habitat/Habitat, Lt Oakmoss/Lt Oakmoss, Mantis/Mantis",
           "sale_price": 280.0,
           "original_price": 280.0,
           "discount_pct": 0,
@@ -10172,6 +10172,7 @@
           },
           "colors": [
             "Habitat/Habitat",
+            "Lt Oakmoss/Lt Oakmoss",
             "Mantis/Mantis"
           ]
         },
@@ -10683,7 +10684,7 @@
           "url": "https://www.mec.ca/en/product/6032-943/arcteryx-norvan-ld-4-trail-running-shoes-mens",
           "name": "Arc'teryx Norvan LD 4 Trail Running Shoes - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/538115_source_1773265264.jpg",
-          "color": "Black/Cloud, Black/Graphite, Lt Mantis/Mid Mantis",
+          "color": "Black/Cloud, Black/Graphite, Dk Arctic Silk/Lt Rune, Lt Mantis/Mid Mantis",
           "sale_price": 105.6,
           "original_price": 220.0,
           "discount_pct": 52,
@@ -10719,6 +10720,7 @@
           "colors": [
             "Black/Cloud",
             "Black/Graphite",
+            "Dk Arctic Silk/Lt Rune",
             "Lt Mantis/Mid Mantis"
           ]
         },
@@ -10824,7 +10826,7 @@
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
           "name": "Arc'teryx Norvan LD 4 Trail Running Shoes - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/522629_source_1773265271.jpg",
-          "color": "Black/Graphite, Mallow/Moondrop CT",
+          "color": "Alpine Rose/Dk Alpine Ros, Black/Graphite, Mallow/Moondrop CT",
           "sale_price": 112.2,
           "original_price": 220.0,
           "discount_pct": 49,
@@ -10856,6 +10858,7 @@
             "UK 8.5": "in_stock"
           },
           "colors": [
+            "Alpine Rose/Dk Alpine Ros",
             "Black/Graphite",
             "Mallow/Moondrop CT"
           ]
@@ -12145,6 +12148,20 @@
           "region": "US"
         },
         {
+          "url": "https://www.rei.com/product/243332/arcteryx-atom-insulated-hoody-womens",
+          "name": "Atom Insulated Hoody - Women's",
+          "image": "https://www.rei.com/media/12b2a367-be3a-48f3-b771-0a6bb3448a6b.jpg",
+          "original_price": 300.0,
+          "sale_price": 225.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 25,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
           "url": "https://www.rei.com/product/249386/arcteryx-patera-down-parka-womens",
           "name": "Patera Down Parka - Women's",
           "image": "https://www.rei.com/media/734070fa-9d7f-4845-b15f-3a5596a03939.jpg",
@@ -12173,20 +12190,6 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/249381/arcteryx-beta-ar-jacket-womens",
-          "name": "Beta AR Jacket - Women's",
-          "image": "https://www.rei.com/media/6c754dff-a9f9-4e84-88b5-785599a3d82f.jpg",
-          "original_price": 650.0,
-          "sale_price": 324.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
           "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
           "name": "Rho LT Crew Neck Base Layer Top - Men's",
           "image": "https://www.rei.com/media/b158a77c-1312-4e16-a4d8-7e86bd4dd352.jpg",
@@ -12196,6 +12199,20 @@
           "in_stock": true,
           "gender": "men",
           "discount_pct": 24,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/249381/arcteryx-beta-ar-jacket-womens",
+          "name": "Beta AR Jacket - Women's",
+          "image": "https://www.rei.com/media/6c754dff-a9f9-4e84-88b5-785599a3d82f.jpg",
+          "original_price": 650.0,
+          "sale_price": 324.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 50,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -12364,20 +12381,6 @@
           "in_stock": true,
           "gender": "women",
           "discount_pct": 24,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/243328/arcteryx-coelle-shell-jacket-womens",
-          "name": "Coelle Shell Jacket - Women's",
-          "image": "https://www.rei.com/media/a73cd0b6-65dc-4a84-a238-7e8b8f9b26ba.jpg",
-          "original_price": 400.0,
-          "sale_price": 300.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 25,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
