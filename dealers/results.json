@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02 19:35:16",
+  "generated_at": "2026-07-02 22:34:44",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -7993,7 +7993,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 129,
+      "count": 130,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-439/arcteryx-atom-hoodie-womens",
@@ -10138,7 +10138,7 @@
         {
           "url": "https://www.mec.ca/en/product/6038-079/arcteryx-sylan-2-trail-running-shoes-mens",
           "name": "Arc'teryx Sylan 2 Trail Running Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533804_source_1773265264.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555919_source_1783013176.jpg",
           "color": "Habitat/Habitat, Lt Oakmoss/Lt Oakmoss, Mantis/Mantis",
           "sale_price": 280.0,
           "original_price": 280.0,
@@ -10683,7 +10683,7 @@
         {
           "url": "https://www.mec.ca/en/product/6032-943/arcteryx-norvan-ld-4-trail-running-shoes-mens",
           "name": "Arc'teryx Norvan LD 4 Trail Running Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/538115_source_1773265264.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555920_source_1783013176.jpg",
           "color": "Black/Cloud, Black/Graphite, Dk Arctic Silk/Lt Rune, Lt Mantis/Mid Mantis",
           "sale_price": 105.6,
           "original_price": 220.0,
@@ -10825,7 +10825,7 @@
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
           "name": "Arc'teryx Norvan LD 4 Trail Running Shoes - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/522629_source_1773265271.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555941_source_1783013180.jpg",
           "color": "Alpine Rose/Dk Alpine Ros, Black/Graphite, Mallow/Moondrop CT",
           "sale_price": 112.2,
           "original_price": 220.0,
@@ -11255,6 +11255,33 @@
           },
           "colors": [
             "Black/Mantis"
+          ]
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6037-543/arcteryx-ossa-overshirt-mens",
+          "name": "Arc'teryx Ossa Overshirt - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533673_source_1782142565.png",
+          "color": "Alpine Blue",
+          "sale_price": 230.0,
+          "original_price": 230.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large"
+          ],
+          "size_stock": {
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock"
+          },
+          "colors": [
+            "Alpine Blue"
           ]
         },
         {
@@ -13941,5 +13968,5 @@
       ]
     }
   },
-  "total": 442
+  "total": 443
 }
