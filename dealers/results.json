@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03 19:34:57",
+  "generated_at": "2026-07-03 22:34:53",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -8081,7 +8081,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 130,
+      "count": 131,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-621/arcteryx-covert-cardigan-womens",
@@ -8579,7 +8579,7 @@
         {
           "url": "https://www.mec.ca/en/product/6032-431/arcteryx-atom-hoodie-mens",
           "name": "Arc'teryx Atom Hoodie - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509923_source_1748037140.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509923_source_1783098408.png",
           "color": "Black, Fluidity/Black Sapphire, Stone Red",
           "sale_price": 198.0,
           "original_price": 360.0,
@@ -8743,7 +8743,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-645/arcteryx-norvan-jacket-womens",
           "name": "Arc'teryx Norvan Jacket - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519338_source_1774455630.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519338_source_1783108450.png",
           "color": "Black",
           "sale_price": 580.0,
           "original_price": 580.0,
@@ -9676,7 +9676,7 @@
         {
           "url": "https://www.mec.ca/en/product/6034-691/arcteryx-beta-ar-jacket-womens",
           "name": "Arc'teryx Beta AR Jacket - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519096_source_1773265260.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519096_source_1783098991.png",
           "color": "Alpine Blue",
           "sale_price": 480.0,
           "original_price": 800.0,
@@ -10159,7 +10159,7 @@
         {
           "url": "https://www.mec.ca/en/product/6029-958/arcteryx-beta-sl-jacket-womens",
           "name": "Arc'teryx Beta SL Jacket - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/482721_source_1725008191.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/482721_source_1783101070.png",
           "color": "Black",
           "sale_price": 420.0,
           "original_price": 600.0,
@@ -12212,6 +12212,33 @@
             "Black",
             "White Light II"
           ]
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6030-090/arcteryx-covert-12-zip-mens",
+          "name": "Arc'teryx Covert 1/2 Zip - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/493256_source_1771430961.jpg",
+          "color": "",
+          "sale_price": 94.94,
+          "original_price": 190.0,
+          "discount_pct": 50,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large"
+          ],
+          "size_stock": {
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock"
+          },
+          "colors": []
         }
       ]
     },
@@ -12263,20 +12290,6 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
-          "name": "Rho LT Crew Neck Base Layer Top - Men's",
-          "image": "https://www.rei.com/media/b158a77c-1312-4e16-a4d8-7e86bd4dd352.jpg",
-          "original_price": 100.0,
-          "sale_price": 75.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 24,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
           "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
           "name": "Cerium Down Hoody - Men's",
           "image": "https://www.rei.com/media/855de972-fc1f-4ae7-81a1-8f588976e3e3.jpg",
@@ -12286,6 +12299,20 @@
           "in_stock": true,
           "gender": "men",
           "discount_pct": 38,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
+          "name": "Rho LT Crew Neck Base Layer Top - Men's",
+          "image": "https://www.rei.com/media/b158a77c-1312-4e16-a4d8-7e86bd4dd352.jpg",
+          "original_price": 100.0,
+          "sale_price": 75.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 24,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -12459,11 +12486,11 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/249484/arcteryx-alpha-sv-jacket-womens",
-          "name": "Alpha SV Jacket - Women's",
-          "image": "https://www.rei.com/media/1a8513f5-a16d-475b-b338-d3fc5f0daabc.jpg",
-          "original_price": 900.0,
-          "sale_price": 900.0,
+          "url": "https://www.rei.com/product/242857/arcteryx-kragg-cotton-pants-womens",
+          "name": "Kragg Cotton Pants - Women's",
+          "image": "https://www.rei.com/media/723e6bc5-329b-45f1-9474-efea73fdf3e2.jpg",
+          "original_price": 134.93,
+          "sale_price": 134.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
@@ -12473,11 +12500,11 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/242857/arcteryx-kragg-cotton-pants-womens",
-          "name": "Kragg Cotton Pants - Women's",
-          "image": "https://www.rei.com/media/723e6bc5-329b-45f1-9474-efea73fdf3e2.jpg",
-          "original_price": 134.93,
-          "sale_price": 134.93,
+          "url": "https://www.rei.com/product/249484/arcteryx-alpha-sv-jacket-womens",
+          "name": "Alpha SV Jacket - Women's",
+          "image": "https://www.rei.com/media/1a8513f5-a16d-475b-b338-d3fc5f0daabc.jpg",
+          "original_price": 900.0,
+          "sale_price": 900.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
@@ -12519,8 +12546,104 @@
     "ssense": {
       "name": "SSENSE",
       "region": "US",
-      "count": 43,
+      "count": 45,
       "items": [
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-konseal-gtx-sneakers/17580131",
+          "name": "Black Konseal GTX Sneakers",
+          "image": "https://img.ssensemedia.com/images/261340M237001_1/arcteryx-black-konseal-gtx-sneakers.jpg",
+          "original_price": 220.0,
+          "sale_price": 220.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "UK 5",
+            "UK 6",
+            "UK 6.5",
+            "UK 7",
+            "UK 7.5",
+            "UK 8",
+            "UK 8.5",
+            "UK 9",
+            "UK 9.5",
+            "UK 10",
+            "UK 10.5",
+            "UK 11",
+            "UK 12"
+          ],
+          "size_stock": {
+            "UK 5": "out_of_stock",
+            "UK 6": "out_of_stock",
+            "UK 6.5": "out_of_stock",
+            "UK 7": "out_of_stock",
+            "UK 7.5": "out_of_stock",
+            "UK 8": "out_of_stock",
+            "UK 8.5": "in_stock",
+            "UK 9": "in_stock",
+            "UK 9.5": "in_stock",
+            "UK 10": "in_stock",
+            "UK 10.5": "in_stock",
+            "UK 11": "in_stock",
+            "UK 12": "in_stock"
+          },
+          "color": "Black",
+          "colors": [
+            "Black"
+          ]
+        },
+        {
+          "url": "https://www.ssense.com/en-us/men/product/arcteryx/off-white-norvan-ld-4-sneakers/18786591",
+          "name": "Off-White Norvan LD 4 Sneakers",
+          "image": "https://img.ssensemedia.com/images/261340M237013_1/arcteryx-off-white-norvan-ld-4-sneakers.jpg",
+          "original_price": 245.0,
+          "sale_price": 245.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "ssense",
+          "dealer_name": "SSENSE",
+          "region": "US",
+          "sizes": [
+            "US 6.5",
+            "US 7",
+            "US 7.5",
+            "US 8",
+            "US 8.5",
+            "US 9",
+            "US 9.5",
+            "US 10",
+            "US 10.5",
+            "US 11",
+            "US 11.5",
+            "US 12",
+            "US 12.5"
+          ],
+          "size_stock": {
+            "US 6.5": "out_of_stock",
+            "US 7": "out_of_stock",
+            "US 7.5": "out_of_stock",
+            "US 8": "in_stock",
+            "US 8.5": "in_stock",
+            "US 9": "in_stock",
+            "US 9.5": "in_stock",
+            "US 10": "in_stock",
+            "US 10.5": "in_stock",
+            "US 11": "in_stock",
+            "US 11.5": "in_stock",
+            "US 12": "in_stock",
+            "US 12.5": "in_stock"
+          },
+          "color": "Off-White",
+          "colors": [
+            "Off-White"
+          ]
+        },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/gray-sylan-2-sneakers/18786481",
           "name": "Gray Sylan 2 Sneakers",
@@ -13092,11 +13215,11 @@
           "name": "Off-White Norvan LD 4 GTX Sneakers",
           "image": "https://img.ssensemedia.com/images/261340M237010_1/arcteryx-off-white-norvan-ld-4-gtx-sneakers.jpg",
           "original_price": 200.0,
-          "sale_price": 170.0,
+          "sale_price": 160.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 15,
+          "discount_pct": 20,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
           "region": "US",
@@ -14136,5 +14259,5 @@
       ]
     }
   },
-  "total": 448
+  "total": 451
 }
