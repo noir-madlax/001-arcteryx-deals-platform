@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-05 19:34:42",
+  "generated_at": "2026-07-05 22:45:20",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -12241,46 +12241,88 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 15,
+      "count": 21,
       "items": [
+        {
+          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
+          "name": "Cerium Down Hoody - Men's",
+          "image": "https://www.rei.com/media/855de972-fc1f-4ae7-81a1-8f588976e3e3.jpg",
+          "original_price": 400.0,
+          "sale_price": 249.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 38,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/249482/arcteryx-atom-sv-insulated-jacket-womens",
+          "name": "Atom SV Insulated Jacket - Women's",
+          "image": "https://www.rei.com/media/a3b3a6d2-9a36-4fde-a134-b939b7dd742a.jpg",
+          "original_price": 300.0,
+          "sale_price": 149.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 50,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
+          "name": "Atom Insulated Jacket - Men's",
+          "image": "https://www.rei.com/media/119452de-5e09-4be4-9354-0a1884072ca8.jpg",
+          "original_price": 280.0,
+          "sale_price": 238.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 15,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
         {
           "url": "https://www.rei.com/product/243332/arcteryx-atom-insulated-hoody-womens",
           "name": "Atom Insulated Hoody - Women's",
           "image": "https://www.rei.com/media/12b2a367-be3a-48f3-b771-0a6bb3448a6b.jpg",
           "original_price": 300.0,
-          "sale_price": 300.0,
+          "sale_price": 225.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
-          "discount_pct": 0,
+          "discount_pct": 25,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/235112/arcteryx-beta-sl-jacket-mens",
-          "name": "Beta SL Jacket - Men's",
-          "image": "https://www.rei.com/media/8abb4f62-dc62-48b4-8255-6483def9a05c.jpg",
-          "original_price": 500.0,
-          "sale_price": 500.0,
+          "url": "https://www.rei.com/product/249381/arcteryx-beta-ar-jacket-womens",
+          "name": "Beta AR Jacket - Women's",
+          "image": "https://www.rei.com/media/6c754dff-a9f9-4e84-88b5-785599a3d82f.jpg",
+          "original_price": 650.0,
+          "sale_price": 324.83,
           "currency": "USD",
           "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
+          "gender": "women",
+          "discount_pct": 50,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
-          "name": "Cerium Down Hoody - Men's",
-          "image": "https://www.rei.com/media/a5e732fb-efb1-4154-b99c-9464c52a748f.jpg",
-          "original_price": 249.83,
-          "sale_price": 249.83,
+          "url": "https://www.rei.com/product/243175/arcteryx-atom-insulated-hoody-mens",
+          "name": "Atom Insulated Hoody - Men's",
+          "image": "https://www.rei.com/media/dffee23f-5895-4931-8c4e-3709a50433b6.jpg",
+          "original_price": 300.0,
+          "sale_price": 255.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 0,
+          "discount_pct": 15,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -12289,54 +12331,12 @@
           "url": "https://www.rei.com/product/228617/arcteryx-beta-jacket-mens",
           "name": "Beta Jacket - Men's",
           "image": "https://www.rei.com/media/cb27ab2b-b627-416c-9862-6d5834880f26.jpg",
-          "original_price": 340.93,
+          "original_price": 400.0,
           "sale_price": 340.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
-          "name": "Rho LT Crew Neck Base Layer Top - Men's",
-          "image": "https://www.rei.com/media/75b932c4-c39a-4d80-b6e3-ba761b0c6b83.jpg",
-          "original_price": 75.93,
-          "sale_price": 75.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
-          "name": "Cerium Down Hoody - Women's",
-          "image": "https://www.rei.com/media/0ed9fca3-75c2-447a-b04b-6738627b6063.jpg",
-          "original_price": 199.83,
-          "sale_price": 199.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/209280/arcteryx-covert-fleece-cardigan-womens",
-          "name": "Covert Fleece Cardigan - Women's",
-          "image": "https://www.rei.com/media/dfc4354d-96c7-4733-82ce-65443ece4c46.jpg",
-          "original_price": 180.0,
-          "sale_price": 180.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
+          "discount_pct": 15,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -12345,40 +12345,12 @@
           "url": "https://www.rei.com/product/249474/arcteryx-beta-ar-jacket-mens",
           "name": "Beta AR Jacket - Men's",
           "image": "https://www.rei.com/media/f95d0b93-106a-4d70-92ea-846ca9cfcc19.jpg",
-          "original_price": 552.93,
+          "original_price": 650.0,
           "sale_price": 552.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/249381/arcteryx-beta-ar-jacket-womens",
-          "name": "Beta AR Jacket - Women's",
-          "image": "https://www.rei.com/media/397b723d-23c7-48b2-ba6f-9db4835c3af1.jpg",
-          "original_price": 324.83,
-          "sale_price": 324.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/235146/arcteryx-gamma-mx-hoody-mens",
-          "name": "Gamma MX Hoody - Men's",
-          "image": "https://www.rei.com/media/7d0a01da-3551-4f27-b5b5-83b0f46f8143.jpg",
-          "original_price": 400.0,
-          "sale_price": 400.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
+          "discount_pct": 15,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -12386,13 +12358,13 @@
         {
           "url": "https://www.rei.com/product/243328/arcteryx-coelle-shell-jacket-womens",
           "name": "Coelle Shell Jacket - Women's",
-          "image": "https://www.rei.com/media/957a86d7-69a7-46b7-bccd-3b44754a2bb9.jpg",
-          "original_price": 300.83,
+          "image": "https://www.rei.com/media/a73cd0b6-65dc-4a84-a238-7e8b8f9b26ba.jpg",
+          "original_price": 400.0,
           "sale_price": 300.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
-          "discount_pct": 0,
+          "discount_pct": 25,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -12402,11 +12374,25 @@
           "name": "Gamma Pants - Men's",
           "image": "https://www.rei.com/media/4d33a0af-f0c0-479f-9743-1eec555ee069.jpg",
           "original_price": 200.0,
-          "sale_price": 200.0,
+          "sale_price": 159.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 0,
+          "discount_pct": 20,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
+          "name": "Cerium Down Hoody - Women's",
+          "image": "https://www.rei.com/media/0ed9fca3-75c2-447a-b04b-6738627b6063.jpg",
+          "original_price": 400.0,
+          "sale_price": 199.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 50,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -12426,11 +12412,25 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/249482/arcteryx-atom-sv-insulated-jacket-womens",
-          "name": "Atom SV Insulated Jacket - Women's",
-          "image": "https://www.rei.com/media/c3b9fa21-b6cf-474a-acdc-6057a340b899.jpg",
-          "original_price": 149.83,
-          "sale_price": 149.83,
+          "url": "https://www.rei.com/product/209280/arcteryx-covert-fleece-cardigan-womens",
+          "name": "Covert Fleece Cardigan - Women's",
+          "image": "https://www.rei.com/media/c62dfa86-a02b-4eb3-8024-255e26dac988.jpg",
+          "original_price": 180.0,
+          "sale_price": 135.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 25,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
+          "name": "Beta SL Jacket - Women's",
+          "image": "https://www.rei.com/media/76400c1d-ce0f-4dc0-b363-f6778b24840b.jpg",
+          "original_price": 500.0,
+          "sale_price": 500.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
@@ -12440,11 +12440,95 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/243175/arcteryx-atom-insulated-hoody-mens",
-          "name": "Atom Insulated Hoody - Men's",
-          "image": "https://www.rei.com/media/dffee23f-5895-4931-8c4e-3709a50433b6.jpg",
+          "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
+          "name": "Rho LT Crew Neck Base Layer Top - Men's",
+          "image": "https://www.rei.com/media/b158a77c-1312-4e16-a4d8-7e86bd4dd352.jpg",
+          "original_price": 100.0,
+          "sale_price": 75.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 24,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/249477/arcteryx-gamma-hoody-mens",
+          "name": "Gamma Hoody - Men's",
+          "image": "https://www.rei.com/media/92d44ca2-264d-4b33-91ea-9505474c7527.jpg",
           "original_price": 300.0,
           "sale_price": 300.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/248405/arcteryx-beta-jacket-womens",
+          "name": "Beta Jacket - Women's",
+          "image": "https://www.rei.com/media/ea4de9e4-ed37-4950-8010-63edf4cabe74.jpg",
+          "original_price": 400.0,
+          "sale_price": 300.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 25,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/243257/arcteryx-atom-sl-hoody-mens",
+          "name": "Atom SL Hoody - Men's",
+          "image": "https://www.rei.com/media/dc0d835e-4beb-4b43-b7bd-0bcc59ad6000.jpg",
+          "original_price": 280.0,
+          "sale_price": 238.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 15,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/235586/arcteryx-rho-crew-neck-long-sleeve-base-layer-top-womens",
+          "name": "Rho Crew Neck Long-Sleeve Base Layer Top - Women's",
+          "image": "https://www.rei.com/media/2f5dd09b-864c-4980-aff4-d4ac740bf1e0.jpg",
+          "original_price": 100.0,
+          "sale_price": 75.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 24,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/249473/arcteryx-alpha-sv-jacket-mens",
+          "name": "Alpha SV Jacket - Men's",
+          "image": "https://www.rei.com/media/c49cba68-cc72-428d-8be8-3524fff495ea.jpg",
+          "original_price": 900.0,
+          "sale_price": 765.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 15,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/229268/arcteryx-incendo-pants-mens",
+          "name": "Incendo Pants - Men's",
+          "image": "https://www.rei.com/media/644ff120-bfee-48f0-bbb2-3f389bf2e93a.jpg",
+          "original_price": 130.0,
+          "sale_price": 130.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
@@ -12463,7 +12547,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-konseal-gtx-sneakers/17580131",
           "name": "Black Konseal GTX Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340M237001_1/arcteryx-black-konseal-gtx-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237001_1.jpg",
           "original_price": 220.0,
           "sale_price": 220.0,
           "currency": "USD",
@@ -12472,46 +12556,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UK 5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 9",
-            "UK 9.5",
-            "UK 10",
-            "UK 10.5",
-            "UK 11",
-            "UK 12"
-          ],
-          "size_stock": {
-            "UK 5": "out_of_stock",
-            "UK 6": "out_of_stock",
-            "UK 6.5": "out_of_stock",
-            "UK 7": "out_of_stock",
-            "UK 7.5": "out_of_stock",
-            "UK 8": "out_of_stock",
-            "UK 8.5": "in_stock",
-            "UK 9": "in_stock",
-            "UK 9.5": "in_stock",
-            "UK 10": "in_stock",
-            "UK 10.5": "in_stock",
-            "UK 11": "in_stock",
-            "UK 12": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/off-white-norvan-ld-4-sneakers/18786591",
           "name": "Off-White Norvan LD 4 Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340M237013_1/arcteryx-off-white-norvan-ld-4-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237013_1.jpg",
           "original_price": 245.0,
           "sale_price": 245.0,
           "currency": "USD",
@@ -12520,46 +12570,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "US 6.5",
-            "US 7",
-            "US 7.5",
-            "US 8",
-            "US 8.5",
-            "US 9",
-            "US 9.5",
-            "US 10",
-            "US 10.5",
-            "US 11",
-            "US 11.5",
-            "US 12",
-            "US 12.5"
-          ],
-          "size_stock": {
-            "US 6.5": "out_of_stock",
-            "US 7": "out_of_stock",
-            "US 7.5": "out_of_stock",
-            "US 8": "in_stock",
-            "US 8.5": "in_stock",
-            "US 9": "in_stock",
-            "US 9.5": "in_stock",
-            "US 10": "in_stock",
-            "US 10.5": "in_stock",
-            "US 11": "in_stock",
-            "US 11.5": "in_stock",
-            "US 12": "in_stock",
-            "US 12.5": "in_stock"
-          },
-          "color": "Off-White",
-          "colors": [
-            "Off-White"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/gray-sylan-2-sneakers/18786481",
           "name": "Gray Sylan 2 Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340M237007_1/arcteryx-gray-sylan-2-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237007_1.jpg",
           "original_price": 220.0,
           "sale_price": 165.0,
           "currency": "USD",
@@ -12568,46 +12584,12 @@
           "discount_pct": 25,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "US 6.5",
-            "US 7",
-            "US 7.5",
-            "US 8",
-            "US 8.5",
-            "US 9",
-            "US 9.5",
-            "US 10",
-            "US 10.5",
-            "US 11",
-            "US 11.5",
-            "US 12",
-            "US 12.5"
-          ],
-          "size_stock": {
-            "US 6.5": "out_of_stock",
-            "US 7": "out_of_stock",
-            "US 7.5": "in_stock",
-            "US 8": "out_of_stock",
-            "US 8.5": "out_of_stock",
-            "US 9": "out_of_stock",
-            "US 9.5": "out_of_stock",
-            "US 10": "out_of_stock",
-            "US 10.5": "in_stock",
-            "US 11": "in_stock",
-            "US 11.5": "in_stock",
-            "US 12": "in_stock",
-            "US 12.5": "in_stock"
-          },
-          "color": "Gray",
-          "colors": [
-            "Gray"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-beta-sv-jacket/18785301",
           "name": "Khaki Beta SV Jacket",
-          "image": "https://img.ssensemedia.com/images/261340M180021_1/arcteryx-khaki-beta-sv-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180021_1.jpg",
           "original_price": 800.0,
           "sale_price": 520.0,
           "currency": "USD",
@@ -12616,34 +12598,12 @@
           "discount_pct": 35,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL",
-            "XXXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock",
-            "XXXL": "out_of_stock"
-          },
-          "color": "Khaki",
-          "colors": [
-            "Khaki"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/navy-beta-ar-jacket/18785271",
           "name": "Navy Beta AR Jacket",
-          "image": "https://img.ssensemedia.com/images/261340M180019_1/arcteryx-navy-beta-ar-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180019_1.jpg",
           "original_price": 615.0,
           "sale_price": 615.0,
           "currency": "USD",
@@ -12652,34 +12612,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL",
-            "XXXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "in_stock",
-            "M": "out_of_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock",
-            "XXXL": "out_of_stock"
-          },
-          "color": "Navy",
-          "colors": [
-            "Navy"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/purple-kragg-cotton-lithographica-ss-t-shirt/18785781",
           "name": "Purple Kragg Cotton Lithographica S/S T-shirt",
-          "image": "https://img.ssensemedia.com/images/261340M213016_1/arcteryx-purple-kragg-cotton-lithographica-ss-t-shirt.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213016_1.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -12688,32 +12626,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "Purple",
-          "colors": [
-            "Purple"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-alpha-sv-jacket/18785591",
           "name": "Black Alpha SV Jacket",
-          "image": "https://img.ssensemedia.com/images/261340M180022_1/arcteryx-black-alpha-sv-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180022_1.jpg",
           "original_price": 900.0,
           "sale_price": 675.0,
           "currency": "USD",
@@ -12722,32 +12640,12 @@
           "discount_pct": 25,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/blue-beta-jacket/18785241",
           "name": "Blue Beta Jacket",
-          "image": "https://img.ssensemedia.com/images/261340M180016_1/arcteryx-blue-beta-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180016_1.jpg",
           "original_price": 400.0,
           "sale_price": 400.0,
           "currency": "USD",
@@ -12756,34 +12654,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL",
-            "XXXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "out_of_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock",
-            "XXXL": "out_of_stock"
-          },
-          "color": "Blue",
-          "colors": [
-            "Blue"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/green-and-black-beta-jacket/18785251",
           "name": "Green & Black Beta Jacket",
-          "image": "https://img.ssensemedia.com/images/261340M180017_1/arcteryx-green-and-black-beta-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180017_1.jpg",
           "original_price": 400.0,
           "sale_price": 400.0,
           "currency": "USD",
@@ -12792,34 +12668,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL",
-            "XXXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "out_of_stock",
-            "XXL": "out_of_stock",
-            "XXXL": "out_of_stock"
-          },
-          "color": "Green",
-          "colors": [
-            "Green"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/beige-cronin-cotton-trousers/18785431",
           "name": "Beige Cronin Cotton Trousers",
-          "image": "https://img.ssensemedia.com/images/261340M191004_1/arcteryx-beige-cronin-cotton-trousers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M191004_1.jpg",
           "original_price": 180.0,
           "sale_price": 180.0,
           "currency": "USD",
@@ -12828,32 +12682,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "WAIST US 28",
-            "WAIST US 30",
-            "WAIST US 32",
-            "WAIST US 34",
-            "WAIST US 36",
-            "WAIST US 38"
-          ],
-          "size_stock": {
-            "WAIST US 28": "in_stock",
-            "WAIST US 30": "in_stock",
-            "WAIST US 32": "out_of_stock",
-            "WAIST US 34": "out_of_stock",
-            "WAIST US 36": "in_stock",
-            "WAIST US 38": "in_stock"
-          },
-          "color": "Beige",
-          "colors": [
-            "Beige"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-sinsolo-bucket-hat/18786891",
           "name": "Black Sinsolo Bucket Hat",
-          "image": "https://img.ssensemedia.com/images/261340M140000_1/arcteryx-black-sinsolo-bucket-hat.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M140000_1.jpg",
           "original_price": 85.0,
           "sale_price": 85.0,
           "currency": "USD",
@@ -12862,24 +12696,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "S-M",
-            "L-XL"
-          ],
-          "size_stock": {
-            "S-M": "in_stock",
-            "L-XL": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-kragg-cotton-ls-t-shirt/18785001",
           "name": "Black Kragg Cotton LS T-shirt",
-          "image": "https://img.ssensemedia.com/images/261340M213004_1/arcteryx-black-kragg-cotton-ls-t-shirt.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213004_1.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -12888,32 +12710,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-cotton-ls-t-shirt/18785011",
           "name": "White Kragg Cotton LS T-shirt",
-          "image": "https://img.ssensemedia.com/images/261340M213005_1/arcteryx-white-kragg-cotton-ls-t-shirt.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213005_1.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -12922,32 +12724,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "White",
-          "colors": [
-            "White"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-cotton-lithographica-ss-t-shirt/18785761",
           "name": "White Kragg Cotton Lithographica S/S T-shirt",
-          "image": "https://img.ssensemedia.com/images/261340M213015_1/arcteryx-white-kragg-cotton-lithographica-ss-t-shirt.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213015_1.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -12956,32 +12738,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "White",
-          "colors": [
-            "White"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/green-norvan-ld-4-sneakers/18786551",
           "name": "Green Norvan LD 4 Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340M237011_1/arcteryx-green-norvan-ld-4-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237011_1.jpg",
           "original_price": 170.0,
           "sale_price": 170.0,
           "currency": "USD",
@@ -12990,46 +12752,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "US 6.5",
-            "US 7",
-            "US 7.5",
-            "US 8",
-            "US 8.5",
-            "US 9",
-            "US 9.5",
-            "US 10",
-            "US 10.5",
-            "US 11",
-            "US 11.5",
-            "US 12",
-            "US 12.5"
-          ],
-          "size_stock": {
-            "US 6.5": "out_of_stock",
-            "US 7": "out_of_stock",
-            "US 7.5": "in_stock",
-            "US 8": "out_of_stock",
-            "US 8.5": "out_of_stock",
-            "US 9": "out_of_stock",
-            "US 9.5": "out_of_stock",
-            "US 10": "out_of_stock",
-            "US 10.5": "out_of_stock",
-            "US 11": "in_stock",
-            "US 11.5": "in_stock",
-            "US 12": "out_of_stock",
-            "US 12.5": "out_of_stock"
-          },
-          "color": "Green",
-          "colors": [
-            "Green"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/green-sylan-2-sneakers/18786491",
           "name": "Green Sylan 2 Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340M237008_1/arcteryx-green-sylan-2-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237008_1.jpg",
           "original_price": 220.0,
           "sale_price": 220.0,
           "currency": "USD",
@@ -13038,46 +12766,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "US 6.5",
-            "US 7",
-            "US 7.5",
-            "US 8",
-            "US 8.5",
-            "US 9",
-            "US 9.5",
-            "US 10",
-            "US 10.5",
-            "US 11",
-            "US 11.5",
-            "US 12",
-            "US 12.5"
-          ],
-          "size_stock": {
-            "US 6.5": "out_of_stock",
-            "US 7": "out_of_stock",
-            "US 7.5": "out_of_stock",
-            "US 8": "out_of_stock",
-            "US 8.5": "out_of_stock",
-            "US 9": "out_of_stock",
-            "US 9.5": "out_of_stock",
-            "US 10": "in_stock",
-            "US 10.5": "in_stock",
-            "US 11": "in_stock",
-            "US 11.5": "in_stock",
-            "US 12": "in_stock",
-            "US 12.5": "in_stock"
-          },
-          "color": "Green",
-          "colors": [
-            "Green"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-norvan-ld-4-gtx-sneakers/18786511",
           "name": "Black Norvan LD 4 GTX Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340M237009_1/arcteryx-black-norvan-ld-4-gtx-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237009_1.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
@@ -13086,46 +12780,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "US 6.5",
-            "US 7",
-            "US 7.5",
-            "US 8",
-            "US 8.5",
-            "US 9",
-            "US 9.5",
-            "US 10",
-            "US 10.5",
-            "US 11",
-            "US 11.5",
-            "US 12",
-            "US 12.5"
-          ],
-          "size_stock": {
-            "US 6.5": "out_of_stock",
-            "US 7": "out_of_stock",
-            "US 7.5": "out_of_stock",
-            "US 8": "out_of_stock",
-            "US 8.5": "out_of_stock",
-            "US 9": "out_of_stock",
-            "US 9.5": "out_of_stock",
-            "US 10": "out_of_stock",
-            "US 10.5": "out_of_stock",
-            "US 11": "out_of_stock",
-            "US 11.5": "in_stock",
-            "US 12": "in_stock",
-            "US 12.5": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/off-white-norvan-ld-4-gtx-sneakers/18786521",
           "name": "Off-White Norvan LD 4 GTX Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340M237010_1/arcteryx-off-white-norvan-ld-4-gtx-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237010_1.jpg",
           "original_price": 200.0,
           "sale_price": 160.0,
           "currency": "USD",
@@ -13134,46 +12794,12 @@
           "discount_pct": 20,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "US 6.5",
-            "US 7",
-            "US 7.5",
-            "US 8",
-            "US 8.5",
-            "US 9",
-            "US 9.5",
-            "US 10",
-            "US 10.5",
-            "US 11",
-            "US 11.5",
-            "US 12",
-            "US 12.5"
-          ],
-          "size_stock": {
-            "US 6.5": "out_of_stock",
-            "US 7": "out_of_stock",
-            "US 7.5": "out_of_stock",
-            "US 8": "out_of_stock",
-            "US 8.5": "out_of_stock",
-            "US 9": "out_of_stock",
-            "US 9.5": "out_of_stock",
-            "US 10": "out_of_stock",
-            "US 10.5": "in_stock",
-            "US 11": "out_of_stock",
-            "US 11.5": "in_stock",
-            "US 12": "in_stock",
-            "US 12.5": "in_stock"
-          },
-          "color": "Off-White",
-          "colors": [
-            "Off-White"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-norvan-ld-4-sneakers/18786601",
           "name": "Black Norvan LD 4 Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340M237014_1/arcteryx-black-norvan-ld-4-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237014_1.jpg",
           "original_price": 170.0,
           "sale_price": 170.0,
           "currency": "USD",
@@ -13182,46 +12808,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "US 6.5",
-            "US 7",
-            "US 7.5",
-            "US 8",
-            "US 8.5",
-            "US 9",
-            "US 9.5",
-            "US 10",
-            "US 10.5",
-            "US 11",
-            "US 11.5",
-            "US 12",
-            "US 12.5"
-          ],
-          "size_stock": {
-            "US 6.5": "out_of_stock",
-            "US 7": "out_of_stock",
-            "US 7.5": "out_of_stock",
-            "US 8": "out_of_stock",
-            "US 8.5": "out_of_stock",
-            "US 9": "out_of_stock",
-            "US 9.5": "out_of_stock",
-            "US 10": "in_stock",
-            "US 10.5": "in_stock",
-            "US 11": "in_stock",
-            "US 11.5": "in_stock",
-            "US 12": "in_stock",
-            "US 12.5": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-cronin-cotton-trousers/18785411",
           "name": "Black Cronin Cotton Trousers",
-          "image": "https://img.ssensemedia.com/images/261340M191003_1/arcteryx-black-cronin-cotton-trousers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M191003_1.jpg",
           "original_price": 180.0,
           "sale_price": 180.0,
           "currency": "USD",
@@ -13230,32 +12822,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "WAIST US 28",
-            "WAIST US 30",
-            "WAIST US 32",
-            "WAIST US 34",
-            "WAIST US 36",
-            "WAIST US 38"
-          ],
-          "size_stock": {
-            "WAIST US 28": "out_of_stock",
-            "WAIST US 30": "out_of_stock",
-            "WAIST US 32": "out_of_stock",
-            "WAIST US 34": "out_of_stock",
-            "WAIST US 36": "in_stock",
-            "WAIST US 38": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/beige-kragg-insulated-sneakers/17580101",
           "name": "Beige Kragg Insulated Sneakers",
-          "image": "https://img.ssensemedia.com/images/252340M236000_1/arcteryx-beige-kragg-insulated-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M236000_1.jpg",
           "original_price": 180.0,
           "sale_price": 180.0,
           "currency": "USD",
@@ -13264,46 +12836,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UK 5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 9",
-            "UK 9.5",
-            "UK 10",
-            "UK 10.5",
-            "UK 11",
-            "UK 12"
-          ],
-          "size_stock": {
-            "UK 5": "out_of_stock",
-            "UK 6": "out_of_stock",
-            "UK 6.5": "in_stock",
-            "UK 7": "in_stock",
-            "UK 7.5": "out_of_stock",
-            "UK 8": "out_of_stock",
-            "UK 8.5": "out_of_stock",
-            "UK 9": "out_of_stock",
-            "UK 9.5": "out_of_stock",
-            "UK 10": "out_of_stock",
-            "UK 10.5": "out_of_stock",
-            "UK 11": "in_stock",
-            "UK 12": "out_of_stock"
-          },
-          "color": "Beige",
-          "colors": [
-            "Beige"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-kragg-insulated-sneakers/17580111",
           "name": "Black Kragg Insulated Sneakers",
-          "image": "https://img.ssensemedia.com/images/252340M236001_1/arcteryx-black-kragg-insulated-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M236001_1.jpg",
           "original_price": 260.0,
           "sale_price": 260.0,
           "currency": "USD",
@@ -13312,46 +12850,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UK 5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 9",
-            "UK 9.5",
-            "UK 10",
-            "UK 10.5",
-            "UK 11",
-            "UK 12"
-          ],
-          "size_stock": {
-            "UK 5": "out_of_stock",
-            "UK 6": "out_of_stock",
-            "UK 6.5": "out_of_stock",
-            "UK 7": "out_of_stock",
-            "UK 7.5": "out_of_stock",
-            "UK 8": "out_of_stock",
-            "UK 8.5": "out_of_stock",
-            "UK 9": "out_of_stock",
-            "UK 9.5": "out_of_stock",
-            "UK 10": "in_stock",
-            "UK 10.5": "out_of_stock",
-            "UK 11": "out_of_stock",
-            "UK 12": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/pink-kragg-sneakers/17580181",
           "name": "Pink Kragg Sneakers",
-          "image": "https://img.ssensemedia.com/images/252340M237000_1/arcteryx-pink-kragg-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M237000_1.jpg",
           "original_price": 225.0,
           "sale_price": 225.0,
           "currency": "USD",
@@ -13360,46 +12864,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UK 5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 9",
-            "UK 9.5",
-            "UK 10",
-            "UK 10.5",
-            "UK 11",
-            "UK 12"
-          ],
-          "size_stock": {
-            "UK 5": "out_of_stock",
-            "UK 6": "out_of_stock",
-            "UK 6.5": "out_of_stock",
-            "UK 7": "out_of_stock",
-            "UK 7.5": "out_of_stock",
-            "UK 8": "out_of_stock",
-            "UK 8.5": "out_of_stock",
-            "UK 9": "out_of_stock",
-            "UK 9.5": "out_of_stock",
-            "UK 10": "out_of_stock",
-            "UK 10.5": "out_of_stock",
-            "UK 11": "in_stock",
-            "UK 12": "in_stock"
-          },
-          "color": "Pink",
-          "colors": [
-            "Pink"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/beige-kragg-sneakers/17580191",
           "name": "Beige Kragg Sneakers",
-          "image": "https://img.ssensemedia.com/images/252340M237001_1/arcteryx-beige-kragg-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M237001_1.jpg",
           "original_price": 225.0,
           "sale_price": 225.0,
           "currency": "USD",
@@ -13408,46 +12878,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UK 5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 9",
-            "UK 9.5",
-            "UK 10",
-            "UK 10.5",
-            "UK 11",
-            "UK 12"
-          ],
-          "size_stock": {
-            "UK 5": "out_of_stock",
-            "UK 6": "out_of_stock",
-            "UK 6.5": "out_of_stock",
-            "UK 7": "out_of_stock",
-            "UK 7.5": "out_of_stock",
-            "UK 8": "out_of_stock",
-            "UK 8.5": "out_of_stock",
-            "UK 9": "out_of_stock",
-            "UK 9.5": "out_of_stock",
-            "UK 10": "in_stock",
-            "UK 10.5": "out_of_stock",
-            "UK 11": "in_stock",
-            "UK 12": "in_stock"
-          },
-          "color": "Beige",
-          "colors": [
-            "Beige"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-kragg-sneakers/17580201",
           "name": "Black Kragg Sneakers",
-          "image": "https://img.ssensemedia.com/images/252340M237002_1/arcteryx-black-kragg-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M237002_1.jpg",
           "original_price": 225.0,
           "sale_price": 225.0,
           "currency": "USD",
@@ -13456,46 +12892,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UK 5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 9",
-            "UK 9.5",
-            "UK 10",
-            "UK 10.5",
-            "UK 11",
-            "UK 12"
-          ],
-          "size_stock": {
-            "UK 5": "out_of_stock",
-            "UK 6": "out_of_stock",
-            "UK 6.5": "out_of_stock",
-            "UK 7": "out_of_stock",
-            "UK 7.5": "out_of_stock",
-            "UK 8": "out_of_stock",
-            "UK 8.5": "out_of_stock",
-            "UK 9": "out_of_stock",
-            "UK 9.5": "out_of_stock",
-            "UK 10": "in_stock",
-            "UK 10.5": "in_stock",
-            "UK 11": "in_stock",
-            "UK 12": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-alpha-jacket/17521431",
           "name": "Khaki Alpha Jacket",
-          "image": "https://img.ssensemedia.com/images/252340M180011_1/arcteryx-khaki-alpha-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180011_1.jpg",
           "original_price": 890.0,
           "sale_price": 890.0,
           "currency": "USD",
@@ -13504,32 +12906,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "out_of_stock",
-            "XL": "out_of_stock",
-            "XXL": "in_stock"
-          },
-          "color": "Khaki",
-          "colors": [
-            "Khaki"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/gray-beta-ar-jacket/17521411",
           "name": "Gray Beta AR Jacket",
-          "image": "https://img.ssensemedia.com/images/252340M180009_1/arcteryx-gray-beta-ar-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180009_1.jpg",
           "original_price": 835.0,
           "sale_price": 835.0,
           "currency": "USD",
@@ -13538,32 +12920,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "Gray",
-          "colors": [
-            "Gray"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-beta-insulated-jacket/17521311",
           "name": "Black Beta Insulated Jacket",
-          "image": "https://img.ssensemedia.com/images/252340M178011_1/arcteryx-black-beta-insulated-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M178011_1.jpg",
           "original_price": 945.0,
           "sale_price": 945.0,
           "currency": "USD",
@@ -13572,32 +12934,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "out_of_stock",
-            "L": "out_of_stock",
-            "XL": "out_of_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/navy-beta-insulated-jacket/17521321",
           "name": "Navy Beta Insulated Jacket",
-          "image": "https://img.ssensemedia.com/images/252340M178012_1/arcteryx-navy-beta-insulated-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M178012_1.jpg",
           "original_price": 940.0,
           "sale_price": 940.0,
           "currency": "USD",
@@ -13606,32 +12948,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "in_stock",
-            "M": "out_of_stock",
-            "L": "out_of_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "Navy",
-          "colors": [
-            "Navy"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-alpha-jacket/17521441",
           "name": "Black Alpha Jacket",
-          "image": "https://img.ssensemedia.com/images/252340M180012_1/arcteryx-black-alpha-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180012_1.jpg",
           "original_price": 700.0,
           "sale_price": 700.0,
           "currency": "USD",
@@ -13640,32 +12962,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-and-navy-alpha-sv-jacket/17521451",
           "name": "Black & Navy Alpha SV Jacket",
-          "image": "https://img.ssensemedia.com/images/252340M180013_1/arcteryx-black-and-navy-alpha-sv-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180013_1.jpg",
           "original_price": 900.0,
           "sale_price": 900.0,
           "currency": "USD",
@@ -13674,32 +12976,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "out_of_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-alpha-sv-jacket/17521461",
           "name": "Black Alpha SV Jacket",
-          "image": "https://img.ssensemedia.com/images/252340M180014_1/arcteryx-black-alpha-sv-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180014_1.jpg",
           "original_price": 1150.0,
           "sale_price": 1150.0,
           "currency": "USD",
@@ -13708,32 +12990,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-sl-cotton-ss-t-shirt/17520991",
           "name": "White Kragg SL Cotton SS T-shirt",
-          "image": "https://img.ssensemedia.com/images/252340M213002_1/arcteryx-white-kragg-sl-cotton-ss-t-shirt.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M213002_1.jpg",
           "original_price": 75.0,
           "sale_price": 75.0,
           "currency": "USD",
@@ -13742,32 +13004,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "out_of_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "White",
-          "colors": [
-            "White"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-cronin-trousers/19258161",
           "name": "Khaki Cronin Trousers",
-          "image": "https://img.ssensemedia.com/images/252340M191004_1/arcteryx-khaki-cronin-trousers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M191004_1.jpg",
           "original_price": 230.0,
           "sale_price": 230.0,
           "currency": "USD",
@@ -13776,32 +13018,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "WAIST US 28",
-            "WAIST US 30",
-            "WAIST US 32",
-            "WAIST US 34",
-            "WAIST US 36",
-            "WAIST US 38"
-          ],
-          "size_stock": {
-            "WAIST US 28": "out_of_stock",
-            "WAIST US 30": "out_of_stock",
-            "WAIST US 32": "out_of_stock",
-            "WAIST US 34": "out_of_stock",
-            "WAIST US 36": "out_of_stock",
-            "WAIST US 38": "in_stock"
-          },
-          "color": "Khaki",
-          "colors": [
-            "Khaki"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-venta-gtx-gloves/17523701",
           "name": "Black Venta GTX Gloves",
-          "image": "https://img.ssensemedia.com/images/252340M135000_1/arcteryx-black-venta-gtx-gloves.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M135000_1.jpg",
           "original_price": 190.0,
           "sale_price": 190.0,
           "currency": "USD",
@@ -13810,30 +13032,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "in_stock",
-            "M": "out_of_stock",
-            "L": "in_stock",
-            "XL": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/navy-beta-ar-jacket/18774481",
           "name": "Navy Beta AR Jacket",
-          "image": "https://img.ssensemedia.com/images/261340F063006_1/arcteryx-navy-beta-ar-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F063006_1.jpg",
           "original_price": 650.0,
           "sale_price": 650.0,
           "currency": "USD",
@@ -13842,30 +13046,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "in_stock",
-            "M": "out_of_stock",
-            "L": "out_of_stock",
-            "XL": "out_of_stock"
-          },
-          "color": "Navy",
-          "colors": [
-            "Navy"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-naya-cropped-jacket/18774991",
           "name": "Black Naya Cropped Jacket",
-          "image": "https://img.ssensemedia.com/images/261340F063012_1/arcteryx-black-naya-cropped-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F063012_1.jpg",
           "original_price": 500.0,
           "sale_price": 500.0,
           "currency": "USD",
@@ -13874,32 +13060,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XXS",
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "XXS": "out_of_stock",
-            "XS": "out_of_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "out_of_stock",
-            "XL": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-rula-t-shirt/439746312",
           "name": "Black Rula T-shirt",
-          "image": "https://img.ssensemedia.com/images/261340F110005_1/arcteryx-black-rula-t-shirt.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F110005_1.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -13908,34 +13074,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XXS",
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XXS": "out_of_stock",
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/white-kragg-cotton-little-bird-crew-ss-t-shirt/18774771",
           "name": "White Kragg Cotton Little Bird Crew S/S T-shirt",
-          "image": "https://img.ssensemedia.com/images/261340F110002_1/arcteryx-white-kragg-cotton-little-bird-crew-ss-t-shirt.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F110002_1.jpg",
           "original_price": 70.0,
           "sale_price": 70.0,
           "currency": "USD",
@@ -13944,32 +13088,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XXS",
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "XXS": "out_of_stock",
-            "XS": "in_stock",
-            "S": "out_of_stock",
-            "M": "out_of_stock",
-            "L": "out_of_stock",
-            "XL": "out_of_stock"
-          },
-          "color": "White",
-          "colors": [
-            "White"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-atom-jacket/18774441",
           "name": "Black Atom Jacket",
-          "image": "https://img.ssensemedia.com/images/261340F063002_1/arcteryx-black-atom-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F063002_1.jpg",
           "original_price": 280.0,
           "sale_price": 280.0,
           "currency": "USD",
@@ -13978,30 +13102,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "XS": "out_of_stock",
-            "S": "in_stock",
-            "M": "out_of_stock",
-            "L": "out_of_stock",
-            "XL": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-atom-hoody-jacket/18774961",
           "name": "Black Atom Hoody Jacket",
-          "image": "https://img.ssensemedia.com/images/261340F063010_1/arcteryx-black-atom-hoody-jacket.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F063010_1.jpg",
           "original_price": 300.0,
           "sale_price": 300.0,
           "currency": "USD",
@@ -14010,32 +13116,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "XXS",
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "XXS": "out_of_stock",
-            "XS": "in_stock",
-            "S": "out_of_stock",
-            "M": "in_stock",
-            "L": "out_of_stock",
-            "XL": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/off-white-bird-head-beanie/18774621",
           "name": "Off-White Bird Head Beanie",
-          "image": "https://img.ssensemedia.com/images/261340F014002_1/arcteryx-off-white-bird-head-beanie.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F014002_1.jpg",
           "original_price": 60.0,
           "sale_price": 60.0,
           "currency": "USD",
@@ -14044,22 +13130,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UNI"
-          ],
-          "size_stock": {
-            "UNI": "in_stock"
-          },
-          "color": "Off-White",
-          "colors": [
-            "Off-White"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-granville-30-carryall-tote/18774491",
           "name": "Black Granville 30 Carryall Tote",
-          "image": "https://img.ssensemedia.com/images/261340F049001_1/arcteryx-black-granville-30-carryall-tote.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F049001_1.jpg",
           "original_price": 160.0,
           "sale_price": 160.0,
           "currency": "USD",
@@ -14068,22 +13144,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UNI"
-          ],
-          "size_stock": {
-            "UNI": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/gray-norvan-ld-4-gtx-sneakers/18774691",
           "name": "Gray Norvan LD 4 GTX Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340F128005_1/arcteryx-gray-norvan-ld-4-gtx-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F128005_1.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
@@ -14092,42 +13158,12 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UK 4",
-            "UK 4.5",
-            "UK 5",
-            "UK 5.5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 3.5"
-          ],
-          "size_stock": {
-            "UK 4": "out_of_stock",
-            "UK 4.5": "in_stock",
-            "UK 5": "in_stock",
-            "UK 5.5": "in_stock",
-            "UK 6": "in_stock",
-            "UK 6.5": "out_of_stock",
-            "UK 7": "in_stock",
-            "UK 7.5": "out_of_stock",
-            "UK 8": "out_of_stock",
-            "UK 8.5": "out_of_stock",
-            "UK 3.5": "out_of_stock"
-          },
-          "color": "Gray",
-          "colors": [
-            "Gray"
-          ]
+          "region": "US"
         },
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-kragg-sneakers/18774651",
           "name": "Black Kragg Sneakers",
-          "image": "https://img.ssensemedia.com/images/261340F128002_1/arcteryx-black-kragg-sneakers.jpg",
+          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F128002_1.jpg",
           "original_price": 160.0,
           "sale_price": 160.0,
           "currency": "USD",
@@ -14136,40 +13172,10 @@
           "discount_pct": 0,
           "dealer": "ssense",
           "dealer_name": "SSENSE",
-          "region": "US",
-          "sizes": [
-            "UK 4",
-            "UK 4.5",
-            "UK 5",
-            "UK 5.5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5",
-            "UK 3.5"
-          ],
-          "size_stock": {
-            "UK 4": "in_stock",
-            "UK 4.5": "out_of_stock",
-            "UK 5": "in_stock",
-            "UK 5.5": "in_stock",
-            "UK 6": "in_stock",
-            "UK 6.5": "out_of_stock",
-            "UK 7": "in_stock",
-            "UK 7.5": "out_of_stock",
-            "UK 8": "out_of_stock",
-            "UK 8.5": "out_of_stock",
-            "UK 3.5": "out_of_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ]
+          "region": "US"
         }
       ]
     }
   },
-  "total": 445
+  "total": 451
 }
