@@ -1151,6 +1151,93 @@ origin https://github.com/noir-madlax/001-arcteryx-deals-platform.git
 - Expo/EAS 登录、Apple Developer / App Store Connect 凭证、App Store app record 后完成 EAS build/submit。
 - 用户或法务确认 merchant content rights 口径。
 
+### 2026-07-07 19:07 EDT codex
+
+状态：Expo iOS app 源码已纳入 git 并推送到 `main`；Vercel production 部署验证通过，现有静态站未被 `app/` 目录破坏。
+
+提交前边界检查：
+```text
+git diff --cached --name-status
+# staged 包含 app/ 源码、测试、脚本、EAS/App Store/readiness 文档、.vercelignore、.gitignore、任务档案
+
+git diff --cached --name-only | rg '(^app/node_modules/|^app/.expo/|^app/.claude/|^brand/|^miniprogram/|^xhs_cards/|^project.config.json|^tools/)'
+# 无输出
+```
+
+提交前验证：
+```text
+cd app && npm run verify
+
+=== unit tests ===
+1..19
+# tests 19
+# pass 19
+
+=== config sanity ===
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+
+=== typecheck ===
+> tsc --noEmit
+
+=== expo doctor ===
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+
+=== live data probe ===
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73296"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+
+=== iOS export ===
+iOS Bundled 4418ms node_modules/expo-router/entry.js (1439 modules)
+Exported: dist-check
+
+verify_local_ok
+```
+
+提交 / 推送：
+```text
+git commit -m "Add GearDrop Expo iOS app"
+[main 15f9d8c] Add GearDrop Expo iOS app
+50 files changed, 13643 insertions(+)
+
+git push origin main
+23f56c6..15f9d8c  main -> main
+```
+
+Vercel production 验证：
+```text
+deployment=dpl_DnpGEbHmjGPJLwEhLJTV76fN8WoV
+state=READY
+target=production
+commit=15f9d8c6c6acd70eb2563fd1e0c7f72756681cba
+```
+
+```text
+curl -I https://001.100app.dev/
+HTTP/2 200
+
+curl -I https://001.100app.dev/privacy.html
+HTTP/2 200
+
+curl -I https://001.100app.dev/app/package.json
+HTTP/2 404
+```
+结论：`.vercelignore` 生效，Expo app 源码已入库但未暴露为线上静态资源。
+
+当前工作树：
+```text
+git status -sb
+## main...origin/main
+?? brand/
+?? miniprogram/
+?? project.config.json
+?? tools/generate_miniprogram_data.js
+?? xhs_cards/
+```
+以上未跟踪项为既有相邻/无关目录，本轮未纳入提交。
+
 ### 2026-07-07 19:00 EDT codex
 
 状态：非交互 sudo 不可用，无法本轮修复 root-owned CoreSimulator；已通过 `launchctl submit` 启动 LAN Metro，等待人工 iPhone / Expo Go 设备验收。

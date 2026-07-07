@@ -186,3 +186,20 @@ Required before final build/submit:
 - The MVP intentionally uses a local Pro flag to test Free and Pro states. Real StoreKit/IAP remains out of scope for this build per the task file.
 - If submitting this exact build, App Review notes must clearly state that Apple IAP is not enabled and that Pro is a local MVP state. A production monetized release should replace this with StoreKit before submission.
 - The app is native React Native / Expo, not a WebView wrapper.
+
+## Source Control
+
+The Expo app source is committed on `main`:
+
+```text
+commit=15f9d8c6c6acd70eb2563fd1e0c7f72756681cba
+message=Add GearDrop Expo iOS app
+```
+
+The same push triggered Vercel production deployment `dpl_DnpGEbHmjGPJLwEhLJTV76fN8WoV`. The root static site remained healthy and `.vercelignore` kept the app source out of the deployed public site:
+
+```text
+https://001.100app.dev/ -> HTTP/2 200
+https://001.100app.dev/privacy.html -> HTTP/2 200
+https://001.100app.dev/app/package.json -> HTTP/2 404
+```
