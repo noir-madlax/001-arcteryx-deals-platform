@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06 22:35:06",
+  "generated_at": "2026-07-07 01:34:39",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -8081,7 +8081,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 133,
+      "count": 134,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-693/arcteryx-beta-jacket-mens",
@@ -12025,7 +12025,7 @@
           "url": "https://www.mec.ca/en/product/6037-621/arcteryx-covert-cardigan-womens",
           "name": "Arc'teryx Covert Cardigan - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529334_source_1773163235.jpg",
-          "color": "Black, Mallow Heather",
+          "color": "Black",
           "sale_price": 161.0,
           "original_price": 230.0,
           "discount_pct": 30,
@@ -12051,8 +12051,7 @@
             "XX-Large": "in_stock"
           },
           "colors": [
-            "Black",
-            "Mallow Heather"
+            "Black"
           ]
         },
         {
@@ -12193,6 +12192,51 @@
           },
           "colors": [
             "Black"
+          ]
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6032-948/arcteryx-sylan-gore-tex-running-shoes-mens",
+          "name": "Arc'teryx Sylan Gore-Tex Running Shoes - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/484779_source_1736505248.jpg",
+          "color": "Forage/Tatsu",
+          "sale_price": 114.24,
+          "original_price": 280.0,
+          "discount_pct": 59,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "UK 10",
+            "UK 10.5",
+            "UK 11",
+            "UK 11.5",
+            "UK 12",
+            "UK 12.5",
+            "UK 6.5",
+            "UK 7",
+            "UK 7.5",
+            "UK 8",
+            "UK 8.5",
+            "UK 9",
+            "UK 9.5"
+          ],
+          "size_stock": {
+            "UK 6.5": "in_stock",
+            "UK 7": "in_stock",
+            "UK 7.5": "in_stock",
+            "UK 8": "in_stock",
+            "UK 8.5": "in_stock",
+            "UK 9": "in_stock",
+            "UK 9.5": "in_stock",
+            "UK 10": "in_stock",
+            "UK 10.5": "in_stock",
+            "UK 11": "in_stock",
+            "UK 11.5": "in_stock",
+            "UK 12": "in_stock",
+            "UK 12.5": "in_stock"
+          },
+          "colors": [
+            "Forage/Tatsu"
           ]
         },
         {
@@ -12340,34 +12384,6 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/243328/arcteryx-coelle-shell-jacket-womens",
-          "name": "Coelle Shell Jacket - Women's",
-          "image": "https://www.rei.com/media/a73cd0b6-65dc-4a84-a238-7e8b8f9b26ba.jpg",
-          "original_price": 400.0,
-          "sale_price": 300.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 25,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
-          "name": "Atom Insulated Jacket - Men's",
-          "image": "https://www.rei.com/media/119452de-5e09-4be4-9354-0a1884072ca8.jpg",
-          "original_price": 280.0,
-          "sale_price": 210.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 25,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
           "url": "https://www.rei.com/product/243175/arcteryx-atom-insulated-hoody-mens",
           "name": "Atom Insulated Hoody - Men's",
           "image": "https://www.rei.com/media/dffee23f-5895-4931-8c4e-3709a50433b6.jpg",
@@ -12410,6 +12426,20 @@
           "region": "US"
         },
         {
+          "url": "https://www.rei.com/product/243328/arcteryx-coelle-shell-jacket-womens",
+          "name": "Coelle Shell Jacket - Women's",
+          "image": "https://www.rei.com/media/a73cd0b6-65dc-4a84-a238-7e8b8f9b26ba.jpg",
+          "original_price": 400.0,
+          "sale_price": 300.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 25,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
           "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
           "name": "Beta SL Jacket - Women's",
           "image": "https://www.rei.com/media/76400c1d-ce0f-4dc0-b363-f6778b24840b.jpg",
@@ -12447,6 +12477,20 @@
           "in_stock": true,
           "gender": "women",
           "discount_pct": 50,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
+          "name": "Atom Insulated Jacket - Men's",
+          "image": "https://www.rei.com/media/119452de-5e09-4be4-9354-0a1884072ca8.jpg",
+          "original_price": 280.0,
+          "sale_price": 210.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 25,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -13347,5 +13391,5 @@
       ]
     }
   },
-  "total": 453
+  "total": 454
 }
