@@ -233,3 +233,1073 @@ product_name  product_url  image_url  unsubscribe_token(uuid)  notified_at(nulla
 ## 10. 进度 / 交付（codex 在此追加）
 
 <!-- codex: 每完成一个阶段在此记录：做了什么、跑了什么验收命令、结果。未跑不宣称。 -->
+
+### 2026-07-07 16:50 EDT codex
+
+状态：已在现有仓库新增 Expo React Native 项目根 `app/`，实现 MVP 主路径；已跑静态验证，尚未在真机 Expo Go 手动点验。
+
+已完成：
+- 新建 `app/` Expo SDK 57 TypeScript 项目，入口切到 `expo-router/entry`，配置 GearDrop app name、scheme、iOS bundle id `dev.100app.geardrop`。
+- 实现底部 3 Tab：Deals / Watchlist / Me；详情页 `app/product/[skuId].tsx`；paywall stub `app/paywall.tsx`。
+- 迁移 Web 纯函数语义到 `app/lib/catalog.ts`：`cleanName` / `inferCategory` / `releaseSeason` / `platformKey` / 商品可见性过滤 / 价格格式化。
+- Supabase 单一数据源：`app/lib/supabase.ts` 使用 anon key 分页读取 `products`，读取 `price_history`，`price_alerts` 只提供 REST INSERT 函数。
+- Deals：真实产品分页加载、默认折扣排序、搜索、Region/Category/Gender/Sort 横滑 chips、hero、FlatList 懒渲染、批量 price_history 信号。
+- 详情：图集、价格区、SVG 价格历史、Free 30 天遮罩、Pro 完整历史 stub、买入 verdict、跨区更低价、Alert modal、Buy 经 `openBuyUrl()`。
+- Watchlist：AsyncStorage 收藏持久化、保存时价格快照、"since you saved" 差值、Pro 引导。
+- Me：Pro 本地 flag、通知开关、本地通知测试入口、关于/隐私链接。
+
+验证已跑：
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm run doctor
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+```
+
+```text
+cd app && npx expo export --platform ios --output-dir dist-check
+iOS Bundled ... node_modules/expo-router/entry.js (1437 modules)
+Exported: dist-check
+```
+验证后已删除临时 `dist-check/`。
+
+### 2026-07-07 18:03 EDT codex
+
+状态：把 Expo Go 验收入口从 localhost 改成 LAN。
+
+运行验证：
+```text
+cd app && npm run start -- --host lan --port 8081
+Starting project at .../app
+Starting Metro Bundler
+Waiting on http://localhost:8081
+```
+
+```text
+ipconfig getifaddr en0
+192.168.50.88
+
+lsof -nP -iTCP:8081 -sTCP:LISTEN
+node ... TCP *:8081 (LISTEN)
+
+curl http://192.168.50.88:8081/status
+packager-status:running
+```
+
+临时二维码：
+```text
+/tmp/geardrop-expo-qr.png
+exp://192.168.50.88:8081
+```
+
+仍需人工设备验收：
+- iPhone / Expo Go 扫码后是否无红屏。
+- Deals / Watchlist / Me / Product / Paywall / Privacy 真实点击流。
+- iOS 通知权限弹窗与本地通知实际展示。
+
+### 2026-07-07 17:53 EDT codex
+
+状态：补齐 EAS Build/Submit 配置入口；未发起远程构建或提交。
+
+新增改动：
+- 新增 `app/eas.json`，包含 iOS `preview`、`simulator`、`production` build profiles，以及 `submit.production.ios` 占位配置。
+- `app/package.json` 新增：
+  - `eas:build:ios`
+  - `eas:build:ios:preview`
+  - `eas:build:ios:simulator`
+  - `eas:submit:ios`
+
+验证已跑：
+```text
+cd app && node -e "JSON.parse(require('fs').readFileSync('eas.json','utf8')); console.log('eas_json_parse=ok')"
+eas_json_parse=ok
+```
+
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm run doctor
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+```
+
+EAS 账号边界：
+```text
+cd app && npx eas-cli config --platform ios --profile production --non-interactive
+An Expo user account is required to proceed.
+Either log in with eas login or set the EXPO_TOKEN environment variable...
+Error: config command failed.
+```
+结论：EAS config 文件已落地且 JSON 有效；真实 `eas build` / `eas submit` 需要 Expo 登录、Apple 账号/签名和 ASC app id，不能在当前无凭证状态下完成。
+
+### 2026-07-07 17:59 EDT codex
+
+状态：修正恢复路径数据加载问题。
+
+新增改动：
+- 产品全量加载从 Deals 页提升到 `ProductsProvider` 初次挂载时执行；Watchlist / Me / 详情深链不再依赖 Deals 首屏先触发数据加载。
+- Deals 页保留 pull-to-refresh，但删除自身的一次性首载触发，避免重复请求。
+
+验证已跑：
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm run doctor
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+```
+
+```text
+cd app && npx expo export --platform ios --output-dir dist-check
+iOS Bundled ... node_modules/expo-router/entry.js (1438 modules)
+Exported: dist-check
+```
+验证后已删除临时 `dist-check/`。
+
+### 2026-07-07 18:38 EDT codex
+
+状态：补齐 App Store Privacy Policy URL 的本地物料与自动校验；线上发布仍被 Vercel 登录状态阻塞。
+
+新增改动：
+- 新增根目录 `privacy.html`，作为 App Store Connect 可填写的 web 隐私政策页面；内容与原生 `app/app/privacy.tsx` 的提审口径一致：本地收藏/Pro、价格提醒邮箱、公开商品与价格历史、无第三方跟踪、当前版本无远程推送和 Apple IAP。
+- `app/APP_STORE_METADATA.md` 的 Privacy Policy URL 从 `TODO` 改为 `https://001.100app.dev/privacy.html`，并注明需等包含 `privacy.html` 的静态站部署上线后使用。
+- `app/scripts/verify-config.ts` 新增断言：根目录 `privacy.html` 必须存在，metadata 必须包含 `https://001.100app.dev/privacy.html`，且 Privacy Policy URL 区块不能再保留 `TODO`。
+
+验证已跑：
+```text
+cd app && npm run verify:config
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+```
+
+```text
+cd app && npm run verify
+
+=== unit tests ===
+1..19
+# tests 19
+# pass 19
+# fail 0
+
+=== config sanity ===
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+
+=== typecheck ===
+> tsc --noEmit
+
+=== expo doctor ===
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+
+=== live data probe ===
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73296"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+"signal_sample": {"sku_id":"kopec-mid-gtx-boot-0029_Black_Nightscape_be","kind":"steady","label":"Steady · not a low","history_rows":4}
+
+=== iOS export ===
+iOS Bundled 4352ms node_modules/expo-router/entry.js (1439 modules)
+Exported: dist-check
+
+verify_local_ok
+```
+
+验证后检查：
+```text
+find app -maxdepth 2 \( -name dist-check -o -name web-check \) -print
+无输出
+
+lsof -nP -iTCP:8081 -sTCP:LISTEN
+无输出
+```
+
+线上状态 / 阻塞：
+```text
+curl -I -sS https://001.100app.dev/privacy.html
+HTTP/2 404
+x-vercel-error: NOT_FOUND
+```
+
+```text
+command -v vercel && vercel whoami
+/Users/J/npm-global/bin/vercel
+Error: The specified token is not valid. Use `vercel login` to generate a new token.
+```
+
+结论：本地提审物料已就绪并纳入 `npm run verify`；真实 App Store Privacy Policy URL 还不能填写为 live ready，需先重新登录 Vercel 并部署当前静态站变更，或让有权限的人把根目录 `privacy.html` 发布到 `https://001.100app.dev/privacy.html`。
+
+### 2026-07-07 18:47 EDT codex
+
+状态：继续补本地可完成的通知链路质量；真机通知弹出仍未验证。
+
+依据：
+- 已查 Expo SDK v57 `expo-notifications` 文档；本地通知可通过 `scheduleNotificationAsync` 调度，Expo Router 可用 `Notifications.getLastNotificationResponse()` 和 `Notifications.addNotificationResponseReceivedListener()` 处理通知点击跳转。
+
+新增改动：
+- `app/app/_layout.tsx` 新增 notification observer：冷启动来自通知或用户点击通知时读取 `notification.request.content.data.url`，若为字符串则 `router.push(url)`。
+- `app/lib/actions.ts`：`requestNotificationPermission()` 和 `scheduleTestPriceNotification()` 对权限/调度异常返回 `false`，避免价格提醒已经写入 Supabase 后因本地通知失败而把提交误判为失败。
+- `app/scripts/verify-config.ts` 新增 native flow 静态断言：
+  - Buy 仍经 `openBuyUrl()` / `WebBrowser.openBrowserAsync(url)` 收口。
+  - 本地价格通知携带 `/(tabs)/watchlist` deep link。
+  - root layout 监听通知点击与冷启动通知响应。
+  - 商品详情 Alert flow 仍调用 `insertPriceAlert()` 并触发本地通知链路。
+
+验证已跑：
+```text
+cd app && npm run verify:config
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+```
+
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm run verify
+
+=== unit tests ===
+1..19
+# tests 19
+# pass 19
+# fail 0
+
+=== config sanity ===
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+
+=== typecheck ===
+> tsc --noEmit
+
+=== expo doctor ===
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+
+=== live data probe ===
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73296"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+"signal_sample": {"sku_id":"kopec-mid-gtx-boot-0029_Black_Nightscape_be","kind":"steady","label":"Steady · not a low","history_rows":4}
+
+=== iOS export ===
+iOS Bundled 4237ms node_modules/expo-router/entry.js (1439 modules)
+Exported: dist-check
+
+verify_local_ok
+```
+
+验证后检查：
+```text
+find app -maxdepth 2 \( -name dist-check -o -name web-check \) -print
+无输出
+
+lsof -nP -iTCP:8081 -sTCP:LISTEN
+无输出
+```
+
+外部状态复查：
+```text
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -version
+Xcode 26.6
+Build version 17F113
+
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -showsdks
+iOS SDKs:
+  iOS 26.5 -sdk iphoneos26.5
+iOS Simulator SDKs:
+  Simulator - iOS 26.5 -sdk iphonesimulator26.5
+```
+
+```text
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun simctl list devices available
+15-20 秒内无输出，已中断；Simulator 仍不可作为验收宿主。
+```
+
+```text
+vercel whoami
+No existing credentials found. Starting login flow...
+Visit https://vercel.com/oauth/device?user_code=VSZM-LXWJ
+Waiting for authentication...
+```
+
+```text
+cd app && npx eas-cli whoami
+Not logged in
+```
+
+结论：通知点击路径与 Alert 本地通知链路已补强并被本地校验覆盖；真实 iOS 通知权限弹窗/通知展示、Expo Go/Simulator 无红屏、live privacy.html 部署、EAS build/submit 仍依赖外部登录或设备状态。
+
+### 2026-07-07 18:08 EDT codex
+
+状态：完成一轮 Expo Web 可视 smoke，修掉 smoke 暴露的前端渲染问题；重新跑过类型、doctor、iOS export。仍未做真机 Expo Go / iOS 通知弹出 / EAS 远程构建。
+
+新增改动：
+- 为 Expo Web smoke 补齐 `react-native-web` / `react-dom` 依赖，便于在本机浏览器做渲染验证。
+- 修复 `PriceChart` 在只有 2 个 x 轴 tick 时产生重复 React key `2026-07-07-1` 的问题。
+- `Also cheaper` 从同 model 所有低价 SKU 改为按 region 取最低价，避免同一地区重复显示。
+- `DealCard` 图片源改为 `image_url || images[0]`，并在 `Image.onError` 后显示文字兜底。
+- Deals hero 优先选择非 REI hotlink 的稳定图片源；实测 REI media URL 返回 403，imgix 图片返回 200。
+- 给搜索按钮和筛选 chips 增加 accessibility label，便于原生可访问性和自动化点击验收。
+
+Web 渲染 smoke：
+```text
+cd app && npm run web -- --port 8082
+Web Bundled ... node_modules/expo-router/entry.js
+Web LOG Running application "main" ...
+Web WARN [expo-notifications] Listening to push token changes is not yet fully supported on web.
+Web WARN "shadow*" style props are deprecated. Use "boxShadow".
+```
+
+浏览器自动化结果：
+```text
+Deals route:
+href=http://localhost:8082/
+title=GearDrop
+text includes "6,108 loaded · 705 shown"
+text includes "NEW ALL-TIME LOW", "All-time low", "$105"
+mobile viewport 390x844: first hero image complete=true, naturalWidth=1350, naturalHeight=1710
+first hero image=https://images-dynamic-arcteryx.imgix.net/...Alpha-Pant...jpg
+```
+
+```text
+Tab click states:
+Watchlist -> href=http://localhost:8082/watchlist, selected href=/watchlist
+Me -> href=http://localhost:8082/me, selected href=/me
+Deals -> href=http://localhost:8082/, selected href=/
+```
+
+```text
+Filter/search interaction:
+Clicked "Region: Germany" -> "6,108 loaded · 468 shown", text includes "Germany" and "€100"
+Opened search and filled "beta" -> "6,108 loaded · 20 shown", text includes Beta results and euro prices
+```
+
+```text
+Product route:
+href=http://localhost:8082/product/beta-ar-jacket-9906_Olive_Moss_Euphoria_de
+text includes "Beta AR Jacket Men's", "Price history", "2 points · EUR"
+text includes "Upgrade for full history", "Good time to buy — at/near all-time low", "Alert", "Buy"
+Also cheaper section after fix: "United Kingdom £360" only once
+Filtered console logs after fix: only the two Web-environment warnings above; duplicate React key error no longer appears after the fix timestamp.
+```
+
+视觉截图：
+```text
+Mobile Deals 390x844 captured through CDP Page.captureScreenshot in the browser tool.
+首屏 hero 实图可见；底部 Deals / Watchlist / Me tab 可见。
+```
+
+验证已跑：
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm run doctor
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+```
+
+```text
+cd app && npx expo export --platform ios --output-dir dist-check
+iOS Bundled 4640ms node_modules/expo-router/entry.js (1438 modules)
+Exported: dist-check
+```
+验证后已删除临时 `dist-check/`。
+
+仍需人工 / 凭证验收：
+- iPhone / Expo Go 扫码打开 LAN 地址后是否无红屏。
+- iOS 本地通知权限弹窗与通知展示。
+- Watchlist kill App 重开后的 AsyncStorage 持久化，需真机或可用 iOS Simulator；当前 Mac 只有 CommandLineTools，`simctl` 不可用。
+- EAS Build / Submit 需要 Expo 登录、Apple Developer 签名、ASC app id；当前无凭证，未发起远程构建或提交。
+
+### 2026-07-07 18:16 EDT codex
+
+状态：继续补自动化可复核性，修正商品名清洗缺口；本机测试/类型/doctor/iOS export/LAN Metro 状态均已重新验证。
+
+新增改动：
+- `cleanName()` 补齐工单要求：去掉 `Arc'teryx` 商品名前缀，并去掉 `- Men's` / `- Women's` / `- Unisex` 这类尾缀；保留无横杠的性别词（如 `Alpha Pant Women's`）。
+- 新增 `app/lib/watchlist.ts`，把 AsyncStorage key、Free 上限、收藏 toggle、提醒目标写入规则抽成纯函数；`WatchlistContext` 改为调用这些纯规则。
+- 新增 `npm test`，使用 `tsx --test __tests__/*.test.ts` 跑 Node 原生测试；新增 19 个测试覆盖：
+  - catalog：`cleanName`、`inferCategory`、`releaseSeason`、`visibleProducts`、`platformKey`、`productCategory`
+  - signals：`historyToPoints`、`computeSignal` 五类信号优先级、`groupHistoryBySku`
+  - watchlist：稳定 storage key、坏 JSON 容错、保存快照、移除、Free 20 上限、Pro 绕过上限、alertTarget 创建/清除
+- `tsconfig.json` 增加 Node/React 类型入口，保证测试文件也参与 `tsc --noEmit`。
+
+验证已跑：
+```text
+cd app && npm test
+1..19
+# tests 19
+# pass 19
+# fail 0
+```
+
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm run doctor
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+```
+
+```text
+cd app && npx expo export --platform ios --output-dir dist-check
+iOS Bundled 4546ms node_modules/expo-router/entry.js (1439 modules)
+Exported: dist-check
+```
+验证后已删除临时 `dist-check/`。
+
+LAN Expo Go 入口复测：
+```text
+cd app && npm run start -- --host lan --port 8081
+› Metro: exp://192.168.50.88:8081
+› Web: http://localhost:8081
+```
+
+```text
+curl http://192.168.50.88:8081/status
+packager-status:running
+```
+状态探测后已停止 Metro；复查 8081 无监听进程。
+
+新增依赖说明：
+```text
+npm install --save-dev tsx @types/node --legacy-peer-deps
+```
+安装后 `npm audit` 报 10 个 moderate severity vulnerabilities；本轮未执行 `npm audit fix --force`，避免对 Expo/RN 依赖树做破坏性升级。
+
+仍需人工 / 凭证验收：
+- iPhone / Expo Go 扫码后确认无红屏，并在真实设备上点验三 Tab、详情、收藏、Alert、Buy。
+- iOS 本地通知权限弹窗与通知展示。
+- kill App 后 Watchlist AsyncStorage 持久化；本轮已用纯规则测试覆盖 storage key/数据形状，但未能在 iOS 宿主上做进程重启验证。
+- EAS Build / Submit 仍需 Expo 登录和 Apple Developer / App Store Connect 凭证。
+
+### 2026-07-07 18:25 EDT codex
+
+状态：继续补复核脚本和配置验收；发现本机有完整 Xcode，但 CoreSimulator 当前不响应，仍不能完成 iOS Simulator 运行验收。
+
+新增改动：
+- 新增 `npm run verify:config`，检查 `app.json` / `eas.json` / `package.json`：
+  - App 名、slug、scheme、bundle id 不含 `Arc'teryx` / `始祖鸟`
+  - `expo-router` / `expo-notifications` / `expo-web-browser` / `expo-font` 插件存在
+  - icon/splash/favicon 资产存在
+  - EAS production/simulator build profile 与 iOS submit profile 存在
+  - 关键依赖和 `typecheck` / `doctor` / `test` / EAS scripts 存在
+- 新增 `npm run verify:live-data`，只读验证 Supabase live 数据和核心业务样本：
+  - products 精确 count
+  - price_history 精确 count
+  - 全量分页加载后可见产品数 >= 5000
+  - DE beta 样本为欧元
+  - beta 搜索有结果
+  - price_history 可算出合法信号
+  - 同 model 跨区更低价样本存在
+
+验证已跑：
+```text
+cd app && npm test
+1..19
+# tests 19
+# pass 19
+# fail 0
+```
+
+```text
+cd app && npm run verify:config
+config_ok name=GearDrop bundle=dev.100app.geardrop plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+```
+
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm run doctor
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+```
+
+```text
+cd app && npm run verify:live-data
+{
+  "products_content_range": "0-0/6108",
+  "price_history_content_range": "0-0/73296",
+  "paginated_products_loaded": 6108,
+  "de_euro_beta_sample": {
+    "sku_id": "beta-ar-jacket-9906_Olive_Moss_Euphoria_de",
+    "sale_price": 390,
+    "symbol": "€",
+    "region": "de"
+  },
+  "beta_result_count": 333,
+  "signal_sample": {
+    "sku_id": "kopec-mid-gtx-boot-0029_Black_Nightscape_be",
+    "kind": "steady",
+    "label": "Steady · not a low",
+    "history_rows": 4
+  },
+  "cheaper_region_sample": {
+    "base": {
+      "sku_id": "kopec-mid-gtx-boot-0029_Black_Nightscape_be",
+      "region": "be",
+      "price": 130,
+      "symbol": "€"
+    },
+    "cheaper": [
+      {
+        "sku_id": "kopec-mid-gtx-boot-0029_Black_Nightscape_gb",
+        "region": "gb",
+        "price": 117,
+        "symbol": "£"
+      }
+    ]
+  }
+}
+```
+
+```text
+cd app && npx expo export --platform ios --output-dir dist-check
+iOS Bundled 4457ms node_modules/expo-router/entry.js (1439 modules)
+Exported: dist-check
+```
+验证后已删除临时 `dist-check/`。
+
+Xcode / Simulator 复核：
+```text
+ls /Applications | rg -i '^Xcode'
+Xcode.app
+
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -version
+Xcode 26.6
+Build version 17F113
+
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun --find simctl
+/Applications/Xcode.app/Contents/Developer/usr/bin/simctl
+```
+
+```text
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun simctl list devices available
+20 秒内无输出，手动限时 kill 后 simctl_exit=143
+```
+结论：完整 Xcode 和 `simctl` 二进制存在，但 CoreSimulator 当前不响应设备列表；未强杀 CoreSimulator 系统服务，避免影响用户桌面状态。因此仍未完成 iOS Simulator / 真机运行验收。
+
+仍需人工 / 外部状态：
+- iPhone / Expo Go 或可用 Simulator 上确认无红屏、三 Tab、详情、收藏、Alert、Buy。
+- iOS 本地通知权限弹窗与通知展示。
+- iOS 宿主 kill App 后 Watchlist AsyncStorage 持久化。
+- EAS Build / Submit 仍需 Expo 登录和 Apple Developer / App Store Connect 凭证。
+
+### 2026-07-07 18:28 EDT codex
+
+状态：把本机可跑的验证收口为一条命令，并补充真机 / Simulator / EAS 验收清单。目标仍未完成，因为真机或可用 Simulator 运行验收、通知弹出、EAS/Apple 凭证仍缺外部状态。
+
+新增改动：
+- 新增 `npm run verify`，执行 `scripts/verify-local.ts`：
+  1. `npm test`
+  2. `npm run verify:config`
+  3. `npm run typecheck`
+  4. `npm run doctor`
+  5. `npm run verify:live-data`
+  6. `npx expo export --platform ios --output-dir dist-check`
+  7. 自动清理 `dist-check`
+- 新增 `app/DEVICE_CHECKLIST.md`，列出需要在 iPhone / Expo Go、可用 Simulator、EAS Build/Submit 环境里记录的验收证据字段。
+
+验证已跑：
+```text
+cd app && npm run verify
+```
+
+关键输出：
+```text
+=== unit tests ===
+1..19
+# tests 19
+# pass 19
+# fail 0
+
+=== config sanity ===
+config_ok name=GearDrop bundle=dev.100app.geardrop plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+
+=== typecheck ===
+> tsc --noEmit
+
+=== expo doctor ===
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+
+=== live data probe ===
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73296"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+"signal_sample": {"sku_id":"kopec-mid-gtx-boot-0029_Black_Nightscape_be","kind":"steady","label":"Steady · not a low","history_rows":4}
+
+=== iOS export ===
+iOS Bundled 4161ms node_modules/expo-router/entry.js (1439 modules)
+Exported: dist-check
+
+verify_local_ok
+```
+
+验证后检查：
+```text
+find app -maxdepth 2 \( -name dist-check -o -name web-check \) -print
+无输出
+
+lsof -nP -iTCP:8081 -sTCP:LISTEN
+无输出
+```
+
+仍需外部验收：
+- 按 `app/DEVICE_CHECKLIST.md` 在 iPhone / Expo Go 或健康 Simulator 上完成无红屏、三 Tab、详情、收藏持久化、Alert、Buy 和通知弹出验收。
+- EAS Build / Submit 需要 Expo + Apple Developer / App Store Connect 凭证。
+
+### 2026-07-07 18:32 EDT codex
+
+状态：继续补 App Store readiness；新增 iOS build number、export-compliance 配置和 App Store Connect 元数据草案。本机一键验证重新通过。
+
+依据：
+- 已查 Expo SDK v57 app config 文档：
+  - `ios.buildNumber` 对应 iOS standalone app 的 `CFBundleVersion`
+  - `ios.config.usesNonExemptEncryption` 会在 standalone IPA 的 Info.plist 设置 `ITSAppUsesNonExemptEncryption`
+
+新增改动：
+- `app.json`：
+  - `expo.ios.buildNumber = "1"`
+  - `expo.ios.config.usesNonExemptEncryption = false`
+- `scripts/verify-config.ts`：新增 build number 与 export-compliance 配置断言。
+- 新增 `app/APP_STORE_METADATA.md`：
+  - App name / subtitle / description / keywords 草案
+  - Support URL / privacy policy URL TODO
+  - Review notes
+  - App Privacy answers draft
+  - Screenshot checklist
+  - 明确 public listing 不使用受保护品牌名
+
+验证已跑：
+```text
+cd app && npm run verify
+```
+
+关键输出：
+```text
+=== unit tests ===
+1..19
+# tests 19
+# pass 19
+# fail 0
+
+=== config sanity ===
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+
+=== typecheck ===
+> tsc --noEmit
+
+=== expo doctor ===
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+
+=== live data probe ===
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73296"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+
+=== iOS export ===
+iOS Bundled 4252ms node_modules/expo-router/entry.js (1439 modules)
+Exported: dist-check
+
+verify_local_ok
+```
+
+验证后检查：
+```text
+find app -maxdepth 2 \( -name dist-check -o -name web-check \) -print
+无输出
+
+lsof -nP -iTCP:8081 -sTCP:LISTEN
+无输出
+```
+
+仍需外部验收：
+- App Store Connect 真实 metadata 仍需用户确认 privacy policy URL 和 merchant content rights 口径。
+- 真机 / Expo Go 或健康 Simulator 上完成 `app/DEVICE_CHECKLIST.md`。
+- EAS Build / Submit 需要 Expo 和 Apple Developer / App Store Connect 凭证。
+
+只读 live 数据探针：
+```text
+products REST probe: HTTP/2 206, content-range: 0-0/6105
+sample body: [{"sku_id":"evo:products/272509-arc-teryx-olia-short-sleeve-shirt-women-s","sale_price":140.0,"symbol":"$","region":"us","model":"Arc'teryx Olia Short-Sleeve Shirt - Women's"}]
+```
+
+```text
+price_history REST probe: HTTP/2 206, content-range: 0-0/73293
+sample body: [{"sku_id":"incendia-jacket-9862_Aster_Black_de","sale_price":540,"recorded_at":"2026-04-20T17:06:48+00:00"}]
+```
+
+未验证 / 待复核：
+- 未在 iPhone / Expo Go 扫码点验三屏交互与视觉细节。
+- 未向 live `price_alerts` 插入测试行；该验收会新增 live 数据，需复核者确认测试邮箱和是否保留测试行后再跑。
+- 未验证 iOS 本地通知实际弹出；代码通过 TypeScript/Expo 打包检查，真机权限弹窗和通知展示需设备验证。
+- 未接真实 Apple IAP / APNs 远程推送，按工单为下一期范围。
+
+### 2026-07-07 17:38 EDT codex
+
+状态：继续补齐 MVP 缺口；当前可自动验证项已进一步收敛，仍缺真机 Expo Go/通知弹出的人手验收。
+
+新增改动：
+- Deals 筛选补齐 Web 语义里的 `platform`/`series`：新增 Source 与 Series 横滑 chip，筛选逻辑接入 `_platform` / `_series`。
+- Hero 选择优先 `all_time_low`，其次 90-day low / 其它低价信号；不再把所有低价都粗暴标为 all-time low。
+- Watchlist 落实 Free 收藏上限 20；超限时 Deals/详情页给升级提示，Pro 本地 flag 下不限制。
+- 清理用户可见开发文案：移除 paywall preview/stub、Supabase/MVP/local notification 等实现口径。
+- 详情页商品图从固定 390 宽改为 `useWindowDimensions()` 自适应屏宽。
+- Paywall 价格文案按工单固定为 `Pro $3.99/月 · $23.99/年 · Lifetime $49.99`。
+
+验证已跑：
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm run doctor
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+```
+
+```text
+cd app && npx expo export --platform ios --output-dir dist-check
+iOS Bundled ... node_modules/expo-router/entry.js (1437 modules)
+Exported: dist-check
+```
+验证后已删除临时 `dist-check/`。
+
+只读 live 数据验收：
+```text
+products_content_range=0-0/6105
+paginated_products_loaded=6105
+```
+
+```text
+de_eur_count_sample=3; first={"sku_id":"beta-ar-jacket-9906_Olive_Moss_Euphoria_de","model":"Beta AR Jacket","sale_price":390,"symbol":"€","currency":"EUR","region":"de"}
+beta_search_sample_count=3; first={"sku_id":"evo:products/277490-arc-teryx-beta-ar-jacket-women-s","model":"Arc'teryx Beta AR Jacket - Women's","full_name":"Arc'teryx Beta AR Jacket - Women's","sale_price":450,"symbol":"$","region":"us"}
+```
+
+```text
+signal_sample={"sku_id":"kopec-mid-gtx-boot-0029_Black_Nightscape_be","signal":"Steady · not a low","history_rows":4}
+cheaper_region_sample={"model":"Kopec Mid GTX Boot","current":{"sku_id":"kopec-mid-gtx-boot-0029_Black_Nightscape_be","region":"be","price":130,"symbol":"€"},"cheaper":{"sku_id":"kopec-mid-gtx-boot-0029_Black_Nightscape_gb","region":"gb","price":117,"symbol":"£"}}
+```
+
+写入验收：
+```text
+price_alerts 测试 1（使用 example.com 占位 product_url）:
+price_alert_insert_status=401
+price_alert_insert_body={"code":"42501","message":"new row violates row-level security policy for table \"price_alerts\""}
+
+price_alerts 测试 2（使用真实商品 url/image，app 同款 Prefer:return=minimal body）:
+exact_app_insert_status=201
+exact_app_insert_error=
+```
+结论：当前 RLS/约束要求 payload 更接近真实商品行；app 路径使用真实 `product.url`/`image_url` 时 anon INSERT 可用。
+
+运行状态：
+```text
+curl -I http://localhost:8081
+HTTP/1.1 200 OK
+```
+
+本机限制：
+```text
+xcode-select -p
+/Library/Developer/CommandLineTools
+
+xcrun simctl help
+xcrun: error: unable to find utility "simctl", not a developer tool or in PATH
+```
+因此本机不能自动打开 iOS Simulator；真机 Expo Go / iOS 通知弹出仍需在设备上验收。
+
+### 2026-07-07 17:45 EDT codex
+
+状态：继续处理提交/审核前容易被打回的表面缺口。
+
+新增改动：
+- `https://001.100app.dev/privacy` 当前 live 返回 404；App 内新增原生 `app/privacy.tsx` 隐私政策屏，Me 页 Privacy policy 改为原生路由，不再外跳 404。
+- 用 GearDrop 占位品牌图替换默认 Expo 图标资产：`icon.png`、`splash-icon.png`、Android foreground/background/monochrome、`favicon.png`。
+
+验证已跑：
+```text
+curl https://001.100app.dev/
+home_status=200
+
+curl https://001.100app.dev/privacy
+privacy_status=404
+```
+
+```text
+file app/assets/icon.png
+PNG image data, 1024 x 1024, 8-bit/color RGB, non-interlaced
+```
+
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm run doctor
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+```
+
+```text
+cd app && npx expo export --platform ios --output-dir dist-check
+iOS Bundled ... node_modules/expo-router/entry.js (1438 modules)
+Exported: dist-check
+```
+验证后已删除临时 `dist-check/`。
+
+### 2026-07-07 18:56 EDT codex
+
+状态：新增当前 release readiness 审计，并进一步诊断 Simulator / Vercel 发布阻塞。目标仍未完成，原因是剩余验收需要外部账号、线上部署或可用 iOS 宿主。
+
+新增改动：
+- 新增 `app/RELEASE_READINESS.md`，按验收项列出当前证据状态、仍缺证据、live privacy 发布路径、Simulator 修复建议、Vercel/EAS/Apple 外部状态。
+- 该文件明确：不要用整个当前工作树直接手动部署 Vercel，除非先审查 deploy package；当前 checkout 有未跟踪开发目录 `app/`、`brand/`、`miniprogram/`、`xhs_cards/`。
+
+本轮只读 / 诊断证据：
+```text
+Vercel project:
+id=prj_xRYhGGeWK40qlv4jEDg3PDbnaAcs
+name=arcteryx-deals-platform
+latestDeployment=dpl_68ZRugycdQ2N2DWxdkL2f2u7rZHr
+target=production
+source=git
+alias includes 001.100app.dev
+latest GitHub commit=6fd62f54312e993b45f38ccfeef8e760ea4169e1
+```
+
+```text
+privacy live check remains blocked:
+curl -I https://001.100app.dev/privacy.html
+HTTP/2 404
+x-vercel-error: NOT_FOUND
+```
+
+```text
+Simulator / Xcode:
+Xcode 26.6
+Build version 17F113
+iOS SDK 26.5
+iOS Simulator SDK 26.5
+
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun simctl list devices available
+15-25 秒内无输出，已中断
+```
+
+```text
+CoreSimulator diagnosis:
+root-owned stale processes include:
+/Library/Developer/PrivateFrameworks/CoreSimulator.framework/Resources/bin/simdiskimaged
+/Library/Developer/PrivateFrameworks/CoreSimulator.framework/Versions/A/XPCServices/SimLaunchHost.arm64.xpc/Contents/MacOS/SimLaunchHost.arm64
+
+kill -9 53945 53974
+operation not permitted
+```
+
+```text
+EAS:
+cd app && npx eas-cli whoami
+Not logged in
+```
+
+```text
+Current branch and remote:
+main
+origin https://github.com/noir-madlax/001-arcteryx-deals-platform.git
+```
+
+最新本地验收仍沿用 18:47 已亲自运行的 `cd app && npm run verify`：19 tests pass，typecheck pass，expo-doctor 20/20，live data probe 6108 products / 73296 price_history，iOS export pass，`verify_local_ok`。
+
+仍需完成才可关闭目标：
+- 发布 `privacy.html` 到 `https://001.100app.dev/privacy.html`。最小安全路径是只提交并 push `privacy.html` 到 `main`，让 GitHub-backed Vercel production 部署接管；当前未擅自 push。
+- 修复 CoreSimulator root-owned stale service 或使用 iPhone / Expo Go 完成 `app/DEVICE_CHECKLIST.md`。
+- 真机/Simulator 验证无红屏、三 Tab、详情、Watchlist kill-app 持久化、Alert 本地通知展示、Buy 系统浏览器跳转。
+- Expo/EAS 登录、Apple Developer / App Store Connect 凭证、App Store app record 后完成 EAS build/submit。
+- 用户或法务确认 merchant content rights 口径。
+
+### 2026-07-07 19:00 EDT codex
+
+状态：非交互 sudo 不可用，无法本轮修复 root-owned CoreSimulator；已通过 `launchctl submit` 启动 LAN Metro，等待人工 iPhone / Expo Go 设备验收。
+
+CoreSimulator 修复尝试边界：
+```text
+sudo -n true
+sudo: a password is required
+sudo_noninteractive_status=1
+```
+结论：当前会话不能运行 `sudo pkill -9 -f '/CoreSimulator.framework'`，因此 Simulator 验收仍不可用。
+
+第一次普通后台启动会退出；改用 launchd 托管后入口稳定：
+```text
+launchctl submit -l geardrop-expo-metro -- /bin/zsh -lc 'echo $$ > /tmp/geardrop-expo-metro.pid; cd ".../001-arcteryx-deals-platform/app" && npm run start -- --host lan --port 8081 >> /tmp/geardrop-expo-metro.log 2>&1'
+pid=87499
+
+curl http://192.168.50.88:8081/status
+packager-status:running
+
+lsof -nP -iTCP:8081 -sTCP:LISTEN
+node 87524 ... TCP *:8081 (LISTEN)
+
+launchctl print gui/$(id -u)/geardrop-expo-metro
+state = running
+```
+
+Metro 日志关键输出：
+```text
+Starting project at .../001-arcteryx-deals-platform/app
+Unable to run simctl:
+Error: xcrun simctl help exited with non-zero code: 72
+Starting Metro Bundler
+Waiting on http://localhost:8081
+```
+
+人工设备测试 URL：
+```text
+exp://192.168.50.88:8081
+```
+
+测试完成后停止：
+```text
+launchctl remove geardrop-expo-metro
+```
+
+### 2026-07-07 18:58 EDT codex
+
+状态：App Store Privacy Policy URL 阻塞已关闭；`https://001.100app.dev/privacy.html` 已在生产域名返回 200。
+
+执行：
+```text
+git fetch origin main
+git merge --ff-only origin/main
+# fast-forward 到 6fd62f54312e993b45f38ccfeef8e760ea4169e1，只更新 arcteryx_skus.json / data.js / global_data.json
+git add privacy.html
+git commit -m "Add GearDrop privacy policy page"
+git push origin main
+```
+
+结果：
+```text
+[main 23f56c6] Add GearDrop privacy policy page
+ 1 file changed, 172 insertions(+)
+ create mode 100644 privacy.html
+To https://github.com/noir-madlax/001-arcteryx-deals-platform.git
+   6fd62f5..23f56c6  main -> main
+```
+
+Vercel 生产部署：
+```text
+deployment=dpl_7vdAywivmeqRZBHvXBUEo2Ak35K4
+state=READY
+target=production
+commit=23f56c67e74ed9383a4d9eb0bfff5dc4edb4b2a0
+alias includes 001.100app.dev
+```
+
+Live URL 验证：
+```text
+curl -I -sS https://001.100app.dev/privacy.html
+HTTP/2 200
+content-type: text/html; charset=utf-8
+server: Vercel
+content-length: 4427
+```
+
+```text
+curl -L -sS https://001.100app.dev/privacy.html | rg -n "Privacy Policy|GearDrop|email address|third-party advertising tracking|001.100app.dev"
+<title>Privacy Policy - GearDrop</title>
+<h1>Privacy Policy</h1>
+GearDrop helps shoppers discover outdoor gear markdowns...
+When you create a price alert, GearDrop stores the email address you enter...
+GearDrop does not implement third-party advertising tracking in this version...
+```
+
+新增同步：
+- `app/APP_STORE_METADATA.md`：Privacy Policy URL 改为 live and verified。
+- `app/RELEASE_READINESS.md`：把 App Store privacy URL 标为 Proven，并记录 commit/deployment/live 200 证据。
+
+验证：
+```text
+cd app && npm run verify:config
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+```
+
+发布后完整本地 gate 复跑：
+```text
+cd app && npm run verify
+
+=== unit tests ===
+1..19
+# tests 19
+# pass 19
+
+=== config sanity ===
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+
+=== typecheck ===
+> tsc --noEmit
+
+=== expo doctor ===
+Running 20 checks on your project...
+20/20 checks passed. No issues detected!
+
+=== live data probe ===
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73296"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+
+=== iOS export ===
+iOS Bundled 4518ms node_modules/expo-router/entry.js (1439 modules)
+Exported: dist-check
+
+verify_local_ok
+```
+
+发布后清理检查：
+```text
+find app -maxdepth 2 \( -name dist-check -o -name web-check -o -name '.expo' \) -print
+无输出
+
+lsof -nP -iTCP:8081 -sTCP:LISTEN
+无输出
+```
+
+仍需完成才可关闭目标：
+- 修复 CoreSimulator root-owned stale service 或使用 iPhone / Expo Go 完成 `app/DEVICE_CHECKLIST.md`。
+- 真机/Simulator 验证无红屏、三 Tab、详情、Watchlist kill-app 持久化、Alert 本地通知展示、Buy 系统浏览器跳转。
+- Expo/EAS 登录、Apple Developer / App Store Connect 凭证、App Store app record 后完成 EAS build/submit。
+- 用户或法务确认 merchant content rights 口径。

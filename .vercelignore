@@ -1,0 +1,8 @@
+# Keep the production web deployment scoped to the existing static site.
+app/
+.agent/
+brand/
+miniprogram/
+tools/
+xhs_cards/
+project.config.json

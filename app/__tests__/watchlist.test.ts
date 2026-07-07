@@ -1,0 +1,80 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+
+import { FREE_WATCHLIST_LIMIT, parseWatchEntries, setWatchAlertTarget, toggleWatchEntry, WATCHLIST_STORAGE_KEY } from '../lib/watchlist';
+import { product } from './helpers';
+import type { WatchEntry } from '../lib/types';
+
+function entries(count: number): WatchEntry[] {
+  return Array.from({ length: count }, (_, index) => ({
+    skuId: `sku-${index}`,
+    savedAt: '2026-07-07T12:00:00.000Z',
+    savedPrice: 100 + index,
+    symbol: '$',
+  }));
+}
+
+test('watchlist storage key is stable for AsyncStorage persistence', () => {
+  assert.equal(WATCHLIST_STORAGE_KEY, 'geardrop.watchlist.v1');
+});
+
+test('parseWatchEntries tolerates empty, invalid, and non-array storage values', () => {
+  assert.deepEqual(parseWatchEntries(null), []);
+  assert.deepEqual(parseWatchEntries('not json'), []);
+  assert.deepEqual(parseWatchEntries('{"skuId":"x"}'), []);
+  assert.deepEqual(parseWatchEntries('[{"skuId":"x","savedAt":"now","savedPrice":1,"symbol":"$"}]'), [
+    { skuId: 'x', savedAt: 'now', savedPrice: 1, symbol: '$' },
+  ]);
+});
+
+test('toggleWatchEntry prepends a saved product with a price snapshot', () => {
+  const current = product({ sku_id: 'new-sku', sale_price: 180, symbol: '€' });
+  const result = toggleWatchEntry([], current, false, '2026-07-07T12:00:00.000Z');
+
+  assert.equal(result.accepted, true);
+  assert.deepEqual(result.entries[0], {
+    skuId: 'new-sku',
+    savedAt: '2026-07-07T12:00:00.000Z',
+    savedPrice: 180,
+    symbol: '€',
+  });
+});
+
+test('toggleWatchEntry removes an already-saved product', () => {
+  const current = product({ sku_id: 'sku-1' });
+  const result = toggleWatchEntry(entries(3), current, false, '2026-07-07T12:00:00.000Z');
+
+  assert.equal(result.accepted, true);
+  assert.deepEqual(result.entries.map((entry) => entry.skuId), ['sku-0', 'sku-2']);
+});
+
+test('toggleWatchEntry enforces the free watchlist limit but lets Pro exceed it', () => {
+  const full = entries(FREE_WATCHLIST_LIMIT);
+  const current = product({ sku_id: 'sku-over-limit' });
+  const freeResult = toggleWatchEntry(full, current, false, '2026-07-07T12:00:00.000Z');
+  const proResult = toggleWatchEntry(full, current, true, '2026-07-07T12:00:00.000Z');
+
+  assert.equal(freeResult.accepted, false);
+  assert.equal(freeResult.entries.length, FREE_WATCHLIST_LIMIT);
+  assert.equal(proResult.accepted, true);
+  assert.equal(proResult.entries.length, FREE_WATCHLIST_LIMIT + 1);
+  assert.equal(proResult.entries[0]?.skuId, 'sku-over-limit');
+});
+
+test('setWatchAlertTarget creates, updates, and clears local alert targets', () => {
+  const current = product({ sku_id: 'alert-sku', sale_price: 220, symbol: '£' });
+  const created = setWatchAlertTarget([], current, 150, '2026-07-07T12:00:00.000Z');
+
+  assert.deepEqual(created[0], {
+    skuId: 'alert-sku',
+    savedAt: '2026-07-07T12:00:00.000Z',
+    savedPrice: 220,
+    symbol: '£',
+    alertTarget: 150,
+  });
+
+  const cleared = setWatchAlertTarget(created, current, null, '2026-07-08T12:00:00.000Z');
+  assert.equal(cleared[0]?.skuId, 'alert-sku');
+  assert.equal(cleared[0]?.alertTarget, undefined);
+  assert.equal(cleared[0]?.savedAt, '2026-07-07T12:00:00.000Z');
+});
