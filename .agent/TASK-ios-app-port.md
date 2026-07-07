@@ -17,7 +17,7 @@
 - 产品：多品牌户外装备（当前主要 Arc'teryx）**全球 22 国 outlet + 经销商**折扣聚合 + 价格历史追踪。
 - 后端：**Supabase**（PostgREST + Postgres）。前端只用 **anon key 只读**，写操作（价格提醒订阅）也走 anon key POST。
 - 现有前端：纯 HTML/JS SPA（`index.html` 列表页 + `product-detail.html` 详情页），数据源**单一 = Supabase**（不读任何静态 JSON）。
-- 已有移植先例：仓库 `miniprogram/`（微信小程序）已经把同样的数据做成了 index/detail/favorites/webview 四页，**收藏、列表、详情的取数逻辑可直接参考**（但 UI 要重做成原生 RN）。
+- ⚠️ **不要参考 `miniprogram/`（微信小程序）的页面逻辑 / 信息架构 / 交互**——那套设计已被判定为差，本次要求**从头重新设计**（IA + 三屏 spec 见 §5）。小程序**唯一**可参考的是"同样的 Supabase 字段/查询怎么用"，页面结构一律不抄。
 - 商业定位：**海外区为主**，英文名 **GearDrop**，中文区名 **值de**，slogan "Gear that's worth it."
 - 品牌合规红线：App 名 / 副标题 / 关键词 **绝不出现** "Arc'teryx" / "始祖鸟" 商标；定位成"户外装备比价工具"，始祖鸟只是"收录品牌之一"。
 
@@ -100,31 +100,74 @@ product_name  product_url  image_url  unsubscribe_token(uuid)  notified_at(nulla
 
 ---
 
-## 5. MVP 范围（本工单只做这些）
+## 5. MVP 范围 + 重新设计规范（本工单只做这些）
 
-### 屏 1：折扣列表 `app/(tabs)/index.tsx`
-- 拉 `products` 全量（分页），默认按 `discount_pct` 降序
-- 顶部：搜索框（`q`）+ 筛选（region / gender / category / platform）
-- 卡片：主图、cleanName 名、折扣 badge（`-XX%`）、sale 价（`symbol`+价）、original 划线价、dealer 标签、region 旗/名
-- "X 天前"数据新鲜度标注（`last_updated`），>3 天标红（现有 web 版有此逻辑，照搬）
-- 点卡片 → 详情屏
+> 本次是**重新设计**，不是照搬旧 UI。Claude 已出可视化 mockup 并经用户认可，下面是该设计的落地 spec。核心理念一句话：**信号优先（signal over catalog）——每个商品都要说清"为什么现在值得看"，而不是一个静态价签。**
 
-### 屏 2：商品详情 `app/product/[skuId].tsx`
-- 大图（`images` 可轮播）、名、色、尺码（`sizes` + `size_stock` 标灰售罄）
-- 价格区：sale / original / discount_pct / 发售季度（releaseSeason）
-- **价格历史折线图**（近 90 天，取数见 2.5）—— ⭐ 付费墙在这里，见 §6
-- "去购买"按钮 → 用 `url` 字段，`expo-web-browser` 打开（**为后续联盟返佣预留**：跳转 URL 之后会包一层 affiliate wrapper，本期先直跳，但把跳转集中到一个 `openBuyUrl(url)` 函数里方便以后改）
-- "价格提醒"按钮 → 填目标价 + email/或本地推送 → INSERT `price_alerts`（见 2.4，只 INSERT）
+### 5.0 三条设计原则（贯穿所有屏，codex 必须遵守）
+1. **信号 > 目录**：每张卡片除了价格，必带一句"信号句"说明当前状态（跌了多少 / 是不是史低 / 平稳）。见 §5.4 信号文案规则。
+2. **详情页围绕"该不该买"造**：价格历史图 + 一句买入判断（verdict）是详情页的主角，不是附属。
+3. **原生手感**：底部 Tab 导航、下拉刷新、骨架屏 loading、筛选用**横滑 chip**（不是弹窗墙）、保存/提醒有轻 haptic 反馈。
 
-### 屏 3：收藏 `app/(tabs)/favorites.tsx`
-- AsyncStorage 存收藏的 sku_id 列表
-- 展示收藏商品（用 sku_id 去 products 数据里查）
-- 可参考 `miniprogram/miniprogram/pages/favorites/` 的逻辑
+### 5.1 导航：底部 3 Tab（`app/(tabs)/`，expo-router file-based）
+| Tab | 文件 | 作用 |
+|---|---|---|
+| **Deals**（发现，默认） | `(tabs)/index.tsx` | 排序过的折扣流 + 史低置顶 |
+| **Watchlist**（关注） | `(tabs)/watchlist.tsx` | 收藏 + 价格提醒，带"自收藏以来"状态 |
+| **Me**（我的） | `(tabs)/me.tsx` | Pro 状态、通知设置、关于（本期简版即可）|
 
-### 原生功能（满足 App Store 审核 4.2「不能是纯网页壳」）
-- ✅ 本地收藏（AsyncStorage）
-- ✅ 价格到价提醒 + **本地/推送通知**（`expo-notifications`，先做本地通知打通链路，APNs 远程推送可留第二期）
-- ✅ 原生列表/详情/图表（不是 WebView）
+详情是 push 屏（`app/product/[skuId].tsx`），不是 Tab。
+
+### 5.2 屏规范
+
+**① Deals `(tabs)/index.tsx`**
+- 顶部：标题 "Deals" + 搜索图标（点开搜索 `q`）
+- **横滑 filter chip 行**：Region / Category / Gender / Sort（默认 `discount_desc`）。选中态用 accent 底色，未选 hairline 边。
+- **Hero 区**："New all-time low" 标签 + 1 张最有价值的史低商品卡（用 price_history 判断，见 §5.4）
+- **折扣列表**：卡片 = 主图(圆角) + cleanName 名 + **信号句** + sale 价(`symbol`+价, danger 色) + original 划线价 + 折扣 badge `-XX%`
+- 数据新鲜度：`last_updated` >3 天的商品，信号句区域标注"X 天前"（web 版有此逻辑，语义照搬）
+- 交互：下拉刷新、点卡片 → 详情屏、列表懒加载（先加载头部 ~500 条渲染，其余分页后台补，别一次性卡 6000 条 UI）
+
+**② 详情 `app/product/[skuId].tsx`**（转化核心，按 mockup 的纵向顺序）
+1. 返回 chevron + 收藏 heart（右上）
+2. 商品图（`images` 可横滑轮播）
+3. 名（cleanName）+ 色 + 性别
+4. 价格区：sale(大, danger) / original(划线) / `-XX%` badge
+5. ⭐ **价格历史折线图**：inline SVG（同 web 版风格），画折线 + **虚线标史低** + 当前点标红。取数见 §2.5。
+6. ⭐ **买入判断 verdict**（一句，带底色 pill）：绿=可入 / 中性=再等等。判断规则见 §5.4。
+7. **跨区比价条**：`Also cheaper: UK £142 · DE €165` —— 同 model 查其他 region 的更低价（用现有 products 数据，同 `model` 不同 `region`，折算展示原币种即可，本期**不做汇率/落地价计算**，只并排列出）
+8. CTA：`Alert`（设提醒）+ `Buy`（accent）
+   - Buy → **收口到 `openBuyUrl(url)` 单一函数**（`expo-web-browser` 打开 `url`；为后续联盟返佣包一层预留，本期直跳）
+   - Alert → 填目标价 → INSERT `price_alerts`（见 §2.4，**只 INSERT，绝不 SELECT 别人的行**）
+
+**③ Watchlist `(tabs)/watchlist.tsx`**
+- AsyncStorage 存收藏 sku_id 列表
+- 每行：主图 + 名 + **"自收藏以来"状态**（`↓22% since you saved` 绿 / `No change since saved` 中性；对比收藏时存的价格快照）+ 当前价
+- 已设提醒的商品显示提醒行（`Alert at $150`）
+- 底部内嵌 Pro 引导（"Unlimited alerts with Pro"），点开 paywall
+
+**④ Me `(tabs)/me.tsx`**（本期简版）
+- Pro 状态（读 `usePro()`）+ "Upgrade to Pro" 入口（打开 paywall 屏）
+- 通知开关（本地）、关于/隐私政策链接
+
+### 5.3 需照搬的纯函数（移植成 `app/lib/*.ts`，来源见 §2.5）
+`cleanName` / `inferCategory` / `releaseSeason` / 价格展示（symbol+划线）/ `platformKey`(dealer→展示名)。
+
+### 5.4 信号文案规则（signal copy —— 这是"信号优先"的落地，codex 按此实现）
+对每个商品，用它的 `price_history`（近 90 天，同 §2.5 查询）算出信号，优先级从高到低取第一个命中：
+1. **史低**：当前 sale ≤ 历史最低 → `All-time low` / Hero 用 `New all-time low`（绿）
+2. **近期低点**：当前 sale ≤ 近 90 天最低 → `90-day low`（绿）
+3. **刚降价**：当前 sale < 最近一条历史记录的 sale → `↓ $X today`（绿，X=差额）
+4. **平稳**：其余 → `Steady · not a low`（中性灰）
+5. **数据不足**（history <2 点）→ 不显示信号句，只显示折扣
+
+**买入 verdict（详情页）**：史低/90天低 → `Good time to buy — at/near all-time low`（success 底）；否则 → `Often cheaper — consider waiting`（中性底）。
+
+### 5.5 原生功能（满足 App Store 审核 4.2「不能是纯网页壳」）
+- ✅ 原生列表/详情/图表（RN 组件 + SVG，**不是 WebView**）
+- ✅ 本地收藏（AsyncStorage）+ "自收藏以来"价格 diff
+- ✅ 价格到价提醒：`expo-notifications` 先打通**本地通知**链路（APNs 远程推送留第二期）
+- ✅ 下拉刷新、骨架屏、haptic 反馈
 
 ---
 
@@ -152,13 +195,14 @@ product_name  product_url  image_url  unsubscribe_token(uuid)  notified_at(nulla
 ## 7. 验收标准（codex 自测 + Claude 复核都按这个跑）
 
 1. `cd app && npx expo start` 能起，手机 Expo Go 扫码能打开，**无红屏报错**。
-2. 列表屏：真实加载 ≥ 5000 条 Supabase 商品；默认按折扣降序；搜 "beta" 有结果；切 region=de 商品变欧元价（`symbol=€`）。
-3. 详情屏：点任一商品进入，显示价格历史折线（真实 price_history 数据，非 mock）；`usePro()=false` 时只显示 30 天 + 遮罩，`=true` 时显示完整曲线 + 史低 badge。
-4. 收藏：点收藏 → kill App 重开 → 收藏还在（AsyncStorage 持久化）。
-5. 价格提醒：填目标价提交 → Supabase `price_alerts` 表新增 1 行（用 anon key INSERT 成功，返回 2xx）。
-6. "去购买"：点击用系统浏览器打开该商品 `url`。
-7. `npx tsc --noEmit` 无类型错误；`npx expo-doctor` 无致命问题。
-8. 提交前 `app/` 下 `node_modules` 未被 git add。
+2. **底部 3 Tab**（Deals / Watchlist / Me）可切换，Deals 为默认。
+3. Deals 屏：真实加载 ≥ 5000 条 Supabase 商品；默认按折扣降序；横滑 filter chip 可切 region（切 de 商品变欧元价 `symbol=€`）；搜 "beta" 有结果；**卡片显示信号句**（史低/90天低/↓$X today/Steady 之一，来自真实 price_history）；顶部有 "New all-time low" hero。
+4. 详情屏：点商品进入，显示价格历史折线（真实 price_history，非 mock）+ 虚线史低 + **买入 verdict 一句** + **跨区比价条**（同 model 其他 region 更低价）；`usePro()=false` 只显示 30 天 + 遮罩，`=true` 显示完整曲线 + 史低 badge。
+5. Watchlist：收藏后 kill App 重开仍在（AsyncStorage 持久化）；每行显示"自收藏以来" price diff。
+6. 价格提醒：填目标价提交 → Supabase `price_alerts` 新增 1 行（anon key INSERT，2xx）；本地通知链路能触发一条测试通知。
+7. "Buy"：点击经 `openBuyUrl(url)` 用系统浏览器打开该商品 `url`。
+8. `npx tsc --noEmit` 无类型错误；`npx expo-doctor` 无致命问题。
+9. 提交前 `app/` 下 `node_modules` 未被 git add。
 
 > 交付时在工单末尾"进度/交付"区**贴出每条验收的实际运行结果**（截图或日志），未跑过的不许写"通过"。
 
