@@ -1,0 +1,196 @@
+<style>
+  :root{
+    --studio:#E7E9E4; --studio-line:rgba(20,25,28,.05);
+    --card:#FFFFFF; --sub:#F6F7F4; --ink:#15181B; --ink-2:#3B4147;
+    --muted:#7B838B; --faint:#A7ADB2; --hair:rgba(20,25,28,.10); --hair-2:rgba(20,25,28,.15);
+    --buy:#1E7A52; --buy-bg:#E6F0E9; --buy-line:#AFD3BF;
+    --disc:#B5362A;
+    --pill:#15181B; --on-pill:#F6F7F4;
+    --topo:rgba(20,25,28,.07);
+    --shadow:0 1px 2px rgba(16,20,24,.05), 0 16px 40px -14px rgba(16,20,24,.24);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --studio:#0A0C0D; --studio-line:rgba(255,255,255,.035);
+      --card:#1D2124; --sub:#141719; --ink:#ECEEE9; --ink-2:#C4C9CD;
+      --muted:#8B9197; --faint:#6A7076; --hair:rgba(255,255,255,.11); --hair-2:rgba(255,255,255,.17);
+      --buy:#5FBE8D; --buy-bg:#16281F; --buy-line:#2C4A39;
+      --disc:#F08579;
+      --pill:#ECEEE9; --on-pill:#141719;
+      --topo:rgba(255,255,255,.06);
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 20px 44px -16px rgba(0,0,0,.65);
+    }
+  }
+  :root[data-theme="light"]{
+    --studio:#E7E9E4; --studio-line:rgba(20,25,28,.05); --card:#FFFFFF; --sub:#F6F7F4;
+    --ink:#15181B; --ink-2:#3B4147; --muted:#7B838B; --faint:#A7ADB2;
+    --hair:rgba(20,25,28,.10); --hair-2:rgba(20,25,28,.15);
+    --buy:#1E7A52; --buy-bg:#E6F0E9; --buy-line:#AFD3BF; --disc:#B5362A;
+    --pill:#15181B; --on-pill:#F6F7F4; --topo:rgba(20,25,28,.07);
+    --shadow:0 1px 2px rgba(16,20,24,.05), 0 16px 40px -14px rgba(16,20,24,.24);
+  }
+  :root[data-theme="dark"]{
+    --studio:#0A0C0D; --studio-line:rgba(255,255,255,.035); --card:#1D2124; --sub:#141719;
+    --ink:#ECEEE9; --ink-2:#C4C9CD; --muted:#8B9197; --faint:#6A7076;
+    --hair:rgba(255,255,255,.11); --hair-2:rgba(255,255,255,.17);
+    --buy:#5FBE8D; --buy-bg:#16281F; --buy-line:#2C4A39; --disc:#F08579;
+    --pill:#ECEEE9; --on-pill:#141719; --topo:rgba(255,255,255,.06);
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 20px 44px -16px rgba(0,0,0,.65);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  .wrap{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",system-ui,sans-serif;
+    background:var(--studio);
+    background-image:repeating-radial-gradient(circle at 82% 6%, transparent 0 36px, var(--studio-line) 36px 37px);
+    color:var(--ink); padding:38px 22px 46px; min-height:100%;
+    display:flex; flex-direction:column; align-items:center; -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+
+  .topbar{width:100%;max-width:452px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .brandline{display:flex;align-items:center;gap:9px}
+  .eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .toggle{font-family:inherit;font-size:11.5px;color:var(--ink-2);background:var(--card);border:1px solid var(--hair-2);
+    border-radius:20px;padding:6px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .toggle:hover{border-color:var(--muted)}
+  .toggle:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+  .card{width:100%;max-width:452px;background:var(--card);border:1px solid var(--hair);border-radius:26px;
+    box-shadow:var(--shadow);overflow:hidden}
+  .head{padding:28px 26px 22px;border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+  .head::after{content:"";position:absolute;inset:0;background-image:repeating-radial-gradient(circle at 86% 120%, transparent 0 22px, var(--topo) 22px 23px);pointer-events:none}
+  .kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;position:relative}
+  .head h1{font-size:26px;font-weight:700;letter-spacing:-.025em;line-height:1.12;margin-top:9px;text-wrap:balance;position:relative;max-width:15ch}
+  .head p{font-size:13.5px;color:var(--muted);margin-top:9px;line-height:1.5;max-width:34ch;position:relative}
+
+  .colhd{display:grid;grid-template-columns:1fr 74px 84px;align-items:center;padding:13px 26px 11px;gap:6px}
+  .colhd .sp{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .colhd .free{text-align:center;font-size:12px;font-weight:600;color:var(--muted)}
+  .colhd .pro{text-align:center;font-size:12px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:5px}
+  .colhd .pro .badge{width:16px;height:16px;border-radius:5px;background:var(--pill);color:var(--on-pill);display:flex;align-items:center;justify-content:center}
+
+  .rows{padding:0 26px}
+  .row{display:grid;grid-template-columns:1fr 74px 84px;align-items:center;gap:6px;padding:13px 0;border-top:1px solid var(--hair)}
+  .row .feat{display:flex;flex-direction:column;gap:2px}
+  .row .feat .t{font-size:13.5px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
+  .row .feat .d{font-size:11.5px;color:var(--muted);line-height:1.35}
+  .cell{text-align:center;font-size:12px;font-weight:600}
+  .cell.free{color:var(--muted)}
+  .cell.pro{color:var(--buy)}
+  .cell .val{font-size:12.5px;font-weight:700}
+  .cell.freeval{color:var(--ink-2)}
+  .dash{color:var(--faint);font-size:15px;line-height:1}
+  .tick{color:var(--buy)}
+  .lock{color:var(--faint)}
+  .star{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--disc);letter-spacing:.02em;margin-left:6px;vertical-align:1px}
+
+  .price{margin:6px 26px 0;padding:18px 0 4px;border-top:1px solid var(--hair);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .price .big{font-size:24px;font-weight:700;letter-spacing:-.02em}
+  .price .per{font-size:13px;color:var(--muted);font-weight:500}
+  .price .alt{font-size:12.5px;color:var(--muted)}
+  .price .alt b{color:var(--ink-2);font-weight:700}
+  .price .save{font-size:10.5px;font-weight:700;color:var(--buy);background:var(--buy-bg);border:1px solid var(--buy-line);border-radius:6px;padding:2px 7px}
+
+  .cta{margin:16px 26px 26px;display:flex;flex-direction:column;gap:8px}
+  .go{display:flex;align-items:center;justify-content:center;gap:7px;font-size:14.5px;font-weight:600;
+    padding:14px 0;border-radius:14px;background:var(--pill);color:var(--on-pill);border:1px solid var(--pill)}
+  .fine{text-align:center;font-size:11px;color:var(--faint)}
+
+  .foot{max-width:452px;width:100%;margin-top:16px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.6}
+  .foot b{color:var(--ink-2);font-weight:600}
+</style>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brandline">
+      <svg viewBox="0 0 26 26" width="24" height="24" aria-hidden="true"><path d="M2 21 L9.5 7 L14 15 L17.5 9.5 L24 21 Z" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linejoin="round"/><line x1="2" y1="21" x2="24" y2="21" stroke="var(--ink)" stroke-width="1.5"/></svg>
+      <span class="eyebrow">值de · GearDrop — Pro</span>
+    </div>
+    <button class="toggle" id="tg" aria-label="Toggle light and dark theme">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>Theme
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="head">
+      <div class="kicker">Know the price. Time the buy.</div>
+      <h1>Never overpay for gear again.</h1>
+      <p>Free finds the deal. Pro tells you if it's actually the lowest it's ever been — and pings you the moment it drops.</p>
+    </div>
+
+    <div class="colhd">
+      <span class="sp">What you get</span>
+      <span class="free">Free</span>
+      <span class="pro"><span class="badge" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>Pro</span>
+    </div>
+
+    <div class="rows">
+      <div class="row">
+        <div class="feat"><span class="t">Browse deals, search &amp; filter</span><span class="d">22 countries, all dealers</span></div>
+        <div class="cell free"><span class="tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span></div>
+        <div class="cell pro"><span class="tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span></div>
+      </div>
+
+      <div class="row">
+        <div class="feat"><span class="t">Price history <span class="star"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.4L21 9l-5 4.3L17.6 20 12 16.3 6.4 20 8 13.3 3 9l6.6-.6z"/></svg>core</span></span><span class="d">See where today's price really sits</span></div>
+        <div class="cell freeval"><span class="val mono">30d</span></div>
+        <div class="cell pro"><span class="val">Full</span></div>
+      </div>
+
+      <div class="row">
+        <div class="feat"><span class="t">All-time-low signal <span class="star"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.4L21 9l-5 4.3L17.6 20 12 16.3 6.4 20 8 13.3 3 9l6.6-.6z"/></svg>core</span></span><span class="d">"Good time to buy" verdict on every item</span></div>
+        <div class="cell free"><span class="lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span></div>
+        <div class="cell pro"><span class="tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span></div>
+      </div>
+
+      <div class="row">
+        <div class="feat"><span class="t">Price-drop alerts</span><span class="d">Set a target, get notified</span></div>
+        <div class="cell freeval"><span class="val mono">1</span></div>
+        <div class="cell pro"><span class="val">Unlimited</span></div>
+      </div>
+
+      <div class="row">
+        <div class="feat"><span class="t">Alert speed</span><span class="d">How fast you hear about a drop</span></div>
+        <div class="cell freeval"><span class="val">Daily</span></div>
+        <div class="cell pro"><span class="val">Instant</span></div>
+      </div>
+
+      <div class="row">
+        <div class="feat"><span class="t">Cross-region landed cost</span><span class="d">Cheapest country incl. shipping &amp; tax</span></div>
+        <div class="cell free"><span class="lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span></div>
+        <div class="cell pro"><span class="tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span></div>
+      </div>
+
+      <div class="row">
+        <div class="feat"><span class="t">Saved items &amp; ads</span><span class="d">Watchlist size · no ads on Pro</span></div>
+        <div class="cell freeval"><span class="val mono">20</span></div>
+        <div class="cell pro"><span class="val">Unlimited</span></div>
+      </div>
+    </div>
+
+    <div class="price">
+      <span><span class="big mono">$3.99</span> <span class="per">/ mo</span></span>
+      <span class="alt">or <b class="mono">$23.99</b>/yr</span>
+      <span class="save">Save 50%</span>
+      <span class="alt">·&nbsp; Lifetime <b class="mono">$49.99</b></span>
+    </div>
+
+    <div class="cta">
+      <span class="go">Start 7-day free trial<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <span class="fine">Cancel anytime · billed through the App Store</span>
+    </div>
+  </div>
+
+  <div class="foot"><b>核心付费墙</b> = 完整价格历史 + 史低信号(带 ★ core)。其余为路线图,上架时按已实现功能裁剪。</div>
+</div>
+
+<script>
+  (function(){
+    var b=document.getElementById('tg');
+    b.addEventListener('click',function(){
+      var r=document.documentElement, cur=r.getAttribute('data-theme');
+      if(!cur){cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+      r.setAttribute('data-theme', cur==='dark'?'light':'dark');
+    });
+  })();
+</script>

@@ -107,7 +107,8 @@ product_name  product_url  image_url  unsubscribe_token(uuid)  notified_at(nulla
 ### 5.0 三条设计原则（贯穿所有屏，codex 必须遵守）
 1. **信号 > 目录**：每张卡片除了价格，必带一句"信号句"说明当前状态（跌了多少 / 是不是史低 / 平稳）。见 §5.4 信号文案规则。
 2. **详情页围绕"该不该买"造**：价格历史图 + 一句买入判断（verdict）是详情页的主角，不是附属。
-3. **原生手感**：底部 Tab 导航、下拉刷新、骨架屏 loading、筛选用**横滑 chip**（不是弹窗墙）、保存/提醒有轻 haptic 反馈。
+3. **原生手感**：底部 Tab 导航、下拉刷新、骨架屏 loading、保存/提醒有轻 haptic 反馈。
+4. **筛选不堆成一坨**（用户明确否决旧的 filter chip 一大坨）：**区域=标题栏 pill**（全局上下文，不是逐次筛选）、**排序=单独下拉**、**品类/性别/品牌=一个 filter 图标→底部 sheet**；选中的筛选才以小可删 chip 出现，默认态干净。见 §5.2。
 
 ### 5.1 导航：底部 3 Tab（`app/(tabs)/`，expo-router file-based）
 | Tab | 文件 | 作用 |
@@ -120,13 +121,13 @@ product_name  product_url  image_url  unsubscribe_token(uuid)  notified_at(nulla
 
 ### 5.2 屏规范
 
-**① Deals `(tabs)/index.tsx`**
-- 顶部：标题 "Deals" + 搜索图标（点开搜索 `q`）
-- **横滑 filter chip 行**：Region / Category / Gender / Sort（默认 `discount_desc`）。选中态用 accent 底色，未选 hairline 边。
-- **Hero 区**："New all-time low" 标签 + 1 张最有价值的史低商品卡（用 price_history 判断，见 §5.4）
-- **折扣列表**：卡片 = 主图(圆角) + cleanName 名 + **信号句** + sale 价(`symbol`+价, danger 色) + original 划线价 + 折扣 badge `-XX%`
-- 数据新鲜度：`last_updated` >3 天的商品，信号句区域标注"X 天前"（web 版有此逻辑，语义照搬）
-- 交互：下拉刷新、点卡片 → 详情屏、列表懒加载（先加载头部 ~500 条渲染，其余分页后台补，别一次性卡 6000 条 UI）
+**① Deals `(tabs)/index.tsx`**（服装类 App 布局，见 v3 竖版 mockup）
+- **顶栏**：标题 "Deals"（左）+ **region pill**（右，国旗+区名+`⌄`，点开切区域）
+- **搜索框**（`q`）
+- **控制行**：`Sort: Biggest drop ⌄` 单独下拉（左，默认 `discount_desc`）+ **filter 图标按钮**（右，有激活筛选时红点）。点 filter → 底部 sheet 选 品类/性别/品牌；选中的以小可删 chip 出现在控制行下方，默认态无 chip。**不要横排 chip 一大坨。**
+- **主体 = 2 列竖版网格**（apparel 原生）：每卡 = **4:5 竖图 tile** + 图上叠折扣 badge`-XX%`(左上)或史低 ribbon + region 旗(右上)；图下放 cleanName 名 + 价（sale `disc` 色等宽 + original 划线等宽）+ **信号句**（见 §5.4）。图片规范见 §5.6。
+- 数据新鲜度：`last_updated` >3 天，信号句显示"Seen X days ago"（`faint` 色）
+- 交互：下拉刷新、点卡 → 详情屏、懒加载（先渲染头部 ~500 条，其余后台分页补，别一次性卡 6000 条 UI）
 
 **② 详情 `app/product/[skuId].tsx`**（转化核心，按 mockup 的纵向顺序）
 1. 返回 chevron + 收藏 heart（右上）
@@ -190,7 +191,11 @@ pill(主按钮)   ink 反色（浅=近黑底白字 / 深=近白底黑字）
 - UI 文本 = iOS 系统字体（`-apple-system` / SF Pro，RN 里即默认 `System`）
 - **价格 / 折扣% / 日期等数字 = 等宽 + tabular-nums**（`SF Mono`/`ui-monospace`），让数字像 spec sheet 一样对齐。这是"仪器感"的关键，别用比例字体排价格。
 
-**商品图占位**：真实图用 `image_url`；加载中/无图时用**等高线纹理占位**（同心环 `repeating-radial-gradient(circle, transparent, var(--topo))` + 左下角小品类标签），呼应高山户外，别用灰色空图标。
+**商品图（竖版！apparel 货源图基本是 4:5 竖图，别塞方框裁掉衣服）**：
+- **统一 `aspectRatio: 4/5`** 所有图位（列表网格 / 详情 hero / 收藏缩略），一个比例贯穿全 App
+- **固定浅色相框**：图 tile 底色 `--photo:#F1F0EC`（暖浅中性），**不随深色主题翻转**——UI 变深色，商品照片仍待在浅色框里，避免白底商品图在深色卡上变刺眼白块（Ssense/Net-a-Porter 同款）。凡是叠在图 tile 上的东西（折扣 badge/品类标签/史低 ribbon）都用**固定色**（tile 不翻转）：`--onphoto-disc:#A6321F`、badge 底 `rgba(255,255,255,.9)`、品类标签 `--photo-cat:#938E84`
+- 缩放：`expo-image` 的 `contentFit="cover"` 居中（4:5 源进 4:5 框≈零裁；更高的源丢一点下摆可接受）。用 **`expo-image` 不用 RN Image**（缓存 + blurhash 占位）
+- 加载中/无图：落回**等高线纹理占位**（同心环 `repeating-radial-gradient(circle, transparent, var(--photo-topo))` + 左下角小品类标签），呼应高山户外，别用灰色空图标
 
 **组件处理（对齐 mockup）**：
 - 折扣 badge：`-XX%` 等宽，`disc` 色字 + `disc-bg` 底 + `disc-line` 细边，圆角 6px
@@ -226,19 +231,39 @@ pill(主按钮)   ink 反色（浅=近黑底白字 / 深=近白底黑字）
 - **付费墙用 stub**：先做 `usePro()` hook（读本地一个 flag，暂时可手动切 true/false 测试两种态），**真实 Apple IAP 接入留下一期**（需要 Apple Developer 账号，属用户侧阻塞）。
 - 定价文案（写死在 paywall 屏，暂不接支付）：`Pro $3.99/月 · $23.99/年 · Lifetime $49.99`。
 
+### 付费墙这一屏 `app/paywall.tsx`（设计已认可，见 paywall mockup）
+从 详情图遮罩 / Watchlist "无限提醒" / Me "Upgrade" 三处入口打开。同一套视觉 token（§5.6），纵向结构：
+1. **顶部价值主张**：kicker `Know the price. Time the buy.` + 大标题 `Never overpay for gear again.` + 一句副文 `Free finds the deal. Pro tells you if it's actually the lowest it's ever been — and pings you the moment it drops.`（英文，配海外区）
+2. **Free vs Pro 对照表**（三列：功能 / Free / Pro）：
+   | 功能 | Free | Pro |
+   |---|---|---|
+   | Browse deals, search & filter | ✓ | ✓ |
+   | Price history ★core | 30d | Full |
+   | All-time-low signal ★core | 🔒 | ✓ |
+   | Price-drop alerts | 1 | Unlimited |
+   | Alert speed | Daily | Instant |
+   | Cross-region landed cost | 🔒 | ✓ |
+   | Saved items & no ads | 20 | Unlimited |
+   - **`★core` 两项 = 本期真正实现的付费墙**（完整价格历史 + 史低信号）。其余是路线图。
+   - ⚠️ **App Store 合规**：提审前，把当前版本**未实现的行从对照表删掉**（Apple 4.x 拒"宣传了没做的功能"）。所以对照表要**数据驱动**（一个 `PRO_FEATURES` 数组，标 `shipped: true/false`，非 shipped 的在生产构建里隐藏），别把七行写死。
+3. **定价行**：`$3.99/mo` · `$23.99/yr（Save 50%）` · `Lifetime $49.99`（数字等宽）
+4. **CTA**：`Start 7-day free trial →`（stub，暂不接支付）+ 小字 `Cancel anytime · billed through the App Store`
+- 视觉参考：`.agent/geardrop-paywall.html`（Claude 已交付的高保真对照图，浅/深双主题）。
+
 ---
 
 ## 7. 验收标准（codex 自测 + Claude 复核都按这个跑）
 
 1. `cd app && npx expo start` 能起，手机 Expo Go 扫码能打开，**无红屏报错**。
 2. **底部 3 Tab**（Deals / Watchlist / Me）可切换，Deals 为默认。
-3. Deals 屏：真实加载 ≥ 5000 条 Supabase 商品；默认按折扣降序；横滑 filter chip 可切 region（切 de 商品变欧元价 `symbol=€`）；搜 "beta" 有结果；**卡片显示信号句**（史低/90天低/↓$X today/Steady 之一，来自真实 price_history）；顶部有 "New all-time low" hero。
-4. 详情屏：点商品进入，显示价格历史折线（真实 price_history，非 mock）+ 虚线史低 + **买入 verdict 一句** + **跨区比价条**（同 model 其他 region 更低价）；`usePro()=false` 只显示 30 天 + 遮罩，`=true` 显示完整曲线 + 史低 badge。
-5. Watchlist：收藏后 kill App 重开仍在（AsyncStorage 持久化）；每行显示"自收藏以来" price diff。
+3. Deals 屏：真实加载 ≥ 5000 条 Supabase 商品；默认按折扣降序；**是 2 列竖版网格**，图位 **4:5 竖图 + 固定浅色相框**（切深色主题图框不翻转）；**region 是标题栏 pill**（切 de 商品变欧元价 `symbol=€`），**没有横排 filter chip 一大坨**；搜 "beta" 有结果；**卡片显示信号句**（史低/90天低/↓$X today/Steady 之一，来自真实 price_history）。
+4. 详情屏：**4:5 竖版 hero**（图不裁切）；显示价格历史折线（真实 price_history，非 mock）+ 虚线史低 + **买入 verdict 一句** + **跨区比价条**（同 model 其他 region 更低价）；`usePro()=false` 只显示 30 天 + 遮罩，`=true` 显示完整曲线 + 史低 badge。
+5. Watchlist：收藏后 kill App 重开仍在（AsyncStorage 持久化）；每行显示"自收藏以来" price diff；缩略图 4:5。
 6. 价格提醒：填目标价提交 → Supabase `price_alerts` 新增 1 行（anon key INSERT，2xx）；本地通知链路能触发一条测试通知。
-7. "Buy"：点击经 `openBuyUrl(url)` 用系统浏览器打开该商品 `url`。
-8. `npx tsc --noEmit` 无类型错误；`npx expo-doctor` 无致命问题。
-9. 提交前 `app/` 下 `node_modules` 未被 git add。
+7. **付费墙 `paywall.tsx`**：三处入口（详情遮罩/Watchlist/Me）能打开；显示价值主张 + Free/Pro 对照 + 定价 + CTA；对照表**数据驱动**，非 `shipped` 的行在生产构建隐藏（只剩 ★core 两项 + 已实现项）。
+8. "Buy"：点击经 `openBuyUrl(url)` 用系统浏览器打开该商品 `url`。
+9. `npx tsc --noEmit` 无类型错误；`npx expo-doctor` 无致命问题。
+10. 提交前 `app/` 下 `node_modules` 未被 git add。
 
 > 交付时在工单末尾"进度/交付"区**贴出每条验收的实际运行结果**（截图或日志），未跑过的不许写"通过"。
 
@@ -1666,3 +1691,197 @@ cd app && npm run verify:live-data
 "paginated_products_loaded": 6108
 "beta_result_count": 333
 ```
+
+### 2026-07-08 08:24 EDT codex
+
+状态：完成设计改造 pass；本轮只改 `app/` 交互/视觉层，未改后端、Supabase schema、RLS 或数据同步逻辑。保留 `ProductsContext` / `WatchlistContext` / `ProContext`、Supabase helper、signals、watchlist、alerts、paywall 路径。
+
+本轮改动：
+- `FilterChips` 不再渲染 Source/Region/Category/Gender/Series/Sort 六排 chip 墙；默认态只显示 `Sort` 文本下拉 + filter 图标。Category/Gender/Brand 放到底部 sheet；只有已选筛选显示可删除小 chip。
+- Region 从筛选 chip 改到 Deals 标题栏右上 pill；点击后底部 sheet 切 region。Sort 单独下拉。
+- `app/lib/theme.ts` 替换为 §5.6 token：浅/深双主题 token、折扣红 `disc`、买入绿 `buy`、hairline、pill、topo、等宽数字 typography；iOS 用动态颜色承载深色模式。
+- 新增 `TopoPlaceholder`，商品图缺失/加载失败时显示等高线纹理占位；缩略图加 hairline 和品类标签，避免白底真实图看起来像空白。
+- Deals 改成 mockup 的单列信号流：hero 为绿色信号卡，列表用 hairline 分隔，价格/折扣等宽 tabular-nums。
+- Product 详情按 mockup 重排：紧凑图框、内联价格、价格图、verdict、`Also cheaper:` 行、Alert/Buy CTA；价格图改为 muted 折线、faint 史低虚线、disc 当前点光圈。
+- Watchlist 改成 mockup 的行结构：图 + 名 + 自收藏以来状态 + 当前价 + inline alert；Pro 引导改为底部内嵌卡。
+- 底部 tab bar 调整为 mockup 的安静 hairline 风格，Deals icon 改 star outline。
+- Web smoke 暴露 `expo-notifications.getLastNotificationResponse()` 在 Web 不可用；已在 root layout 加 `Platform.OS === 'web'` guard。iOS notification observer 路径不变。
+
+§7 验收自测结果：
+1. `expo start`：已跑。8081 被既有 node 进程占用（`node 87524 ... TCP *:8081 (LISTEN)`），本轮接受 Expo 备用端口 8082：
+```text
+cd app && npx expo start --host lan --port 8081
+› Port 8081 is being used by another process
+✔ Use port 8082 instead? … yes
+› Metro: exp://192.168.50.88:8082
+› Web: http://localhost:8082
+
+curl -sS http://192.168.50.88:8082/status
+packager-status:running
+```
+本轮未做 iPhone / Expo Go 扫码无红屏验收；只确认 Metro 可起。8082 已停止，8081 既有进程未擅自杀。
+
+2. 底部 3 Tab：Web smoke 已切 Watchlist 并返回，Deals 默认可见；截图：
+```text
+/tmp/geardrop-deals-mobile.png
+/tmp/geardrop-watchlist-mobile.png
+```
+
+3. Deals：自动 gate + Web smoke 已覆盖真实数据、排序、region、搜索、信号句和 hero：
+```text
+cd app && npm run verify
+"products_content_range": "0-0/6108"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+"signal_sample": {"sku_id":"kopec-mid-gtx-boot-0029_Black_Nightscape_be","kind":"steady","label":"Steady · not a low","history_rows":4}
+```
+Web smoke 结果：
+```json
+{
+  "defaultHasFilterClump": false,
+  "defaultHasRegionPill": true,
+  "defaultHasSortDropdown": true,
+  "filterSheetHasRequiredSections": true,
+  "filterSheetHasSeries": false,
+  "regionSwitchToGermanyShowedEuro": true,
+  "searchBetaExercised": true
+}
+```
+
+4. 详情屏：直接打开真实 SKU route 复核：
+```text
+http://localhost:8082/product/beta-ar-jacket-9906_Olive_Moss_Euphoria_de
+hasVerdict=true
+hasAlsoCheaper=true
+errors=[]
+first lines include:
+Price history
+Not enough price history yet
+Often cheaper — consider waiting
+Also cheaper:
+United Kingdom £360
+Alert
+Buy
+```
+说明：该 SKU history 不足，图表空态如实显示；verdict 已按 §5.4 归到中性 `Often cheaper — consider waiting`。完整价格历史/跨区样本仍由 `verify:live-data` 覆盖：
+```text
+"price_history_content_range": "0-0/73313"
+"cheaper_region_sample": {"base":{"region":"be","price":130,"symbol":"€"},"cheaper":[{"region":"gb","price":117,"symbol":"£"}]}
+```
+
+5. Watchlist：Web smoke 从 Deals 保存 1 个商品后切到 Watchlist，截图 `/tmp/geardrop-watchlist-mobile.png` 显示 `1 saved · 0 alert armed` 和 `No change since saved`。本轮未做 kill App 重开持久化；持久化逻辑未改，单元测试仍覆盖 storage key / toggle / snapshot。
+
+6. 价格提醒：本轮未向 live `price_alerts` 插入测试行，原因是会写生产数据且未获新的测试 email / 清理边界授权。合同测试仍通过：
+```text
+cd app && npm test
+# tests 23
+# pass 23
+```
+其中 `priceAlerts.test.ts` 覆盖 `POST /rest/v1/price_alerts`、`Prefer: return=minimal`、失败只抛一次。
+
+7. Buy：本轮未重新点击系统浏览器；`verify:config` 静态断言仍通过：
+```text
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+```
+断言包含 `openBuyUrl(currentProduct.url)` 与 `WebBrowser.openBrowserAsync(url)`。上一轮 Simulator 已有 Buy 打开 `outlet.arcteryx.com` 证据，本轮未改变该逻辑。
+
+8. 静态/本地 gate：通过。
+```text
+cd app && npm run verify
+
+# tests 23
+# pass 23
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+20/20 checks passed. No issues detected!
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73313"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+iOS Bundled 5144ms node_modules/expo-router/entry.js (1441 modules)
+verify_local_ok
+```
+
+9. `node_modules` 未被 git add：未 staging；当前 `git status --short` 只显示本轮修改的 app 源文件和既有未跟踪相邻目录，未出现 staged `app/node_modules`。临时 `dist-check` / `web-check` 清理检查无输出：
+```text
+find app -maxdepth 2 \( -name dist-check -o -name web-check \) -print
+# no output
+```
+
+视觉对照：
+```text
+accepted mockup: /tmp/geardrop-accepted-mockup.png
+Deals: /tmp/geardrop-deals-mobile.png
+Filtered Deals: /tmp/geardrop-deals-filtered-mobile.png
+Watchlist: /tmp/geardrop-watchlist-mobile.png
+Product: /tmp/geardrop-product-mobile.png
+```
+人工目检结果：默认 Deals 已无 chip 墙；Region pill / Sort / Filter sheet 结构对齐 mockup；红色只用于价格/折扣，绿色只用于买入/低价信号；价格和折扣使用等宽 tabular-nums；Watchlist 与详情页层级对齐 mockup。剩余视觉差异：Web 截图中真实商品白底图较弱，因此本轮给缩略图补了 hairline 与品类标签；原生 iOS 真机上仍建议复看真实图片加载效果。
+
+### 2026-07-08 09:24 EDT codex
+
+状态：修复详情页 product hero 图片回归。问题表现为 `/tmp/geardrop-product-mobile.png` 顶部只剩白框；原因是详情页有远程 URL 时不会显示兜底，且 `images[]` 可能覆盖更可靠的 `image_url`。
+
+本轮改动：
+- `app/app/product/[skuId].tsx` 详情页图片候选改为 `image_url` 优先，再合并 `images[]` 去重。
+- 每张详情图底层先铺 `TopoPlaceholder`；真实图加载成功后覆盖；`Image.onError` 记录失败 URL。
+- 失败 URL 会从当前轮播候选中移除，下一张可加载图片自动顶上；只有所有候选失败时才显示等高线占位。
+
+验证已跑：
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm test
+# tests 23
+# pass 23
+```
+
+Web 截图复核：
+```text
+url http://127.0.0.1:8081/product/evo:products%2F247080-arc-teryx-beta-ar-jacket-women-s
+visible first image:
+src=https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1178327.jpg?v=1767736398
+complete=true
+naturalWidth=1500
+naturalHeight=1500
+viewport rect=360x170 at top=50
+screenshot=/tmp/geardrop-product-mobile.png
+```
+
+限制说明：Web/headless Chromium 对部分 REI 图片仍报 `ERR_HTTP2_PROTOCOL_ERROR`；现在这类坏图不会造成白屏，会自动让位给下一张可加载图片或显示等高线占位。未改后端、Supabase schema、RLS 或爬虫数据。
+
+### 2026-07-08 10:01 EDT codex
+
+状态：修复 Deals 列表页缩略图列。问题表现为 `/tmp/geardrop-deals-mobile.png` 列表卡片只剩纯文本，没有商品图或占位；原因是 `DealCard` 缩略图容器使用 `flex: 0`，在 React Native Web 上被压成 0 宽。
+
+本轮改动：
+- `app/components/DealCard.tsx` 缩略图容器改为固定宽高 + `flexShrink: 0`，恢复列表/hero 缩略图列。
+- 列表卡片也改为 `image_url` 优先合并 `images[]` 去重；坏图 `onError` 后自动尝试下一张，所有候选失败时保留等高线占位。
+- `app/components/TopoPlaceholder.tsx` 增加 `showLabel`，避免卡片/详情已有 overlay 标签时重复绘制品类文字。
+- `app/app/product/[skuId].tsx` 详情页同步关闭 `TopoPlaceholder` 内置标签，只保留外层统一 overlay。
+
+验证已跑：
+```text
+cd app && npm run typecheck
+> tsc --noEmit
+退出码 0
+```
+
+```text
+cd app && npm test
+# tests 23
+# pass 23
+```
+
+Web 截图复核：
+```text
+screenshot=/tmp/geardrop-deals-mobile.png
+visible thumbnail examples:
+Rush Bib Pant Men's hero: complete=true naturalWidth=1350 naturalHeight=1710 rect=60x60
+Sentinel Jacket row: complete=true naturalWidth=1500 naturalHeight=1500 rect=52x52
+```
+
+限制说明：部分远程图源在 Web/headless 下仍慢或失败，因此列表中会显示等高线占位；这是预期兜底，不再是布局缺图。未改后端、Supabase schema、RLS 或爬虫数据。
