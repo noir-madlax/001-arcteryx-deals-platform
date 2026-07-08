@@ -169,6 +169,42 @@ product_name  product_url  image_url  unsubscribe_token(uuid)  notified_at(nulla
 - ✅ 价格到价提醒：`expo-notifications` 先打通**本地通知**链路（APNs 远程推送留第二期）
 - ✅ 下拉刷新、骨架屏、haptic 反馈
 
+### 5.6 视觉规范（design tokens —— 高保真 mockup 已获用户认可，codex 照此实现，别自选配色/字体）
+
+**设计理念**：技术仪器感（technical instrument），不是优惠券 App。**单色为底，颜色只承载两个语义**：红=折扣力度、绿=该不该买。
+
+**配色 token**（定义成 `app/theme/tokens.ts`，支持浅/深；下面是浅色 / 深色）：
+```
+screen   #F6F7F4 / #141719     card     #FFFFFF / #1D2124
+ink      #15181B / #ECEEE9     ink-2    #3B4147 / #C4C9CD
+muted    #7B838B / #8B9197     faint    #A7ADB2 / #6A7076
+hair     rgba(20,25,28,.10) / rgba(255,255,255,.11)
+--- 语义色（只用在折扣/买入信号，别乱用）---
+disc(折扣红)   #B5362A / #F08579   disc-bg #F7E9E6 / #3A211D   disc-line #E7B7AF / #5E332C
+buy(买入绿)    #1E7A52 / #5FBE8D   buy-bg  #E6F0E9 / #16281F   buy-line  #AFD3BF / #2C4A39
+pill(主按钮)   ink 反色（浅=近黑底白字 / 深=近白底黑字）
+```
+深色模式必须同等打磨，不是简单反色。
+
+**字体**：
+- UI 文本 = iOS 系统字体（`-apple-system` / SF Pro，RN 里即默认 `System`）
+- **价格 / 折扣% / 日期等数字 = 等宽 + tabular-nums**（`SF Mono`/`ui-monospace`），让数字像 spec sheet 一样对齐。这是"仪器感"的关键，别用比例字体排价格。
+
+**商品图占位**：真实图用 `image_url`；加载中/无图时用**等高线纹理占位**（同心环 `repeating-radial-gradient(circle, transparent, var(--topo))` + 左下角小品类标签），呼应高山户外，别用灰色空图标。
+
+**组件处理（对齐 mockup）**：
+- 折扣 badge：`-XX%` 等宽，`disc` 色字 + `disc-bg` 底 + `disc-line` 细边，圆角 6px
+- 价格：sale 用 `disc` 色等宽大字，original 用 `faint` 色划线等宽
+- 信号句：good=`buy` 色 / flat=`muted` / stale=`faint`（见 §5.4）
+- region pill：hairline 边 + 国旗 + `⌄`，放标题栏右上
+- Sort：文字下拉（`Sort: Biggest drop ⌄`）；Filter：图标按钮 + 激活时红点
+- 价格历史图：折线 `muted` 色 + 虚线史低 `faint` + 当前点 `disc` 实心加光圈
+- verdict：`buy-bg` 底 + `buy-line` 边 + `buy` 字 + check 图标
+- 卡片间用 hairline 分隔，不用重卡片阴影；phone 内容圆角统一 iOS 风
+- 图标统一用一套 outline line icon（如 lucide-react-native），别混风格
+
+**参考物**：高保真 mockup（3 屏 + 浅深主题）已交付，Claude 手上有源文件，codex 如需精确间距/结构对照可向 Claude 索取 `geardrop-ios-design.html`。
+
 ---
 
 ## 6. 计费点（MVP 只做 1 个付费墙）
