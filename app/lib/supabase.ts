@@ -3,6 +3,7 @@ import 'react-native-url-polyfill/auto';
 import { createClient } from '@supabase/supabase-js';
 
 import { SUPABASE_ANON, SUPABASE_URL, visibleProducts } from './catalog';
+import { postPriceAlert } from './priceAlerts';
 import type { PriceAlertPayload, PriceHistoryRow, Product, ProductRow } from './types';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
@@ -68,19 +69,5 @@ export async function fetchPriceHistory(skuId: string, sinceIso?: string) {
 }
 
 export async function insertPriceAlert(payload: PriceAlertPayload) {
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/price_alerts`, {
-    method: 'POST',
-    headers: {
-      apikey: SUPABASE_ANON,
-      Authorization: `Bearer ${SUPABASE_ANON}`,
-      'Content-Type': 'application/json',
-      Prefer: 'return=minimal',
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`HTTP ${response.status}: ${text.slice(0, 140)}`);
-  }
+  await postPriceAlert(SUPABASE_URL, SUPABASE_ANON, payload);
 }

@@ -1151,6 +1151,152 @@ origin https://github.com/noir-madlax/001-arcteryx-deals-platform.git
 - Expo/EAS 登录、Apple Developer / App Store Connect 凭证、App Store app record 后完成 EAS build/submit。
 - 用户或法务确认 merchant content rights 口径。
 
+### 2026-07-08 03:09 EDT codex
+
+状态：Simulator 原生 smoke 大部分完成；Buy 系统浏览器跳转已确认。通知权限与应用内调度确认已完成，但系统横幅/通知中心展示未捕获，不能算完全通过。EAS/App Store/merchant rights 仍阻塞。
+
+用户给出的任务路径：
+```text
+/Users/J/hermes projects/.agent/TASK-ios-app-port.md
+missing
+```
+本轮实际续写的是当前仓库任务档案：
+```text
+/Users/J/Projects/Desktop-Projects/hermes projects/001-arcteryx-deals-platform/.agent/TASK-ios-app-port.md
+```
+
+临时 native Simulator 环境：
+```text
+device=43718BED-F3F6-41ED-B781-80BD3B83B85C
+runtime=iOS 26.5
+bundle=dev.100app.geardrop
+app=/tmp/geardrop-derived-generic/Build/Products/Debug-iphonesimulator/GearDrop.app
+metro=node 68051 ... TCP [::1]:8084 (LISTEN)
+```
+
+原生构建证据：
+```text
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer RCT_METRO_PORT=8084 xcodebuild \
+  -workspace /tmp/geardrop-ios-sim-app/ios/GearDrop.xcworkspace \
+  -scheme GearDrop -configuration Debug -sdk iphonesimulator \
+  -destination 'generic/platform=iOS Simulator' \
+  -derivedDataPath /tmp/geardrop-derived-generic \
+  ARCHS=arm64 ONLY_ACTIVE_ARCH=YES EXCLUDED_ARCHS=x86_64 \
+  CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO build \
+  > /tmp/geardrop-arm64-xcodebuild.log 2>&1
+
+** BUILD SUCCEEDED **
+GearDrop: Mach-O 64-bit executable arm64
+```
+
+Simulator smoke 通过项：
+- 无红屏：`/tmp/geardrop-clean-ready.png` 显示 Deals 首页，`6,108 loaded · 705 shown`，商品卡正常加载。仅有 debug LogBox：`[expo-notifications] Error reading persisted server registration info ... Keychain access failed: A required entitlement isn't present.`
+- 三 Tab：`/tmp/geardrop-after-watchlist-press.png`、`/tmp/geardrop-me-tab.png` 分别显示 Watchlist 空态与 Me 页。
+- 详情页：`/tmp/geardrop-detail-alpha.png` 显示 `Alpha Pant Women's`、`$105`、`$350`、`-70%`、price history/paywall/verdict/Alert/Buy。
+- Watchlist 保存：`/tmp/geardrop-detail-after-save.png` 显示详情页心形已保存；`/tmp/geardrop-watchlist-saved.png` 显示 `1 saved`，`Current $105 · saved $105`。
+- kill-app 持久化：终止并重启后，`/tmp/geardrop-watchlist-after-relaunch-confirmed.png` 仍显示 `1 saved` 与 `Alpha Pant Women's`。
+- Buy 系统浏览器：点击详情页 `Buy` 后，`/tmp/geardrop-buy-after-click-sim.png` 显示 iOS WebBrowser/SafariViewController 打开 `outlet.arcteryx.com`，页面为 Arc'teryx Outlet。
+
+通知验证边界：
+```text
+Me -> Send sample notification
+iOS prompt: "GearDrop" wants to send notifications
+clicked: Allow
+app alert: Notification scheduled
+app alert body: A price-alert notification should arrive shortly.
+```
+证据：
+- `/tmp/geardrop-notification-sample-result.png`：iOS 通知权限弹窗。
+- `/tmp/geardrop-notification-after-allow.png`：应用内 `Notification scheduled` 确认。
+- `/tmp/geardrop-local-notification-after-ok.png`：回到 Me 页，未捕获前台横幅。
+- `/tmp/geardrop-background-notification-check.png`：第二次尝试后回到 Home，仍未捕获系统横幅。
+
+结论：本轮只确认了权限授权与本地通知调度路径；`Alert local notification 展示` 仍需真机或更稳定 Simulator 通知环境复核。详情页 Alert 表单提交未执行，因为会写入生产 `price_alerts`，需要批准测试 email/写入边界。
+
+Buy 验收截图：
+```text
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun simctl io \
+  43718BED-F3F6-41ED-B781-80BD3B83B85C screenshot /tmp/geardrop-buy-after-click-sim.png
+
+Wrote screenshot to: /tmp/geardrop-buy-after-click-sim.png
+```
+
+仍需完成才可关闭目标：
+- 真机或可复现通知环境确认系统通知横幅/通知中心展示。
+- 如要验收详情页 Alert submit，先给出批准的测试 email 和生产写入边界。
+- `cd app && npx eas-cli whoami` 当前仍为 `Not logged in`；EAS build/submit 需要 Expo 登录、Apple Developer/App Store Connect 凭证和 app record。
+- 用户或法务确认 merchant content rights 口径。
+
+### 2026-07-08 03:23 EDT codex
+
+状态：补强并复核 iOS 本地通知展示；Simulator 已捕获系统横幅。临时 8084 Metro 已停止；8081 LAN Metro 保持运行，继续作为可选真机 Expo Go 验收入口。EAS/App Store/merchant rights 仍是关闭目标前的外部阻塞。
+
+代码变更：
+- `app/lib/actions.ts`：按 Expo SDK 57 文档改为检查 iOS `permissions.ios.status`，接受 `AUTHORIZED` / `PROVISIONAL` / `EPHEMERAL`；sample notification 改用 `trigger: null` 立即触发；foreground handler 保持 `shouldShowBanner: true` / `shouldShowList: true`。
+- `app/app/(tabs)/me.tsx`：sample notification 成功后不再弹应用内 Alert，改为页面内 `Sample notification sent.`，避免挡住系统通知横幅。
+- `app/scripts/verify-config.ts`：新增静态断言，覆盖 foreground banner、immediate trigger、iOS permission status，以及 Me 页成功路径不能再使用阻塞 Alert。
+- `app/RELEASE_READINESS.md`、`app/DEVICE_CHECKLIST.md`：同步最新 Simulator 和通知证据。
+
+验证：
+```text
+cd app && npm run verify
+
+# tests 19
+# pass 19
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+20/20 checks passed. No issues detected!
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73302"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+iOS Bundled 4896ms node_modules/expo-router/entry.js (1439 modules)
+verify_local_ok
+```
+
+注：第一次完整 `npm run verify` 在 `verify:live-data` 阶段遇到一次 Supabase TLS `ECONNRESET`；单独重跑 `npm run verify:live-data` 通过后，完整 `npm run verify` 也通过。
+
+文档更新后轻量复核：
+```text
+cd app && npm run verify:config
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+```
+
+Simulator 通知证据：
+```text
+Me -> Send sample notification
+screen: /tmp/geardrop-regression-sample-notification-result.png
+visible banner: GearDrop alert armed
+visible body: Saved gear is now on your watchlist.
+page status: Sample notification sent.
+notification switch: enabled
+```
+
+SpringBoard 日志关键原文：
+```text
+[dev.100app.geardrop] Fetching notification 72CA-84E7 destinations 398: (
+    NotificationCenter,
+    LockScreen,
+    Alert,
+    Spoken,
+    Forwarding
+)
+SpringBoard ... Revoking banner for notification 72CA-84E7
+```
+
+运行环境清理：
+```text
+lsof -nP -iTCP:8084 -sTCP:LISTEN
+# no output
+
+curl http://192.168.50.88:8081/status
+packager-status:running
+```
+
+仍需完成才可关闭目标：
+- 详情页 Alert submit 会写入生产 `price_alerts`，未在本轮执行；需要批准测试 email 和写入边界后再验收。
+- `cd app && npx eas-cli whoami` 仍为 `Not logged in`；EAS build/submit 需要 Expo 登录、Apple Developer/App Store Connect 凭证和 app record。
+- 用户或法务确认 merchant content rights 口径。
+
 ### 2026-07-07 19:07 EDT codex
 
 状态：Expo iOS app 源码已纳入 git 并推送到 `main`；Vercel production 部署验证通过，现有静态站未被 `app/` 目录破坏。
@@ -1390,3 +1536,97 @@ lsof -nP -iTCP:8081 -sTCP:LISTEN
 - 真机/Simulator 验证无红屏、三 Tab、详情、Watchlist kill-app 持久化、Alert 本地通知展示、Buy 系统浏览器跳转。
 - Expo/EAS 登录、Apple Developer / App Store Connect 凭证、App Store app record 后完成 EAS build/submit。
 - 用户或法务确认 merchant content rights 口径。
+
+### 2026-07-08 03:32 EDT codex
+
+状态：继续推进“全部完成”目标；补齐 price_alerts 写入链路的无生产写入合约测试，并复核当前无非交互发布凭证。注意：前一个 03:23 状态段写在文件中部，本段追加在真实文件末尾，供后续 resume/tail 读取当前状态。
+
+新增/调整：
+- `app/lib/priceAlerts.ts`：新增 `buildPriceAlertPayload()` 和纯 REST helper `postPriceAlert()`。
+- `app/app/product/[skuId].tsx`：详情页 Alert submit 改为用 `buildPriceAlertPayload()` 组装写入 payload，随后仍按原顺序 `insertPriceAlert` -> 本地 alert target -> 本地通知。
+- `app/lib/supabase.ts`：`insertPriceAlert()` 改为委托 `postPriceAlert(SUPABASE_URL, SUPABASE_ANON, payload)`，public API 不变。
+- `app/__tests__/priceAlerts.test.ts`：新增 4 个测试，覆盖 payload 字段、nullable target、URL/image 空值兜底、`POST /rest/v1/price_alerts`、`Prefer: return=minimal`、失败时只调用一次并抛出错误。
+- `app/scripts/verify-config.ts`：新增断言，确保详情页继续使用受测 payload helper，且 price alert REST helper 仍指向 `price_alerts` 和 `return=minimal`。
+- `app/RELEASE_READINESS.md`：同步最新 23 个单元测试、price alert 合约证据、EAS/Apple env 复查结果。
+
+验证：
+```text
+cd app && npm test
+
+# tests 23
+# pass 23
+```
+
+```text
+cd app && npm run typecheck
+
+> tsc --noEmit
+```
+
+完整 gate：
+```text
+cd app && npm run verify
+
+# tests 23
+# pass 23
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+20/20 checks passed. No issues detected!
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73302"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+iOS Bundled 4170ms node_modules/expo-router/entry.js (1440 modules)
+verify_local_ok
+```
+
+凭证复查：
+```text
+env | cut -d= -f1 | rg -i '^(EXPO|EAS|APPLE|ASC|APP_STORE|FASTLANE|MATCH|ITC|IOS|DEVELOPER)_'
+# no output
+
+cd app && npx --yes eas-cli whoami
+Not logged in
+```
+
+当前边界：
+- 未向 live `price_alerts` 再插入测试行；原因是这会写生产数据，仍需要批准测试 email 和写入/清理边界。当前合约测试已覆盖 app 侧 payload 与 REST 请求形状。
+- EAS build/submit 仍不能执行；当前无 Expo 登录、`EXPO_TOKEN`、Apple Developer/App Store Connect 凭证或 app record。
+- merchant content rights 仍需用户或法务确认。
+
+Rebase/push 前复核：
+```text
+git fetch origin main
+git rebase origin/main
+Successfully rebased and updated refs/heads/main.
+
+local commit message=Harden iOS notifications and price alerts
+rebased_base=dd04e5d data(dealers): auto refresh 2026-07-08 07:34
+
+cd app && npm run verify
+# tests 23
+# pass 23
+20/20 checks passed. No issues detected!
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73302"
+iOS Bundled 4170ms node_modules/expo-router/entry.js (1440 modules)
+verify_local_ok
+```
+
+最终 rebase 后 targeted checks：
+```text
+cd app && npm test
+# tests 23
+# pass 23
+
+cd app && npm run verify:config
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+
+cd app && npm run typecheck
+> tsc --noEmit
+
+cd app && npm run verify:live-data
+"products_content_range": "0-0/6108"
+"price_history_content_range": "0-0/73304"
+"paginated_products_loaded": 6108
+"beta_result_count": 333
+```

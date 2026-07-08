@@ -13,6 +13,7 @@ import { usePro } from '../../contexts/ProContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
 import { cleanName, formatPrice, GENDER_LABEL, productCategory, REGION_LABEL, releaseSeason } from '../../lib/catalog';
 import { openBuyUrl, scheduleTestPriceNotification, softImpact, uuid4 } from '../../lib/actions';
+import { buildPriceAlertPayload } from '../../lib/priceAlerts';
 import { computeSignal, historyToPoints, recentPoints } from '../../lib/signals';
 import { fetchPriceHistory, fetchProductFamilyBySku, insertPriceAlert } from '../../lib/supabase';
 import { colors, radii, shadow } from '../../lib/theme';
@@ -68,18 +69,7 @@ export default function ProductDetailScreen() {
   const season = releaseSeason(currentProduct);
 
   async function submitAlert(email: string, target: number | null) {
-    await insertPriceAlert({
-      email,
-      sku_id: currentProduct.sku_id,
-      target_price: target,
-      last_price_seen: currentProduct.sale_price,
-      currency: currentProduct.currency,
-      region: currentProduct.region,
-      product_name: name,
-      product_url: currentProduct.url || '',
-      image_url: currentProduct.image_url || '',
-      unsubscribe_token: uuid4(),
-    });
+    await insertPriceAlert(buildPriceAlertPayload(currentProduct, name, email, target, uuid4()));
     await watchlist.setAlertTarget(currentProduct, target);
     await scheduleTestPriceNotification(name);
   }

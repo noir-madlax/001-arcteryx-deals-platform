@@ -43,7 +43,7 @@ On iPhone:
 9. Tap heart to save; open Watchlist and confirm the saved item appears.
 10. Force quit Expo Go, reopen the project, and confirm Watchlist still contains the saved item.
 11. Open Alert, submit a real test email and target below current price, and confirm the UI closes without error.
-12. Confirm the local notification permission prompt appears when requested and the test notification is delivered.
+12. Confirm the local notification permission prompt appears when requested and the test notification is delivered; capture the banner or Notification Center entry when possible.
 13. Tap Buy and confirm the system browser opens the original product URL.
 
 Record evidence:
@@ -61,6 +61,7 @@ detail_chart_verdict_ok=yes/no
 watchlist_persists_after_force_quit=yes/no
 price_alert_insert_ok=yes/no
 local_notification_delivered=yes/no
+local_notification_evidence=
 buy_opens_system_browser=yes/no
 ```
 

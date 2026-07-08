@@ -51,7 +51,9 @@ const easJson = readJson<EasJson>('eas.json');
 const metadata = readFileSync(join(root, 'APP_STORE_METADATA.md'), 'utf8');
 const actionsSource = readFileSync(join(root, 'lib/actions.ts'), 'utf8');
 const layoutSource = readFileSync(join(root, 'app/_layout.tsx'), 'utf8');
+const meSource = readFileSync(join(root, 'app/(tabs)/me.tsx'), 'utf8');
 const productDetailSource = readFileSync(join(root, 'app/product/[skuId].tsx'), 'utf8');
+const priceAlertsSource = readFileSync(join(root, 'lib/priceAlerts.ts'), 'utf8');
 const expo = appConfig.expo;
 
 assert.equal(expo.name, 'GearDrop');
@@ -92,12 +94,19 @@ assert.ok(metadata.includes('https://001.100app.dev/privacy.html'), 'metadata mi
 assert.ok(!/Privacy Policy URL[\s\S]*?TODO/.test(metadata), 'metadata privacy policy URL still has TODO');
 assert.ok(actionsSource.includes('WebBrowser.openBrowserAsync(url)'), 'Buy flow must stay wrapped by openBuyUrl');
 assert.ok(actionsSource.includes("data: { url: '/(tabs)/watchlist' }"), 'local price notification must deep-link to Watchlist');
+assert.ok(actionsSource.includes('shouldShowBanner: true'), 'foreground local notifications must request banner display');
+assert.ok(actionsSource.includes('trigger: null'), 'sample local notification must fire immediately for device smoke');
+assert.ok(actionsSource.includes('IosAuthorizationStatus.AUTHORIZED'), 'iOS notification permission must use ios.status');
+assert.ok(!meSource.includes("Alert.alert(ok ? 'Notification scheduled'"), 'sample notification success must not block the system banner with an app alert');
 assert.ok(layoutSource.includes('Notifications.addNotificationResponseReceivedListener'), 'root layout must observe notification taps');
 assert.ok(layoutSource.includes('Notifications.getLastNotificationResponse'), 'root layout must handle launch-from-notification');
 assert.ok(layoutSource.includes('router.push(url)'), 'notification observer must route data.url');
 assert.ok(productDetailSource.includes('await insertPriceAlert'), 'Alert flow must write price_alerts');
+assert.ok(productDetailSource.includes('buildPriceAlertPayload'), 'Alert flow must use the tested price alert payload helper');
 assert.ok(productDetailSource.includes('await scheduleTestPriceNotification(name)'), 'Alert flow must exercise local notification chain');
 assert.ok(productDetailSource.includes('openBuyUrl(currentProduct.url)'), 'Buy button must use openBuyUrl');
+assert.ok(priceAlertsSource.includes('/rest/v1/price_alerts'), 'price alert helper must target the price_alerts REST endpoint');
+assert.ok(priceAlertsSource.includes("Prefer: 'return=minimal'"), 'price alert insert must not request inserted row data');
 
 console.log(
   'config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=' +

@@ -13,6 +13,18 @@ Notifications.setNotificationHandler({
   }),
 });
 
+function hasNotificationPermission(permissions: Notifications.NotificationPermissionsStatus) {
+  if (Platform.OS === 'ios') {
+    const status = permissions.ios?.status;
+    return (
+      status === Notifications.IosAuthorizationStatus.AUTHORIZED ||
+      status === Notifications.IosAuthorizationStatus.PROVISIONAL ||
+      status === Notifications.IosAuthorizationStatus.EPHEMERAL
+    );
+  }
+  return permissions.status === 'granted';
+}
+
 export async function softImpact() {
   try {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -39,9 +51,9 @@ export async function requestNotificationPermission() {
       });
     }
     const existing = await Notifications.getPermissionsAsync();
-    if (existing.status === 'granted') return true;
+    if (hasNotificationPermission(existing)) return true;
     const requested = await Notifications.requestPermissionsAsync();
-    return requested.status === 'granted';
+    return hasNotificationPermission(requested);
   } catch {
     return false;
   }
@@ -57,10 +69,7 @@ export async function scheduleTestPriceNotification(productName: string) {
         body: `${productName} is now on your watchlist.`,
         data: { url: '/(tabs)/watchlist' },
       },
-      trigger: {
-        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-        seconds: 2,
-      },
+      trigger: null,
     });
     return true;
   } catch {

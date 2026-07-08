@@ -14,8 +14,10 @@ export default function MeScreen() {
   const { isPro, setPro } = usePro();
   const { loadedCount } = useProducts();
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [sampleStatus, setSampleStatus] = useState<string | null>(null);
 
   async function toggleNotifications(next: boolean) {
+    setSampleStatus(null);
     if (!next) {
       setNotificationsEnabled(false);
       return;
@@ -26,8 +28,14 @@ export default function MeScreen() {
   }
 
   async function sendSampleNotification() {
+    setSampleStatus(null);
     const ok = await scheduleTestPriceNotification('Saved gear');
-    Alert.alert(ok ? 'Notification scheduled' : 'Permission needed', ok ? 'A price-alert notification should arrive shortly.' : 'Notifications are not enabled.');
+    if (ok) {
+      setNotificationsEnabled(true);
+      setSampleStatus('Sample notification sent.');
+      return;
+    }
+    Alert.alert('Permission needed', 'Notifications are not enabled.');
   }
 
   return (
@@ -62,6 +70,7 @@ export default function MeScreen() {
             <Ionicons name="notifications-outline" size={18} color={colors.ink} />
             <Text style={styles.secondaryText}>Send sample notification</Text>
           </Pressable>
+          {sampleStatus ? <Text style={styles.statusText}>{sampleStatus}</Text> : null}
         </View>
 
         <View style={styles.card}>
@@ -160,6 +169,11 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: colors.ink,
+    fontWeight: '800',
+  },
+  statusText: {
+    color: colors.accent,
+    fontSize: 12,
     fontWeight: '800',
   },
   linkRow: {
