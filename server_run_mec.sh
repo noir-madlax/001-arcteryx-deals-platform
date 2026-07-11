@@ -63,24 +63,7 @@ log "scrape → dealers.mec"
 timeout 1800 "$PYTHON" -u -m dealers.mec 2>&1 | tee -a "$LOG"
 
 # A successful process with an empty/partial challenge response must not publish.
-"$PYTHON" - <<'PY'
-import json
-from pathlib import Path
-
-path = Path("dealers/_partial/mec.json")
-if not path.exists():
-    raise SystemExit("MEC partial missing")
-payload = json.loads(path.read_text())
-count = len(payload.get("items") or [])
-if payload.get("crawl_complete") is not True:
-    raise SystemExit(f"MEC crawl incomplete: {count}/{payload.get('expected_count') or '?'}")
-if count < 50:
-    raise SystemExit(f"MEC partial too small: {count} < 50")
-expected = payload.get("expected_count")
-if expected is not None and count < expected:
-    raise SystemExit(f"MEC parsed count below expected: {count} < {expected}")
-print(f"[mec] partial gate OK: {count}/{expected or '?'} items")
-PY
+"$PYTHON" tools/check_mec_partial.py
 
 log "merge → results.json"
 "$PYTHON" -m dealers.merge_partial 2>&1 | tee -a "$LOG"

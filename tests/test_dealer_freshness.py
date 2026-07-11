@@ -6,6 +6,7 @@ from pathlib import Path
 
 from dealers import merge_partial
 from dealers.supabase_sync import fresh_dealer_keys
+from tools.check_mec_partial import validate_partial
 
 
 class DealerFreshnessTests(unittest.TestCase):
@@ -46,6 +47,24 @@ class DealerFreshnessTests(unittest.TestCase):
     def test_fresh_dealer_keys_is_backward_compatible(self):
         self.assertIsNone(fresh_dealer_keys({"dealers": {"mec": {}}}))
         self.assertEqual(fresh_dealer_keys({"fresh_dealers": ["mec", "rei"]}), {"mec", "rei"})
+
+    def test_mec_partial_requires_complete_expected_count(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "mec.json"
+            path.write_text(json.dumps({
+                "items": [{"url": str(i)} for i in range(52)],
+                "crawl_complete": False,
+                "expected_count": 128,
+            }))
+            with self.assertRaisesRegex(ValueError, "crawl incomplete"):
+                validate_partial(path)
+
+            path.write_text(json.dumps({
+                "items": [{"url": str(i)} for i in range(128)],
+                "crawl_complete": True,
+                "expected_count": 128,
+            }))
+            self.assertEqual(validate_partial(path), (128, 128))
 
 
 if __name__ == "__main__":
