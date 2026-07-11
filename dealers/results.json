@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-11 19:03:58",
+  "generated_at": "2026-07-11 19:31:13",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -8244,6 +8244,20 @@
           "region": "US"
         },
         {
+          "url": "https://www.rei.com/product/248405/arcteryx-beta-jacket-womens",
+          "name": "Beta Jacket - Women's",
+          "image": "https://www.rei.com/media/ea4de9e4-ed37-4950-8010-63edf4cabe74.jpg",
+          "original_price": 400.0,
+          "sale_price": 300.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 25,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
           "url": "https://www.rei.com/product/243328/arcteryx-coelle-shell-jacket-womens",
           "name": "Coelle Shell Jacket - Women's",
           "image": "https://www.rei.com/media/a73cd0b6-65dc-4a84-a238-7e8b8f9b26ba.jpg",
@@ -8256,23 +8270,9 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/236056/arcteryx-cronin-cotton-overshirt-mens",
-          "name": "Cronin Cotton Overshirt - Men's",
-          "image": "https://www.rei.com/media/51b88734-15e6-4184-96af-293107b8f858.jpg",
-          "original_price": 180.0,
-          "sale_price": 180.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
         }
       ],
-      "refreshed_at": "2026-07-11 18:29:21"
+      "refreshed_at": "2026-07-11 19:30:36"
     },
     "ssense": {
       "name": "SSENSE",
@@ -9016,6 +9016,6 @@
   },
   "total": 317,
   "fresh_dealers": [
-    "mec"
+    "rei"
   ]
 }
