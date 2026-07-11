@@ -21,10 +21,12 @@
 - 生产 MEC 完整抓取 128/128，Supabase upsert 128/128，生产活跃 MEC 155 条，质量门 `OK`；来源：OCI `server_run_mec.sh` 实跑和在线质量门。
 - 生产数据库 MEC 最新时间为 17:29:45 UTC；EVO/REI/SSENSE 最新时间仍为 16:34:04 UTC；来源：生产 SQL 分组查询，证明保留快照未被伪装刷新。
 - `crawler_leases.mec` 最终状态为 `success`，owner `oci-free-a1`；来源：生产 SQL 查询。
+- GitHub Actions run `29163565662` 从 hosted runner 对 MEC 1/2/3 页均返回 HTTP 200，命中 52/52/24、总计 128；来源：`Diagnose MEC Egress` workflow 日志。
+- 18:29 UTC Lightsail 复跑只有 REI 真实成功，因此静态 `fresh_dealers=["rei"]`、REI `refreshed_at=18:29:21`；EVO/SSENSE 空抓取继续为未知且数据库时间不推进；来源：远程运行日志、main 静态文件和生产 SQL。
+- 18:30 UTC OCI 再次只读检查 MEC 仍为 52/52/24、总计 128；来源：OCI 生产环境只读 Python 实验。
 
 ## 假设（未验证；验证后移入上区）
 
-- GitHub Actions 出口是否能直连 MEC 尚未验证。
 - OCI 在未来仍可能被 Cloudflare 调整风险评分，因此仍需保存上一版数据和失败告警。
 
 ## 边界
@@ -51,12 +53,13 @@
 - 已运行 13 个单元测试、Python 编译、4 个 shell 语法检查、workflow YAML 解析和 `git diff --check`；首次运行全部通过，ResourceWarning 已修正。
 - 已部署 OCI shared repo lock + MEC cron、Lightsail 非 MEC dealer cron；两台原 crontab 均有时间戳备份。
 - 生产完整链路完成：抓取、完整性闸门、merge、仅 MEC sync、质量门、Git push、飞书通知和 lease release 全部成功。
+- 已新增只读 `Diagnose MEC Egress` 手动 workflow，并验证 GitHub runner 当前可作为候选 MEC 出口。
 
 ## 下一步（按序）
 
-1. 由现有 freshness monitor 持续观察 MEC；如果 OCI 未来被 Cloudflare 拒绝，再验证 GitHub runner 出口或增加新的合规出口。
+1. 由现有 freshness monitor 持续观察 MEC；如果 OCI 未来被 Cloudflare 拒绝，可把已验证的 GitHub runner 接成自动 MEC takeover。
 
 ## 死路
 
 - 本机首次复用 `dealers.mec._next_data` 的临时 `uv` 环境未安装 Scrapling，导入失败；改用等价内联只读解析完成 Next.js JSON 路由验证，未重复安装重依赖。
-- 未把 GitHub Actions 声称为 MEC fallback：其 runner 出口尚未实测，且云厂商 IP 可能同样被 MEC/Cloudflare 拒绝。
+- GitHub hosted runner 出口最初未验证；现已通过 run `29163565662` 验证可用，但自动 MEC takeover 尚未启用。
