@@ -14,8 +14,10 @@ An active lease makes overlapping cron or GitHub runs exit without crawling.
 `dealers/results.json` records `fresh_dealers` and a per-dealer `refreshed_at`.
 Seeded fallback blocks remain available to the static client, but
 `dealers.supabase_sync` skips them so a failed scrape cannot fake freshness.
-MEC currently has OCI as its verified egress and is covered by the freshness
-monitor; do not claim GitHub as an MEC fallback until its runner egress is tested.
+MEC currently has OCI as its primary verified egress and is covered by the
+freshness monitor. GitHub-hosted runner egress was verified with the manual
+`Diagnose MEC Egress` workflow (52/52/24 items on 2026-07-11), but automated
+MEC takeover is not enabled yet.
 
 Apply these migrations before enabling the schedules:
 
