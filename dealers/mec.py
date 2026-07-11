@@ -84,6 +84,21 @@ def _next_data(html: str) -> dict | None:
     except: return None
 
 
+def _page_props(response_text: str) -> tuple[dict | None, str | None]:
+    """Parse either a rendered Next.js page or its public _next/data JSON."""
+    stripped = response_text.lstrip()
+    if stripped.startswith("{"):
+        try:
+            payload = json.loads(stripped)
+            return payload.get("pageProps") or {}, None
+        except json.JSONDecodeError:
+            return None, None
+    payload = _next_data(response_text)
+    if not payload:
+        return None, None
+    return payload.get("props", {}).get("pageProps") or {}, payload.get("buildId")
+
+
 def _parse_pdp_price(p: dict) -> tuple[float | None, float | None, int]:
     """从 PDP product.price 提取 (sale, orig, disc_pct)."""
     pr = p.get("price") or {}
@@ -162,6 +177,8 @@ class Scraper:
     MAX_PAGES = 10   # MEC ~52/page, 3 页够覆盖
 
     def scrape(self) -> list[dict]:
+        self.crawl_complete = False
+        self.expected_count = None
         s = _make_session()
         scrapling_ctx = None  # 持有 StealthySession context 防 GC
         using_scrapling = False
@@ -185,20 +202,48 @@ class Scraper:
         # ── 阶段 1: list pages
         items = []
         seen = set()
+        build_id = None
         for tmpl in self.LIST_TEMPLATES:
             for pg in range(1, self.MAX_PAGES + 1):
                 url = tmpl.format(page=pg)
-                r = _get(s, url)
+                request_url = url
+                source = "html"
+                if build_id and not using_scrapling:
+                    request_url = (
+                        f"{HOST}/_next/data/{build_id}/en/products.json"
+                        f"?brand=Arc%27teryx&page={pg}"
+                    )
+                    source = "next-json"
+                started = time.monotonic()
+                r = _get(s, request_url)
+                if not r and source == "next-json":
+                    print(
+                        f"[mec] page {pg} next-json failed; falling back to HTML",
+                        file=sys.stderr,
+                    )
+                    source = "html-fallback"
+                    r = _get(s, url)
                 if not r:
-                    print(f"[mec] LIST FAIL {url} (3x), abort", file=sys.stderr)
+                    print(
+                        f"[mec] LIST FAIL page={pg} source={source} "
+                        f"elapsed={time.monotonic() - started:.1f}s (3x), abort",
+                        file=sys.stderr,
+                    )
                     break
-                d = _next_data(r.text)
-                if not d:
-                    print(f"[mec] page {pg} no NEXT_DATA, stop", file=sys.stderr)
+                page_props, discovered_build = _page_props(r.text)
+                if discovered_build:
+                    build_id = discovered_build
+                if page_props is None:
+                    print(
+                        f"[mec] page {pg} source={source} no Next.js data, stop",
+                        file=sys.stderr,
+                    )
                     break
-                hits = (d.get("props", {}).get("pageProps", {})
-                         .get("serverState", {}).get("initialResults", {})
-                         .get("products_en", {}).get("results", [{}])[0].get("hits") or [])
+                result = (page_props.get("serverState", {}).get("initialResults", {})
+                          .get("products_en", {}).get("results", [{}])[0])
+                if isinstance(result.get("nbHits"), int):
+                    self.expected_count = result["nbHits"]
+                hits = result.get("hits") or []
                 if not hits:
                     break
                 new = 0
@@ -211,8 +256,16 @@ class Scraper:
                     it["region"] = self.REGION
                     items.append(it)
                     new += 1
-                print(f"[mec] list page {pg} +{new} (total {len(items)})", flush=True)
+                print(
+                    f"[mec] list page {pg} source={source} +{new} "
+                    f"(total {len(items)}) elapsed={time.monotonic() - started:.1f}s",
+                    flush=True,
+                )
                 if new == 0: break
+                nb_pages = result.get("nbPages")
+                if isinstance(nb_pages, int) and pg >= nb_pages:
+                    self.crawl_complete = True
+                    break
                 time.sleep(1)
         # ── 阶段 2: PDP enrich (sizes / 精确 sale vs orig 区分)
         # scrapling 模式跳过: 每次 fetch 重解 CF turnstile ~5min/PDP, 不可行.
@@ -255,13 +308,16 @@ def _size_sort_key(sz: str):
 
 
 if __name__ == "__main__":
-    items = Scraper().scrape()
+    scraper = Scraper()
+    items = scraper.scrape()
     print(f"\n=== MEC: {len(items)} 件 ===")
     for it in items[:8]:
         d = it.get("discount_pct", 0)
         print(f"  -{d}% C${it.get('sale_price')}/{it.get('original_price')}  {it.get('name','')[:60]}")
     import json as _json, os as _os, time as _time
     _os.makedirs("dealers/_partial", exist_ok=True)
-    _json.dump({"name":"MEC","region":"CA","count":len(items),"items":items,"saved_at":_time.strftime("%Y-%m-%d %H:%M:%S")},
+    _json.dump({"name":"MEC","region":"CA","count":len(items),"items":items,
+                "crawl_complete":scraper.crawl_complete,"expected_count":scraper.expected_count,
+                "saved_at":_time.strftime("%Y-%m-%d %H:%M:%S")},
                open("dealers/_partial/mec.json","w"), indent=2, ensure_ascii=False)
     print("→ dealers/_partial/mec.json")
