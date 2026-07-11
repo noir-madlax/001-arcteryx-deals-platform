@@ -101,7 +101,8 @@ git add dealers/results.json
 if ! git diff --cached --quiet; then
     TS=$(date '+%Y-%m-%d %H:%M')
     git commit -m "data(dealers): auto refresh ${TS}" 2>&1 | tee -a "$LOG"
-    git push origin main 2>&1 | tee -a "$LOG" || log "push failed (non-fatal)"
+    git pull --rebase origin main 2>&1 | tee -a "$LOG"
+    git push origin main 2>&1 | tee -a "$LOG"
 else
     log "no changes"
 fi
