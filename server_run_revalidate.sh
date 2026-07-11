@@ -26,9 +26,34 @@ export FEISHU_CHAT_ID="${FEISHU_CHAT_ID:-}"
 cd "$PROJ_DIR"
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG"; }
 
+CRAWLER_NODE="${CRAWLER_NODE:-$(hostname)}"
+LEASE_SCOPE="revalidate"
+LEASE_ACQUIRED=false
+finish_lease() {
+  exit_code=$?
+  trap - EXIT
+  if [ "$LEASE_ACQUIRED" = true ]; then
+    if [ "$exit_code" -eq 0 ]; then
+      "$PYTHON" tools/crawler_lease.py finish --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --status success >/dev/null 2>&1 || true
+    else
+      "$PYTHON" tools/crawler_lease.py finish --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --status failed --message "exit $exit_code" >/dev/null 2>&1 || true
+    fi
+  fi
+  exit "$exit_code"
+}
+trap finish_lease EXIT
+
 log "===== REVALIDATE START ====="
 git fetch origin main 2>&1 | tee -a "$LOG"
 git reset --hard origin/main 2>&1 | tee -a "$LOG"
+
+lease_result=$($PYTHON tools/crawler_lease.py acquire --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --ttl-minutes 90)
+if [ "$lease_result" != "true" ]; then
+  log "Another node owns the Revalidate lease; skipping this window"
+  trap - EXIT
+  exit 0
+fi
+LEASE_ACQUIRED=true
 
 timeout 3600 $PYTHON -m dealers.revalidate 2>&1 | tee -a "$LOG" || log "revalidate timeout/error (non-fatal)"
 

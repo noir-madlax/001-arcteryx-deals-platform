@@ -61,7 +61,10 @@ def gender_from_url(url: str) -> str | None:
 def is_blocked_outlet_url(url: str) -> bool:
     """True for known bad Arc'teryx Outlet PDP links that should not be shown."""
     u = (url or '').split('?', 1)[0].rstrip('/').lower()
-    return bool(re.search(r'outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$', u))
+    return bool(
+        re.search(r'outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$', u)
+        or re.search(r'outlet\.arcteryx\.com/us/en/shop/womens/alpha-pant$', u)
+    )
 
 def all_sizes_out_of_stock(item: dict) -> bool:
     stock = item.get('size_stock') or {}

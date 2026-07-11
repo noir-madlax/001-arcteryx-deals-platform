@@ -1,0 +1,12 @@
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+MAILTO=""
+PROJ_DIR=/home/ec2-user/arcteryx
+PYTHON=python3.12
+CRAWLER_NODE=aws-lightsail-us-west-2
+
+# Primary dealer node: every 3 hours UTC, offset 90 minutes from Outlet.
+30 1,4,7,10,13,16,19,22 * * * cd /home/ec2-user/arcteryx && /usr/bin/flock -n /tmp/arcteryx-dealers.lock /home/ec2-user/arcteryx/server_run_dealers.sh >> /home/ec2-user/arcteryx/dealers.log 2>&1
+
+# Dealer URL/price revalidation once daily.
+30 6 * * * cd /home/ec2-user/arcteryx && /usr/bin/flock -n /tmp/arcteryx-revalidate.lock /home/ec2-user/arcteryx/server_run_revalidate.sh >> /home/ec2-user/arcteryx/revalidate.log 2>&1

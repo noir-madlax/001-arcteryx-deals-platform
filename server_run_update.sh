@@ -14,8 +14,7 @@ else
   PYTHON="${PYTHON:-python3.12}"
 fi
 
-GITHUB_REPO="noir-madlax/001-arcteryx-deals-platform"
-# GITHUB_TOKEN is sourced from ~/.arcteryx_secrets below
+GITHUB_REMOTE="git@github.com:noir-madlax/001-arcteryx-deals-platform.git"
 
 # ── Telegram notification credentials ──
 # Kept in ~/.arcteryx_secrets (NOT committed to git) so we don't leak tokens.
@@ -39,6 +38,23 @@ cd "$PROJ_DIR"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE"; }
 
+CRAWLER_NODE="${CRAWLER_NODE:-$(hostname)}"
+LEASE_SCOPE="outlet"
+LEASE_ACQUIRED=false
+finish_lease() {
+  exit_code=$?
+  trap - EXIT
+  if [ "$LEASE_ACQUIRED" = true ]; then
+    if [ "$exit_code" -eq 0 ]; then
+      "$PYTHON" tools/crawler_lease.py finish --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --status success >/dev/null 2>&1 || true
+    else
+      "$PYTHON" tools/crawler_lease.py finish --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --status failed --message "exit $exit_code" >/dev/null 2>&1 || true
+    fi
+  fi
+  exit "$exit_code"
+}
+trap finish_lease EXIT
+
 # Record run start time (used by notify_telegram.py for duration)
 date -u '+%Y-%m-%d %H:%M:%S' > "$PROJ_DIR/.last_run_start"
 
@@ -47,10 +63,19 @@ log "===== UPDATE START ====="
 # 0. Pull latest code before scraping/syncing. The job writes data later, but
 # scraper/sync fixes must be active before Step 1 starts.
 log "Step 0: GitHub pull latest code"
+git remote set-url origin "$GITHUB_REMOTE"
 git fetch origin main 2>&1 | tee -a "$LOG_FILE"
 git checkout -B main origin/main 2>&1 | tee -a "$LOG_FILE"
 git reset --hard origin/main 2>&1 | tee -a "$LOG_FILE"
 git clean -fd -e .last_run_start -e .last_sync -e .sku_progress.json -e update.log -e update_global.log -e dealers.log -e dealers/_partial -e .arcteryx_secrets 2>&1 | tee -a "$LOG_FILE" || true
+
+lease_result=$($PYTHON tools/crawler_lease.py acquire --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --ttl-minutes 240)
+if [ "$lease_result" != "true" ]; then
+  log "Another node owns the Outlet lease; skipping this window"
+  trap - EXIT
+  exit 0
+fi
+LEASE_ACQUIRED=true
 
 # 1. Refresh product list
 log "Step 1: Global scraper (product list)"
@@ -64,18 +89,21 @@ $PYTHON sku_scraper.py --reset --update-data 2>&1 | tee -a "$LOG_FILE"
 log "Step 3: Supabase sync"
 $PYTHON supabase_sync.py 2>&1 | tee -a "$LOG_FILE"
 
+log "Step 3a: Revalidate missing product URLs"
+$PYTHON tools/check_product_urls.py --status missing --max-rows 500 2>&1 | tee -a "$LOG_FILE"
+
 # 3b. Hard quality gate: do not treat stale or inconsistent data as healthy
 log "Step 3b: Data quality check"
-$PYTHON tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 --forbid-region jp 2>&1 | tee -a "$LOG_FILE"
+$PYTHON tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --max-product-age-hours 72 --min-rows 100 --forbid-region jp 2>&1 | tee -a "$LOG_FILE"
 
 # 4. Push data files to GitHub (backup + Vercel static fallback)
 log "Step 4: GitHub sync + push"
 git config user.email "bot@arcteryx-deals.local"
 git config user.name  "ArcBot"
-git remote set-url origin "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git"
+git remote set-url origin "$GITHUB_REMOTE"
 
 TMPDIR=$(mktemp -d)
-for f in data.js arcteryx_skus.json global_data.json; do
+for f in .crawl_manifest.json data.js arcteryx_skus.json global_data.json; do
   [ -f "$f" ] && cp "$f" "$TMPDIR/$f"
 done
 
@@ -85,14 +113,14 @@ git reset --hard HEAD 2>&1 | tee -a "$LOG_FILE" || true
 git checkout -B main origin/main 2>&1 | tee -a "$LOG_FILE"
 git reset --hard origin/main 2>&1 | tee -a "$LOG_FILE"
 # Remove untracked files that would conflict (but preserve state files)
-git clean -fd -e .last_run_start -e .last_sync -e .sku_progress.json -e update.log -e update_global.log -e dealers.log -e dealers/_partial -e .arcteryx_secrets 2>&1 | tee -a "$LOG_FILE" || true
+git clean -fd -e .crawl_manifest.json -e .last_run_start -e .last_sync -e .sku_progress.json -e update.log -e update_global.log -e dealers.log -e dealers/_partial -e .arcteryx_secrets 2>&1 | tee -a "$LOG_FILE" || true
 
-for f in data.js arcteryx_skus.json global_data.json; do
+for f in .crawl_manifest.json data.js arcteryx_skus.json global_data.json; do
   [ -f "$TMPDIR/$f" ] && cp "$TMPDIR/$f" "$f"
 done
 rm -rf "$TMPDIR"
 
-git add data.js arcteryx_skus.json global_data.json
+git add .crawl_manifest.json data.js arcteryx_skus.json global_data.json
 if ! git diff --cached --quiet; then
   git commit -m "data: auto update $(date '+%Y-%m-%d %H:%M')"
   git push origin main 2>&1 | tee -a "$LOG_FILE" || log "git push failed (non-fatal)"

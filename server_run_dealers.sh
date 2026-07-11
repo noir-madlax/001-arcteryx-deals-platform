@@ -15,7 +15,7 @@ else
   PYTHON="${PYTHON:-python3.12}"
 fi
 
-GITHUB_REPO="noir-madlax/001-arcteryx-deals-platform"
+GITHUB_REMOTE="git@github.com:noir-madlax/001-arcteryx-deals-platform.git"
 
 if [ -f "$HOME/.arcteryx_secrets" ]; then
   # shellcheck disable=SC1091
@@ -32,11 +32,37 @@ cd "$PROJ_DIR"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG"; }
 
+CRAWLER_NODE="${CRAWLER_NODE:-$(hostname)}"
+LEASE_SCOPE="dealers"
+LEASE_ACQUIRED=false
+finish_lease() {
+  exit_code=$?
+  trap - EXIT
+  if [ "$LEASE_ACQUIRED" = true ]; then
+    if [ "$exit_code" -eq 0 ]; then
+      "$PYTHON" tools/crawler_lease.py finish --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --status success >/dev/null 2>&1 || true
+    else
+      "$PYTHON" tools/crawler_lease.py finish --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --status failed --message "exit $exit_code" >/dev/null 2>&1 || true
+    fi
+  fi
+  exit "$exit_code"
+}
+trap finish_lease EXIT
+
 log "===== DEALERS START ====="
 
 # pull latest code
+git remote set-url origin "$GITHUB_REMOTE"
 git fetch origin main 2>&1 | tee -a "$LOG"
 git reset --hard origin/main 2>&1 | tee -a "$LOG"
+
+lease_result=$($PYTHON tools/crawler_lease.py acquire --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --ttl-minutes 180)
+if [ "$lease_result" != "true" ]; then
+    log "Another node owns the Dealers lease; skipping this window"
+    trap - EXIT
+    exit 0
+fi
+LEASE_ACQUIRED=true
 
 # 4 个 dealer 串行跑（EC2 1.6GB RAM 不够并行 + Camoufox/Chromium 开销大）
 mkdir -p dealers/_partial
@@ -70,7 +96,7 @@ $PYTHON check_price_alerts.py 2>&1 | tee -a "$LOG" || log "price alerts check �
 log "git commit + push"
 git config user.email "bot@arcteryx-deals.local"
 git config user.name  "ArcBot"
-git remote set-url origin "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git"
+git remote set-url origin "$GITHUB_REMOTE"
 git add dealers/results.json
 if ! git diff --cached --quiet; then
     TS=$(date '+%Y-%m-%d %H:%M')

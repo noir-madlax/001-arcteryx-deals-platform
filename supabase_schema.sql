@@ -25,6 +25,11 @@ CREATE TABLE IF NOT EXISTS products (
   image_url      TEXT,
   images         JSONB       DEFAULT '[]',
   description    TEXT,
+  status         TEXT        NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'missing', 'inactive', 'unavailable')),
+  last_seen_at   TIMESTAMPTZ,
+  missing_runs   INTEGER     NOT NULL DEFAULT 0 CHECK (missing_runs >= 0),
+  url_http_status INTEGER,
+  url_checked_at TIMESTAMPTZ,
   last_updated   TIMESTAMPTZ,
   created_at     TIMESTAMPTZ DEFAULT NOW()
 );
@@ -35,14 +40,17 @@ CREATE INDEX IF NOT EXISTS idx_products_gender    ON products (gender);
 CREATE INDEX IF NOT EXISTS idx_products_category  ON products (category);
 CREATE INDEX IF NOT EXISTS idx_products_sale_price ON products (sale_price);
 CREATE INDEX IF NOT EXISTS idx_products_discount  ON products (discount_pct);
+CREATE INDEX IF NOT EXISTS idx_products_status    ON products (status);
+CREATE INDEX IF NOT EXISTS idx_products_last_seen ON products (last_seen_at);
 
 -- 3. Row Level Security — allow anonymous read, block writes
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 
-DROP POLICY IF EXISTS "public_read" ON products;
-CREATE POLICY "public_read"
+DROP POLICY IF EXISTS "public_read_active_products" ON products;
+CREATE POLICY "public_read_active_products"
   ON products FOR SELECT
-  USING (true);
+  TO anon, authenticated
+  USING (status = 'active');
 
 -- service_role key bypasses RLS automatically, so no write policy needed
 -- (scraper uses service_role key, frontend uses anon key)
