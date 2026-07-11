@@ -28,8 +28,14 @@ REGION_NAME = {
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://bupqagkrcvrezjkdbald.supabase.co")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")  # service_role
-if not SUPABASE_KEY:
-    sys.exit("SUPABASE_KEY env var required (service_role)")
+
+
+def fresh_dealer_keys(payload: dict) -> set[str] | None:
+    """Return dealers refreshed in this run; None keeps legacy-file behavior."""
+    value = payload.get("fresh_dealers")
+    if value is None:
+        return None
+    return {str(key) for key in value}
 
 # ── derive sku_id from dealer + URL (stable across runs) ──
 def make_sku_id(dealer: str, url: str) -> str:
@@ -115,10 +121,13 @@ def _to_iso(s: str) -> str | None:
         return None
 
 def main():
+    if not SUPABASE_KEY:
+        sys.exit("SUPABASE_KEY env var required (service_role)")
     if not RESULTS_FILE.exists():
         sys.exit(f"{RESULTS_FILE} not found — run scrapers + merge_partial first")
     js = json.loads(RESULTS_FILE.read_text())
     dealers = js.get("dealers", {})
+    fresh_dealers = fresh_dealer_keys(js)
     generated_at = js.get("generated_at", "")
 
     from supabase import create_client
@@ -126,6 +135,9 @@ def main():
 
     grand_total = 0
     for dkey, info in dealers.items():
+        if fresh_dealers is not None and dkey not in fresh_dealers:
+            print(f"\n[sync:{dkey}] kept snapshot — not refreshed in this run; skipping")
+            continue
         items = info.get("items", []) or []
         rows = [item_to_row(it, dkey, generated_at) for it in items]
         rows = [r for r in rows if r["sku_id"] and r["url"]]

@@ -37,4 +37,4 @@ jobs:
         run: |
           curl -fsS https://001.100app.dev/ >/dev/null
           curl -fsS https://001.100app.dev/data.js | python -c 'import sys; s=sys.stdin.read(); assert "sku_id" in s; print("data.js bytes", len(s), "sku_entries", s.count("\"sku_id\""))'
-          curl -fsS https://001.100app.dev/dealers/results.json | python -c 'import json,sys; data=json.load(sys.stdin); assert data.get("dealers"); print("dealers generated_at", data.get("generated_at"))'
+          curl -fsS https://001.100app.dev/dealers/results.json | python -c 'import json,sys; data=json.load(sys.stdin); assert data.get("dealers"); print("dealers generated_at", data.get("generated_at")); print("dealer refreshed_at", {k:v.get("refreshed_at") for k,v in data["dealers"].items()})'

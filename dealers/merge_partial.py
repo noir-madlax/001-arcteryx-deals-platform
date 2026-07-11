@@ -1,5 +1,6 @@
 """把 dealers/_partial/<key>.json 合并成 dealers/results.json (前端读取的格式)"""
 import json, time, os, glob
+from pathlib import Path
 
 PARTIAL_DIR = "dealers/_partial"
 OUT = "dealers/results.json"
@@ -13,7 +14,7 @@ def main():
     #  这里同步保住静态 results.json 的完整性，REI 偶发崩溃不再清空它的区块。)
     if os.path.exists(OUT):
         try:
-            prev = json.load(open(OUT))
+            prev = json.loads(Path(OUT).read_text())
             for key, block in (prev.get("dealers") or {}).items():
                 out["dealers"][key] = block
             print(f"  (seeded from previous results.json: {', '.join(out['dealers']) or 'none'})")
@@ -22,7 +23,7 @@ def main():
 
     fresh_keys = []
     for path in sorted(glob.glob(f"{PARTIAL_DIR}/*.json")):
-        d = json.load(open(path))
+        d = json.loads(Path(path).read_text())
         key = KEY_BY_NAME.get(d.get("name"), os.path.basename(path).replace(".json",""))
         items = d.get("items") or []
         # 空 partial（dealer 成功退出但抓到 0 件, 如 EVO 偶发被限流）也当"无新数据":
@@ -36,6 +37,7 @@ def main():
             "region": d.get("region"),
             "count":  d.get("count", 0),
             "items":  items,
+            "refreshed_at": d.get("saved_at"),
         }
         fresh_keys.append(key)
         print(f"  {key}: {d.get('count')} 件 ({d.get('saved_at')}) [fresh]")
@@ -47,8 +49,10 @@ def main():
 
     total = sum((b.get("count") or 0) for b in out["dealers"].values())
     out["total"] = total
-    with open(OUT, "w") as f:
-        json.dump(out, f, indent=2, ensure_ascii=False)
+    # supabase_sync 只允许本轮真实产出非空 partial 的 dealer 更新时间。
+    # 缺失/空抓取仍保留静态快照，但不能伪装成本轮新鲜数据。
+    out["fresh_dealers"] = fresh_keys
+    Path(OUT).write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n")
     print(f"\n=== TOTAL: {total} 件 → {OUT} (fresh: {len(fresh_keys)}, kept: {len(stale_keys)}) ===")
 
 if __name__ == "__main__":

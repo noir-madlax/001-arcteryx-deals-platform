@@ -86,7 +86,11 @@ def load_file_rows(path: Path) -> list[dict]:
         out = []
         for dealer, info in (raw.get("dealers") or {}).items():
             for item in info.get("items") or []:
-                out.append(dict(item, dealer=dealer, last_updated=raw.get("generated_at")))
+                out.append(dict(
+                    item,
+                    dealer=dealer,
+                    last_updated=info.get("refreshed_at") or raw.get("generated_at"),
+                ))
         return out
     raise SystemExit(f"Unsupported file shape: {path}")
 
