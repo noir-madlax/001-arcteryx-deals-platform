@@ -1,0 +1,62 @@
+name: Diagnose MEC Egress
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install HTTP client
+        run: python -m pip install 'curl-cffi>=0.11,<1'
+
+      - name: Probe public MEC list pages
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          import time
+          from curl_cffi import requests
+
+          next_data = re.compile(
+              r'<script id="__NEXT_DATA__"[^>]*>(\{.+?\})</script>', re.S
+          )
+          session = requests.Session(impersonate="chrome")
+          counts = []
+          for page in (1, 2, 3):
+              url = f"https://www.mec.ca/en/products?brand=Arc%27teryx&page={page}"
+              started = time.monotonic()
+              response = session.get(url, timeout=35, allow_redirects=True)
+              match = next_data.search(response.text)
+              hits = []
+              if match:
+                  payload = json.loads(match.group(1))
+                  hits = (payload.get("props", {}).get("pageProps", {})
+                          .get("serverState", {}).get("initialResults", {})
+                          .get("products_en", {}).get("results", [{}])[0]
+                          .get("hits") or [])
+              result = {
+                  "page": page,
+                  "status": response.status_code,
+                  "seconds": round(time.monotonic() - started, 2),
+                  "bytes": len(response.content),
+                  "hits": len(hits),
+                  "cf_ray": response.headers.get("cf-ray"),
+              }
+              print(json.dumps(result))
+              if response.status_code != 200 or not match:
+                  raise SystemExit(f"MEC egress blocked on page {page}")
+              counts.append(len(hits))
+
+          if sum(counts) < 50:
+              raise SystemExit(f"MEC result unexpectedly small: {counts}")
+          print(json.dumps({"counts": counts, "total": sum(counts), "egress": "usable"}))
+          PY
