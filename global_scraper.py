@@ -35,6 +35,7 @@ from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 PROJECT   = Path(__file__).parent
 DATA_FILE = PROJECT / "global_data.json"
 SKIPPED_REGIONS_FILE = PROJECT / ".skipped_regions.json"
+CRAWL_MANIFEST_FILE = PROJECT / ".crawl_manifest.json"
 
 REGIONS = [
     {"code": "us", "lang": "en", "name": "美国",   "currency": "USD", "symbol": "$"},
@@ -554,10 +555,18 @@ async def extract_tiles(page, region: dict, gender: str) -> list:
            "gender": gender})
 
 
-async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> tuple[list, bool]:
+async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> tuple[list, bool, list[dict]]:
     """抓取单个地区的所有性别分类页"""
     if region["code"] == "au":
-        return await asyncio.to_thread(scrape_au_shopify_sale, region), False
+        products = await asyncio.to_thread(scrape_au_shopify_sale, region)
+        urls = sorted({p.get("url") for p in products if p.get("url")})
+        return products, False, [{
+            "region": region["code"],
+            "gender": "*",
+            "status": "success" if len(urls) >= 10 else "failed",
+            "product_count": len(urls),
+            "urls": urls,
+        }]
 
     context = await browser.new_context(
         user_agent=(
@@ -573,6 +582,7 @@ async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> 
     page.set_default_navigation_timeout(45_000)
     page.set_default_timeout(10_000)
     all_products = []
+    scope_results = []
 
     try:
         for gender in genders:
@@ -584,9 +594,11 @@ async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> 
                 await page.goto(url, wait_until="domcontentloaded", timeout=45_000)
             except PWTimeout:
                 print(f"    ⚠ 超时，跳过", flush=True)
+                scope_results.append({"region": region["code"], "gender": gender, "status": "failed", "reason": "navigation_timeout", "product_count": 0, "urls": []})
                 continue
             except Exception as e:
                 print(f"    ⚠ 导航失败: {e}", flush=True)
+                scope_results.append({"region": region["code"], "gender": gender, "status": "failed", "reason": "navigation_error", "product_count": 0, "urls": []})
                 continue
 
             final_region = region_from_url(page.url)
@@ -595,7 +607,7 @@ async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> 
                     f"    ⚠ 地区重定向 {region['code']} → {final_region}，跳过该地区以避免币种/价格错配",
                     flush=True,
                 )
-                return [], True
+                return [], True, scope_results
 
             # 等待页面基本内容加载
             await asyncio.sleep(4.0)
@@ -609,6 +621,7 @@ async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> 
                 )
             except PWTimeout:
                 print(f"    ⚠ 未发现商品链接（25s超时），跳过", flush=True)
+                scope_results.append({"region": region["code"], "gender": gender, "status": "failed", "reason": "no_product_links", "product_count": 0, "urls": []})
                 continue
 
             # 滚动加载全部
@@ -634,13 +647,28 @@ async def scrape_region(browser, region: dict, genders: list, dry_run: bool) -> 
                     # 即使价格为0也保留（sku_scraper 会重新抓详情）
                     valid.append(t)
 
-            print(f"    ✓ 提取 {len(valid)} 个有效商品（{gender}）", flush=True)
-            all_products.extend(valid)
+            urls = sorted({p.get("url") for p in valid if p.get("url")})
+            minimum = max(10, round(total * 0.8))
+            complete = total >= 10 and len(urls) >= minimum
+            scope_results.append({
+                "region": region["code"],
+                "gender": gender,
+                "status": "success" if complete else "failed",
+                "reason": None if complete else "incomplete_scope",
+                "listed_count": total,
+                "product_count": len(urls),
+                "urls": urls,
+            })
+            if complete:
+                print(f"    ✓ 提取 {len(valid)} 个有效商品（{gender}，完整）", flush=True)
+                all_products.extend(valid)
+            else:
+                print(f"    ⚠ 仅提取 {len(urls)}/{total} 个商品（{gender}），本范围不参与对账", flush=True)
 
             if dry_run:
                 break  # dry-run 只抓第一个 gender
 
-        return all_products, False
+        return all_products, False, scope_results
 
     finally:
         await context.close()
@@ -689,20 +717,30 @@ async def run(args):
         total_new = 0
         total_updated = 0
         skipped_redirect_regions = set()
+        manifest_scopes = []
 
         for region in regions:
             print(f"\n🌍 [{region['code'].upper()}] {region['name']} ({region['currency']})", flush=True)
 
             try:
-                products, redirected = await scrape_region(
+                products, redirected, scope_results = await scrape_region(
                     browser, region,
                     genders=GENDERS,
                     dry_run=args.dry_run,
                 )
+                manifest_scopes.extend(scope_results)
             except Exception as e:
                 print(f"  ⚠ 地区抓取失败: {e}", flush=True)
                 products = []
                 redirected = False
+                manifest_scopes.extend({
+                    "region": region["code"],
+                    "gender": gender,
+                    "status": "failed",
+                    "reason": "region_exception",
+                    "product_count": 0,
+                    "urls": [],
+                } for gender in GENDERS)
 
             if redirected:
                 skipped_redirect_regions.add(region["code"])
@@ -823,6 +861,13 @@ async def run(args):
 
     save_json(DATA_FILE, existing)
     print(f"[global_scraper] 已写入 {DATA_FILE}")
+    save_json(CRAWL_MANIFEST_FILE, {
+        "version": 1,
+        "generated_at": datetime.now().astimezone().isoformat(),
+        "scopes": manifest_scopes,
+    })
+    successful = sum(1 for scope in manifest_scopes if scope.get("status") == "success")
+    print(f"[global_scraper] crawl manifest: {successful}/{len(manifest_scopes)} successful scopes")
 
 
 # ── URL 重定向验证 ────────────────────────────────────────────────────────────

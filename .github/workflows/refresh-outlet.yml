@@ -2,8 +2,14 @@ name: Refresh Outlet Data
 
 on:
   schedule:
-    - cron: "17 2,14 * * *"
+    - cron: "20 */3 * * *"
   workflow_dispatch:
+    inputs:
+      force:
+        description: "Run even when the primary node is healthy"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -18,7 +24,37 @@ env:
   SITE_URL: https://001.100app.dev
 
 jobs:
+  lease-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      acquired: ${{ steps.lease.outputs.acquired }}
+      owner: ${{ steps.lease.outputs.owner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install 'requests>=2.32,<3'
+      - id: lease
+        name: Claim Outlet fallback lease when needed
+        env:
+          FORCE_RUN: ${{ inputs.force || 'false' }}
+        run: |
+          owner="github-actions-outlet-${GITHUB_RUN_ID}"
+          should_run="$FORCE_RUN"
+          if [ "$should_run" != "true" ]; then
+            should_run=$(python tools/crawler_lease.py needs-fallback --scope outlet --stale-hours 4.5)
+          fi
+          acquired=false
+          if [ "$should_run" = "true" ]; then
+            acquired=$(python tools/crawler_lease.py acquire --scope outlet --owner "$owner" --ttl-minutes 240)
+          fi
+          echo "owner=$owner" >> "$GITHUB_OUTPUT"
+          echo "acquired=$acquired" >> "$GITHUB_OUTPUT"
+
   refresh-outlet:
+    needs: lease-gate
+    if: needs.lease-gate.outputs.acquired == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 240
 
@@ -43,6 +79,9 @@ jobs:
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_KEY"
 
+      - name: Verify lifecycle safety rules
+        run: python -m unittest discover -s tests -v
+
       - name: Refresh Outlet scrape and sync
         run: |
           git pull --ff-only origin main
@@ -50,7 +89,8 @@ jobs:
           python -u global_scraper.py --redirect-timeout 3 --redirect-workers 50
           python -u sku_scraper.py --reset --update-data
           python -u supabase_sync.py
-          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 --forbid-region jp
+          python -u tools/check_product_urls.py --status missing --max-rows 500
+          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --max-product-age-hours 72 --min-rows 100 --forbid-region jp
 
       - name: Optional notifications
         run: |
@@ -61,7 +101,7 @@ jobs:
         run: |
           git config user.email "bot@arcteryx-deals.local"
           git config user.name "ArcBot"
-          git add .last_sync .sku_progress.json arcteryx_skus.json global_data.json data.js h5/data.js
+          git add .last_sync .crawl_manifest.json .sku_progress.json arcteryx_skus.json global_data.json data.js h5/data.js
           if git diff --cached --quiet; then
             echo "No Outlet data changes to commit"
             exit 0
@@ -72,5 +112,15 @@ jobs:
 
       - name: Verify production freshness
         run: |
-          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --min-rows 100 --forbid-region jp
+          python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --max-product-age-hours 72 --min-rows 100 --forbid-region jp
           curl -fsS https://001.100app.dev/data.js | python -c 'import sys; s=sys.stdin.read(); assert "sku_id" in s; print("data.js bytes", len(s), "sku_entries", s.count("\"sku_id\""))'
+
+      - name: Release Outlet lease
+        if: always()
+        env:
+          LEASE_OWNER: ${{ needs.lease-gate.outputs.owner }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          status=failed
+          [ "$JOB_STATUS" = "success" ] && status=success
+          python tools/crawler_lease.py finish --scope outlet --owner "$LEASE_OWNER" --status "$status" --message "GitHub Actions run ${GITHUB_RUN_ID}: $JOB_STATUS"

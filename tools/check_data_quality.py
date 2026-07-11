@@ -21,7 +21,8 @@ INDEX_FILE = ROOT / "index.html"
 
 SELECT = (
     "sku_id,dealer,full_name,model,original_price,sale_price,discount_pct,"
-    "currency,symbol,gender,region,url,last_updated"
+    "currency,symbol,gender,region,url,status,last_seen_at,missing_runs,"
+    "url_http_status,url_checked_at,last_updated"
 )
 
 EXPECTED_CURRENCY = {
@@ -133,7 +134,10 @@ def url_gender(url: str) -> str | None:
 
 def is_blocked_outlet_url(url: str) -> bool:
     u = (url or "").split("?", 1)[0].rstrip("/").lower()
-    return bool(re.search(r"outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$", u))
+    return bool(
+        re.search(r"outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$", u)
+        or re.search(r"outlet\.arcteryx\.com/us/en/shop/womens/alpha-pant$", u)
+    )
 
 
 def name_gender(name: str) -> str | None:
@@ -157,6 +161,7 @@ def expected_currency(row: dict) -> tuple[str, str] | None:
 def validate(
     rows: list[dict],
     max_age_hours: float | None,
+    max_product_age_hours: float | None,
     min_rows: int,
     required_dealers: set[str] | None = None,
     forbidden_regions: set[str] | None = None,
@@ -166,8 +171,9 @@ def validate(
     timestamps = []
     timestamps_by_dealer: dict[str, list[datetime]] = defaultdict(list)
 
-    if len(rows) < min_rows:
-        errors["too_few_rows"].append({"row_count": len(rows), "min_rows": min_rows})
+    active_rows = [row for row in rows if (row.get("status") or "active") == "active"]
+    if len(active_rows) < min_rows:
+        errors["too_few_rows"].append({"row_count": len(active_rows), "min_rows": min_rows})
 
     for row in rows:
         sku = row.get("sku_id")
@@ -206,8 +212,25 @@ def validate(
         if forbidden_regions and dealer == "arcteryx_outlet" and region in forbidden_regions:
             errors["forbidden_region"].append(row)
 
-        if dealer == "arcteryx_outlet" and is_blocked_outlet_url(row.get("url") or ""):
+        status = row.get("status") or "active"
+        missing_runs = int(row.get("missing_runs") or 0)
+        if dealer == "arcteryx_outlet" and status == "active" and is_blocked_outlet_url(row.get("url") or ""):
             errors["blocked_outlet_url"].append(row)
+        if status not in {"active", "missing", "inactive", "unavailable"}:
+            errors["invalid_product_status"].append(row)
+        if status == "active" and missing_runs:
+            errors["active_with_missing_runs"].append(row)
+        if status == "active" and row.get("url_http_status") in {404, 410}:
+            errors["active_with_dead_url"].append(row)
+        if dealer == "arcteryx_outlet" and status == "active" and max_product_age_hours is not None:
+            last_seen = parse_ts(row.get("last_seen_at") or row.get("last_updated"))
+            age_hours = ((datetime.now(timezone.utc) - last_seen).total_seconds() / 3600) if last_seen else None
+            if age_hours is None or age_hours > max_product_age_hours:
+                errors["stale_active_product"].append({
+                    **row,
+                    "age_hours": round(age_hours, 2) if age_hours is not None else None,
+                    "max_age_hours": max_product_age_hours,
+                })
 
         if dealer == "arcteryx_outlet" and region == "jp":
             if (sale is not None and sale < 1000) or (orig is not None and orig < 1000):
@@ -228,7 +251,7 @@ def validate(
         else:
             errors["missing_last_updated"].append(row)
 
-    by_dealer = Counter(row.get("dealer") or "arcteryx_outlet" for row in rows)
+    by_dealer = Counter(row.get("dealer") or "arcteryx_outlet" for row in active_rows)
     if required_dealers:
         for dealer in sorted(required_dealers):
             if by_dealer.get(dealer, 0) == 0:
@@ -254,7 +277,7 @@ def validate(
                     "max_age_hours": max_age_hours,
                 })
 
-    print(f"[quality] rows={len(rows)}")
+    print(f"[quality] rows={len(rows)} active={len(active_rows)}")
     if timestamps:
         print(f"[quality] last_updated={min(timestamps).isoformat()} .. {max(timestamps).isoformat()}")
     print("[quality] dealers=" + ", ".join(f"{k}:{v}" for k, v in sorted(by_dealer.items())))
@@ -275,7 +298,8 @@ def validate(
                     "expected_gender", "expected_currency", "expected_symbol",
                     "full_name", "original_price", "sale_price", "discount_pct",
                     "expected_discount", "latest_last_updated", "age_hours",
-                    "max_age_hours", "last_updated", "url",
+                    "max_age_hours", "status", "last_seen_at", "missing_runs",
+                    "url_http_status", "url_checked_at", "last_updated", "url",
                 )
                 if k in row
             }
@@ -292,6 +316,7 @@ def main() -> int:
     source.add_argument("--file", type=Path, help="Validate a local JSON file")
     parser.add_argument("--dealer", action="append", default=[], help="Dealer key to include; can be repeated")
     parser.add_argument("--max-age-hours", type=float, default=None, help="Fail if newest last_updated is older")
+    parser.add_argument("--max-product-age-hours", type=float, default=None, help="Fail if any active Outlet row was not seen recently")
     parser.add_argument("--min-rows", type=int, default=1)
     parser.add_argument("--forbid-region", action="append", default=[], help="Outlet region code that must not appear")
     args = parser.parse_args()
@@ -303,6 +328,7 @@ def main() -> int:
     return validate(
         rows,
         args.max_age_hours,
+        args.max_product_age_hours,
         args.min_rows,
         set(args.dealer) if args.dealer else None,
         {r.lower() for r in args.forbid_region},

@@ -1,0 +1,9 @@
+SHELL=/bin/bash
+PATH=/home/opc/arcteryx-venv/bin:/usr/local/bin:/usr/bin:/bin
+MAILTO=""
+PROJ_DIR=/home/opc/arcteryx
+PYTHON=/home/opc/arcteryx-venv/bin/python
+CRAWLER_NODE=oci-free-a1
+
+# Primary Outlet node: every 3 hours UTC. Supabase lease prevents duplicate writers.
+0 0,3,6,9,12,15,18,21 * * * cd /home/opc/arcteryx && /usr/bin/flock -n /tmp/arcteryx-update.lock /home/opc/arcteryx/server_run_update.sh >> /home/opc/arcteryx/cron_update.log 2>&1

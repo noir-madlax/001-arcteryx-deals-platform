@@ -1,0 +1,115 @@
+import tempfile
+import unittest
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
+
+from tools.check_product_urls import classify_url, product_identity
+from tools.crawler_lease import needs_fallback
+from tools.product_lifecycle import load_manifest, next_lifecycle, validate_scope_counts
+
+
+class ProductLifecycleTests(unittest.TestCase):
+    def manifest(self, urls, status="success"):
+        return {
+            "generated_at": "2026-07-11T12:00:00+00:00",
+            "scopes": {
+                ("us", "women"): {
+                    "region": "us",
+                    "gender": "womens",
+                    "status": status,
+                    "urls": set(urls),
+                }
+            },
+        }
+
+    def test_seen_product_is_active_and_resets_missing_counter(self):
+        url = "https://outlet.arcteryx.com/us/en/shop/womens/beta-jacket"
+        result = next_lifecycle(
+            {"status": "missing", "missing_runs": 1, "last_seen_at": "old"},
+            {"url": url, "region": "us", "gender": "women", "last_updated": "new"},
+            self.manifest([url]),
+        )
+        self.assertEqual(result, {"status": "active", "missing_runs": 0, "last_seen_at": "new"})
+
+    def test_two_complete_misses_move_product_to_inactive(self):
+        row = {
+            "url": "https://outlet.arcteryx.com/us/en/shop/womens/alpha-pant",
+            "region": "us",
+            "gender": "women",
+            "last_updated": "old",
+        }
+        first = next_lifecycle({"status": "active", "missing_runs": 0}, row, self.manifest([]))
+        second = next_lifecycle({**row, **first}, row, self.manifest([]))
+        self.assertEqual(first["status"], "missing")
+        self.assertEqual(first["missing_runs"], 1)
+        self.assertEqual(second["status"], "inactive")
+        self.assertEqual(second["missing_runs"], 2)
+
+    def test_failed_scope_does_not_change_lifecycle(self):
+        row = {"url": "https://example.test/product", "region": "us", "gender": "women", "last_updated": "old"}
+        result = next_lifecycle(
+            {"status": "active", "missing_runs": 0, "last_seen_at": "seen"},
+            row,
+            self.manifest([], status="failed"),
+        )
+        self.assertEqual(result, {"status": "active", "missing_runs": 0, "last_seen_at": "seen"})
+
+    def test_new_product_from_unverified_scope_is_not_activated(self):
+        row = {"url": "https://example.test/product", "region": "us", "gender": "women", "last_updated": "new"}
+        result = next_lifecycle(None, row, self.manifest([], status="failed"))
+        self.assertEqual(result, {"status": "missing", "missing_runs": 0, "last_seen_at": "new"})
+
+    def test_scope_drop_guard_rejects_large_drop(self):
+        previous = [
+            {"url": f"https://example.test/{i}", "region": "us", "gender": "women", "status": "active"}
+            for i in range(100)
+        ]
+        errors = validate_scope_counts(self.manifest([f"https://example.test/{i}" for i in range(60)]), previous)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("dropped from 100 to 60", errors[0])
+
+    def test_manifest_loader_normalizes_gender_and_urls(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "manifest.json"
+            path.write_text(
+                '{"generated_at":"now","scopes":[{"region":"us","gender":"womens","status":"success","urls":["u"]}]}',
+                encoding="utf-8",
+            )
+            manifest = load_manifest(path)
+        self.assertEqual(manifest["scopes"][("us", "women")]["urls"], {"u"})
+
+    def test_product_identity_uses_region_and_slug(self):
+        self.assertEqual(product_identity("https://outlet.arcteryx.com/us/en/shop/womens/alpha-pant"), ("us", "alpha-pant"))
+
+    @patch("tools.check_product_urls.requests.get")
+    def test_url_checker_marks_404_unavailable(self, get):
+        get.return_value = SimpleNamespace(status_code=404, url="https://outlet.arcteryx.com/us/en/shop/womens/alpha-pant")
+        self.assertEqual(classify_url(get.return_value.url)[:2], (404, "unavailable"))
+
+    @patch("tools.check_product_urls.requests.get")
+    def test_url_checker_rejects_redirect_to_another_product(self, get):
+        get.return_value = SimpleNamespace(status_code=200, url="https://outlet.arcteryx.com/us/en/shop/womens/beta-pant")
+        result = classify_url("https://outlet.arcteryx.com/us/en/shop/womens/alpha-pant")
+        self.assertEqual(result[:2], (200, "unavailable"))
+
+    @patch("tools.crawler_lease.read_scope")
+    def test_active_lease_blocks_fallback(self, read_scope):
+        read_scope.return_value = {
+            "status": "running",
+            "lease_until": "2999-01-01T00:00:00+00:00",
+        }
+        self.assertFalse(needs_fallback("outlet", 4.5))
+
+    @patch("tools.crawler_lease.read_scope")
+    def test_failed_primary_requests_fallback(self, read_scope):
+        read_scope.return_value = {
+            "status": "failed",
+            "lease_until": "2020-01-01T00:00:00+00:00",
+            "completed_at": "2020-01-01T00:00:00+00:00",
+        }
+        self.assertTrue(needs_fallback("outlet", 4.5))
+
+
+if __name__ == "__main__":
+    unittest.main()

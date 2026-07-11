@@ -19,28 +19,17 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
+from tools.product_lifecycle import load_manifest, next_lifecycle, validate_scope_counts
+
 # ── Config ────────────────────────────────────────────────────────────────────
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://bupqagkrcvrezjkdbald.supabase.co")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
 
 BASE_DIR  = Path(__file__).parent
 SKUS_FILE = BASE_DIR / "arcteryx_skus.json"
-SKIPPED_REGIONS_FILE = BASE_DIR / ".skipped_regions.json"
+CRAWL_MANIFEST_FILE = BASE_DIR / ".crawl_manifest.json"
 
 BATCH_SIZE = 50   # upsert N rows at a time
-
-def load_skipped_regions() -> set[str]:
-    if not SKIPPED_REGIONS_FILE.exists():
-        return set()
-    try:
-        raw = json.loads(SKIPPED_REGIONS_FILE.read_text(encoding="utf-8"))
-    except Exception:
-        return set()
-    return {
-        str(item.get("region", "")).lower()
-        for item in raw
-        if isinstance(item, dict) and item.get("region")
-    }
 
 # ── Category inference (re-run on every sync so old "其他" rows get backfilled) ──
 def infer_category(name: str, url: str) -> str:
@@ -100,7 +89,10 @@ def gender_from_url(url: str) -> str | None:
 def is_blocked_outlet_url(url: str) -> bool:
     """True for known bad Arc'teryx Outlet PDP links that should not be shown."""
     u = (url or "").split("?", 1)[0].rstrip("/").lower()
-    return bool(re.search(r"outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$", u))
+    return bool(
+        re.search(r"outlet\.arcteryx\.com/(?:[a-z]{2}/[a-z]{2}/)?shop/womens/rush-bib-pant$", u)
+        or re.search(r"outlet\.arcteryx\.com/us/en/shop/womens/alpha-pant$", u)
+    )
 
 def _jsonish(value, default):
     if value is None or value == "":
@@ -190,6 +182,10 @@ def main():
         sys.exit(1)
 
     skus = json.loads(SKUS_FILE.read_text())
+    manifest = load_manifest(CRAWL_MANIFEST_FILE)
+    if not manifest.get("scopes"):
+        print("[ERROR] .crawl_manifest.json is missing or empty; refusing lifecycle reconciliation", file=sys.stderr)
+        sys.exit(1)
     blocked_sku_ids = [
         s.get("sku_id")
         for s in skus
@@ -269,16 +265,18 @@ def main():
         print(f"[sync] deleted {deleted_blocked} blocked rows")
 
     # ── Snapshot existing prices + first_seen BEFORE upsert
-    # 关键: 把已有行的 first_seen 也加载，upsert 时塞回 row 里，
-    # 否则下面的 stale-delete + 下轮 re-insert 会让 first_seen 被 DB DEFAULT now() 刷新，
-    # 导致"今日上新"弹窗一炸 N 千件
-    old_prices = {}     # sku_id -> (original_price, sale_price)
-    first_seen_map = {} # sku_id -> first_seen (ISO str)
+    # 关键: 把已有行的 first_seen 也加载，upsert 时塞回 row 里，避免任何重建/补录
+    # 把 first_seen 刷成今天，导致“今日上新”误报。
+    old_prices = {}       # sku_id -> (original_price, sale_price)
+    first_seen_map = {}   # sku_id -> first_seen (ISO str)
+    existing_state = {}   # sku_id -> lifecycle/source fields
+    existing_rows = []
     try:
         page = 0
         while True:
             res = client.table("products").select(
-                "sku_id,original_price,sale_price,first_seen"
+                "sku_id,original_price,sale_price,first_seen,url,region,gender,status,"
+                "last_seen_at,missing_runs,url_http_status,url_checked_at,last_updated"
             ).or_("dealer.is.null,dealer.eq.arcteryx_outlet") \
              .range(page * 1000, page * 1000 + 999).execute()
             data = res.data or []
@@ -286,6 +284,8 @@ def main():
                 break
             for r in data:
                 old_prices[r["sku_id"]] = (r.get("original_price"), r.get("sale_price"))
+                existing_state[r["sku_id"]] = r
+                existing_rows.append(r)
                 if r.get("first_seen"):
                     first_seen_map[r["sku_id"]] = r["first_seen"]
             if len(data) < 1000:
@@ -293,19 +293,51 @@ def main():
             page += 1
         print(f"[sync] loaded {len(old_prices)} existing rows ({len(first_seen_map)} with first_seen)")
     except Exception as e:
-        print(f"[WARN] could not preload prices: {e}", file=sys.stderr)
+        print(f"[ERROR] could not preload prices/lifecycle state: {e}", file=sys.stderr)
+        print("[ERROR] apply dealers/supabase_migration_product_lifecycle.sql before running this sync", file=sys.stderr)
+        sys.exit(1)
 
-    # 给每行注入 first_seen
+    scope_errors = validate_scope_counts(manifest, existing_rows)
+    if scope_errors:
+        print("[ERROR] crawl scope count guard failed; refusing reconciliation", file=sys.stderr)
+        for error in scope_errors:
+            print(f"  - {error}", file=sys.stderr)
+        sys.exit(1)
+
+    # 给每行注入 first_seen + lifecycle。只有 manifest 标记为完整成功的范围
+    # 才能增加 missing_runs；失败/缺失范围完全保留上一轮状态。
     # 关键: 必须显式写, 不能依赖 DB DEFAULT now()
     # 因为 PostgREST 批量 upsert 时, 若 batch 内其他行有 first_seen 字段,
     # 没字段的行 INSERT 时填 NULL 而非触发 DEFAULT (PostgREST 把 batch 各 row 字段并集当列集)
     now_iso = datetime.now(timezone.utc).isoformat()
     for r in rows:
         sid = r.get("sku_id")
+        previous = existing_state.get(sid, {})
         if sid and sid in first_seen_map:
             r["first_seen"] = first_seen_map[sid]   # 已存在: 保留原值
         else:
             r["first_seen"] = now_iso                # 真新 SKU: 显式设今天
+        r.update(next_lifecycle(previous, r, manifest))
+        r["url_http_status"] = previous.get("url_http_status")
+        r["url_checked_at"] = previous.get("url_checked_at")
+
+    local_ids = {r.get("sku_id") for r in rows if r.get("sku_id")}
+    lifecycle_updates = {}
+    for sid, previous in existing_state.items():
+        if sid in local_ids:
+            continue
+        lifecycle = next_lifecycle(previous, previous, manifest)
+        if lifecycle["status"] == (previous.get("status") or "active") and lifecycle["missing_runs"] == int(previous.get("missing_runs") or 0):
+            continue
+        key = (lifecycle["status"], lifecycle["missing_runs"])
+        lifecycle_updates.setdefault(key, []).append(sid)
+
+    for (status, missing_runs), ids in lifecycle_updates.items():
+        for i in range(0, len(ids), BATCH_SIZE):
+            batch = ids[i : i + BATCH_SIZE]
+            client.table("products").update({"status": status, "missing_runs": missing_runs}).in_("sku_id", batch).execute()
+    if lifecycle_updates:
+        print(f"[sync] lifecycle-only rows updated: {sum(len(ids) for ids in lifecycle_updates.values())}")
 
     total, errors = 0, 0
     for i in range(0, len(rows), BATCH_SIZE):
@@ -322,6 +354,9 @@ def main():
             print(f"[ERROR] batch {i//BATCH_SIZE + 1}: {e}", file=sys.stderr)
 
     print(f"\n[sync] DONE — {total} upserted, {errors} batch errors")
+    if errors:
+        print("[ERROR] one or more product upsert batches failed", file=sys.stderr)
+        sys.exit(1)
 
     # ── Price history (append-only) ───────────────────────────────────────
     # Record a snapshot for every SKU whose price changed vs. last run, plus
@@ -356,61 +391,9 @@ def main():
             print(f"[ERROR] price_history batch {i//BATCH_SIZE + 1}: {e}", file=sys.stderr)
     print(f"[sync] price_history: inserted {hist_inserted}")
 
-    # ── Stale-row cleanup (only if last_updated > 14 天) ──────────────────
-    # 改:  原本"不在本次 scrape 里"立即删, 导致单次抓取失败的商品被删, 下次又被
-    # 当新品 re-insert, 刷新 first_seen 弹窗误报. 现在需要 last_updated 老于
-    # 14 天才删, 给抓取波动留缓冲, 真正下架 / 缺货长期不在的商品 14 天后才清掉
-    from datetime import timedelta
-    STALE_AFTER_DAYS = 14
-    stale_cutoff = (datetime.now(timezone.utc) - timedelta(days=STALE_AFTER_DAYS)).isoformat()
-    synced_ids = {r["sku_id"] for r in rows if r.get("sku_id")}
-    skipped_regions = load_skipped_regions()
-    if synced_ids:
-        try:
-            existing = []  # 待删候选: (sku_id, last_updated, region)
-            page = 0
-            while True:
-                res = client.table("products").select("sku_id,dealer,last_updated,region").or_(
-                    "dealer.is.null,dealer.eq.arcteryx_outlet"
-                ).range(page * 1000, page * 1000 + 999).execute()
-                data = res.data or []
-                if not data:
-                    break
-                # 保留 (sku_id, last_updated, region) 三元组
-                existing.extend((r["sku_id"], r.get("last_updated"), (r.get("region") or "").lower()) for r in data)
-                if len(data) < 1000:
-                    break
-                page += 1
-
-            # 满足两个条件才标 stale: (1) 不在本次 scrape (2) last_updated 老于 cutoff
-            stale = [sid for sid, lu, _region in existing
-                     if sid not in synced_ids and (lu is None or lu < stale_cutoff)]
-            forced_region_delete = [
-                sid for sid, _lu, region in existing
-                if sid not in synced_ids and region in skipped_regions
-            ]
-            delete_ids = sorted(set(stale) | set(forced_region_delete))
-            preserve = sum(1 for sid, lu, region in existing
-                           if sid not in synced_ids and lu and lu >= stale_cutoff and region not in skipped_regions)
-            print(
-                "[sync] stale outlet rows to delete: "
-                f"{len(delete_ids)} (existing={len(existing)}, synced={len(synced_ids)}, "
-                f"preserve_recent={preserve}, redirected_region={len(forced_region_delete)})"
-            )
-
-            deleted = 0
-            for i in range(0, len(delete_ids), BATCH_SIZE):
-                batch = delete_ids[i : i + BATCH_SIZE]
-                try:
-                    client.table("products").delete().in_("sku_id", batch).execute()
-                    deleted += len(batch)
-                except Exception as e:
-                    print(f"[ERROR] delete batch {i//BATCH_SIZE + 1}: {e}", file=sys.stderr)
-            print(f"[sync] deleted {deleted} stale rows")
-        except Exception as e:
-            print(f"[WARN] stale cleanup failed: {e}", file=sys.stderr)
-    else:
-        print("[sync] no synced rows — skipping cleanup to avoid wiping table")
+    # Lifecycle rows remain available for audit; clients only read status=active.
+    # Two complete missed runs move active -> missing -> inactive without
+    # conflating crawler failure with removal.
 
     # Also write a minimal last-sync marker
     marker = BASE_DIR / ".last_sync"
