@@ -78,6 +78,47 @@ def fetch_evo_pdp(url: str) -> dict | None:
     if orig < sale: orig = sale
     return {"sale_price": round(sale, 2), "original_price": round(orig, 2), "discount_pct": _disc(orig, sale)}
 
+
+def _rei_variant_price(body: str, url: str) -> tuple[float, float] | None:
+    """Return the cheapest available current-product SKU and its compare-at price."""
+    product_match = re.search(r"/product/(\d+)/", url or "")
+    if not product_match:
+        return None
+    product_id = product_match.group(1)
+    decoder = json.JSONDecoder()
+    marker = '"skus":'
+    start = 0
+    while True:
+        marker_pos = body.find(marker, start)
+        if marker_pos < 0:
+            return None
+        array_pos = marker_pos + len(marker)
+        try:
+            skus, _ = decoder.raw_decode(body[array_pos:])
+        except (json.JSONDecodeError, TypeError):
+            start = array_pos
+            continue
+        if not isinstance(skus, list) or not any(
+            str(sku.get("skuId", "")).startswith(product_id)
+            for sku in skus if isinstance(sku, dict)
+        ):
+            start = array_pos
+            continue
+        prices = []
+        for sku in skus:
+            if not isinstance(sku, dict) or sku.get("status") != "AVAILABLE":
+                continue
+            price = sku.get("price") or {}
+            sale = _num((price.get("price") or {}).get("value"))
+            original = _num((price.get("compareAt") or {}).get("value")) or sale
+            if sale and str(sku.get("skuId", "")).startswith(product_id):
+                prices.append((sale, max(original or sale, sale)))
+        if not prices:
+            return None
+        lowest_sale = min(sale for sale, _ in prices)
+        original = max(orig for sale, orig in prices if sale == lowest_sale)
+        return lowest_sale, original
+
 def fetch_rei_pdp(page, url: str) -> dict | None:
     """REI Camoufox PDP. Supports both legacy and current buy-box prices.
     注: curl_cffi 在 AWS Lightsail 上被 Akamai 拒 (全路径返 2.7KB stub),
@@ -109,7 +150,10 @@ def fetch_rei_pdp(page, url: str) -> dict | None:
     mbuy  = re.search(r'id="buy-box-product-price"[^>]*>\s*\$?([0-9.,]+)', body)
     mitem = re.search(r'data-cnstrc-item-price="([0-9.,]+)"', body)
     sale = orig = None
-    if msale and mfull:
+    variant_price = _rei_variant_price(body, url)
+    if variant_price:
+        sale, orig = variant_price
+    elif msale and mfull:
         sale = _num(msale.group(1)); orig = _num(mfull.group(1))
     elif mfull:
         sale = orig = _num(mfull.group(1))
