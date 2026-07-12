@@ -46,6 +46,32 @@ class ProductLifecycleTests(unittest.TestCase):
         self.assertEqual(second["status"], "inactive")
         self.assertEqual(second["missing_runs"], 2)
 
+    def test_absent_sku_does_not_inherit_parent_url_presence(self):
+        url = "https://example.test/product"
+        result = next_lifecycle(
+            {"status": "active", "missing_runs": 0, "last_seen_at": "old"},
+            {"url": url, "region": "us", "gender": "women"},
+            self.manifest([url]),
+            present_in_snapshot=False,
+        )
+        self.assertEqual(
+            result,
+            {"status": "missing", "missing_runs": 1, "last_seen_at": "old"},
+        )
+
+    def test_absent_sku_is_preserved_when_scope_failed(self):
+        url = "https://example.test/product"
+        result = next_lifecycle(
+            {"status": "active", "missing_runs": 0, "last_seen_at": "old"},
+            {"url": url, "region": "us", "gender": "women"},
+            self.manifest([url], status="failed"),
+            present_in_snapshot=False,
+        )
+        self.assertEqual(
+            result,
+            {"status": "active", "missing_runs": 0, "last_seen_at": "old"},
+        )
+
     def test_failed_scope_does_not_change_lifecycle(self):
         row = {"url": "https://example.test/product", "region": "us", "gender": "women", "last_updated": "old"}
         result = next_lifecycle(
