@@ -31,6 +31,7 @@ class DealerRevalidationTests(unittest.TestCase):
     def test_rei_current_buy_box_full_price(self, _sleep):
         page = FakePage([
             RuntimeError("document is changing"),
+            "<html>akamai transition</html>",
             rei_html('<span id="buy-box-product-price" class="price-value"> $200.00</span>'),
         ])
 
