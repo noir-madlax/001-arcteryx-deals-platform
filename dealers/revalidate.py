@@ -31,6 +31,13 @@ _CTX.check_hostname = False
 _CTX.verify_mode = ssl.CERT_NONE
 _UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
 
+
+def _env_float(name: str, default: float, minimum: float = 0.0) -> float:
+    try:
+        return max(minimum, float(os.environ.get(name, default)))
+    except (TypeError, ValueError):
+        return max(minimum, default)
+
 def _num(s):
     if s is None: return None
     s = str(s).replace(",","").strip().lstrip("$€£")
@@ -225,7 +232,7 @@ def load_all_dealer_rows(client):
     page = 0
     while True:
         res = client.table("products").select(
-            "sku_id,dealer,url,sale_price,original_price"
+            "sku_id,dealer,url,sale_price,original_price,last_updated"
         ).neq("dealer", "arcteryx_outlet").range(page*1000, page*1000+999).execute()
         data = res.data or []
         rows.extend(data)
@@ -261,10 +268,12 @@ def update_row(client, sku_id, patch, old_row):
     return True
 
 
-def zero_successful_dealers(by_dealer, stats) -> list[str]:
+def underperforming_dealers(by_dealer, stats, minimum_success_ratio: float = 0.70) -> list[str]:
     return sorted(
         d for d, dealer_rows in by_dealer.items()
-        if dealer_rows and stats[d]["ok"] + stats[d]["unavail"] == 0
+        if dealer_rows and (
+            stats[d]["ok"] + stats[d]["unavail"]
+        ) / len(dealer_rows) < minimum_success_ratio
     )
 
 def main():
@@ -304,14 +313,17 @@ def main():
 
     # ── REI: Camoufox (curl_cffi 在 AWS Lightsail 上被 Akamai 拒) ──
     if by_dealer.get("rei"):
-        print(f"\n[reval] REI ({len(by_dealer['rei'])}) — Camoufox", flush=True)
+        # Oldest first ensures rate-limited tail rows are first on the next run.
+        rei_rows = sorted(by_dealer["rei"], key=lambda row: row.get("last_updated") or "")
+        rei_delay = _env_float("REI_REVALIDATE_DELAY_SECONDS", 3.0, 0.5)
+        print(f"\n[reval] REI ({len(rei_rows)}) — Camoufox, delay={rei_delay}s", flush=True)
         try:
             from camoufox.sync_api import Camoufox
             with Camoufox(headless=True, humanize=True, geoip=True) as br:
                 page = br.new_page()
                 page.goto("https://www.rei.com/", wait_until="networkidle", timeout=60000)
                 time.sleep(2)
-                for i, r in enumerate(by_dealer["rei"], 1):
+                for i, r in enumerate(rei_rows, 1):
                     new = fetch_rei_pdp(page, r["url"])
                     if not new: stats["rei"]["err"] += 1
                     elif new.get("_unavailable"): stats["rei"]["unavail"] += 1
@@ -321,8 +333,8 @@ def main():
                             stats["rei"]["ok"] += 1
                             if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
                                 stats["rei"]["diff"] += 1
-                    if i % 5 == 0: print(f"  rei {i}/{len(by_dealer['rei'])}", flush=True)
-                    time.sleep(0.5)
+                    if i % 5 == 0: print(f"  rei {i}/{len(rei_rows)}", flush=True)
+                    time.sleep(rei_delay)
         except Exception as e:
             print(f"  REI Camoufox launch err: {e}", file=sys.stderr)
 
@@ -382,10 +394,11 @@ def main():
         s = stats[d]
         print(f"  {d:8s} ok={s['ok']:4d}  价变={s['diff']:3d}  缺货={s['unavail']:3d}  错={s['err']:3d}")
 
-    failed_dealers = zero_successful_dealers(by_dealer, stats)
+    failed_dealers = underperforming_dealers(by_dealer, stats)
     if failed_dealers:
         raise SystemExit(
-            "[reval] zero successful validations for: " + ", ".join(sorted(failed_dealers))
+            "[reval] successful validation ratio below 70% for: "
+            + ", ".join(failed_dealers)
         )
 
 if __name__ == "__main__":

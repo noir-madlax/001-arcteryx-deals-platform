@@ -2,7 +2,7 @@ import unittest
 from collections import defaultdict
 from unittest.mock import patch
 
-from dealers.revalidate import fetch_rei_pdp, zero_successful_dealers
+from dealers.revalidate import fetch_rei_pdp, underperforming_dealers
 from dealers.supabase_sync import should_preserve_previous_discount
 
 
@@ -88,10 +88,12 @@ class DealerRevalidationTests(unittest.TestCase):
         self.assertTrue(should_preserve_previous_discount("mec", 200, 200, 100, 200))
         self.assertFalse(should_preserve_previous_discount("rei", 200, 200, 49.83, 200))
 
-    def test_zero_successful_dealer_is_failure(self):
+    def test_low_success_ratio_is_failure(self):
         stats = defaultdict(lambda: {"ok": 0, "unavail": 0})
-        stats["evo"]["ok"] = 1
-        failed = zero_successful_dealers({"rei": [{}], "evo": [{}]}, stats)
+        stats["evo"]["ok"] = 7
+        stats["rei"]["ok"] = 6
+        dealers = {"rei": [{}] * 10, "evo": [{}] * 10}
+        failed = underperforming_dealers(dealers, stats)
         self.assertEqual(failed, ["rei"])
 
 
