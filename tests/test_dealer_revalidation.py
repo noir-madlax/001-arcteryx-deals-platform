@@ -22,8 +22,8 @@ class FakePage:
         return value
 
 
-def rei_html(price_markup: str) -> str:
-    return "<html>" + ("x" * 20000) + price_markup + "</html>"
+def rei_html(price_markup: str, skus: str = "") -> str:
+    return "<html>" + ("x" * 20000) + price_markup + skus + "</html>"
 
 
 class DealerRevalidationTests(unittest.TestCase):
@@ -32,7 +32,11 @@ class DealerRevalidationTests(unittest.TestCase):
         page = FakePage([
             RuntimeError("document is changing"),
             "<html>akamai transition</html>",
-            rei_html('<span id="buy-box-product-price" class="price-value"> $200.00</span>'),
+            rei_html(
+                '<span id="buy-box-product-price" class="price-value"> $200.00</span>',
+                '"skus":[{"skuId":"2428560001","status":"AVAILABLE","price":'
+                '{"compareAt":{"value":200.0},"price":{"value":200.0}}}]',
+            ),
         ])
 
         result = fetch_rei_pdp(page, "https://www.rei.com/product/242856/item")
@@ -42,6 +46,26 @@ class DealerRevalidationTests(unittest.TestCase):
             "sale_price": 200.0,
             "original_price": 200.0,
             "discount_pct": 0,
+        })
+
+    @patch("dealers.revalidate.time.sleep")
+    def test_rei_structured_variant_preserves_compare_at_price(self, _sleep):
+        page = FakePage([rei_html(
+            '<span id="buy-box-product-price">$59.83</span>',
+            '"skus":['
+            '{"skuId":"2092520001","status":"AVAILABLE","price":'
+            '{"compareAt":{"value":120.0},"price":{"value":59.83}}},'
+            '{"skuId":"2092520002","status":"UNAVAILABLE","price":'
+            '{"compareAt":{"value":120.0},"price":{"value":39.83}}}'
+            ']',
+        )])
+
+        result = fetch_rei_pdp(page, "https://www.rei.com/product/209252/item")
+
+        self.assertEqual(result, {
+            "sale_price": 59.83,
+            "original_price": 120.0,
+            "discount_pct": 50,
         })
 
     @patch("dealers.revalidate.time.sleep")
