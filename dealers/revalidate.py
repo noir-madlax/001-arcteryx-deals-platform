@@ -24,7 +24,6 @@ from pathlib import Path
 
 SB_URL = os.environ.get("SUPABASE_URL", "https://bupqagkrcvrezjkdbald.supabase.co")
 SB_KEY = os.environ.get("SUPABASE_KEY", "")
-if not SB_KEY: sys.exit("SUPABASE_KEY required (service_role)")
 
 # ── Shared helpers ────────────────────────────────────────────────────────
 _CTX = ssl.create_default_context()
@@ -80,22 +79,33 @@ def fetch_evo_pdp(url: str) -> dict | None:
     return {"sale_price": round(sale, 2), "original_price": round(orig, 2), "discount_pct": _disc(orig, sale)}
 
 def fetch_rei_pdp(page, url: str) -> dict | None:
-    """REI Camoufox PDP. data-ui="sale-price" + "full-price" 标签.
+    """REI Camoufox PDP. Supports both legacy and current buy-box prices.
     注: curl_cffi 在 AWS Lightsail 上被 Akamai 拒 (全路径返 2.7KB stub),
     所以 REI 必须用 Camoufox; SSENSE/MEC 不受影响."""
     try:
-        page.goto(url, wait_until="networkidle", timeout=45000)
+        page.goto(url, wait_until="domcontentloaded", timeout=60000)
         time.sleep(2)
-        body = page.content()
     except Exception as e:
         return {"_err": f"goto {type(e).__name__}"}
+    body = ""
+    for _ in range(6):
+        try:
+            body = page.content()
+            break
+        except Exception:
+            # REI frequently replaces the document after domcontentloaded.
+            time.sleep(2)
+    if not body:
+        return {"_err": "unstable_document"}
     if len(body) < 20000:  # CF stub
         return {"_err": "cf_stub"}
     if "page-not-found" in body.lower() or "page not found" in body.lower():
         return {"_unavailable": True}
     msale = re.search(r'data-ui="sale-price">\s*\$?([0-9.,]+)', body)
-    mfull = re.search(r'data-ui="full-price">\s*\$?([0-9.,]+)', body)
+    mfull = re.search(r'data-ui="full-price">\s*[-\s]*\$?([0-9.,]+)', body)
     mreg  = re.search(r'data-ui="regular-price">\s*\$?([0-9.,]+)', body)
+    mbuy  = re.search(r'id="buy-box-product-price"[^>]*>\s*\$?([0-9.,]+)', body)
+    mitem = re.search(r'data-cnstrc-item-price="([0-9.,]+)"', body)
     sale = orig = None
     if msale and mfull:
         sale = _num(msale.group(1)); orig = _num(mfull.group(1))
@@ -105,6 +115,10 @@ def fetch_rei_pdp(page, url: str) -> dict | None:
         sale = orig = _num(mreg.group(1))
     elif msale:
         sale = orig = _num(msale.group(1))
+    elif mbuy:
+        sale = orig = _num(mbuy.group(1))
+    elif mitem:
+        sale = orig = _num(mitem.group(1))
     if not sale: return None
     if not orig: orig = sale
     return {"sale_price": sale, "original_price": orig, "discount_pct": _disc(orig, sale)}
@@ -200,7 +214,16 @@ def update_row(client, sku_id, patch, old_row):
             pass
     return True
 
+
+def zero_successful_dealers(by_dealer, stats) -> list[str]:
+    return sorted(
+        d for d, dealer_rows in by_dealer.items()
+        if dealer_rows and stats[d]["ok"] + stats[d]["unavail"] == 0
+    )
+
 def main():
+    if not SB_KEY:
+        sys.exit("SUPABASE_KEY required (service_role)")
     from supabase import create_client
     client = create_client(SB_URL, SB_KEY)
     rows = load_all_dealer_rows(client)
@@ -309,8 +332,15 @@ def main():
             print(f"  SSENSE curl_cffi err: {e}", file=sys.stderr)
 
     print("\n=== REVAL DONE ===")
-    for d, s in stats.items():
+    for d in sorted(by_dealer):
+        s = stats[d]
         print(f"  {d:8s} ok={s['ok']:4d}  价变={s['diff']:3d}  缺货={s['unavail']:3d}  错={s['err']:3d}")
+
+    failed_dealers = zero_successful_dealers(by_dealer, stats)
+    if failed_dealers:
+        raise SystemExit(
+            "[reval] zero successful validations for: " + ", ".join(sorted(failed_dealers))
+        )
 
 if __name__ == "__main__":
     main()

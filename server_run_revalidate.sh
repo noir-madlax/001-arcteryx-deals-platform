@@ -60,7 +60,7 @@ if [ "$lease_result" != "true" ]; then
 fi
 LEASE_ACQUIRED=true
 
-timeout 3600 $PYTHON -m dealers.revalidate 2>&1 | tee -a "$LOG" || log "revalidate timeout/error (non-fatal)"
+timeout 3600 $PYTHON -m dealers.revalidate 2>&1 | tee -a "$LOG"
 
 log "feishu notification"
 $PYTHON notify_feishu.py --mode revalidate 2>&1 | tee -a "$LOG" || log "feishu notification failed (non-fatal)"

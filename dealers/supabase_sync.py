@@ -81,6 +81,17 @@ def _discount_pct(orig, sale) -> int:
         return 0
     return round((1 - s / o) * 100)
 
+
+def should_preserve_previous_discount(dealer: str, new_sale, new_original, old_sale, old_original) -> bool:
+    """Only MEC has a known list-only fallback that loses real PDP discounts."""
+    return bool(
+        dealer == "mec"
+        and new_sale and new_original
+        and abs(new_sale - new_original) < 0.01
+        and old_sale and old_original
+        and old_sale < old_original - 0.01
+    )
+
 def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
     name = it.get("name") or ""
     url = it.get("url","")
@@ -178,8 +189,7 @@ def main():
                 # 避免 mec scrapling fallback 覆盖掉之前的折扣信息 → 前端假满价.
                 new_sp, new_op = r.get("sale_price"), r.get("original_price")
                 old_sp, old_op = old.get("sale_price"), old.get("original_price")
-                if (new_sp and new_op and abs(new_sp - new_op) < 0.01
-                        and old_sp and old_op and old_sp < old_op - 0.01):
+                if should_preserve_previous_discount(dkey, new_sp, new_op, old_sp, old_op):
                     r["sale_price"] = old_sp
                     r["original_price"] = old_op
                     r["discount_pct"] = _discount_pct(old_op, old_sp)
