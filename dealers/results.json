@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12 04:03:21",
+  "generated_at": "2026-07-12 04:31:12",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -8076,7 +8076,7 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 17,
+      "count": 18,
       "items": [
         {
           "url": "https://www.rei.com/product/249381/arcteryx-beta-ar-jacket-womens",
@@ -8219,6 +8219,20 @@
           "region": "US"
         },
         {
+          "url": "https://www.rei.com/product/217940/arcteryx-kyanite-lightweight-fleece-hoodie-mens",
+          "name": "Kyanite Lightweight Fleece Hoodie - Men's",
+          "image": "https://www.rei.com/media/1932d7b0-0a07-48dd-aa23-500c27ec1e79.jpg",
+          "original_price": 150.0,
+          "sale_price": 150.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
           "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
           "name": "Cerium Down Hoody - Women's",
           "image": "https://www.rei.com/media/0ed9fca3-75c2-447a-b04b-6738627b6063.jpg",
@@ -8317,7 +8331,7 @@
           "region": "US"
         }
       ],
-      "refreshed_at": "2026-07-12 01:30:37"
+      "refreshed_at": "2026-07-12 04:30:35"
     },
     "ssense": {
       "name": "SSENSE",
@@ -9059,8 +9073,8 @@
       ]
     }
   },
-  "total": 318,
+  "total": 319,
   "fresh_dealers": [
-    "mec"
+    "rei"
   ]
 }
