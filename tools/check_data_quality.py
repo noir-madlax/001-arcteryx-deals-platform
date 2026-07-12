@@ -162,6 +162,13 @@ def expected_currency(row: dict) -> tuple[str, str] | None:
     return EXPECTED_CURRENCY.get(region)
 
 
+def product_freshness_timestamp(row: dict) -> datetime | None:
+    dealer = row.get("dealer") or "arcteryx_outlet"
+    if dealer == "arcteryx_outlet":
+        return parse_ts(row.get("last_seen_at") or row.get("last_updated"))
+    return parse_ts(row.get("last_updated"))
+
+
 def validate(
     rows: list[dict],
     max_age_hours: float | None,
@@ -226,9 +233,9 @@ def validate(
             errors["active_with_missing_runs"].append(row)
         if status == "active" and row.get("url_http_status") in {404, 410}:
             errors["active_with_dead_url"].append(row)
-        if dealer == "arcteryx_outlet" and status == "active" and max_product_age_hours is not None:
-            last_seen = parse_ts(row.get("last_seen_at") or row.get("last_updated"))
-            age_hours = ((datetime.now(timezone.utc) - last_seen).total_seconds() / 3600) if last_seen else None
+        if status == "active" and max_product_age_hours is not None:
+            freshness_ts = product_freshness_timestamp(row)
+            age_hours = ((datetime.now(timezone.utc) - freshness_ts).total_seconds() / 3600) if freshness_ts else None
             if age_hours is None or age_hours > max_product_age_hours:
                 errors["stale_active_product"].append({
                     **row,
