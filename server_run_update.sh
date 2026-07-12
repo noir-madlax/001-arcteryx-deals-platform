@@ -41,14 +41,19 @@ log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE"; }
 CRAWLER_NODE="${CRAWLER_NODE:-$(hostname)}"
 LEASE_SCOPE="outlet"
 LEASE_ACQUIRED=false
+RUN_COMPLETED=false
 finish_lease() {
   exit_code=$?
   trap - EXIT
   if [ "$LEASE_ACQUIRED" = true ]; then
-    if [ "$exit_code" -eq 0 ]; then
+    if [ "$exit_code" -eq 0 ] && [ "$RUN_COMPLETED" = true ]; then
       "$PYTHON" tools/crawler_lease.py finish --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --status success >/dev/null 2>&1 || true
     else
-      "$PYTHON" tools/crawler_lease.py finish --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --status failed --message "exit $exit_code" >/dev/null 2>&1 || true
+      message="exit $exit_code"
+      if [ "$RUN_COMPLETED" != true ]; then
+        message="incomplete run (exit $exit_code)"
+      fi
+      "$PYTHON" tools/crawler_lease.py finish --scope "$LEASE_SCOPE" --owner "$CRAWLER_NODE" --status failed --message "$message" >/dev/null 2>&1 || true
     fi
   fi
   exit "$exit_code"
@@ -141,3 +146,4 @@ log "Step 7: Feishu notification"
 $PYTHON notify_feishu.py --mode outlet 2>&1 | tee -a "$LOG_FILE" || log "feishu notification failed (non-fatal)"
 
 log "===== UPDATE DONE ====="
+RUN_COMPLETED=true
