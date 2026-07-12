@@ -86,7 +86,7 @@ jobs:
           python tools/check_mec_partial.py
           python -m dealers.merge_partial
           python -u -m dealers.supabase_sync
-          python tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --min-rows 50
+          python tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
 
       - name: Commit refreshed MEC static data
         run: |
@@ -102,7 +102,7 @@ jobs:
           git push origin main
 
       - name: Verify production freshness
-        run: python tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --min-rows 50
+        run: python tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
 
       - name: Release MEC lease
         if: always()

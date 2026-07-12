@@ -75,7 +75,7 @@ log "merge → results.json"
 log "sync → Supabase"
 "$PYTHON" -m dealers.supabase_sync 2>&1 | tee -a "$LOG"
 log "data quality check"
-"$PYTHON" tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --min-rows 50 2>&1 | tee -a "$LOG"
+"$PYTHON" tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --max-product-age-hours 72 --min-rows 50 2>&1 | tee -a "$LOG"
 
 log "git commit + push"
 git config user.email "bot@arcteryx-deals.local"
