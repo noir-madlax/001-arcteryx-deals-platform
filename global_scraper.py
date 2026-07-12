@@ -58,9 +58,9 @@ REGIONS = [
 GENDERS = ["mens", "womens"]
 
 # 每次滚动后等待时间（秒）
-SCROLL_PAUSE = 2.5
-# 最多滚动轮次（每轮滚到底部）
-MAX_SCROLL_ROUNDS = 40
+SCROLL_PAUSE = 1.0
+# 列表按视口逐段渲染；必须增量滚动，直接跳到底部会漏掉中间商品。
+MAX_SCROLL_ROUNDS = 80
 # 两个地区之间间隔
 REGION_PAUSE = 3.0
 AU_SHOPIFY_SALE_API = "https://arcteryx.com.au/collections/sale/products.json"
@@ -341,6 +341,21 @@ async def dismiss_popups(page):
             pass
 
 
+def next_stable_bottom_rounds(
+    *,
+    at_bottom: bool,
+    count: int,
+    height: int,
+    previous_count: int,
+    previous_height: int,
+    current_rounds: int,
+) -> int:
+    """Only count stability while the viewport is truly at a stable bottom."""
+    if at_bottom and count == previous_count and height == previous_height:
+        return current_rounds + 1
+    return 0
+
+
 async def scroll_to_load_all(page) -> int:
     """
     反复滚动到页面底部，直到：
@@ -348,14 +363,12 @@ async def scroll_to_load_all(page) -> int:
     - 达到最大滚动轮次
     返回最终商品瓦片数量。
     """
+    await page.evaluate("window.scrollTo(0, 0)")
     prev_count = 0
-    stable_rounds = 0
+    prev_height = 0
+    stable_bottom_rounds = 0
 
     for i in range(MAX_SCROLL_ROUNDS):
-        # 滚动到底部
-        await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        await asyncio.sleep(SCROLL_PAUSE)
-
         # 也尝试点击"加载更多"按钮
         try:
             load_more = page.locator(
@@ -370,7 +383,7 @@ async def scroll_to_load_all(page) -> int:
             pass
 
         # 数商品数 — Arc'teryx outlet links are /shop/mens/ or /shop/womens/ (no region prefix)
-        count = await page.evaluate("""() => {
+        state = await page.evaluate("""() => {
             const links = document.querySelectorAll(
                 'a[href*="/shop/mens/"], a[href*="/shop/womens/"]'
             );
@@ -381,19 +394,47 @@ async def scroll_to_load_all(page) -> int:
                 const slug = url.split('/').pop();
                 if (slug && slug.length > 5) seen.add(url);
             });
-            return seen.size;
+            return {
+                count: seen.size,
+                scrollY: window.scrollY,
+                viewportHeight: window.innerHeight,
+                scrollHeight: document.body.scrollHeight,
+            };
         }""")
+        count = state["count"]
+        height = state["scrollHeight"]
+        at_bottom = state["scrollY"] + state["viewportHeight"] >= height - 50
 
-        if count == prev_count:
-            stable_rounds += 1
-            if stable_rounds >= 4:
-                break  # 连续4轮没变化，认为加载完毕
-        else:
-            stable_rounds = 0
+        next_stable = next_stable_bottom_rounds(
+            at_bottom=at_bottom,
+            count=count,
+            height=height,
+            previous_count=prev_count,
+            previous_height=prev_height,
+            current_rounds=stable_bottom_rounds,
+        )
+        if next_stable >= 4:
+            break  # 真正位于底部且 DOM/高度连续稳定，才认为加载完毕
+        stable_bottom_rounds = next_stable
+        if count != prev_count or height != prev_height:
             prev_count = count
+            prev_height = height
 
         if count > 0:
-            print(f"      滚动轮 {i+1}: {count} 个商品链接", flush=True)
+            print(
+                f"      滚动轮 {i+1}: {count} 个商品链接"
+                f"{'（底部）' if at_bottom else ''}",
+                flush=True,
+            )
+
+        if at_bottom:
+            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+        else:
+            # 逐屏经过中间区域，触发视口懒渲染，避免直接跳底漏商品。
+            await page.evaluate(
+                "window.scrollBy(0, Math.max(600, Math.floor(window.innerHeight * 0.8)))"
+            )
+        await asyncio.sleep(SCROLL_PAUSE)
 
     return prev_count
 
