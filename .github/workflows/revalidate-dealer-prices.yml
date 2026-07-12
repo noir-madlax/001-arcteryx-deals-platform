@@ -57,4 +57,4 @@ jobs:
 
       - name: Verify dealer data quality
         run: |
-          python tools/check_data_quality.py --online --dealer mec --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --min-rows 50
+          python tools/check_data_quality.py --online --dealer mec --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50

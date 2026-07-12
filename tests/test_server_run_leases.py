@@ -31,6 +31,22 @@ class ServerRunLeaseTests(unittest.TestCase):
                 self.assertLess(end_banner, marker_complete)
                 self.assertIn('message="incomplete run (exit $exit_code)"', script)
 
+    def test_dealer_quality_gates_enforce_product_freshness(self):
+        files = (
+            "server_run_dealers.sh",
+            "server_run_mec.sh",
+            ".github/workflows/refresh-mec.yml",
+            ".github/workflows/freshness-monitor.yml",
+            ".github/workflows/revalidate-dealer-prices.yml",
+            ".github/workflows/refresh-dealers.yml",
+        )
+        for filename in files:
+            with self.subTest(filename=filename):
+                self.assertIn(
+                    "--max-product-age-hours 72",
+                    (PROJECT / filename).read_text(),
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

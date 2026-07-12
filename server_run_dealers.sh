@@ -91,7 +91,7 @@ $PYTHON -m dealers.supabase_sync 2>&1 | tee -a "$LOG" || log "supabase sync 失�
 
 # 硬性质量闸门：避免 stale partial / 币种错误 / 折扣不一致继续被当作健康数据
 log "data quality check"
-$PYTHON tools/check_data_quality.py --online --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --min-rows 50 2>&1 | tee -a "$LOG"
+$PYTHON tools/check_data_quality.py --online --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50 2>&1 | tee -a "$LOG"
 
 # 检查降价提醒
 log "price alerts check"
