@@ -7,9 +7,26 @@ from pathlib import Path
 from dealers import merge_partial
 from dealers.supabase_sync import fresh_dealer_keys
 from tools.check_mec_partial import validate_partial
+from tools.check_data_quality import product_freshness_timestamp
 
 
 class DealerFreshnessTests(unittest.TestCase):
+    def test_dealer_product_freshness_uses_last_updated(self):
+        ts = product_freshness_timestamp({
+            "dealer": "rei",
+            "last_seen_at": "2026-06-01T00:00:00+00:00",
+            "last_updated": "2026-07-12T09:00:00+00:00",
+        })
+        self.assertEqual(ts.isoformat(), "2026-07-12T09:00:00+00:00")
+
+    def test_outlet_product_freshness_uses_last_seen(self):
+        ts = product_freshness_timestamp({
+            "dealer": "arcteryx_outlet",
+            "last_seen_at": "2026-07-11T09:00:00+00:00",
+            "last_updated": "2026-07-12T09:00:00+00:00",
+        })
+        self.assertEqual(ts.isoformat(), "2026-07-11T09:00:00+00:00")
+
     def test_merge_marks_only_nonempty_partials_fresh(self):
         previous_cwd = os.getcwd()
         with tempfile.TemporaryDirectory() as tmp:
