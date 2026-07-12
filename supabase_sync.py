@@ -326,7 +326,12 @@ def main():
     for sid, previous in existing_state.items():
         if sid in local_ids:
             continue
-        lifecycle = next_lifecycle(previous, previous, manifest)
+        lifecycle = next_lifecycle(
+            previous,
+            previous,
+            manifest,
+            present_in_snapshot=False,
+        )
         if lifecycle["status"] == (previous.get("status") or "active") and lifecycle["missing_runs"] == int(previous.get("missing_runs") or 0):
             continue
         key = (lifecycle["status"], lifecycle["missing_runs"])

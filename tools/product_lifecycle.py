@@ -53,9 +53,21 @@ def seen_in_successful_scope(row: dict, manifest: dict) -> bool | None:
     return row.get("url") in scope.get("urls", set())
 
 
-def next_lifecycle(existing: dict | None, row: dict, manifest: dict) -> dict:
+def next_lifecycle(
+    existing: dict | None,
+    row: dict,
+    manifest: dict,
+    *,
+    present_in_snapshot: bool | None = None,
+) -> dict:
     existing = existing or {}
-    seen = seen_in_successful_scope(row, manifest)
+    scope = successful_scope(row, manifest)
+    if present_in_snapshot is None:
+        seen = row.get("url") in scope.get("urls", set()) if scope else None
+    else:
+        # An old SKU/color missing from the new snapshot must not stay active
+        # merely because its parent product URL is still present in the list.
+        seen = present_in_snapshot if scope else None
     current_status = existing.get("status") if existing.get("status") in VALID_STATUSES else "active"
     current_missing = int(existing.get("missing_runs") or 0)
     current_last_seen = existing.get("last_seen_at") or existing.get("last_updated") or row.get("last_updated")
