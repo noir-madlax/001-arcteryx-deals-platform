@@ -91,10 +91,12 @@ def fetch_rei_pdp(page, url: str) -> dict | None:
     for _ in range(6):
         try:
             body = page.content()
-            break
+            if len(body) >= 20000:
+                break
         except Exception:
             # REI frequently replaces the document after domcontentloaded.
-            time.sleep(2)
+            pass
+        time.sleep(2)
     if not body:
         return {"_err": "unstable_document"}
     if len(body) < 20000:  # CF stub
