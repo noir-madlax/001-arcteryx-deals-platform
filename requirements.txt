@@ -1,7 +1,7 @@
-camoufox[geoip]>=0.4,<1
-curl_cffi>=0.11,<1
-playwright>=1.50,<2
-patchright>=1.52,<2
+camoufox[geoip]==0.4.11
+curl_cffi==0.15.0
+playwright==1.58.0
+patchright==1.58.2
 requests>=2.32,<3
 scrapling>=0.4,<1
 msgspec>=0.19,<1

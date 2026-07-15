@@ -50,6 +50,13 @@ def classify_url(url: str, timeout: float = 15.0) -> tuple[int | None, str, str]
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--status", action="append", choices=["active", "missing", "inactive", "unavailable"])
+    parser.add_argument(
+        "--stored-http-status",
+        action="append",
+        type=int,
+        choices=[404, 410],
+        help="Only recheck rows whose persisted URL result matches this status",
+    )
     parser.add_argument("--max-rows", type=int, default=500)
     parser.add_argument("--timeout", type=float, default=15.0)
     parser.add_argument("--dry-run", action="store_true")
@@ -63,16 +70,20 @@ def main() -> int:
 
     headers = {"apikey": key, "Authorization": f"Bearer {key}", "Content-Type": "application/json"}
     statuses = ",".join(args.status or ["missing"])
+    query = {
+        "select": "sku_id,url,status,url_http_status,url_checked_at",
+        "dealer": "eq.arcteryx_outlet",
+        "status": f"in.({statuses})",
+        "url": "not.is.null",
+        "order": "url_checked_at.asc.nullsfirst",
+        "limit": str(args.max_rows),
+    }
+    if args.stored_http_status:
+        stored = ",".join(str(value) for value in sorted(set(args.stored_http_status)))
+        query["url_http_status"] = f"in.({stored})"
     response = requests.get(
         f"{base_url}/rest/v1/products",
-        params={
-            "select": "sku_id,url,status,url_http_status,url_checked_at",
-            "dealer": "eq.arcteryx_outlet",
-            "status": f"in.({statuses})",
-            "url": "not.is.null",
-            "order": "url_checked_at.asc.nullsfirst",
-            "limit": str(args.max_rows),
-        },
+        params=query,
         headers=headers,
         timeout=45,
     )

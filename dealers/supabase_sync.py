@@ -19,6 +19,8 @@ DEFAULT_CURRENCY_BY_DEALER = {
     "rei": "USD",
     "ssense": "USD",
 }
+DEAD_URL_STATUSES = {404, 410}
+INACTIVE_AFTER_MISSING_RUNS = 2
 REGION_NAME = {
     "us":"美国","ca":"加拿大","gb":"英国","de":"德国","fr":"法国","nl":"荷兰",
     "at":"奥地利","ch":"瑞士","it":"意大利","es":"西班牙","be":"比利时",
@@ -36,6 +38,30 @@ def fresh_dealer_keys(payload: dict) -> set[str] | None:
     if value is None:
         return None
     return {str(key) for key in value}
+
+
+def next_dealer_lifecycle(existing: dict | None, *, present: bool, observed_at: str) -> dict:
+    """Return the lifecycle transition for one trusted, complete dealer snapshot."""
+    existing = existing or {}
+    if present:
+        return {"status": "active", "missing_runs": 0, "last_seen_at": observed_at}
+    missing_runs = int(existing.get("missing_runs") or 0) + 1
+    return {
+        "status": "inactive" if missing_runs >= INACTIVE_AFTER_MISSING_RUNS else "missing",
+        "missing_runs": missing_runs,
+        "last_seen_at": existing.get("last_seen_at") or existing.get("last_updated"),
+    }
+
+
+def recovered_url_health(existing: dict | None) -> dict:
+    """A newly observed product invalidates a stored terminal URL result."""
+    existing = existing or {}
+    if existing.get("url_http_status") in DEAD_URL_STATUSES:
+        return {"url_http_status": None, "url_checked_at": None}
+    return {
+        "url_http_status": existing.get("url_http_status"),
+        "url_checked_at": existing.get("url_checked_at"),
+    }
 
 # ── derive sku_id from dealer + URL (stable across runs) ──
 def make_sku_id(dealer: str, url: str) -> str:
@@ -153,6 +179,9 @@ def main():
         rows = [item_to_row(it, dkey, generated_at) for it in items]
         rows = [r for r in rows if r["sku_id"] and r["url"]]
         print(f"\n[sync:{dkey}] {len(rows)} rows to upsert")
+        if not rows:
+            print(f"[sync:{dkey}] 0 trusted rows — preserving all existing lifecycle state")
+            continue
 
         # ── 加载已有 first_seen + sizes + size_stock + color，
         # 后续注入: first_seen 始终注入(防 stale-reset);
@@ -162,7 +191,8 @@ def main():
             page = 0
             while True:
                 res = client.table("products").select(
-                    "sku_id,first_seen,sizes,size_stock,color,original_price,sale_price,discount_pct"
+                    "sku_id,first_seen,sizes,size_stock,color,original_price,sale_price,discount_pct,"
+                    "status,last_seen_at,missing_runs,url_http_status,url_checked_at,last_updated"
                 ).eq("dealer", dkey).range(page*1000, page*1000+999).execute()
                 data = res.data or []
                 for r in data:
@@ -196,6 +226,9 @@ def main():
             else:
                 # 真新 SKU: 显式设今天 (避免 PostgREST batch upsert 字段不齐 → NULL)
                 r["first_seen"] = now_iso
+            observed_at = r.get("last_updated") or now_iso
+            r.update(next_dealer_lifecycle(old, present=True, observed_at=observed_at))
+            r.update(recovered_url_health(old))
 
         # ── upsert in batches
         ok, err = 0, 0
@@ -246,38 +279,28 @@ def main():
         else:
             print(f"[sync:{dkey}] price_history: 0 价变 (无新事件)")
 
-        # ── delete stale rows that are no longer in current scrape (scoped to this dealer)
-        # 但：如果本轮抓到 0 件，几乎肯定是抓取失败而不是该 dealer 真的没货，
-        # 跳过清理避免把 Supabase 里现存的几十~上百件全删光
-        if not rows:
-            print(f"[sync:{dkey}] 0 rows in scrape — skipping stale cleanup (likely scrape failure)")
-            continue
+        # ── reconcile absent rows only for this trusted, complete dealer snapshot.
+        # First miss hides the row as `missing`; the second moves it to `inactive`.
+        # Rows stay recoverable and are reactivated if a later scrape sees them.
         try:
-            from datetime import datetime, timezone, timedelta
-            stale_cutoff = (datetime.now(timezone.utc) - timedelta(days=14)).isoformat()
             synced_ids = {r["sku_id"] for r in rows}
-            existing = []   # (sku_id, last_updated)
-            page = 0
-            while True:
-                res = client.table("products").select("sku_id,last_updated") \
-                    .eq("dealer", dkey).range(page*1000, page*1000+999).execute()
-                data = res.data or []
-                existing.extend((r["sku_id"], r.get("last_updated")) for r in data)
-                if len(data) < 1000: break
-                page += 1
-            # 同 outlet: 只删 14 天没刷新过的过期行, 给单次抓取波动留缓冲
-            stale = [sid for sid, lu in existing
-                     if sid not in synced_ids and (lu is None or lu < stale_cutoff)]
-            preserve = sum(1 for sid, lu in existing
-                           if sid not in synced_ids and lu and lu >= stale_cutoff)
-            print(f"[sync:{dkey}] existing={len(existing)} stale={len(stale)} preserve_recent={preserve}")
-            if stale:
-                # batch delete
-                for i in range(0, len(stale), 100):
-                    client.table("products").delete().in_("sku_id", stale[i:i+100]).execute()
-                print(f"[sync:{dkey}] deleted {len(stale)} stale rows")
+            lifecycle_updates: dict[tuple[str, int], list[str]] = {}
+            for sid, old in existing_map.items():
+                if sid in synced_ids:
+                    continue
+                lifecycle = next_dealer_lifecycle(old, present=False, observed_at=now_iso)
+                key = (lifecycle["status"], lifecycle["missing_runs"])
+                lifecycle_updates.setdefault(key, []).append(sid)
+            for (status, missing_runs), ids in lifecycle_updates.items():
+                for i in range(0, len(ids), 100):
+                    client.table("products").update({
+                        "status": status,
+                        "missing_runs": missing_runs,
+                    }).in_("sku_id", ids[i:i+100]).execute()
+            transitioned = sum(len(ids) for ids in lifecycle_updates.values())
+            print(f"[sync:{dkey}] existing={len(existing_map)} absent_transitioned={transitioned}")
         except Exception as e:
-            print(f"[sync:{dkey}] stale-cleanup err: {str(e)[:200]}", file=sys.stderr)
+            print(f"[sync:{dkey}] lifecycle reconciliation err: {str(e)[:200]}", file=sys.stderr)
 
     print(f"\n=== DEALERS SYNC DONE — {grand_total} rows total ===")
 

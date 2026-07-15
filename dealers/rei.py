@@ -54,6 +54,10 @@ class Scraper:
 
     NAV_TIMEOUT_MS = 45000
     DETAIL_TIMEOUT_MS = 20000
+    MIN_LIST_ITEMS = 10
+
+    def __init__(self):
+        self.crawl_complete = False
 
     def parse_detail(self, body: str) -> dict:
         """REI PDP: 抓 size buttons + color swatch"""
@@ -117,6 +121,7 @@ class Scraper:
     def scrape(self) -> list[dict]:
         items = []
         seen = set()
+        successful_lists = 0
         with Camoufox(headless=True, humanize=True, geoip=True) as browser:
             page = browser.new_page()
             page.set_default_timeout(30000)
@@ -159,6 +164,14 @@ class Scraper:
                     print(f"[rei] WARNING: {wait_seconds}s 后仍没看到 arcteryx 商品 DOM", flush=True)
                 # find all product anchor positions
                 positions = [(m.start(), m.group(1), m.group(2)) for m in self.URL_RE.finditer(body)]
+                unique_position_ids = {pid for _, pid, _ in positions}
+                if len(unique_position_ids) >= self.MIN_LIST_ITEMS:
+                    successful_lists += 1
+                else:
+                    print(
+                        f"[rei] WARNING: list only exposed {len(unique_position_ids)} unique products; scope incomplete",
+                        flush=True,
+                    )
                 # de-dup by id
                 seen_ids = set()
                 for start, pid, slug in positions:
@@ -221,11 +234,13 @@ class Scraper:
                 self.enrich_details(browser, items)
             else:
                 print("[rei] detail enrichment disabled (set REI_ENRICH_DETAILS=1 to enable)", flush=True)
+        self.crawl_complete = successful_lists == len(self.LIST_URLS) and bool(items)
         return items
 
 
 if __name__ == "__main__":
-    items = Scraper().scrape()
+    scraper = Scraper()
+    items = scraper.scrape()
     print(f"\n=== REI {len(items)} 件 ===")
     for it in items[:8]:
         d = it.get("discount_pct", 0)
@@ -234,6 +249,9 @@ if __name__ == "__main__":
         raise SystemExit("[rei] no items scraped; not writing dealers/_partial/rei.json")
     import json as _json, os as _os, time as _time
     _os.makedirs("dealers/_partial", exist_ok=True)
-    _json.dump({"name":"REI","region":"US","count":len(items),"items":items,"saved_at":_time.strftime("%Y-%m-%d %H:%M:%S")},
+    _json.dump({"name":"REI","region":"US","count":len(items),"items":items,
+                "crawl_complete":scraper.crawl_complete,"saved_at":_time.strftime("%Y-%m-%d %H:%M:%S")},
                open("dealers/_partial/rei.json","w"), indent=2, ensure_ascii=False)
     print(f"→ dealers/_partial/rei.json")
+    if not scraper.crawl_complete:
+        raise SystemExit("[rei] crawl incomplete; partial retained for diagnostics but will not be published")
