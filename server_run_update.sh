@@ -94,11 +94,14 @@ $PYTHON sku_scraper.py --reset --update-data 2>&1 | tee -a "$LOG_FILE"
 log "Step 3: Supabase sync"
 $PYTHON supabase_sync.py 2>&1 | tee -a "$LOG_FILE"
 
-log "Step 3a: Revalidate missing product URLs"
+log "Step 3a: Revalidate active terminal URL results"
+$PYTHON tools/check_product_urls.py --status active --stored-http-status 404 --stored-http-status 410 --max-rows 500 2>&1 | tee -a "$LOG_FILE"
+
+log "Step 3b: Revalidate missing product URLs"
 $PYTHON tools/check_product_urls.py --status missing --max-rows 500 2>&1 | tee -a "$LOG_FILE"
 
-# 3b. Hard quality gate: do not treat stale or inconsistent data as healthy
-log "Step 3b: Data quality check"
+# 3c. Hard quality gate: do not treat stale or inconsistent data as healthy
+log "Step 3c: Data quality check"
 $PYTHON tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --max-product-age-hours 72 --min-rows 100 --forbid-region jp 2>&1 | tee -a "$LOG_FILE"
 
 # 4. Push data files to GitHub (backup + Vercel static fallback)

@@ -17,9 +17,14 @@ class WorkflowGuardTests(unittest.TestCase):
 
     def test_outlet_rechecks_active_terminal_url_results(self):
         workflow = (ROOT / ".github/workflows/refresh-outlet.yml").read_text(encoding="utf-8")
+        primary_runner = (ROOT / "server_run_update.sh").read_text(encoding="utf-8")
         self.assertIn(
             "--status active --stored-http-status 404 --stored-http-status 410",
             workflow,
+        )
+        self.assertIn(
+            "--status active --stored-http-status 404 --stored-http-status 410",
+            primary_runner,
         )
 
 
