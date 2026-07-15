@@ -26,11 +26,13 @@ def main():
         d = json.loads(Path(path).read_text())
         key = KEY_BY_NAME.get(d.get("name"), os.path.basename(path).replace(".json",""))
         items = d.get("items") or []
-        # 空 partial（dealer 成功退出但抓到 0 件, 如 EVO 偶发被限流）也当"无新数据":
-        # 保留上一轮的非空区块, 不让静态 results.json 退化成 0 件。
-        # (Supabase 侧 supabase_sync 对 0 行本就跳过 stale cleanup, 存量行不动。)
-        if not items and key in out["dealers"] and (out["dealers"][key].get("items")):
-            print(f"  {key}: 0 件 [empty scrape — 保留上一轮 {out['dealers'][key].get('count')} 件]")
+        trusted = bool(items) and d.get("crawl_complete") is True
+        # 只有抓取器明确声明完整成功的非空范围才可驱动 freshness/lifecycle。
+        # 空结果或部分结果保留上一轮快照，不能伪装成新鲜数据。
+        if not trusted:
+            reason = "empty" if not items else "incomplete"
+            previous = out["dealers"].get(key, {})
+            print(f"  {key}: {len(items)} 件 [{reason} scrape — 保留上一轮 {previous.get('count', 0)} 件]")
             continue
         out["dealers"][key] = {
             "name":   d.get("name"),

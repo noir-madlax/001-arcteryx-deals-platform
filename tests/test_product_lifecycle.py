@@ -7,6 +7,7 @@ from unittest.mock import patch
 from tools.check_product_urls import classify_url, product_identity
 from tools.crawler_lease import needs_fallback
 from tools.product_lifecycle import load_manifest, next_lifecycle, validate_scope_counts
+from supabase_sync import url_health_after_observation
 
 
 class ProductLifecycleTests(unittest.TestCase):
@@ -31,6 +32,17 @@ class ProductLifecycleTests(unittest.TestCase):
             self.manifest([url]),
         )
         self.assertEqual(result, {"status": "active", "missing_runs": 0, "last_seen_at": "new"})
+
+    def test_successful_rediscovery_clears_stale_dead_url_result(self):
+        previous = {"url_http_status": 404, "url_checked_at": "old"}
+        self.assertEqual(
+            url_health_after_observation(previous, observed_successfully=True),
+            {"url_http_status": None, "url_checked_at": None},
+        )
+        self.assertEqual(
+            url_health_after_observation(previous, observed_successfully=False),
+            previous,
+        )
 
     def test_two_complete_misses_move_product_to_inactive(self):
         row = {
@@ -112,6 +124,12 @@ class ProductLifecycleTests(unittest.TestCase):
     def test_url_checker_marks_404_unavailable(self, get):
         get.return_value = SimpleNamespace(status_code=404, url="https://outlet.arcteryx.com/us/en/shop/womens/alpha-pant")
         self.assertEqual(classify_url(get.return_value.url)[:2], (404, "unavailable"))
+
+    @patch("tools.check_product_urls.requests.get")
+    def test_url_checker_recovers_same_product_on_200(self, get):
+        url = "https://outlet.arcteryx.com/ca/en/shop/womens/konseal-shoe-9970"
+        get.return_value = SimpleNamespace(status_code=200, url=url)
+        self.assertEqual(classify_url(url)[:2], (200, "active"))
 
     @patch("tools.check_product_urls.requests.get")
     def test_url_checker_rejects_redirect_to_another_product(self, get):

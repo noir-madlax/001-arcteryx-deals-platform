@@ -19,7 +19,12 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-from tools.product_lifecycle import load_manifest, next_lifecycle, validate_scope_counts
+from tools.product_lifecycle import (
+    load_manifest,
+    next_lifecycle,
+    seen_in_successful_scope,
+    validate_scope_counts,
+)
 
 # ── Config ────────────────────────────────────────────────────────────────────
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://bupqagkrcvrezjkdbald.supabase.co")
@@ -30,6 +35,18 @@ SKUS_FILE = BASE_DIR / "arcteryx_skus.json"
 CRAWL_MANIFEST_FILE = BASE_DIR / ".crawl_manifest.json"
 
 BATCH_SIZE = 50   # upsert N rows at a time
+DEAD_URL_STATUSES = {404, 410}
+
+
+def url_health_after_observation(previous: dict | None, observed_successfully: bool) -> dict:
+    """Clear a terminal URL result only after a trusted crawl sees the product again."""
+    previous = previous or {}
+    if observed_successfully and previous.get("url_http_status") in DEAD_URL_STATUSES:
+        return {"url_http_status": None, "url_checked_at": None}
+    return {
+        "url_http_status": previous.get("url_http_status"),
+        "url_checked_at": previous.get("url_checked_at"),
+    }
 
 # ── Category inference (re-run on every sync so old "其他" rows get backfilled) ──
 def infer_category(name: str, url: str) -> str:
@@ -318,8 +335,7 @@ def main():
         else:
             r["first_seen"] = now_iso                # 真新 SKU: 显式设今天
         r.update(next_lifecycle(previous, r, manifest))
-        r["url_http_status"] = previous.get("url_http_status")
-        r["url_checked_at"] = previous.get("url_checked_at")
+        r.update(url_health_after_observation(previous, seen_in_successful_scope(r, manifest) is True))
 
     local_ids = {r.get("sku_id") for r in rows if r.get("sku_id")}
     lifecycle_updates = {}

@@ -5,7 +5,11 @@ import unittest
 from pathlib import Path
 
 from dealers import merge_partial
-from dealers.supabase_sync import fresh_dealer_keys
+from dealers.supabase_sync import (
+    fresh_dealer_keys,
+    next_dealer_lifecycle,
+    recovered_url_health,
+)
 from tools.check_mec_partial import validate_partial
 from tools.check_data_quality import product_freshness_timestamp
 
@@ -45,10 +49,12 @@ class DealerFreshnessTests(unittest.TestCase):
                     "region": "CA",
                     "count": 1,
                     "items": [{"url": "new-mec"}],
+                    "crawl_complete": True,
                     "saved_at": "2026-07-11 16:00:00",
                 }))
                 Path("dealers/_partial/evo.json").write_text(json.dumps({
                     "name": "EVO", "region": "US", "count": 0, "items": [],
+                    "crawl_complete": False,
                     "saved_at": "2026-07-11 16:00:00",
                 }))
 
@@ -61,9 +67,53 @@ class DealerFreshnessTests(unittest.TestCase):
             finally:
                 os.chdir(previous_cwd)
 
+    def test_merge_rejects_nonempty_incomplete_partial(self):
+        previous_cwd = os.getcwd()
+        with tempfile.TemporaryDirectory() as tmp:
+            os.chdir(tmp)
+            try:
+                Path("dealers/_partial").mkdir(parents=True)
+                Path("dealers/results.json").write_text(json.dumps({
+                    "dealers": {"ssense": {"name": "SSENSE", "count": 1, "items": [{"url": "old"}]}},
+                }))
+                Path("dealers/_partial/ssense.json").write_text(json.dumps({
+                    "name": "SSENSE",
+                    "count": 1,
+                    "items": [{"url": "partial"}],
+                    "crawl_complete": False,
+                }))
+                merge_partial.main()
+                merged = json.loads(Path("dealers/results.json").read_text())
+                self.assertEqual(merged["fresh_dealers"], [])
+                self.assertEqual(merged["dealers"]["ssense"]["items"][0]["url"], "old")
+            finally:
+                os.chdir(previous_cwd)
+
     def test_fresh_dealer_keys_is_backward_compatible(self):
         self.assertIsNone(fresh_dealer_keys({"dealers": {"mec": {}}}))
         self.assertEqual(fresh_dealer_keys({"fresh_dealers": ["mec", "rei"]}), {"mec", "rei"})
+
+    def test_dealer_two_trusted_misses_then_recovery(self):
+        first = next_dealer_lifecycle(
+            {"status": "active", "missing_runs": 0, "last_seen_at": "old"},
+            present=False,
+            observed_at="run-1",
+        )
+        second = next_dealer_lifecycle(first, present=False, observed_at="run-2")
+        recovered = next_dealer_lifecycle(second, present=True, observed_at="run-3")
+        self.assertEqual(first, {"status": "missing", "missing_runs": 1, "last_seen_at": "old"})
+        self.assertEqual(second, {"status": "inactive", "missing_runs": 2, "last_seen_at": "old"})
+        self.assertEqual(recovered, {"status": "active", "missing_runs": 0, "last_seen_at": "run-3"})
+
+    def test_dealer_rediscovery_clears_terminal_url_health(self):
+        self.assertEqual(
+            recovered_url_health({"url_http_status": 404, "url_checked_at": "old"}),
+            {"url_http_status": None, "url_checked_at": None},
+        )
+        self.assertEqual(
+            recovered_url_health({"url_http_status": 503, "url_checked_at": "old"}),
+            {"url_http_status": 503, "url_checked_at": "old"},
+        )
 
     def test_mec_partial_requires_complete_expected_count(self):
         with tempfile.TemporaryDirectory() as tmp:

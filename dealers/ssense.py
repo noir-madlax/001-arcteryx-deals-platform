@@ -1,7 +1,4 @@
-"""SSENSE — Arc'teryx 男女款；
-2026-05 起切 curl_cffi (impersonate=chrome) 模拟 Chrome TLS 指纹绕过
-CF Turnstile, 不再需要 StealthySession+solve_cloudflare 或 Camoufox.
-PDP 也能直接抓, 之前抓不到的 sizes (inline GraphQL variants[]) 现可拿."""
+"""SSENSE Arc'teryx scraper with curl_cffi and Camoufox list fallback."""
 from __future__ import annotations
 import re, json, time, sys
 from .base import DealerScraper, normalize_price, discount_pct
@@ -13,10 +10,29 @@ class Scraper(DealerScraper):
     NAME   = "SSENSE"
     REGION = "US"
     TIER   = "stealthy_cf"
+    MIN_LIST_ITEMS = 5
     LIST_URLS = [
         "https://www.ssense.com/en-us/men/designers/arcteryx",
         "https://www.ssense.com/en-us/women/designers/arcteryx",
     ]
+
+    def __init__(self):
+        self.crawl_complete = False
+
+    def _merge_page_items(self, items: list[dict], seen: set[str], page_items: list[dict]) -> int:
+        added = 0
+        for it in page_items:
+            if not it.get("url") or it["url"] in seen:
+                continue
+            seen.add(it["url"])
+            it["dealer"] = self.KEY
+            it["dealer_name"] = self.NAME
+            it["region"] = self.REGION
+            if "discount_pct" not in it:
+                it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
+            items.append(it)
+            added += 1
+        return added
 
     # SSENSE PDP: <select id="pdpSizeDropdown"><option value="XS_..." [disabled]>XS - Only N remaining</option> ...
     SIZE_OPT_RE = re.compile(
@@ -103,34 +119,61 @@ class Scraper(DealerScraper):
             time.sleep(2)
         time.sleep(2)
         # Stage 1: list pages
+        failed_urls = []
+        successful_urls = set()
         for url in self.LIST_URLS:
             print(f"[ssense] list {url}", flush=True)
             body = self._fetch(s, url)
             if not body:
                 print("[ssense] list fetch failed", flush=True)
+                failed_urls.append(url)
                 continue
             page_items = self.parse_list(body, url)
-            new = 0
-            for it in page_items:
-                if not it.get("url") or it["url"] in seen: continue
-                seen.add(it["url"])
-                it["dealer"] = self.KEY
-                it["dealer_name"] = self.NAME
-                it["region"] = self.REGION
-                if "discount_pct" not in it:
-                    it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
-                items.append(it)
-                new += 1
+            if len(page_items) < self.MIN_LIST_ITEMS:
+                print(f"[ssense] list parse returned only {len(page_items)} products", flush=True)
+                failed_urls.append(url)
+                continue
+            successful_urls.add(url)
+            new = self._merge_page_items(items, seen, page_items)
             print(f"[ssense] list +{new} (total {len(items)})", flush=True)
-        # Stage 2: PDP enrich (sizes - 之前 CF 拦不到, 现在可)
-        print(f"[ssense] enriching {len(items)} PDPs via curl_cffi...", flush=True)
-        for i, it in enumerate(items, 1):
-            body = self._fetch(s, it["url"], is_pdp=True)
-            if body:
-                detail = self.parse_detail(body, name_hint=it.get("name",""))
-                if detail: it.update(detail)
-            if i % 5 == 0: print(f"[ssense] enriched {i}/{len(items)}", flush=True)
-            time.sleep(0.4)
+
+        if failed_urls:
+            from camoufox.sync_api import Camoufox
+
+            print(f"[ssense] using Camoufox fallback for {len(failed_urls)} list page(s)", flush=True)
+            with Camoufox(headless=True, humanize=True, geoip=True) as browser:
+                page = browser.new_page()
+                page.set_default_navigation_timeout(90000)
+                for url in failed_urls:
+                    try:
+                        response = page.goto(url, wait_until="domcontentloaded", timeout=90000)
+                        page.wait_for_timeout(5000)
+                        if not response or response.status != 200:
+                            raise RuntimeError(f"HTTP {response.status if response else 'unknown'}")
+                        page_items = self.parse_list(page.content(), url)
+                        if len(page_items) < self.MIN_LIST_ITEMS:
+                            raise RuntimeError(f"rendered page contained only {len(page_items)} Arc'teryx products")
+                    except Exception as exc:
+                        print(f"[ssense] browser list failed {url}: {str(exc)[:160]}", flush=True)
+                        continue
+                    successful_urls.add(url)
+                    new = self._merge_page_items(items, seen, page_items)
+                    print(f"[ssense] browser list +{new} (scope {len(page_items)}, total {len(items)})", flush=True)
+
+        # Direct PDP enrichment is optional metadata. Skip it when direct list
+        # access was blocked, otherwise every PDP would repeat the same 403 wait.
+        if not failed_urls:
+            print(f"[ssense] enriching {len(items)} PDPs via curl_cffi...", flush=True)
+            for i, it in enumerate(items, 1):
+                body = self._fetch(s, it["url"], is_pdp=True)
+                if body:
+                    detail = self.parse_detail(body, name_hint=it.get("name",""))
+                    if detail: it.update(detail)
+                if i % 5 == 0: print(f"[ssense] enriched {i}/{len(items)}", flush=True)
+                time.sleep(0.4)
+        else:
+            print("[ssense] PDP enrichment skipped because direct HTTP is blocked", flush=True)
+        self.crawl_complete = len(successful_urls) == len(self.LIST_URLS) and bool(items)
         return items
 
     @staticmethod
@@ -141,6 +184,8 @@ class Scraper(DealerScraper):
         for i in range(retries):
             try:
                 r = session.get(url, timeout=25)
+                if r.status_code in {401, 403, 429}:
+                    return ""
                 if r.status_code == 200 and "Just a moment" not in r.text[:5000]:
                     if not is_pdp:
                         return r.text
@@ -225,7 +270,12 @@ if __name__ == "__main__":
     for it in items[:8]:
         print(f"  {it.get('discount_pct')}% off  ${it.get('sale_price')} ({it.get('original_price')}) {it.get('name')[:50]}")
     import json as _json, os as _os, time as _time
+    if not items:
+        raise SystemExit("[ssense] no items scraped; not writing dealers/_partial/ssense.json")
     _os.makedirs("dealers/_partial", exist_ok=True)
-    _json.dump({"name":"SSENSE","region":"US","count":len(items),"items":items,"saved_at":_time.strftime("%Y-%m-%d %H:%M:%S")},
+    _json.dump({"name":"SSENSE","region":"US","count":len(items),"items":items,
+                "crawl_complete":s.crawl_complete,"saved_at":_time.strftime("%Y-%m-%d %H:%M:%S")},
                open("dealers/_partial/ssense.json","w"), indent=2, ensure_ascii=False)
     print(f"→ dealers/_partial/ssense.json")
+    if not s.crawl_complete:
+        raise SystemExit("[ssense] crawl incomplete; partial retained for diagnostics but will not be published")
