@@ -1,4 +1,4 @@
-# TASK: 生产数据质量门修复（更新：2026-07-15 12:02 EDT）
+# TASK: 生产数据质量门修复（更新：2026-07-15 12:07 EDT）
 
 ## Why（一句话）
 
@@ -22,9 +22,9 @@
 - REI 在 Lightsail 同一锁定组合得到 23 个唯一商品；来源：2026-07-15 远端只读 `ReiScraper().scrape()` 探针。
 - 修复已通过 PR #20 和 PR #21 squash 合并至 `main`；生产代码提交为 `7c53d4d` 和 `9fb6596`；来源：`gh pr view 20/21` 与 `git log origin/main`。
 - Outlet 生产全量作业 `29425062293` 成功：4,940 条同步、0 批次错误，最终可见 active 4,843 条，陈旧 active+404 从 1 降为 0；来源：GitHub Actions 原始日志与同步后 `tools/check_data_quality.py --online ...` 输出。
-- Dealer 生产全量作业 `29427012307` 成功：Evo 252、REI 23、SSENSE 45，共 320 条全部写入且 0 批次错误；加上 MEC 156 后完整 Dealer active 为 476；来源：GitHub Actions 原始日志与同步后在线质量检查。
-- 最终 Production Freshness Monitor `29430572325` 中 Outlet、Dealer、Static fallbacks 三个独立步骤均为 `success`，聚合步骤输出 `All production checks passed.`；来源：GitHub Actions 原始日志。
-- 最终只读生产全量画像为 5,319 条 active：Outlet 4,843、Evo 252、MEC 156、REI 23、SSENSE 45；重复键、必填字段、价格、折扣、币种、JP 禁入、陈旧 active、active+404/410 均未产生错误；来源：`.venv/bin/python tools/check_data_quality.py --online --max-age-hours 36 --max-product-age-hours 72 --min-rows 5000 --forbid-region jp`。
+- Dealer 生产全量作业 `29427012307` 成功：Evo 252、REI 23、SSENSE 45，共 320 条全部写入且 0 批次错误；随后 MEC 自动刷新提交 `f8ee4e8` 将 MEC active 从 156 调整为 131，25 条进入首次 `missing`；最终 Dealer active 为 451；来源：GitHub Actions 原始日志、生产服务角色只读全表查询与 `git log origin/main`。
+- 最终 Production Freshness Monitor 在 MEC 刷新后重跑为 `29431015393`；Outlet、Dealer、Static fallbacks 三个独立步骤均为 `success`，聚合步骤输出 `All production checks passed.`；来源：GitHub Actions 原始日志。
+- 最终稳定生产全量画像为 5,294 条 active：Outlet 4,843、Evo 252、MEC 131、REI 23、SSENSE 45；重复键、必填字段、价格、折扣、币种、JP 禁入、陈旧 active、active+404/410 均未产生错误；来源：`.venv/bin/python tools/check_data_quality.py --online --max-age-hours 36 --max-product-age-hours 72 --min-rows 5000 --forbid-region jp` 与服务角色只读全表复核。
 
 ## 假设（未验证；验证后移入上区）
 
