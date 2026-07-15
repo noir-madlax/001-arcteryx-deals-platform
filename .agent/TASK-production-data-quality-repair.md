@@ -1,4 +1,4 @@
-# TASK: 生产数据质量门修复（更新：2026-07-15 12:07 EDT）
+# TASK: 生产数据质量门修复（更新：2026-07-15 12:10 EDT）
 
 ## Why（一句话）
 
@@ -21,6 +21,7 @@
 - SSENSE 在本机出口仍对浏览器返回 403，但 Lightsail 同一锁定浏览器组合对男/女页均返回 200，现有解析器分别得到 35/10 个商品；来源：2026-07-15 远端只读 Camoufox 探针。
 - REI 在 Lightsail 同一锁定组合得到 23 个唯一商品；来源：2026-07-15 远端只读 `ReiScraper().scrape()` 探针。
 - 修复已通过 PR #20 和 PR #21 squash 合并至 `main`；生产代码提交为 `7c53d4d` 和 `9fb6596`；来源：`gh pr view 20/21` 与 `git log origin/main`。
+- Lightsail 主运行器 checkout 已从 `cd40b86` fast-forward 至 `5e13f9a`；原有生成的 `dealers/results.json` 以 `stash@{0}` 可逆保留，日志文件未动；远端 `bash -n server_run_update.sh` 退出 0，并实际确认 active 404/410 复查命令与四个锁定依赖版本；来源：2026-07-15 SSH 部署输出。
 - Outlet 生产全量作业 `29425062293` 成功：4,940 条同步、0 批次错误，最终可见 active 4,843 条，陈旧 active+404 从 1 降为 0；来源：GitHub Actions 原始日志与同步后 `tools/check_data_quality.py --online ...` 输出。
 - Dealer 生产全量作业 `29427012307` 成功：Evo 252、REI 23、SSENSE 45，共 320 条全部写入且 0 批次错误；随后 MEC 自动刷新提交 `f8ee4e8` 将 MEC active 从 156 调整为 131，25 条进入首次 `missing`；最终 Dealer active 为 451；来源：GitHub Actions 原始日志、生产服务角色只读全表查询与 `git log origin/main`。
 - 最终 Production Freshness Monitor 在 MEC 刷新后重跑为 `29431015393`；Outlet、Dealer、Static fallbacks 三个独立步骤均为 `success`，聚合步骤输出 `All production checks passed.`；来源：GitHub Actions 原始日志。
@@ -53,6 +54,7 @@
 - PR #20、#21 均已合并，合并后又执行了 38 个单测、Python 编译、6 个 workflow YAML 解析和 `git diff --check`，均退出 0。
 - Outlet 和 Dealer 全量生产刷新均成功，且各自的 workflow 内部生产质量门与本地独立在线复测均为 `OK`。
 - 最终汇总监控硬门已在最新 `main` 上执行，三个独立检查均成功，聚合硬门通过。
+- Lightsail 主运行器代码已同步至最新 `main`，下一次主服务器调度会使用同一套 URL 复查和锁定浏览器依赖。
 
 ## 下一步（按序）
 
