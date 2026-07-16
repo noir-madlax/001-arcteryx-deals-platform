@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-16 17:55:33",
+  "generated_at": "2026-07-16 20:17:07",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6544,7 +6544,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 131,
+      "count": 130,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
@@ -7497,7 +7497,7 @@
           "url": "https://www.mec.ca/en/product/6032-550/arcteryx-gamma-pant-womens",
           "name": "Arc'teryx Gamma Pant - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518196_source_1771544533.jpg",
-          "color": "Black, Black Sapphire, HABITAT",
+          "color": "Black, HABITAT",
           "sale_price": 144.0,
           "original_price": 260.0,
           "discount_pct": 45,
@@ -7558,7 +7558,6 @@
           },
           "colors": [
             "Black",
-            "Black Sapphire",
             "HABITAT"
           ]
         },
@@ -9465,7 +9464,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-530/arcteryx-gamma-lightweight-hoodie-mens",
           "name": "Arc'teryx Gamma Lightweight Hoodie - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533789_source_1775153132.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533789_source_1784203611.png",
           "color": "Black, Void",
           "sale_price": 340.0,
           "original_price": 340.0,
@@ -10029,33 +10028,6 @@
           },
           "colors": [
             "Alpine Blue/Stone Red"
-          ]
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6037-525/arcteryx-cormac-crew-short-sleeve-mens",
-          "name": "Arc'teryx Cormac Crew Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534017_source_1776709234.jpg",
-          "color": "HABITAT",
-          "sale_price": 90.0,
-          "original_price": 90.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large"
-          ],
-          "size_stock": {
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock"
-          },
-          "colors": [
-            "HABITAT"
           ]
         },
         {
@@ -10715,7 +10687,7 @@
           ]
         }
       ],
-      "refreshed_at": "2026-07-16 15:18:40"
+      "refreshed_at": "2026-07-16 20:17:06"
     },
     "rei": {
       "name": "REI",
@@ -11700,10 +11672,8 @@
       "refreshed_at": "2026-07-16 17:55:33"
     }
   },
-  "total": 452,
+  "total": 451,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
