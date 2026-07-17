@@ -328,6 +328,42 @@
         @media (max-width: 720px)  { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 12px; } }
         @media (max-width: 640px)  { .grid-wrap { padding: 8px 16px 48px; } }
 
+        .pager {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 30px 0 4px;
+        }
+        .pager[hidden] { display: none; }
+        .pager-btn {
+            min-width: 86px;
+            min-height: 40px;
+            padding: 9px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            background: var(--surface);
+            color: var(--text);
+            font: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .pager-btn:hover:not(:disabled) { border-color: var(--text); background: var(--hover); }
+        .pager-btn:disabled { opacity: 0.38; cursor: default; }
+        .pager-status {
+            min-width: 150px;
+            color: var(--text-2);
+            font-size: 12px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+        @media (max-width: 480px) {
+            .pager { gap: 8px; }
+            .pager-btn { min-width: 72px; padding-inline: 12px; }
+            .pager-status { min-width: 118px; font-size: 11px; }
+        }
+
         /* ─── Card ─── */
         .card {
             background: transparent;
@@ -835,6 +871,11 @@
             <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
         </div>
     </div>
+    <nav class="pager" id="pager" aria-label="商品分页" hidden>
+        <button class="pager-btn" id="page-prev" type="button">上一页</button>
+        <span class="pager-status" id="page-status" aria-live="polite"></span>
+        <button class="pager-btn" id="page-next" type="button">下一页</button>
+    </nav>
 </main>
 
 <footer class="site-footer">
@@ -1129,6 +1170,9 @@ const normTs = (ts) => {
 
 // ── Filtering & rendering ──
 let products = [];
+const PAGE_SIZE = 60;
+let filteredProducts = [];
+let currentPage = 1;
 
 const filterProducts = () => {
     const q = state.q.trim().toLowerCase();
@@ -1205,6 +1249,26 @@ const expandSizes = (sizes) => {
     return [...new Set(sizes.flatMap(normalizeSz))];
 };
 
+// Imgix 原图通常为 1350x1710，但卡片实际宽度约 150-330px。
+// 将列表图片限制在 480x600，避免每张缩略图解码约 8.8MiB 的原图。
+const thumbnailUrl = (src, width = 480, height = 600) => {
+    if (!src) return '';
+    try {
+        const url = new URL(src, location.href);
+        if (!url.hostname.endsWith('imgix.net')) return src;
+        url.searchParams.set('auto', 'format');
+        url.searchParams.set('fit', 'crop');
+        url.searchParams.set('w', String(width));
+        url.searchParams.set('h', String(height));
+        url.searchParams.set('q', '72');
+        url.searchParams.delete('max-w');
+        url.searchParams.delete('max-h');
+        return url.toString();
+    } catch (_) {
+        return src;
+    }
+};
+
 const buildCard = (p) => {
     const name = cleanName(p.full_name || p.model);
     const cny = toCNY(p.sale_price, p.symbol, p.currency);
@@ -1269,7 +1333,7 @@ const buildCard = (p) => {
     <a class="card" href="${href}">
         <div class="card-img-wrap">
             <div class="card-img-fallback">${name}</div>
-            ${p.image_url ? `<img class="card-img" src="${p.image_url}" alt="${name.replace(/"/g, '&quot;')}" loading="lazy" onerror="this.style.display='none'">` : ''}
+            ${p.image_url ? `<img class="card-img" src="${thumbnailUrl(p.image_url)}" alt="${name.replace(/"/g, '&quot;')}" width="480" height="600" loading="lazy" decoding="async" onerror="this.style.display='none'">` : ''}
             <span class="card-flag">${flag} ${REGION_LABEL[p.region] || p.region}</span>
         </div>
         <div class="card-body">
@@ -1445,24 +1509,57 @@ const initFilters = () => {
     ], 'series');
 };
 
-const render = () => {
-    initFilters();
-    const filtered = sortProducts(filterProducts());
+const renderPage = () => {
     const grid = document.getElementById('grid');
-    if (!filtered.length) {
+    const pager = document.getElementById('pager');
+    const pageCount = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
+    currentPage = Math.min(Math.max(currentPage, 1), pageCount);
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageProducts = filteredProducts.slice(start, start + PAGE_SIZE);
+
+    if (!pageProducts.length) {
         grid.innerHTML = `<div class="empty"><h3>没有符合条件的商品</h3><p>试试调整筛选或清除条件</p></div>`;
     } else {
-        grid.innerHTML = filtered.map(buildCard).join('');
+        grid.innerHTML = pageProducts.map(buildCard).join('');
     }
-    document.getElementById('result-count').textContent = filtered.length;
-    const avg = filtered.length ? Math.round(filtered.reduce((s, p) => s + (p.discount_pct || 0), 0) / filtered.length) : 0;
+    document.getElementById('result-count').textContent = filteredProducts.length;
+    const avg = filteredProducts.length
+        ? Math.round(filteredProducts.reduce((sum, p) => sum + (p.discount_pct || 0), 0) / filteredProducts.length)
+        : 0;
     document.getElementById('result-avg').textContent = '−' + avg + '%';
+
+    pager.hidden = filteredProducts.length <= PAGE_SIZE;
+    document.getElementById('page-prev').disabled = currentPage <= 1;
+    document.getElementById('page-next').disabled = currentPage >= pageCount;
+    document.getElementById('page-status').textContent = filteredProducts.length
+        ? `第 ${currentPage} / ${pageCount} 页 · ${start + 1}-${Math.min(start + PAGE_SIZE, filteredProducts.length)} 件`
+        : '';
+};
+
+const render = () => {
+    currentPage = 1;
+    initFilters();
+    filteredProducts = sortProducts(filterProducts());
+    renderPage();
     // Sync filter select values + active styling
     [['platform-select','platform'],['region-select','region'],['gender-select','gender'],['category-select','category'],['series-select','series']]
         .forEach(([id, key]) => {
             const el = document.getElementById(id);
             if (el) { el.value = state[key]; el.classList.toggle('active', state[key] !== 'all'); }
         });
+};
+
+const initPager = () => {
+    const changePage = (delta) => {
+        const pageCount = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
+        const nextPage = Math.min(Math.max(currentPage + delta, 1), pageCount);
+        if (nextPage === currentPage) return;
+        currentPage = nextPage;
+        renderPage();
+        document.getElementById('filter-bar').scrollIntoView({ block: 'start' });
+    };
+    document.getElementById('page-prev').addEventListener('click', () => changePage(-1));
+    document.getElementById('page-next').addEventListener('click', () => changePage(1));
 };
 
 const initSearch = () => {
@@ -1521,13 +1618,21 @@ async function init() {
     initSearch();
     initSort();
     initReset();
+    initPager();
 
     // Show loading skeleton
     document.getElementById('grid').innerHTML =
         `<div class="empty"><p style="color:var(--text-3);font-size:14px">加载数据中…</p></div>`;
 
-    const CACHE_KEY = 'products_cache_v1';
-    const CACHE_TTL_MS = 10 * 60 * 1000;   // 10 分钟内重访直接走缓存
+    // 旧版把完整商品表序列化进 localStorage，会在解析、刷新和重绘时制造多份大对象。
+    // 新版只保留必要字段并依赖 Supabase/CDN 缓存；顺手清理旧缓存。
+    try { localStorage.removeItem('products_cache_v1'); } catch (_) {}
+    const LIST_COLUMNS = [
+        'sku_id', 'model', 'full_name', 'description', 'category', 'color',
+        'original_price', 'sale_price', 'discount_pct', 'currency', 'symbol',
+        'gender', 'image_url', 'region', 'url', 'dealer', 'last_updated',
+        'first_seen', 'status', 'last_seen_at', 'url_http_status', 'sizes', 'size_stock',
+    ].join(',');
     const decorate = p => ({
         ...p,
         last_updated: normTs(p.last_updated),
@@ -1537,38 +1642,19 @@ async function init() {
         _platform:  platformKey(p),
     });
 
-    // 1) 先尝试 cache - 让首屏秒出 (不到 100ms)
-    let renderedFromCache = false;
-    try {
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (cached) {
-            const { ts, rows } = JSON.parse(cached);
-            if (Date.now() - ts < CACHE_TTL_MS && Array.isArray(rows) && rows.length > 100) {
-                products = visibleProducts(rows).map(decorate);
-                computeStats(); initFilters(); render();
-                renderedFromCache = true;
-                console.info(`[cache] hit (${rows.length} rows, age ${Math.round((Date.now()-ts)/1000)}s)`);
-            }
-        }
-    } catch (_) {}
-
-    // 2) 后台拉新数据 (cache miss 时阻塞渲染, 命中时静默刷新)
     try {
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
         const PAGE = 1000;
-        let all = [];
+        const loadedProducts = [];
         for (let offset = 0; ; offset += PAGE) {
-            const { data, error } = await db.from('products').select('*').range(offset, offset + PAGE - 1);
+            const { data, error } = await db.from('products').select(LIST_COLUMNS).range(offset, offset + PAGE - 1);
             if (error) throw error;
             if (!data || !data.length) break;
-            all = all.concat(data);
+            loadedProducts.push(...visibleProducts(data).map(decorate));
             if (data.length < PAGE) break;
             if (offset > 50000) break; // safety
         }
-        all = visibleProducts(all);
-        // 写回 cache
-        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), rows: all })); } catch (_) {}
-        products = all.map(decorate);
+        products = loadedProducts;
     } catch (e) {
         console.warn('Supabase load failed, falling back to data.js:', e);
         // Graceful fallback: load data.js dynamically
@@ -1581,19 +1667,15 @@ async function init() {
         }).catch(() => {});
         products = (typeof PRODUCTS !== 'undefined' ? PRODUCTS : [])
             .filter(p => !isBlockedProduct(p))
-            .map(p => ({ ...p, _series: extractSeries(cleanName(p.full_name || p.model)), _platform: platformKey(p) }));
+            .map(decorate);
     }
 
     // dealer 数据 (SSENSE/MEC/EVO/REI) 现已并入 Supabase products 表 (dealer 列区分)
     // 不再 fetch dealers/results.json — 单一数据源 = Supabase
 
-    // 若首屏已从 cache 渲染过, 这次只是刷新数据 - 静默重渲染避免闪烁
     computeStats();
-    initFilters();
     render();
-    if (!renderedFromCache) {
-        maybeShowNewArrivals();   // 仅首次访问弹今日上新（cache hit 时 skip 避免每次刷新都弹）
-    }
+    maybeShowNewArrivals();
 }
 
 // ── 今日上新弹窗 ──────────────────────────────────────────────────────────
@@ -1652,7 +1734,7 @@ function maybeShowNewArrivals() {
         const skuParam = p.sku_id ? `&sku=${encodeURIComponent(p.sku_id)}` : '';
         const href = `product-detail.html?url=${encodeURIComponent(p.url || '')}${skuParam}`;
         const img = p.image_url
-            ? `<img class="na-img" src="${p.image_url}" alt="${name.replace(/"/g, '&quot;')}" loading="lazy" onerror="this.style.display='none'">`
+            ? `<img class="na-img" src="${thumbnailUrl(p.image_url, 320, 400)}" alt="${name.replace(/"/g, '&quot;')}" width="320" height="400" loading="lazy" decoding="async" onerror="this.style.display='none'">`
             : `<div class="na-img"></div>`;
         return `<a class="na-item" href="${href}">
             ${img}

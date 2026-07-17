@@ -542,7 +542,6 @@
     <img id="lightbox-img" alt="">
 </div>
 
-<script src="data.js"></script>
 <script>
 'use strict';
 
@@ -667,6 +666,69 @@ const isBlockedProduct = (p) => {
             || allKnownSizesOutOfStock(p));
 };
 
+const DETAIL_COLUMNS = [
+    'sku_id', 'model', 'full_name', 'description', 'category', 'color',
+    'original_price', 'sale_price', 'discount_pct', 'currency', 'symbol',
+    'gender', 'image_url', 'images', 'region', 'url', 'dealer', 'last_updated',
+    'first_seen', 'status', 'last_seen_at', 'url_http_status', 'sizes', 'size_stock',
+].join(',');
+
+const normalizeProducts = (rows) => (rows || [])
+    .filter(p => !isBlockedProduct(p))
+    .map(p => ({
+        ...p,
+        last_updated: normTs(p.last_updated),
+        sizes:      parseMaybeJson(p.sizes, []),
+        size_stock: parseMaybeJson(p.size_stock, {}),
+        images:     parseMaybeJson(p.images, []),
+    }));
+
+const loadStaticProducts = async () => {
+    if (typeof PRODUCTS !== 'undefined') return PRODUCTS;
+    await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'data.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    }).catch(() => {});
+    return typeof PRODUCTS !== 'undefined' ? PRODUCTS : [];
+};
+
+const loadStaticMatches = async (skuId, url, slugOf) => {
+    const rows = await loadStaticProducts();
+    if (!rows.length) return [];
+    if (skuId) {
+        const current = rows.find(row => row.sku_id === skuId);
+        if (current?.url) return normalizeProducts(rows.filter(row => row.url === current.url));
+    }
+    if (url) {
+        const exact = rows.filter(row => row.url === url);
+        if (exact.length) return normalizeProducts(exact);
+        const slug = slugOf(url);
+        return normalizeProducts(rows.filter(row => slugOf(row.url) === slug));
+    }
+    return [];
+};
+
+const thumbnailUrl = (src, width = 160, height = 200) => {
+    if (!src) return '';
+    try {
+        const url = new URL(src, location.href);
+        if (!url.hostname.endsWith('imgix.net')) return src;
+        url.searchParams.set('auto', 'format');
+        url.searchParams.set('fit', 'crop');
+        url.searchParams.set('w', String(width));
+        url.searchParams.set('h', String(height));
+        url.searchParams.set('q', '72');
+        url.searchParams.delete('max-w');
+        url.searchParams.delete('max-h');
+        return url.toString();
+    } catch (_) {
+        return src;
+    }
+};
+
 // ── Load product from Supabase ─────────────────────────────────────────────
 async function loadProduct() {
     const skuId = getParam('sku');
@@ -674,6 +736,7 @@ async function loadProduct() {
     const slugOf = (u) => (u || '').replace(/\/$/, '').split('/').pop();
 
     let skuMatches = [];
+    let queryFailed = false;
 
     try {
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -681,35 +744,40 @@ async function loadProduct() {
 
         if (skuId) {
             // Find the product's URL via sku_id, then load all colors for that URL
-            const { data: target } = await db.from('products')
-                .select('url').eq('sku_id', skuId).single();
+            const { data: target, error: targetError } = await db.from('products')
+                .select('url').eq('sku_id', skuId).maybeSingle();
+            if (targetError) throw targetError;
             if (target?.url) {
-                const { data: rows } = await db.from('products')
-                    .select('*').eq('url', target.url);
+                const { data: rows, error: rowsError } = await db.from('products')
+                    .select(DETAIL_COLUMNS).eq('url', target.url);
+                if (rowsError) throw rowsError;
                 data = rows;
             }
         } else if (url) {
             // Exact URL match
-            const { data: rows } = await db.from('products')
-                .select('*').eq('url', url);
+            const { data: rows, error: rowsError } = await db.from('products')
+                .select(DETAIL_COLUMNS).eq('url', url);
+            if (rowsError) throw rowsError;
             data = rows;
-            // Slug fallback
+            // Slug fallback 仍在服务端收窄候选；旧版会 select('*') 拉完整商品表。
             if (!data?.length) {
                 const slug = slugOf(url);
-                const { data: allRows } = await db.from('products').select('*');
-                data = (allRows || []).filter(s => slugOf(s.url) === slug);
+                const { data: candidates, error: candidatesError } = await db.from('products')
+                    .select(DETAIL_COLUMNS).ilike('url', `%/${slug}%`).limit(50);
+                if (candidatesError) throw candidatesError;
+                data = (candidates || []).filter(row => slugOf(row.url) === slug);
             }
         }
 
-        skuMatches = (data || []).filter(p => !isBlockedProduct(p)).map(p => ({
-            ...p,
-            last_updated: normTs(p.last_updated),
-            sizes:      Array.isArray(p.sizes)           ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
-            size_stock: typeof p.size_stock === 'object' ? p.size_stock : (p.size_stock ? JSON.parse(p.size_stock) : {}),
-            images:     Array.isArray(p.images)          ? p.images     : (p.images     ? JSON.parse(p.images)     : []),
-        }));
+        skuMatches = normalizeProducts(data);
     } catch (e) {
         console.warn('Supabase load failed:', e);
+        queryFailed = true;
+    }
+
+    // 9MB 静态数据只在 Supabase 真正失败时按需加载，正常详情页不再承担该成本。
+    if (!skuMatches.length && queryFailed) {
+        skuMatches = await loadStaticMatches(skuId, url, slugOf);
     }
 
     if (skuMatches.length) {
@@ -936,14 +1004,14 @@ function renderSKU(current, all, outletUrl) {
     <div class="product">
         <div class="gallery">
             <div class="main-img-wrap">
-                <img class="main-img" id="main-img" src="${esc(images[0])}" alt="${esc(name)}" onclick="openLightbox(this.src)">
+                <img class="main-img" id="main-img" src="${esc(images[0])}" alt="${esc(name)}" decoding="async" onclick="openLightbox(this.src)">
                 ${current.discount_pct ? `<span class="gallery-disc">−${current.discount_pct}%</span>` : ''}
             </div>
             ${images.length > 1 ? `
             <div class="thumbs">
                 ${images.map((src, i) => `
                     <button class="thumb ${i === 0 ? 'active' : ''}" onclick="changeImage('${esc(src)}', this)">
-                        <img src="${esc(src)}" alt="" loading="lazy">
+                        <img src="${esc(thumbnailUrl(src))}" alt="" width="160" height="200" loading="lazy" decoding="async">
                     </button>`).join('')}
             </div>` : ''}
         </div>
@@ -1003,7 +1071,7 @@ function renderBase(p) {
     <div class="product">
         <div class="gallery">
             <div class="main-img-wrap">
-                ${p.image_url ? `<img class="main-img" src="${esc(p.image_url)}" alt="${esc(name)}" onclick="openLightbox(this.src)">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-3);padding:24px;text-align:center">${esc(name)}</div>`}
+                ${p.image_url ? `<img class="main-img" src="${esc(p.image_url)}" alt="${esc(name)}" decoding="async" onclick="openLightbox(this.src)">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-3);padding:24px;text-align:center">${esc(name)}</div>`}
                 ${p.discount_pct ? `<span class="gallery-disc">−${p.discount_pct}%</span>` : ''}
             </div>
         </div>
