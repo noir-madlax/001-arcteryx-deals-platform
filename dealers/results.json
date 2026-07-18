@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18 04:35:29",
+  "generated_at": "2026-07-18 06:24:32",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6549,7 +6549,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 129,
+      "count": 131,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
@@ -6878,7 +6878,7 @@
           "url": "https://www.mec.ca/en/product/6032-439/arcteryx-atom-hoodie-womens",
           "name": "Arc'teryx Atom Hoodie - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504466_source_1770811495.jpg",
-          "color": "Black, Pineberry",
+          "color": "Black, Mallow, Pineberry",
           "sale_price": 216.0,
           "original_price": 360.0,
           "discount_pct": 40,
@@ -6905,6 +6905,7 @@
           },
           "colors": [
             "Black",
+            "Mallow",
             "Pineberry"
           ]
         },
@@ -9717,6 +9718,27 @@
           ]
         },
         {
+          "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
+          "name": "Arc'teryx Heliad 15 Backpack - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520622_source_1773871544.jpg",
+          "color": "Black/Black",
+          "sale_price": 100.0,
+          "original_price": 100.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "One Size"
+          ],
+          "size_stock": {
+            "One Size": "in_stock"
+          },
+          "colors": [
+            "Black/Black"
+          ]
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-783/arcteryx-rho-lt-base-layer-bottoms-mens",
           "name": "Arc'teryx Rho LT Base Layer Bottoms - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509526_source_1761584555.jpg",
@@ -9982,6 +10004,27 @@
             "Black/Moondrop",
             "Habitat/Sea Salt",
             "Pineberry/Stone Red"
+          ]
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6040-688/arcteryx-index-10-gear-organizer",
+          "name": "Arc'teryx Index 10 Gear Organizer",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555821_source_1782759948.png",
+          "color": "24k Black",
+          "sale_price": 60.0,
+          "original_price": 60.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "One Size"
+          ],
+          "size_stock": {
+            "One Size": "in_stock"
+          },
+          "colors": [
+            "24k Black"
           ]
         },
         {
@@ -10673,7 +10716,7 @@
           ]
         }
       ],
-      "refreshed_at": "2026-07-17 17:36:03"
+      "refreshed_at": "2026-07-18 06:24:31"
     },
     "rei": {
       "name": "REI",
@@ -11630,10 +11673,8 @@
       "refreshed_at": "2026-07-18 04:35:29"
     }
   },
-  "total": 448,
+  "total": 450,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
