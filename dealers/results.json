@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-19 14:43:48",
+  "generated_at": "2026-07-19 17:45:56",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6540,7 +6540,7 @@
           "category": ""
         }
       ],
-      "refreshed_at": "2026-07-19 14:43:10"
+      "refreshed_at": "2026-07-19 17:45:17"
     },
     "mec": {
       "name": "MEC",
@@ -8125,22 +8125,8 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 23,
+      "count": 24,
       "items": [
-        {
-          "url": "https://www.rei.com/product/228617/arcteryx-beta-jacket-mens",
-          "name": "Beta Jacket - Men's",
-          "image": "https://www.rei.com/media/cb27ab2b-b627-416c-9862-6d5834880f26.jpg",
-          "original_price": 400.0,
-          "sale_price": 249.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 38,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
         {
           "url": "https://www.rei.com/product/243332/arcteryx-atom-insulated-hoody-womens",
           "name": "Atom Insulated Hoody - Women's",
@@ -8151,6 +8137,20 @@
           "in_stock": true,
           "gender": "women",
           "discount_pct": 40,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/228617/arcteryx-beta-jacket-mens",
+          "name": "Beta Jacket - Men's",
+          "image": "https://www.rei.com/media/cb27ab2b-b627-416c-9862-6d5834880f26.jpg",
+          "original_price": 400.0,
+          "sale_price": 249.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 38,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -8170,11 +8170,11 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
-          "name": "Cerium Down Hoody - Men's",
-          "image": "https://www.rei.com/media/855de972-fc1f-4ae7-81a1-8f588976e3e3.jpg",
-          "original_price": 400.0,
-          "sale_price": 249.83,
+          "url": "https://www.rei.com/product/249474/arcteryx-beta-ar-jacket-mens",
+          "name": "Beta AR Jacket - Men's",
+          "image": "https://www.rei.com/media/f95d0b93-106a-4d70-92ea-846ca9cfcc19.jpg",
+          "original_price": 650.0,
+          "sale_price": 399.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
@@ -8198,57 +8198,15 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/187115/arcteryx-mantis-1-waistpack",
-          "name": "Mantis 1 Waistpack",
-          "image": "https://www.rei.com/media/89ed5ac9-6f1d-4ddf-89a3-3107789702fe.jpg",
-          "original_price": 40.0,
-          "sale_price": 19.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/209280/arcteryx-covert-fleece-cardigan-womens",
-          "name": "Covert Fleece Cardigan - Women's",
-          "image": "https://www.rei.com/media/c62dfa86-a02b-4eb3-8024-255e26dac988.jpg",
-          "original_price": 126.83,
-          "sale_price": 126.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/249474/arcteryx-beta-ar-jacket-mens",
-          "name": "Beta AR Jacket - Men's",
-          "image": "https://www.rei.com/media/f95d0b93-106a-4d70-92ea-846ca9cfcc19.jpg",
-          "original_price": 650.0,
-          "sale_price": 399.83,
+          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
+          "name": "Cerium Down Hoody - Men's",
+          "image": "https://www.rei.com/media/855de972-fc1f-4ae7-81a1-8f588976e3e3.jpg",
+          "original_price": 400.0,
+          "sale_price": 249.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
           "discount_pct": 38,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
-          "name": "Beta SL Jacket - Women's",
-          "image": "https://www.rei.com/media/76400c1d-ce0f-4dc0-b363-f6778b24840b.jpg",
-          "original_price": 500.0,
-          "sale_price": 500.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -8268,6 +8226,48 @@
           "region": "US"
         },
         {
+          "url": "https://www.rei.com/product/209280/arcteryx-covert-fleece-cardigan-womens",
+          "name": "Covert Fleece Cardigan - Women's",
+          "image": "https://www.rei.com/media/c62dfa86-a02b-4eb3-8024-255e26dac988.jpg",
+          "original_price": 126.83,
+          "sale_price": 126.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
+          "name": "Beta SL Jacket - Women's",
+          "image": "https://www.rei.com/media/76400c1d-ce0f-4dc0-b363-f6778b24840b.jpg",
+          "original_price": 500.0,
+          "sale_price": 500.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/187115/arcteryx-mantis-1-waistpack",
+          "name": "Mantis 1 Waistpack",
+          "image": "https://www.rei.com/media/89ed5ac9-6f1d-4ddf-89a3-3107789702fe.jpg",
+          "original_price": 40.0,
+          "sale_price": 19.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "discount_pct": 50,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
           "url": "https://www.rei.com/product/236060/arcteryx-cronin-cotton-pants-mens",
           "name": "Cronin Cotton Pants - Men's",
           "image": "https://www.rei.com/media/bf58bc26-213e-43b3-a1be-066a30bf1d85.jpg",
@@ -8277,6 +8277,20 @@
           "in_stock": true,
           "gender": "men",
           "discount_pct": 37,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/249477/arcteryx-gamma-hoody-mens",
+          "name": "Gamma Hoody - Men's",
+          "image": "https://www.rei.com/media/044c059b-7f92-4f28-b600-46892c688efb.jpg",
+          "original_price": 300.0,
+          "sale_price": 210.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 30,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -8310,76 +8324,6 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/242853/arcteryx-gamma-pants-mens",
-          "name": "Gamma Pants - Men's",
-          "image": "https://www.rei.com/media/4d33a0af-f0c0-479f-9743-1eec555ee069.jpg",
-          "original_price": 200.0,
-          "sale_price": 99.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/209252/arcteryx-rho-base-layer-bottoms-womens",
-          "name": "Rho Base Layer Bottoms - Women's",
-          "image": "https://www.rei.com/media/ee7d9dcf-124d-479c-8bdf-5b11bc560ce5.jpg",
-          "original_price": 59.83,
-          "sale_price": 59.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/249477/arcteryx-gamma-hoody-mens",
-          "name": "Gamma Hoody - Men's",
-          "image": "https://www.rei.com/media/044c059b-7f92-4f28-b600-46892c688efb.jpg",
-          "original_price": 300.0,
-          "sale_price": 210.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 30,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
-          "name": "Atom Insulated Jacket - Men's",
-          "image": "https://www.rei.com/media/119452de-5e09-4be4-9354-0a1884072ca8.jpg",
-          "original_price": 280.0,
-          "sale_price": 179.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 36,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/249482/arcteryx-atom-sv-insulated-jacket-womens",
-          "name": "Atom SV Insulated Jacket - Women's",
-          "image": "https://www.rei.com/media/a3b3a6d2-9a36-4fde-a134-b939b7dd742a.jpg",
-          "original_price": 300.0,
-          "sale_price": 149.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
           "url": "https://www.rei.com/product/249473/arcteryx-alpha-sv-jacket-mens",
           "name": "Alpha SV Jacket - Men's",
           "image": "https://www.rei.com/media/c49cba68-cc72-428d-8be8-3524fff495ea.jpg",
@@ -8394,29 +8338,29 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/250403/arcteryx-kragg-cotton-long-sleeve-shirt-mens",
-          "name": "Kragg Cotton Long-Sleeve Shirt - Men's",
-          "image": "https://www.rei.com/media/1f3ca430-ee46-40e3-8682-6ff478539c33.jpg",
-          "original_price": 80.0,
-          "sale_price": 55.93,
+          "url": "https://www.rei.com/product/242853/arcteryx-gamma-pants-mens",
+          "name": "Gamma Pants - Men's",
+          "image": "https://www.rei.com/media/4d33a0af-f0c0-479f-9743-1eec555ee069.jpg",
+          "original_price": 200.0,
+          "sale_price": 99.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 30,
+          "discount_pct": 50,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/250404/arcteryx-kragg-cotton-lithographica-t-shirt-mens",
-          "name": "Kragg Cotton Lithographica T-Shirt - Men's",
-          "image": "https://www.rei.com/media/69c73d09-47c5-4cc3-b094-29bebc4a9735.jpg",
-          "original_price": 80.0,
-          "sale_price": 59.93,
+          "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
+          "name": "Atom Insulated Jacket - Men's",
+          "image": "https://www.rei.com/media/119452de-5e09-4be4-9354-0a1884072ca8.jpg",
+          "original_price": 280.0,
+          "sale_price": 179.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 25,
+          "discount_pct": 36,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -8448,9 +8392,79 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/249482/arcteryx-atom-sv-insulated-jacket-womens",
+          "name": "Atom SV Insulated Jacket - Women's",
+          "image": "https://www.rei.com/media/a3b3a6d2-9a36-4fde-a134-b939b7dd742a.jpg",
+          "original_price": 300.0,
+          "sale_price": 149.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 50,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/243257/arcteryx-atom-sl-hoody-mens",
+          "name": "Atom SL Hoody - Men's",
+          "image": "https://www.rei.com/media/dc0d835e-4beb-4b43-b7bd-0bcc59ad6000.jpg",
+          "original_price": 280.0,
+          "sale_price": 169.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 39,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/250403/arcteryx-kragg-cotton-long-sleeve-shirt-mens",
+          "name": "Kragg Cotton Long-Sleeve Shirt - Men's",
+          "image": "https://www.rei.com/media/1f3ca430-ee46-40e3-8682-6ff478539c33.jpg",
+          "original_price": 80.0,
+          "sale_price": 55.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 30,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
+          "name": "Cerium Down Hoody - Women's",
+          "image": "https://www.rei.com/media/0ed9fca3-75c2-447a-b04b-6738627b6063.jpg",
+          "original_price": 400.0,
+          "sale_price": 199.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 50,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/250404/arcteryx-kragg-cotton-lithographica-t-shirt-mens",
+          "name": "Kragg Cotton Lithographica T-Shirt - Men's",
+          "image": "https://www.rei.com/media/69c73d09-47c5-4cc3-b094-29bebc4a9735.jpg",
+          "original_price": 80.0,
+          "sale_price": 59.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 25,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
         }
       ],
-      "refreshed_at": "2026-07-19 14:43:26"
+      "refreshed_at": "2026-07-19 17:45:33"
     },
     "ssense": {
       "name": "SSENSE",
@@ -9088,10 +9102,10 @@
           "region": "US"
         }
       ],
-      "refreshed_at": "2026-07-19 14:43:48"
+      "refreshed_at": "2026-07-19 17:45:56"
     }
   },
-  "total": 451,
+  "total": 452,
   "fresh_dealers": [
     "evo",
     "rei",
