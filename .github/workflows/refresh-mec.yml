@@ -71,11 +71,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
 
       - name: Verify required secrets
         run: |
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_KEY"
+
+      - name: Verify MEC fallback browser runtime
+        run: python tools/check_mec_browser_runtime.py
 
       - name: Refresh MEC scrape and sync
         run: |
