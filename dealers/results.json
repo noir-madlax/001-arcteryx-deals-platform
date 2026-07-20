@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20 18:36:03",
+  "generated_at": "2026-07-20 20:45:08",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6544,7 +6544,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 131,
+      "count": 132,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
@@ -6565,6 +6565,18 @@
           "color": "Black",
           "sale_price": 500.0,
           "original_price": 500.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA"
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6032-526/arcteryx-kyanite-lightweight-hoodie-mens",
+          "name": "Arc'teryx Kyanite Lightweight Hoodie - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555856_source_1782759983.png",
+          "color": "Fluidity",
+          "sale_price": 190.0,
+          "original_price": 190.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -6669,7 +6681,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-528/arcteryx-cormac-logo-short-sleeve-mens",
           "name": "Arc'teryx Cormac Logo Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533779_source_1776427418.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533660_source_1776427417.jpg",
           "color": "Black",
           "sale_price": 100.0,
           "original_price": 100.0,
@@ -6865,18 +6877,6 @@
           "color": "Black/Black",
           "sale_price": 200.0,
           "original_price": 200.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6032-526/arcteryx-kyanite-lightweight-hoodie-mens",
-          "name": "Arc'teryx Kyanite Lightweight Hoodie - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555856_source_1782759983.png",
-          "color": "Fluidity",
-          "sale_price": 190.0,
-          "original_price": 190.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8023,6 +8023,18 @@
           "region": "CA"
         },
         {
+          "url": "https://www.mec.ca/en/product/6036-293/arcteryx-rho-balaclava-unisex",
+          "name": "Arc'teryx Rho Balaclava - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/512750_source_1753206690.jpg",
+          "color": "Black",
+          "sale_price": 60.0,
+          "original_price": 60.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6032-552/arcteryx-kragg-cotton-emblem-crew-short-sleeve-womens",
           "name": "Arc'teryx Kragg Cotton Emblem Crew Short Sleeve - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518194_source_1771628157.jpg",
@@ -8119,7 +8131,7 @@
           "region": "CA"
         }
       ],
-      "refreshed_at": "2026-07-20 15:26:51"
+      "refreshed_at": "2026-07-20 20:45:08"
     },
     "rei": {
       "name": "REI",
@@ -9118,10 +9130,8 @@
       "refreshed_at": "2026-07-20 18:36:03"
     }
   },
-  "total": 453,
+  "total": 454,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
