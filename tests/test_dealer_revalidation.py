@@ -84,9 +84,9 @@ class DealerRevalidationTests(unittest.TestCase):
             "discount_pct": 75,
         })
 
-    def test_only_mec_preserves_previous_discount(self):
-        self.assertTrue(should_preserve_previous_discount("mec", 200, 200, 100, 200))
-        self.assertFalse(should_preserve_previous_discount("rei", 200, 200, 49.83, 200))
+    def test_list_fallback_preserves_previous_discount(self):
+        self.assertTrue(should_preserve_previous_discount("list_fallback", 200, 200, 100, 200))
+        self.assertFalse(should_preserve_previous_discount("api", 200, 200, 49.83, 200))
 
     def test_low_success_ratio_is_failure(self):
         stats = defaultdict(lambda: {"ok": 0, "unavail": 0})

@@ -108,10 +108,16 @@ def _discount_pct(orig, sale) -> int:
     return round((1 - s / o) * 100)
 
 
-def should_preserve_previous_discount(dealer: str, new_sale, new_original, old_sale, old_original) -> bool:
-    """Only MEC has a known list-only fallback that loses real PDP discounts."""
+def should_preserve_previous_discount(
+    price_source_quality: str | None,
+    new_sale,
+    new_original,
+    old_sale,
+    old_original,
+) -> bool:
+    """Keep a previously verified discount when a degraded list-only refresh loses it."""
     return bool(
-        dealer == "mec"
+        price_source_quality == "list_fallback"
         and new_sale and new_original
         and abs(new_sale - new_original) < 0.01
         and old_sale and old_original
@@ -147,6 +153,7 @@ def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
         "images":         [it["image"]] if it.get("image") else [],
         "description":    "",
         "last_updated":   _to_iso(generated_at),
+        "_price_source_quality": it.get("price_source_quality"),
     }
 
 def _to_iso(s: str) -> str | None:
@@ -219,7 +226,13 @@ def main():
                 # 避免 mec scrapling fallback 覆盖掉之前的折扣信息 → 前端假满价.
                 new_sp, new_op = r.get("sale_price"), r.get("original_price")
                 old_sp, old_op = old.get("sale_price"), old.get("original_price")
-                if should_preserve_previous_discount(dkey, new_sp, new_op, old_sp, old_op):
+                if should_preserve_previous_discount(
+                    r.get("_price_source_quality"),
+                    new_sp,
+                    new_op,
+                    old_sp,
+                    old_op,
+                ):
                     r["sale_price"] = old_sp
                     r["original_price"] = old_op
                     r["discount_pct"] = _discount_pct(old_op, old_sp)
@@ -234,6 +247,8 @@ def main():
         ok, err = 0, 0
         for i in range(0, len(rows), BATCH_SIZE):
             batch = rows[i:i+BATCH_SIZE]
+            for row in batch:
+                row.pop("_price_source_quality", None)
             try:
                 client.table("products").upsert(batch, on_conflict="sku_id").execute()
                 ok += len(batch)

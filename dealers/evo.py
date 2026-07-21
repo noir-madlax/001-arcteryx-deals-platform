@@ -158,6 +158,7 @@ class Scraper:
                 "dealer_name": self.NAME,
                 "region": self.REGION,
                 "category": product.get("type") or "",
+                "price_source_quality": "list_fallback",
             })
         return out
 
@@ -329,6 +330,7 @@ class Scraper:
                         "dealer_name":    self.NAME,
                         "region":         self.REGION,
                         "category":       p.get("product_type") or "",
+                        "price_source_quality": "api",
                     })
                 if len(products) < 250:
                     scope_complete = True

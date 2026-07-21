@@ -22,6 +22,7 @@ env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
   SITE_URL: https://001.100app.dev
+  REI_ENRICH_DETAILS: "true"
 
 jobs:
   lease-gate:

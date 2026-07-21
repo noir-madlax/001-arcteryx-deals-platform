@@ -3,6 +3,7 @@ from __future__ import annotations
 from camoufox.sync_api import Camoufox
 import os, re, time
 from .base import normalize_price, discount_pct
+from .revalidate import fetch_rei_pdp
 
 HOST = "https://www.rei.com"
 
@@ -104,6 +105,12 @@ class Scraper:
                     detail = self.parse_detail(page.content())
                     if detail:
                         it.update(detail)
+                    price = fetch_rei_pdp(page, it["url"])
+                    if price and not price.get("_err") and not price.get("_unavailable"):
+                        it["sale_price"] = price.get("sale_price", it.get("sale_price"))
+                        it["original_price"] = price.get("original_price", it.get("original_price"))
+                        it["discount_pct"] = discount_pct(it.get("original_price"), it.get("sale_price"))
+                        it["price_source_quality"] = "pdp"
                 except Exception as e:
                     msg = str(e)
                     print(f"[rei] detail err {it['url']}: {msg[:120]}", flush=True)
@@ -228,6 +235,7 @@ class Scraper:
                         "dealer":         self.KEY,
                         "dealer_name":    self.NAME,
                         "region":         self.REGION,
+                        "price_source_quality": "list_fallback",
                     })
                 print(f"[rei] list +{len(items)} (total)")
             if _env_bool("REI_ENRICH_DETAILS", False):
