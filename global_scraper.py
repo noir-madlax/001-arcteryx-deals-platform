@@ -740,6 +740,11 @@ async def run(args):
 
     # 加载现有数据（用于合并）
     existing: list = load_json(DATA_FILE, [])
+    previous_region_by_url: dict[str, str] = {
+        p.get("url", ""): p.get("region", "")
+        for p in existing
+        if p.get("url") and p.get("region")
+    }
     # 构建 {url: index} 索引，用于快速更新
     existing_by_url: dict = {p["url"]: i for i, p in enumerate(existing)}
     print(f"[global_scraper] 现有 {len(existing)} 条记录")
@@ -759,6 +764,7 @@ async def run(args):
         total_updated = 0
         skipped_redirect_regions = set()
         manifest_scopes = []
+        redirect_candidates: set[str] = set()
 
         for region in regions:
             print(f"\n🌍 [{region['code'].upper()}] {region['name']} ({region['currency']})", flush=True)
@@ -801,6 +807,7 @@ async def run(args):
                     # 更新现有条目（保留 sku_scraper 已填充的字段）
                     idx = existing_by_url[url]
                     old = existing[idx]
+                    old_region = old.get("region", "")
 
                     # 价格三元组 (orig, sale, disc) 必须整体一致，绝不能把新一次的 sale
                     # 和旧一次的 orig 混在一起（之前的 bug 导致 SE/DK 出现 sale > orig
@@ -844,11 +851,14 @@ async def run(args):
                         })
                     existing[idx] = old
                     total_updated += 1
+                    if old_region and p.get("region") and old_region != p["region"]:
+                        redirect_candidates.add(url)
                 else:
                     # 新商品
                     existing.append(p)
                     existing_by_url[url] = len(existing) - 1
                     total_new += 1
+                    redirect_candidates.add(url)
 
             print(f"  → 新增 {total_new} / 更新 {total_updated}", flush=True)
 
@@ -894,8 +904,15 @@ async def run(args):
     if args.skip_redirect_validation:
         print("[validate] skipped redirect validation by flag", flush=True)
     else:
+        if not redirect_candidates:
+            redirect_candidates = {
+                url
+                for url, previous_region in previous_region_by_url.items()
+                if url in existing_by_url and existing[existing_by_url[url]].get("region", "") != previous_region
+            }
         existing = _filter_redirected(
             existing,
+            candidate_urls=redirect_candidates,
             max_workers=args.redirect_workers,
             request_timeout=args.redirect_timeout,
         )
@@ -934,19 +951,23 @@ def _final_region(url: str, timeout: float = 8.0):
 def _filter_redirected(
     products: list,
     today_only: bool = True,
+    candidate_urls: set[str] | None = None,
     max_workers: int = 30,
     request_timeout: float = 8.0,
 ) -> list:
     """Remove products whose URL redirects to a different region (phantom entries).
 
     today_only: only validate records updated today (much cheaper than full ~3700 HEADs).
+    candidate_urls: when provided, only validate URLs in this candidate set.
     """
     today = datetime.now().strftime("%Y-%m-%d")
     to_check = []
     for i, p in enumerate(products):
+        url = p.get("url", "")
+        if candidate_urls is not None and url not in candidate_urls:
+            continue
         if today_only and not (p.get("last_updated", "") or "").startswith(today):
             continue
-        url = p.get("url", "")
         region = p.get("region", "")
         if not url or not region:
             continue
