@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-21 10:10:50",
+  "generated_at": "2026-07-21 12:14:57",
   "dealers": {
     "evo": {
       "name": "EVO",
       "region": "US",
-      "count": 246,
+      "count": 251,
       "items": [
         {
           "url": "https://www.evo.com/products/264090-arc-teryx-beta-ar-stormhood-jacket-men-s",
@@ -1430,8 +1430,8 @@
         {
           "url": "https://www.evo.com/products/263928-arc-teryx-kragg-cotton-lithographica-short-sleeve-t-shirt-men-s",
           "name": "Arc'teryx Kragg Cotton Lithographica Short-Sleeve T-Shirt - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1275867.jpg?v=1772649449&width=422",
-          "original_price": 80.0,
+          "image": null,
+          "original_price": 60.0,
           "sale_price": 60.0,
           "currency": "USD",
           "in_stock": true,
@@ -1460,7 +1460,7 @@
             "Light Moondrop",
             "White Light"
           ],
-          "discount_pct": 25,
+          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -2159,20 +2159,44 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/272657-arc-teryx-kragg-sl-cotton-blurred-bird-short-sleeve-shirt-men-s",
-          "name": "Arc'teryx Kragg SL Cotton Blurred Bird Short-Sleeve Shirt - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285986.jpg?v=1774909959&width=422",
-          "original_price": 70.0,
-          "sale_price": 70.0,
+          "url": "https://www.evo.com/products/276691-arc-teryx-norvan-ld-4-shoes-men-s",
+          "name": "Arc'teryx Norvan LD 4 Shoes - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1289591.jpg?v=1775569495&width=422",
+          "original_price": 170.0,
+          "sale_price": 170.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
           "sizes": [],
           "size_stock": {},
-          "color": "Stone Red, White Light/Atmos",
+          "color": "Atmos/Solitude, Black/Graphite, Dk Stratus/Lt Stratus",
           "colors": [
-            "Stone Red",
-            "White Light/Atmos"
+            "Atmos/Solitude",
+            "Black/Graphite",
+            "Dk Stratus/Lt Stratus",
+            "Lt Bracken/Oakmoss"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/279939-arc-teryx-index-40-bouldering-bag",
+          "name": "Arc'teryx Index 40 Bouldering Bag",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1275940.jpg?v=1772649448&width=422",
+          "original_price": 130.0,
+          "sale_price": 130.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "24K Black, Habitat",
+          "colors": [
+            "24K Black",
+            "Habitat"
           ],
           "discount_pct": 0,
           "dealer": "evo",
@@ -2206,30 +2230,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/276691-arc-teryx-norvan-ld-4-shoes-men-s",
-          "name": "Arc'teryx Norvan LD 4 Shoes - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1289591.jpg?v=1775569495&width=422",
-          "original_price": 170.0,
-          "sale_price": 170.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Atmos/Solitude, Black/Graphite, Dk Stratus/Lt Stratus",
-          "colors": [
-            "Atmos/Solitude",
-            "Black/Graphite",
-            "Dk Stratus/Lt Stratus",
-            "Lt Bracken/Oakmoss"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/263977-arc-teryx-beta-sl-jacket-women-s",
           "name": "Arc'teryx Beta SL Jacket - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285954.jpg?v=1774909957&width=422",
@@ -2244,50 +2244,6 @@
           "colors": [
             "Black",
             "Moondrop"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/263926-arc-teryx-emblem-fleece-hoodie-women-s",
-          "name": "Arc'teryx Emblem Fleece Hoodie - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1245732.jpg?v=1767738980&width=422",
-          "original_price": 130.0,
-          "sale_price": 97.5,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Aster, Black",
-          "colors": [
-            "Aster",
-            "Black"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/279939-arc-teryx-index-40-bouldering-bag",
-          "name": "Arc'teryx Index 40 Bouldering Bag",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1275940.jpg?v=1772649448&width=422",
-          "original_price": 130.0,
-          "sale_price": 130.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "24K Black, Habitat",
-          "colors": [
-            "24K Black",
-            "Habitat"
           ],
           "discount_pct": 0,
           "dealer": "evo",
@@ -2319,30 +2275,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/279543-arc-teryx-rula-short-sleeve-t-shirt-women-s",
-          "name": "Arc'teryx Rula Short-Sleeve T-Shirt - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1259238.jpg?v=1767739512&width=422",
-          "original_price": 70.0,
-          "sale_price": 52.5,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Arctic Silk, Aster, Black",
-          "colors": [
-            "Arctic Silk",
-            "Aster",
-            "Black",
-            "Forage"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/221390-arc-teryx-rho-gloves",
           "name": "Arc'teryx Rho Gloves",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1257710.jpg?v=1767739454&width=422",
@@ -2360,6 +2292,50 @@
             "Glacial"
           ],
           "discount_pct": 38,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263991-arc-teryx-gamma-mx-hoodie-women-s",
+          "name": "Arc'teryx Gamma MX Hoodie - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285515.jpg?v=1774909943&width=422",
+          "original_price": 400.0,
+          "sale_price": 360.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Arctic Silk, Mantis",
+          "colors": [
+            "Arctic Silk",
+            "Mantis"
+          ],
+          "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263926-arc-teryx-emblem-fleece-hoodie-women-s",
+          "name": "Arc'teryx Emblem Fleece Hoodie - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1245732.jpg?v=1767738980&width=422",
+          "original_price": 130.0,
+          "sale_price": 97.5,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Aster, Black",
+          "colors": [
+            "Aster",
+            "Black"
+          ],
+          "discount_pct": 25,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -2410,9 +2386,215 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/272658-arc-teryx-kragg-sl-cotton-cacodaemon-short-sleeve-shirt-men-s",
-          "name": "Arc'teryx Kragg SL Cotton Cacodaemon Short-Sleeve Shirt - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285990.jpg?v=1774909959&width=422",
+          "url": "https://www.evo.com/products/257643-arc-teryx-bird-word-cap",
+          "name": "Arc'teryx Bird Word Cap",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265502.jpg?v=1767739751&width=422",
+          "original_price": 50.0,
+          "sale_price": 50.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "24K Black, Cosmic Bloom, Dk Stratus/Habitat",
+          "colors": [
+            "24K Black",
+            "Cosmic Bloom",
+            "Dk Stratus/Habitat"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/279543-arc-teryx-rula-short-sleeve-t-shirt-women-s",
+          "name": "Arc'teryx Rula Short-Sleeve T-Shirt - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1259238.jpg?v=1767739512&width=422",
+          "original_price": 70.0,
+          "sale_price": 52.5,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Arctic Silk, Aster, Black",
+          "colors": [
+            "Arctic Silk",
+            "Aster",
+            "Black",
+            "Forage"
+          ],
+          "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/279634-arc-teryx-sabre-jacket-men-s",
+          "name": "Arc'teryx Sabre Jacket - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1258671.jpg?v=1767739486&width=422",
+          "original_price": 750.0,
+          "sale_price": 637.5,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Azalea/Forage, Black, Blaze",
+          "colors": [
+            "Azalea/Forage",
+            "Black",
+            "Blaze",
+            "Vitality/Black Sapphire"
+          ],
+          "discount_pct": 15,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/276695-arc-teryx-sylan-2-shoes-men-s",
+          "name": "Arc'teryx Sylan 2 Shoes - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1278080.jpg?v=1773179424&width=422",
+          "original_price": 220.0,
+          "sale_price": 220.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black/Black, Mantis/Mantis",
+          "colors": [
+            "Black/Black",
+            "Mantis/Mantis"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263983-arc-teryx-beta-ar-jacket-women-s",
+          "name": "Arc'teryx Beta AR Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265397.jpg?v=1767739743&width=422",
+          "original_price": 650.0,
+          "sale_price": 487.5,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Alpine Blue, Arctic Silk/Solitude, Arctic Silk/Solitude II",
+          "colors": [
+            "Alpine Blue",
+            "Arctic Silk/Solitude",
+            "Arctic Silk/Solitude II",
+            "Black",
+            "Nightscape/Glacial"
+          ],
+          "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263934-arc-teryx-kragg-cotton-long-sleeve-t-shirt-men-s",
+          "name": "Arc'teryx Kragg Cotton Long-Sleeve T-Shirt - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265409.jpg?v=1767739744&width=422",
+          "original_price": 80.0,
+          "sale_price": 60.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Blaze, Mantis, White Light/Black",
+          "colors": [
+            "Blaze",
+            "Mantis",
+            "White Light/Black"
+          ],
+          "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/272459-arc-teryx-mantis-16l-backpack",
+          "name": "Arc'teryx Mantis 16L Backpack",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1264421.jpg?v=1767739710&width=422",
+          "original_price": 130.0,
+          "sale_price": 117.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Moondrop, Shincha",
+          "colors": [
+            "Moondrop",
+            "Shincha"
+          ],
+          "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263890-arc-teryx-micon-37-backpack",
+          "name": "Arc'teryx Micon 37 Backpack",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1246217.jpg?v=1767739000&width=422",
+          "original_price": 280.0,
+          "sale_price": 210.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Tatsu",
+          "colors": [
+            "Tatsu"
+          ],
+          "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263877-arc-teryx-aerios-35l-backpack",
+          "name": "Arc'teryx Aerios 35L Backpack",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1264340.jpg?v=1767739705&width=422",
+          "original_price": 250.0,
+          "sale_price": 250.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black, Fluidity",
+          "colors": [
+            "Black",
+            "Fluidity"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/272657-arc-teryx-kragg-sl-cotton-blurred-bird-short-sleeve-shirt-men-s",
+          "name": "Arc'teryx Kragg SL Cotton Blurred Bird Short-Sleeve Shirt - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285986.jpg?v=1774909959&width=422",
           "original_price": 70.0,
           "sale_price": 70.0,
           "currency": "USD",
@@ -2420,11 +2602,34 @@
           "gender": "men",
           "sizes": [],
           "size_stock": {},
-          "color": "Habitat/Sea Salt",
+          "color": "Stone Red, White Light/Atmos",
           "colors": [
-            "Habitat/Sea Salt"
+            "Stone Red",
+            "White Light/Atmos"
           ],
           "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/279538-arc-teryx-macai-shell-jacket-men-s",
+          "name": "Arc'teryx Macai Shell Jacket - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285201.jpg?v=1774668698&width=422",
+          "original_price": 750.0,
+          "sale_price": 675.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black, Carob",
+          "colors": [
+            "Black",
+            "Carob"
+          ],
+          "discount_pct": 10,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -2456,121 +2661,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/264073-arc-teryx-kyanite-baselayer-zip-neck-top-women-s",
-          "name": "Arc'teryx Kyanite Baselayer Zip Neck Top - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1251480.jpg?v=1767739220&width=422",
-          "original_price": 140.0,
-          "sale_price": 112.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black, Carob, Midnight Frost",
-          "colors": [
-            "Black",
-            "Carob",
-            "Midnight Frost"
-          ],
-          "discount_pct": 20,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/272459-arc-teryx-mantis-16l-backpack",
-          "name": "Arc'teryx Mantis 16L Backpack",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1264421.jpg?v=1767739710&width=422",
-          "original_price": 130.0,
-          "sale_price": 117.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Moondrop, Shincha",
-          "colors": [
-            "Moondrop",
-            "Shincha"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/279634-arc-teryx-sabre-jacket-men-s",
-          "name": "Arc'teryx Sabre Jacket - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1258671.jpg?v=1767739486&width=422",
-          "original_price": 750.0,
-          "sale_price": 637.5,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Azalea/Forage, Black, Blaze",
-          "colors": [
-            "Azalea/Forage",
-            "Black",
-            "Blaze",
-            "Vitality/Black Sapphire"
-          ],
-          "discount_pct": 15,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/257643-arc-teryx-bird-word-cap",
-          "name": "Arc'teryx Bird Word Cap",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265502.jpg?v=1767739751&width=422",
-          "original_price": 50.0,
-          "sale_price": 50.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "24K Black, Cosmic Bloom, Dk Stratus/Habitat",
-          "colors": [
-            "24K Black",
-            "Cosmic Bloom",
-            "Dk Stratus/Habitat"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/263917-arc-teryx-kragg-cotton-pants-men-s",
-          "name": "Arc'teryx Kragg Cotton Pants - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1234234.jpg?v=1767738503&width=422",
-          "original_price": 180.0,
-          "sale_price": 162.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black, Black Sapphire, Tatsu",
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Tatsu"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/263989-arc-teryx-sabre-sv-jacket-men-s",
           "name": "Arc'teryx Sabre SV Jacket - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1247517.jpg?v=1767739051&width=422",
@@ -2589,96 +2679,6 @@
             "Carob/Blk/Dynasty"
           ],
           "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/263953-arc-teryx-atom-sl-hoodie-men-s",
-          "name": "Arc'teryx Atom SL Hoodie - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285950.jpg?v=1774909960&width=422",
-          "original_price": 280.0,
-          "sale_price": 224.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Arctic Silk, Black, Cloud",
-          "colors": [
-            "Arctic Silk",
-            "Black",
-            "Cloud",
-            "Mars",
-            "Sea Salt"
-          ],
-          "discount_pct": 20,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/263890-arc-teryx-micon-37-backpack",
-          "name": "Arc'teryx Micon 37 Backpack",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1246217.jpg?v=1767739000&width=422",
-          "original_price": 280.0,
-          "sale_price": 210.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Tatsu",
-          "colors": [
-            "Tatsu"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/279538-arc-teryx-macai-shell-jacket-men-s",
-          "name": "Arc'teryx Macai Shell Jacket - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285201.jpg?v=1774668698&width=422",
-          "original_price": 750.0,
-          "sale_price": 675.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black, Carob",
-          "colors": [
-            "Black",
-            "Carob"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/221301-arc-teryx-rush-insulated-jacket-women-s",
-          "name": "Arc'teryx Rush Insulated Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-969726.jpg?v=1777045045&width=422",
-          "original_price": 800.0,
-          "sale_price": 404.99,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black, Euphoria/Lampyre",
-          "colors": [
-            "Black",
-            "Euphoria/Lampyre"
-          ],
-          "discount_pct": 49,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -2728,22 +2728,70 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/263877-arc-teryx-aerios-35l-backpack",
-          "name": "Arc'teryx Aerios 35L Backpack",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1264340.jpg?v=1767739705&width=422",
-          "original_price": 250.0,
-          "sale_price": 250.0,
+          "url": "https://www.evo.com/products/263953-arc-teryx-atom-sl-hoodie-men-s",
+          "name": "Arc'teryx Atom SL Hoodie - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285950.jpg?v=1774909960&width=422",
+          "original_price": 280.0,
+          "sale_price": 224.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "unisex",
+          "gender": "men",
           "sizes": [],
           "size_stock": {},
-          "color": "Black, Fluidity",
+          "color": "Arctic Silk, Black, Cloud",
+          "colors": [
+            "Arctic Silk",
+            "Black",
+            "Cloud",
+            "Mars",
+            "Sea Salt"
+          ],
+          "discount_pct": 20,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263917-arc-teryx-kragg-cotton-pants-men-s",
+          "name": "Arc'teryx Kragg Cotton Pants - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1234234.jpg?v=1767738503&width=422",
+          "original_price": 180.0,
+          "sale_price": 162.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black, Black Sapphire, Tatsu",
           "colors": [
             "Black",
-            "Fluidity"
+            "Black Sapphire",
+            "Tatsu"
           ],
-          "discount_pct": 0,
+          "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/264066-arc-teryx-emblem-fleece-crew-men-s",
+          "name": "Arc'teryx Emblem Fleece Crew - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265418.jpg?v=1767739744&width=422",
+          "original_price": 120.0,
+          "sale_price": 108.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black, Habitat",
+          "colors": [
+            "Black",
+            "Habitat"
+          ],
+          "discount_pct": 10,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -2764,27 +2812,6 @@
           "colors": [
             "Arctic Silk",
             "Mallow"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/272619-arc-teryx-cormac-long-sleeve-crew-men-s",
-          "name": "Arc'teryx Cormac Long-Sleeve Crew - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1286099.jpg?v=1774909962&width=422",
-          "original_price": 80.0,
-          "sale_price": 80.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Habitat",
-          "colors": [
-            "Habitat"
           ],
           "discount_pct": 0,
           "dealer": "evo",
@@ -2816,22 +2843,22 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/257623-arc-teryx-kyanite-lt-hoodie-women-s",
-          "name": "Arc'teryx Kyanite LT Hoodie - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1178434.jpg?v=1767736403&width=422",
-          "original_price": 150.0,
-          "sale_price": 135.0,
+          "url": "https://www.evo.com/products/221301-arc-teryx-rush-insulated-jacket-women-s",
+          "name": "Arc'teryx Rush Insulated Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-969726.jpg?v=1777045045&width=422",
+          "original_price": 800.0,
+          "sale_price": 404.99,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Black, Electra",
+          "color": "Black, Euphoria/Lampyre",
           "colors": [
             "Black",
-            "Electra"
+            "Euphoria/Lampyre"
           ],
-          "discount_pct": 10,
+          "discount_pct": 49,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -2860,49 +2887,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/264066-arc-teryx-emblem-fleece-crew-men-s",
-          "name": "Arc'teryx Emblem Fleece Crew - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265418.jpg?v=1767739744&width=422",
-          "original_price": 120.0,
-          "sale_price": 108.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black, Habitat",
-          "colors": [
-            "Black",
-            "Habitat"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/263950-arc-teryx-aestas-pullover-hoodie-women-s",
-          "name": "Arc'teryx Aestas Pullover Hoodie - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212386.jpg?v=1767737629&width=422",
-          "original_price": 220.0,
-          "sale_price": 198.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black",
-          "colors": [
-            "Black"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/263920-arc-teryx-aestas-joggers-women-s",
           "name": "Arc'teryx Aestas Joggers - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212363.jpg?v=1767737628&width=422",
@@ -2924,6 +2908,49 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/257623-arc-teryx-kyanite-lt-hoodie-women-s",
+          "name": "Arc'teryx Kyanite LT Hoodie - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1178434.jpg?v=1767736403&width=422",
+          "original_price": 150.0,
+          "sale_price": 135.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black, Electra",
+          "colors": [
+            "Black",
+            "Electra"
+          ],
+          "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/272619-arc-teryx-cormac-long-sleeve-crew-men-s",
+          "name": "Arc'teryx Cormac Long-Sleeve Crew - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1286099.jpg?v=1774909962&width=422",
+          "original_price": 80.0,
+          "sale_price": 80.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Habitat",
+          "colors": [
+            "Habitat"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/279541-arc-teryx-rho-zip-neck-print-top-women-s",
           "name": "Arc'teryx Rho Zip Neck-Print Top - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1261337.jpg?v=1767739588&width=422",
@@ -2939,6 +2966,71 @@
             "Bliss Grottoflage"
           ],
           "discount_pct": 32,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/272658-arc-teryx-kragg-sl-cotton-cacodaemon-short-sleeve-shirt-men-s",
+          "name": "Arc'teryx Kragg SL Cotton Cacodaemon Short-Sleeve Shirt - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285990.jpg?v=1774909959&width=422",
+          "original_price": 70.0,
+          "sale_price": 70.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Habitat/Sea Salt",
+          "colors": [
+            "Habitat/Sea Salt"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/285860-arc-teryx-sima-short-sleeve-shirt-women-s",
+          "name": "Arc'teryx Sima Short-Sleeve Shirt - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285730.jpg?v=1774909949&width=422",
+          "original_price": 100.0,
+          "sale_price": 100.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black, Habitat",
+          "colors": [
+            "Black",
+            "Habitat"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263958-arc-teryx-atom-vest-women-s",
+          "name": "Arc'teryx Atom Vest - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265860.jpg?v=1767739762&width=422",
+          "original_price": 200.0,
+          "sale_price": 160.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Azalea, Black",
+          "colors": [
+            "Azalea",
+            "Black"
+          ],
+          "discount_pct": 20,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -2990,22 +3082,43 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/285860-arc-teryx-sima-short-sleeve-shirt-women-s",
-          "name": "Arc'teryx Sima Short-Sleeve Shirt - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285730.jpg?v=1774909949&width=422",
-          "original_price": 100.0,
-          "sale_price": 100.0,
+          "url": "https://www.evo.com/products/285852-arc-teryx-proton-sl-hoodie-women-s",
+          "name": "Arc'teryx Proton SL Hoodie - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285660.jpg?v=1774909949&width=422",
+          "original_price": 280.0,
+          "sale_price": 280.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Black, Habitat",
+          "color": "Black, Dk Stratus",
           "colors": [
             "Black",
-            "Habitat"
+            "Dk Stratus"
           ],
           "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/247116-arc-teryx-mallow-toque",
+          "name": "Arc'teryx Mallow Toque",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1257712.jpg?v=1767739454&width=422",
+          "original_price": 55.0,
+          "sale_price": 41.25,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Solitude",
+          "colors": [
+            "Solitude"
+          ],
+          "discount_pct": 25,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -3057,21 +3170,42 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/247116-arc-teryx-mallow-toque",
-          "name": "Arc'teryx Mallow Toque",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1257712.jpg?v=1767739454&width=422",
-          "original_price": 55.0,
-          "sale_price": 41.25,
+          "url": "https://www.evo.com/products/267681-arc-teryx-atom-sl-jacket-women-s",
+          "name": "Arc'teryx Atom SL Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1170963.jpg?v=1767736103&width=422",
+          "original_price": 260.0,
+          "sale_price": 260.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "unisex",
+          "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Solitude",
+          "color": "Black",
           "colors": [
-            "Solitude"
+            "Black"
           ],
-          "discount_pct": 25,
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/277325-arc-teryx-cerium-jacket-men-s",
+          "name": "Arc'teryx Cerium Jacket - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1259149.jpg?v=1767739507&width=422",
+          "original_price": 380.0,
+          "sale_price": 380.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -3099,21 +3233,44 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/267681-arc-teryx-atom-sl-jacket-women-s",
-          "name": "Arc'teryx Atom SL Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1170963.jpg?v=1767736103&width=422",
-          "original_price": 260.0,
-          "sale_price": 260.0,
+          "url": "https://www.evo.com/products/254417-arc-teryx-cerium-jacket-women-s",
+          "name": "Arc'teryx Cerium Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212849.jpg?v=1767737649&width=422",
+          "original_price": 380.0,
+          "sale_price": 285.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Black",
+          "color": "Black II, Dynasty",
           "colors": [
-            "Black"
+            "Black II",
+            "Dynasty"
           ],
-          "discount_pct": 0,
+          "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263965-arc-teryx-macai-down-jacket-men-s",
+          "name": "Arc'teryx Macai Down Jacket - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285103.jpg?v=1774668692&width=422",
+          "original_price": 1100.0,
+          "sale_price": 990.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Dynasty, Vitality",
+          "colors": [
+            "Dynasty",
+            "Vitality"
+          ],
+          "discount_pct": 10,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -3163,63 +3320,20 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/254419-arc-teryx-proton-hoodie-women-s",
-          "name": "Arc'teryx Proton Hoodie - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1111897.jpg?v=1767733485&width=422",
-          "original_price": 350.0,
-          "sale_price": 245.0,
+          "url": "https://www.evo.com/products/277326-arc-teryx-cerium-vest-women-s",
+          "name": "Arc'teryx Cerium Vest - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265864.jpg?v=1767739763&width=422",
+          "original_price": 300.0,
+          "sale_price": 225.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Tatsu",
-          "colors": [
-            "Tatsu"
-          ],
-          "discount_pct": 30,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/285852-arc-teryx-proton-sl-hoodie-women-s",
-          "name": "Arc'teryx Proton SL Hoodie - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285660.jpg?v=1774909949&width=422",
-          "original_price": 280.0,
-          "sale_price": 280.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black, Dk Stratus",
+          "color": "Black, Nightscape",
           "colors": [
             "Black",
-            "Dk Stratus"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/254417-arc-teryx-cerium-jacket-women-s",
-          "name": "Arc'teryx Cerium Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212849.jpg?v=1767737649&width=422",
-          "original_price": 380.0,
-          "sale_price": 285.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black II, Dynasty",
-          "colors": [
-            "Black II",
-            "Dynasty"
+            "Nightscape"
           ],
           "discount_pct": 25,
           "dealer": "evo",
@@ -3250,22 +3364,21 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/277326-arc-teryx-cerium-vest-women-s",
-          "name": "Arc'teryx Cerium Vest - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265864.jpg?v=1767739763&width=422",
-          "original_price": 300.0,
-          "sale_price": 225.0,
+          "url": "https://www.evo.com/products/254419-arc-teryx-proton-hoodie-women-s",
+          "name": "Arc'teryx Proton Hoodie - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1111897.jpg?v=1767733485&width=422",
+          "original_price": 350.0,
+          "sale_price": 245.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Black, Nightscape",
+          "color": "Tatsu",
           "colors": [
-            "Black",
-            "Nightscape"
+            "Tatsu"
           ],
-          "discount_pct": 25,
+          "discount_pct": 30,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -3314,6 +3427,27 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/263950-arc-teryx-aestas-pullover-hoodie-women-s",
+          "name": "Arc'teryx Aestas Pullover Hoodie - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212386.jpg?v=1767737629&width=422",
+          "original_price": 220.0,
+          "sale_price": 198.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/272497-arc-teryx-atom-sl-jacket-men-s",
           "name": "Arc'teryx Atom SL Jacket - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285970.jpg?v=1774909960&width=422",
@@ -3328,27 +3462,6 @@
           "colors": [
             "Black",
             "Forage"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/277325-arc-teryx-cerium-jacket-men-s",
-          "name": "Arc'teryx Cerium Jacket - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1259149.jpg?v=1767739507&width=422",
-          "original_price": 380.0,
-          "sale_price": 380.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black",
-          "colors": [
-            "Black"
           ],
           "discount_pct": 0,
           "dealer": "evo",
@@ -3378,28 +3491,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/263965-arc-teryx-macai-down-jacket-men-s",
-          "name": "Arc'teryx Macai Down Jacket - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285103.jpg?v=1774668692&width=422",
-          "original_price": 1100.0,
-          "sale_price": 990.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Dynasty, Vitality",
-          "colors": [
-            "Dynasty",
-            "Vitality"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/271299-arc-teryx-norvan-7-vest-hydration-pack-women-s",
           "name": "Arc'teryx Norvan 7 Vest Hydration Pack - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1196072.jpg?v=1767737046&width=422",
@@ -3415,6 +3506,29 @@
             "Verve"
           ],
           "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/264073-arc-teryx-kyanite-baselayer-zip-neck-top-women-s",
+          "name": "Arc'teryx Kyanite Baselayer Zip Neck Top - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1251480.jpg?v=1767739220&width=422",
+          "original_price": 140.0,
+          "sale_price": 112.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black, Carob, Midnight Frost",
+          "colors": [
+            "Black",
+            "Carob",
+            "Midnight Frost"
+          ],
+          "discount_pct": 20,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -3505,48 +3619,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/263972-arc-teryx-atom-jacket-women-s",
-          "name": "Arc'teryx Atom Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211157.jpg?v=1767737580&width=422",
-          "original_price": 280.0,
-          "sale_price": 280.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black",
-          "colors": [
-            "Black"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/248437-arc-teryx-arcword-short-sleeve-t-shirt-women-s",
-          "name": "Arc'teryx Arcword Short-Sleeve T-Shirt - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1258219.jpg?v=1767739472&width=422",
-          "original_price": 60.0,
-          "sale_price": 42.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Olive Moss",
-          "colors": [
-            "Olive Moss"
-          ],
-          "discount_pct": 30,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/255361-arc-teryx-sabre-pants-men-s",
           "name": "Arc'teryx Sabre Pants - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1247491.jpg?v=1767739050&width=422",
@@ -3566,6 +3638,27 @@
             "Vitality"
           ],
           "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263972-arc-teryx-atom-jacket-women-s",
+          "name": "Arc'teryx Atom Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211157.jpg?v=1767737580&width=422",
+          "original_price": 280.0,
+          "sale_price": 280.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -3595,6 +3688,27 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/248437-arc-teryx-arcword-short-sleeve-t-shirt-women-s",
+          "name": "Arc'teryx Arcword Short-Sleeve T-Shirt - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1258219.jpg?v=1767739472&width=422",
+          "original_price": 60.0,
+          "sale_price": 42.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Olive Moss",
+          "colors": [
+            "Olive Moss"
+          ],
+          "discount_pct": 30,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/285857-arc-teryx-psiphon-hoodie-women-s",
           "name": "Arc'teryx Psiphon Hoodie - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285706.jpg?v=1774909950&width=422",
@@ -3609,6 +3723,27 @@
           "colors": [
             "Black/Graphite",
             "Mallow/Velocity"
+          ],
+          "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/277504-arc-teryx-sentinel-print-jacket-women-s",
+          "name": "Arc'teryx Sentinel Print Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285167.jpg?v=1774668694&width=422",
+          "original_price": 800.0,
+          "sale_price": 720.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Bliss Grottoflage",
+          "colors": [
+            "Bliss Grottoflage"
           ],
           "discount_pct": 10,
           "dealer": "evo",
@@ -3684,27 +3819,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/277504-arc-teryx-sentinel-print-jacket-women-s",
-          "name": "Arc'teryx Sentinel Print Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285167.jpg?v=1774668694&width=422",
-          "original_price": 800.0,
-          "sale_price": 720.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Bliss Grottoflage",
-          "colors": [
-            "Bliss Grottoflage"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/269590-arc-teryx-alpha-parka-women-s",
           "name": "Arc'teryx Alpha Parka - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1201102.jpg?v=1767737228&width=422",
@@ -3720,49 +3834,6 @@
             "Black"
           ],
           "discount_pct": 33,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/285208-arc-teryx-rhoam-shorts-men-s",
-          "name": "Arc'teryx Rhoam Shorts - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1275949.jpg?v=1772649453&width=422",
-          "original_price": 180.0,
-          "sale_price": 180.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black",
-          "colors": [
-            "Black"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/269591-arc-teryx-beta-down-insulated-jacket-men-s",
-          "name": "Arc'teryx Beta Down Insulated Jacket - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1172552.jpg?v=1767736167&width=422",
-          "original_price": 1000.0,
-          "sale_price": 750.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Solaris, Tatsu",
-          "colors": [
-            "Solaris",
-            "Tatsu"
-          ],
-          "discount_pct": 25,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -3792,6 +3863,49 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/272456-arc-teryx-alpha-fl-30-backpack",
+          "name": "Arc'teryx Alpha FL 30 Backpack",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1272472.jpg?v=1770851770&width=422",
+          "original_price": 280.0,
+          "sale_price": 252.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black, Mantis",
+          "colors": [
+            "Black",
+            "Mantis"
+          ],
+          "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/285208-arc-teryx-rhoam-shorts-men-s",
+          "name": "Arc'teryx Rhoam Shorts - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1275949.jpg?v=1772649453&width=422",
+          "original_price": 180.0,
+          "sale_price": 180.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/264026-arc-teryx-konseal-pullover-hoodie-men-s",
           "name": "Arc'teryx Konseal Pullover Hoodie - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1245791.jpg?v=1767738983&width=422",
@@ -3805,6 +3919,28 @@
           "color": "Lt Nightscape/Night",
           "colors": [
             "Lt Nightscape/Night"
+          ],
+          "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/269591-arc-teryx-beta-down-insulated-jacket-men-s",
+          "name": "Arc'teryx Beta Down Insulated Jacket - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1172552.jpg?v=1767736167&width=422",
+          "original_price": 1000.0,
+          "sale_price": 750.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Solaris, Tatsu",
+          "colors": [
+            "Solaris",
+            "Tatsu"
           ],
           "discount_pct": 25,
           "dealer": "evo",
@@ -3899,6 +4035,29 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/254424-arc-teryx-beta-insulated-jacket-women-s",
+          "name": "Arc'teryx Beta Insulated Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1111922.jpg?v=1767733486&width=422",
+          "original_price": 750.0,
+          "sale_price": 574.99,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Amaranthus, Black, Stratus",
+          "colors": [
+            "Amaranthus",
+            "Black",
+            "Stratus"
+          ],
+          "discount_pct": 23,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/263987-arc-teryx-rush-jacket-men-s",
           "name": "Arc'teryx Rush Jacket - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1247449.jpg?v=1767739049&width=422",
@@ -3923,28 +4082,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/272456-arc-teryx-alpha-fl-30-backpack",
-          "name": "Arc'teryx Alpha FL 30 Backpack",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1272472.jpg?v=1770851770&width=422",
-          "original_price": 280.0,
-          "sale_price": 252.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black, Mantis",
-          "colors": [
-            "Black",
-            "Mantis"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/276636-arc-teryx-norvan-5-2-in-1-shorts-women-s",
           "name": "Arc'teryx Norvan 5\" 2-in-1 Shorts - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1277945.jpg?v=1773176547&width=422",
@@ -3961,29 +4098,6 @@
             "Moondrop"
           ],
           "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/254424-arc-teryx-beta-insulated-jacket-women-s",
-          "name": "Arc'teryx Beta Insulated Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1111922.jpg?v=1767733486&width=422",
-          "original_price": 750.0,
-          "sale_price": 574.99,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Amaranthus, Black, Stratus",
-          "colors": [
-            "Amaranthus",
-            "Black",
-            "Stratus"
-          ],
-          "discount_pct": 23,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -4032,21 +4146,21 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/276692-arc-teryx-norvan-ld-4-shoes-women-s",
-          "name": "Arc'teryx Norvan LD 4 Shoes - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1278070.jpg?v=1773179424&width=422",
-          "original_price": 170.0,
-          "sale_price": 153.0,
+          "url": "https://www.evo.com/products/272452-arc-teryx-silex-hat",
+          "name": "Arc'teryx Silex Hat",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265511.jpg?v=1767739747&width=422",
+          "original_price": 60.0,
+          "sale_price": 54.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
+          "gender": "unisex",
           "sizes": [],
           "size_stock": {},
-          "color": "Atmos/Solitude, Mallow/Moondrop CT, SL Larch/Lt Bracken",
+          "color": "24K Black, Forage, Moondrop",
           "colors": [
-            "Atmos/Solitude",
-            "Mallow/Moondrop CT",
-            "SL Larch/Lt Bracken"
+            "24K Black",
+            "Forage",
+            "Moondrop"
           ],
           "discount_pct": 10,
           "dealer": "evo",
@@ -4071,6 +4185,29 @@
             "Dk Habitat"
           ],
           "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/276692-arc-teryx-norvan-ld-4-shoes-women-s",
+          "name": "Arc'teryx Norvan LD 4 Shoes - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1278070.jpg?v=1773179424&width=422",
+          "original_price": 170.0,
+          "sale_price": 153.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Atmos/Solitude, Mallow/Moondrop CT, SL Larch/Lt Bracken",
+          "colors": [
+            "Atmos/Solitude",
+            "Mallow/Moondrop CT",
+            "SL Larch/Lt Bracken"
+          ],
+          "discount_pct": 10,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -4114,29 +4251,6 @@
             "Dk Stratus"
           ],
           "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/272452-arc-teryx-silex-hat",
-          "name": "Arc'teryx Silex Hat",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265511.jpg?v=1767739747&width=422",
-          "original_price": 60.0,
-          "sale_price": 54.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "24K Black, Forage, Moondrop",
-          "colors": [
-            "24K Black",
-            "Forage",
-            "Moondrop"
-          ],
-          "discount_pct": 10,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -4187,6 +4301,27 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/262860-arc-teryx-fission-sv-mittens",
+          "name": "Arc'teryx Fission SV Mittens",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1247725.jpg?v=1767739059&width=422",
+          "original_price": 200.0,
+          "sale_price": 200.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/264019-arc-teryx-rush-pants-men-s",
           "name": "Arc'teryx Rush Pants - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256301.jpg?v=1767739398&width=422",
@@ -4210,21 +4345,21 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/262860-arc-teryx-fission-sv-mittens",
-          "name": "Arc'teryx Fission SV Mittens",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1247725.jpg?v=1767739059&width=422",
-          "original_price": 200.0,
-          "sale_price": 200.0,
+          "url": "https://www.evo.com/products/285853-arc-teryx-coelle-jacket-women-s",
+          "name": "Arc'teryx Coelle Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285669.jpg?v=1774909949&width=422",
+          "original_price": 400.0,
+          "sale_price": 360.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "unisex",
+          "gender": "women",
           "sizes": [],
           "size_stock": {},
           "color": "Black",
           "colors": [
             "Black"
           ],
-          "discount_pct": 0,
+          "discount_pct": 10,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -4248,6 +4383,27 @@
             "Vitality"
           ],
           "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/277301-arc-teryx-delta-hoodie-men-s",
+          "name": "Arc'teryx Delta Hoodie - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236873.jpg?v=1767738622&width=422",
+          "original_price": 220.0,
+          "sale_price": 220.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -4279,40 +4435,20 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/285853-arc-teryx-coelle-jacket-women-s",
-          "name": "Arc'teryx Coelle Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285669.jpg?v=1774909949&width=422",
-          "original_price": 400.0,
-          "sale_price": 360.0,
+          "url": "https://www.evo.com/products/282426-arc-teryx-rhoam-hybrid-jacket",
+          "name": "Arc'teryx Rhoam Hybrid Jacket",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1280280.jpg?v=1774050703&width=422",
+          "original_price": 450.0,
+          "sale_price": 450.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
+          "gender": "unisex",
           "sizes": [],
           "size_stock": {},
-          "color": "Black",
+          "color": "Black, Stone Red",
           "colors": [
-            "Black"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/277301-arc-teryx-delta-hoodie-men-s",
-          "name": "Arc'teryx Delta Hoodie - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236873.jpg?v=1767738622&width=422",
-          "original_price": 220.0,
-          "sale_price": 220.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black",
-          "colors": [
-            "Black"
+            "Black",
+            "Stone Red"
           ],
           "discount_pct": 0,
           "dealer": "evo",
@@ -4360,51 +4496,6 @@
             "Tatsu"
           ],
           "discount_pct": 40,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/282426-arc-teryx-rhoam-hybrid-jacket",
-          "name": "Arc'teryx Rhoam Hybrid Jacket",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1280280.jpg?v=1774050703&width=422",
-          "original_price": 450.0,
-          "sale_price": 450.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black, Stone Red",
-          "colors": [
-            "Black",
-            "Stone Red"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/263981-arc-teryx-rush-jacket-women-s",
-          "name": "Arc'teryx Rush Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285132.jpg?v=1774668692&width=422",
-          "original_price": 800.0,
-          "sale_price": 720.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Blaze/Copper Sky, Graphite/Black, Olive Moss/Bliss",
-          "colors": [
-            "Blaze/Copper Sky",
-            "Graphite/Black",
-            "Olive Moss/Bliss"
-          ],
-          "discount_pct": 10,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -4478,27 +4569,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/272500-arc-teryx-gamma-lightweight-hoody-men-s",
-          "name": "Arc'teryx Gamma Lightweight Hoodie - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1288858.jpg?v=1775507862&width=422",
-          "original_price": 260.0,
-          "sale_price": 260.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Fluidity",
-          "colors": [
-            "Fluidity"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/264072-arc-teryx-kyanite-baselayer-top-women-s",
           "name": "Arc'teryx Kyanite Baselayer Top - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1255072.jpg?v=1767739345&width=422",
@@ -4521,6 +4591,27 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/272500-arc-teryx-gamma-lightweight-hoody-men-s",
+          "name": "Arc'teryx Gamma Lightweight Hoodie - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1288858.jpg?v=1775507862&width=422",
+          "original_price": 260.0,
+          "sale_price": 260.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Fluidity",
+          "colors": [
+            "Fluidity"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/272454-arc-teryx-sinsolo-bucket-hat",
           "name": "Arc'teryx Sinsolo Bucket Hat",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1277732.jpg?v=1773165873&width=422",
@@ -4535,6 +4626,51 @@
           "colors": [
             "Black",
             "Moondrop"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263981-arc-teryx-rush-jacket-women-s",
+          "name": "Arc'teryx Rush Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285132.jpg?v=1774668692&width=422",
+          "original_price": 800.0,
+          "sale_price": 720.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Blaze/Copper Sky, Graphite/Black, Olive Moss/Bliss",
+          "colors": [
+            "Blaze/Copper Sky",
+            "Graphite/Black",
+            "Olive Moss/Bliss"
+          ],
+          "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/257647-arc-teryx-aerios-5-panel-cap",
+          "name": "Arc'teryx Aerios 5 Panel Cap",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1299750.jpg?v=1779399444&width=422",
+          "original_price": 75.0,
+          "sale_price": 75.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black/Arctic Silk, Habitat",
+          "colors": [
+            "Black/Arctic Silk",
+            "Habitat"
           ],
           "discount_pct": 0,
           "dealer": "evo",
@@ -4566,28 +4702,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/257647-arc-teryx-aerios-5-panel-cap",
-          "name": "Arc'teryx Aerios 5 Panel Cap",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1299750.jpg?v=1779399444&width=422",
-          "original_price": 75.0,
-          "sale_price": 75.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black/Arctic Silk, Habitat",
-          "colors": [
-            "Black/Arctic Silk",
-            "Habitat"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/276635-arc-teryx-norvan-crew-short-sleeve-t-shirt-women-s",
           "name": "Arc'teryx Norvan Crew Short-Sleeve T-Shirt - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1277940.jpg?v=1773176548&width=422",
@@ -4602,6 +4716,28 @@
           "colors": [
             "Mallow",
             "Shincha"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/285859-arc-teryx-sima-long-sleeve-shirt-women-s",
+          "name": "Arc'teryx Sima Long-Sleeve Shirt - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1296172.jpg?v=1776789659&width=422",
+          "original_price": 120.0,
+          "sale_price": 120.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Arctic Silk, Habitat",
+          "colors": [
+            "Arctic Silk",
+            "Habitat"
           ],
           "discount_pct": 0,
           "dealer": "evo",
@@ -4626,28 +4762,6 @@
             "Forage"
           ],
           "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/285859-arc-teryx-sima-long-sleeve-shirt-women-s",
-          "name": "Arc'teryx Sima Long-Sleeve Shirt - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1296172.jpg?v=1776789659&width=422",
-          "original_price": 120.0,
-          "sale_price": 120.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Arctic Silk, Habitat",
-          "colors": [
-            "Arctic Silk",
-            "Habitat"
-          ],
-          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -4806,30 +4920,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/263982-arc-teryx-incendia-jacket-women-s",
-          "name": "Arc'teryx Incendia Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256827.jpg?v=1767739420&width=422",
-          "original_price": 900.0,
-          "sale_price": 720.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Aster/Black, Black/Graphite, Olive Moss/Forage",
-          "colors": [
-            "Aster/Black",
-            "Black/Graphite",
-            "Olive Moss/Forage",
-            "Solitude/Arctic Silk"
-          ],
-          "discount_pct": 20,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/263995-arc-teryx-gamma-jacket-men-s",
           "name": "Arc'teryx Gamma Jacket - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285567.jpg?v=1774909943&width=422",
@@ -4893,27 +4983,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/263939-arc-teryx-kyanite-baselayer-bottoms-women-s",
-          "name": "Arc'teryx Kyanite Baselayer Bottoms - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1245597.jpg?v=1767738975&width=422",
-          "original_price": 120.0,
-          "sale_price": 90.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Midnight Frost",
-          "colors": [
-            "Midnight Frost"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/264020-arc-teryx-cronin-insulated-overshirt-men-s",
           "name": "Arc'teryx Cronin Insulated Overshirt - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1234247.jpg?v=1767738503&width=422",
@@ -4929,6 +4998,30 @@
             "Carob"
           ],
           "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/263982-arc-teryx-incendia-jacket-women-s",
+          "name": "Arc'teryx Incendia Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256827.jpg?v=1767739420&width=422",
+          "original_price": 900.0,
+          "sale_price": 720.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Aster/Black, Black/Graphite, Olive Moss/Forage",
+          "colors": [
+            "Aster/Black",
+            "Black/Graphite",
+            "Olive Moss/Forage",
+            "Solitude/Arctic Silk"
+          ],
+          "discount_pct": 20,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -4957,6 +5050,27 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/263939-arc-teryx-kyanite-baselayer-bottoms-women-s",
+          "name": "Arc'teryx Kyanite Baselayer Bottoms - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1245597.jpg?v=1767738975&width=422",
+          "original_price": 120.0,
+          "sale_price": 90.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Midnight Frost",
+          "colors": [
+            "Midnight Frost"
+          ],
+          "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/285856-arc-teryx-delta-jacket-women-s",
           "name": "Arc'teryx Delta Jacket - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285692.jpg?v=1774909949&width=422",
@@ -4971,28 +5085,6 @@
           "colors": [
             "Black",
             "Forage/Habitat"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/276697-arc-teryx-sylan-2-shoes-women-s",
-          "name": "Arc'teryx Sylan 2 Shoes - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1278086.jpg?v=1773179424&width=422",
-          "original_price": 220.0,
-          "sale_price": 220.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black/Black, Shincha/Shincha",
-          "colors": [
-            "Black/Black",
-            "Shincha/Shincha"
           ],
           "discount_pct": 0,
           "dealer": "evo",
@@ -5025,21 +5117,22 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/263947-arc-teryx-rho-hoodie-women-s",
-          "name": "Arc'teryx Rho Hoodie - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256151.jpg?v=1767739390&width=422",
-          "original_price": 120.0,
-          "sale_price": 90.0,
+          "url": "https://www.evo.com/products/276697-arc-teryx-sylan-2-shoes-women-s",
+          "name": "Arc'teryx Sylan 2 Shoes - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1278086.jpg?v=1773179424&width=422",
+          "original_price": 220.0,
+          "sale_price": 220.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Black",
+          "color": "Black/Black, Shincha/Shincha",
           "colors": [
-            "Black"
+            "Black/Black",
+            "Shincha/Shincha"
           ],
-          "discount_pct": 25,
+          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5089,6 +5182,27 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/263947-arc-teryx-rho-hoodie-women-s",
+          "name": "Arc'teryx Rho Hoodie - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256151.jpg?v=1767739390&width=422",
+          "original_price": 120.0,
+          "sale_price": 90.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/279536-arc-teryx-hallam-merino-wool-crew-women-s",
           "name": "Arc'teryx Hallam Merino Wool Crew - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1258275.jpg?v=1767739474&width=422",
@@ -5102,51 +5216,6 @@
           "color": "Tatsu",
           "colors": [
             "Tatsu"
-          ],
-          "discount_pct": 30,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/263999-arc-teryx-andessa-insulated-pants-women-s",
-          "name": "Arc'teryx Andessa Insulated Pants - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256266.jpg?v=1767739397&width=422",
-          "original_price": 700.0,
-          "sale_price": 379.99,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Arctic Silk, Black",
-          "colors": [
-            "Arctic Silk",
-            "Black"
-          ],
-          "discount_pct": 46,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/264015-arc-teryx-incendia-pants-women-s",
-          "name": "Arc'teryx Incendia Pants - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256866.jpg?v=1767739421&width=422",
-          "original_price": 700.0,
-          "sale_price": 490.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Arctic Silk, Aster/Black, Black",
-          "colors": [
-            "Arctic Silk",
-            "Aster/Black",
-            "Black"
           ],
           "discount_pct": 30,
           "dealer": "evo",
@@ -5176,6 +5245,49 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/263999-arc-teryx-andessa-insulated-pants-women-s",
+          "name": "Arc'teryx Andessa Insulated Pants - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256266.jpg?v=1767739397&width=422",
+          "original_price": 700.0,
+          "sale_price": 379.99,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Arctic Silk, Black",
+          "colors": [
+            "Arctic Silk",
+            "Black"
+          ],
+          "discount_pct": 46,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/253139-arc-teryx-kyanite-jacket-women-s",
+          "name": "Arc'teryx Kyanite Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1258235.jpg?v=1767739474&width=422",
+          "original_price": 180.0,
+          "sale_price": 135.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Blaze",
+          "colors": [
+            "Blaze"
+          ],
+          "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/272509-arc-teryx-olia-short-sleeve-shirt-women-s",
           "name": "Arc'teryx Olia Short-Sleeve Shirt - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1297530.jpg?v=1776976791&width=422",
@@ -5192,6 +5304,29 @@
             "Sea Salt"
           ],
           "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/264015-arc-teryx-incendia-pants-women-s",
+          "name": "Arc'teryx Incendia Pants - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1256866.jpg?v=1767739421&width=422",
+          "original_price": 700.0,
+          "sale_price": 490.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Arctic Silk, Aster/Black, Black",
+          "colors": [
+            "Arctic Silk",
+            "Aster/Black",
+            "Black"
+          ],
+          "discount_pct": 30,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5262,27 +5397,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/253139-arc-teryx-kyanite-jacket-women-s",
-          "name": "Arc'teryx Kyanite Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1258235.jpg?v=1767739474&width=422",
-          "original_price": 180.0,
-          "sale_price": 135.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Blaze",
-          "colors": [
-            "Blaze"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/264069-arc-teryx-rho-merino-wool-crew-neck-top-men-s",
           "name": "Arc'teryx Rho Merino Wool Crew Neck Top - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1258659.jpg?v=1767739487&width=422",
@@ -5298,6 +5412,27 @@
             "Vitality"
           ],
           "discount_pct": 25,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/271298-arc-teryx-norvan-7-vest-hydration-pack",
+          "name": "Arc'teryx Norvan 7 Vest Hydration Pack",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1299250.jpg?v=1778868993&width=422",
+          "original_price": 160.0,
+          "sale_price": 160.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 0,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5326,27 +5461,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/271298-arc-teryx-norvan-7-vest-hydration-pack",
-          "name": "Arc'teryx Norvan 7 Vest Hydration Pack",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1299250.jpg?v=1778868993&width=422",
-          "original_price": 160.0,
-          "sale_price": 160.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black",
-          "colors": [
-            "Black"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/272506-arc-teryx-emblem-fleece-crew-women-s",
           "name": "Arc'teryx Emblem Fleece Crew - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265347.jpg?v=1767739740&width=422",
@@ -5361,6 +5475,27 @@
           "colors": [
             "Black",
             "Habitat"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/255321-arc-teryx-cerium-jacket-men-s",
+          "name": "Arc'teryx Cerium Jacket - Men's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212564.jpg?v=1767737638&width=422",
+          "original_price": 380.0,
+          "sale_price": 380.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black Sapphire",
+          "colors": [
+            "Black Sapphire"
           ],
           "discount_pct": 0,
           "dealer": "evo",
@@ -5393,27 +5528,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/255321-arc-teryx-cerium-jacket-men-s",
-          "name": "Arc'teryx Cerium Jacket - Men's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212564.jpg?v=1767737638&width=422",
-          "original_price": 380.0,
-          "sale_price": 380.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black Sapphire",
-          "colors": [
-            "Black Sapphire"
-          ],
-          "discount_pct": 0,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/264023-arc-teryx-beta-coat-women-s",
           "name": "Arc'teryx Beta Coat - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212983.jpg?v=1767737655&width=422",
@@ -5436,21 +5550,23 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/262868-arc-teryx-venta-mittens",
-          "name": "Arc'teryx Venta Mittens",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236521.jpg?v=1767738604&width=422",
-          "original_price": 80.0,
-          "sale_price": 80.0,
+          "url": "https://www.evo.com/products/279618-arc-teryx-sentinel-jacket-women-s",
+          "name": "Arc'teryx Sentinel Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1257946.jpg?v=1767739461&width=422",
+          "original_price": 750.0,
+          "sale_price": 637.5,
           "currency": "USD",
           "in_stock": true,
-          "gender": "unisex",
+          "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Black",
+          "color": "Black, Copper Sky/Blaze, Midnight Frost",
           "colors": [
-            "Black"
+            "Black",
+            "Copper Sky/Blaze",
+            "Midnight Frost"
           ],
-          "discount_pct": 0,
+          "discount_pct": 15,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5480,6 +5596,27 @@
           "category": ""
         },
         {
+          "url": "https://www.evo.com/products/262868-arc-teryx-venta-mittens",
+          "name": "Arc'teryx Venta Mittens",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236521.jpg?v=1767738604&width=422",
+          "original_price": 80.0,
+          "sale_price": 80.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
           "url": "https://www.evo.com/products/279539-arc-teryx-rho-lt-print-bottom-men-s",
           "name": "Arc'teryx Rho LT Print Bottom - Men's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1261324.jpg?v=1767739589&width=422",
@@ -5495,29 +5632,6 @@
             "Carob Grottoflage"
           ],
           "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/279618-arc-teryx-sentinel-jacket-women-s",
-          "name": "Arc'teryx Sentinel Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1257946.jpg?v=1767739461&width=422",
-          "original_price": 750.0,
-          "sale_price": 637.5,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black, Copper Sky/Blaze, Midnight Frost",
-          "colors": [
-            "Black",
-            "Copper Sky/Blaze",
-            "Midnight Frost"
-          ],
-          "discount_pct": 15,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5653,27 +5767,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/262867-arc-teryx-venta-gtx-gloves",
-          "name": "Arc'teryx Venta GTX Gloves",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236519.jpg?v=1767738604&width=422",
-          "original_price": 150.0,
-          "sale_price": 135.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Forage/Canvas",
-          "colors": [
-            "Forage/Canvas"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/262859-arc-teryx-fission-sv-gloves",
           "name": "Arc'teryx Fission SV Gloves",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1247718.jpg?v=1767739060&width=422",
@@ -5690,6 +5783,27 @@
             "Forage/Canvas"
           ],
           "discount_pct": 20,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/262867-arc-teryx-venta-gtx-gloves",
+          "name": "Arc'teryx Venta GTX Gloves",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1236519.jpg?v=1767738604&width=422",
+          "original_price": 150.0,
+          "sale_price": 135.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Forage/Canvas",
+          "colors": [
+            "Forage/Canvas"
+          ],
+          "discount_pct": 10,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5759,29 +5873,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/254415-arc-teryx-sentinel-tall-bibs-women-s",
-          "name": "Arc'teryx Sentinel Tall Bibs - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285078.jpg?v=1774668691&width=422",
-          "original_price": 700.0,
-          "sale_price": 525.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Bliss/Black, Forage, Rune",
-          "colors": [
-            "Bliss/Black",
-            "Forage",
-            "Rune"
-          ],
-          "discount_pct": 25,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/263867-arc-teryx-alpha-fl-30-backpack",
           "name": "Arc'teryx Alpha FL 30 Backpack",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1167030.jpg?v=1767735930&width=422",
@@ -5824,22 +5915,23 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/285448-arc-teryx-sentinel-insulated-anorak-women-s",
-          "name": "Arc'teryx Sentinel Insulated Anorak - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285012.jpg?v=1774668688&width=422",
-          "original_price": 850.0,
-          "sale_price": 765.0,
+          "url": "https://www.evo.com/products/254415-arc-teryx-sentinel-tall-bibs-women-s",
+          "name": "Arc'teryx Sentinel Tall Bibs - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285078.jpg?v=1774668691&width=422",
+          "original_price": 700.0,
+          "sale_price": 525.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Black, Midnight Frost",
+          "color": "Bliss/Black, Forage, Rune",
           "colors": [
-            "Black",
-            "Midnight Frost"
+            "Bliss/Black",
+            "Forage",
+            "Rune"
           ],
-          "discount_pct": 10,
+          "discount_pct": 25,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5882,6 +5974,28 @@
             "Dk Forage"
           ],
           "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/285448-arc-teryx-sentinel-insulated-anorak-women-s",
+          "name": "Arc'teryx Sentinel Insulated Anorak - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285012.jpg?v=1774668688&width=422",
+          "original_price": 850.0,
+          "sale_price": 765.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black, Midnight Frost",
+          "colors": [
+            "Black",
+            "Midnight Frost"
+          ],
+          "discount_pct": 10,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -5933,6 +6047,27 @@
           "url": "https://www.evo.com/products/285450-arc-teryx-sentinel-print-short-pants-women-s",
           "name": "Arc'teryx Sentinel Print Short Pants - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285219.jpg?v=1774668696&width=422",
+          "original_price": 650.0,
+          "sale_price": 585.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Bliss Grottoflage",
+          "colors": [
+            "Bliss Grottoflage"
+          ],
+          "discount_pct": 10,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/277505-arc-teryx-sentinel-print-pants-women-s",
+          "name": "Arc'teryx Sentinel Print Pants - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285170.jpg?v=1774668695&width=422",
           "original_price": 650.0,
           "sale_price": 585.0,
           "currency": "USD",
@@ -6017,27 +6152,6 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/277505-arc-teryx-sentinel-print-pants-women-s",
-          "name": "Arc'teryx Sentinel Print Pants - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1285170.jpg?v=1774668695&width=422",
-          "original_price": 650.0,
-          "sale_price": 585.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Bliss Grottoflage",
-          "colors": [
-            "Bliss Grottoflage"
-          ],
-          "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
           "url": "https://www.evo.com/products/272528-arc-teryx-emblem-fleece-joggers-women-s",
           "name": "Arc'teryx Emblem Fleece Joggers - Women's",
           "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265352.jpg?v=1767739741&width=422",
@@ -6054,6 +6168,27 @@
             "Habitat"
           ],
           "discount_pct": 0,
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "region": "US",
+          "category": ""
+        },
+        {
+          "url": "https://www.evo.com/products/254405-arc-teryx-rush-jacket-women-s",
+          "name": "Arc'teryx Rush Jacket - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1141774.jpg?v=1767734845&width=422",
+          "original_price": 700.0,
+          "sale_price": 559.99,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Euphoria/Phantasm",
+          "colors": [
+            "Euphoria/Phantasm"
+          ],
+          "discount_pct": 20,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -6082,21 +6217,21 @@
           "category": ""
         },
         {
-          "url": "https://www.evo.com/products/254405-arc-teryx-rush-jacket-women-s",
-          "name": "Arc'teryx Rush Jacket - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1141774.jpg?v=1767734845&width=422",
-          "original_price": 700.0,
-          "sale_price": 559.99,
+          "url": "https://www.evo.com/products/253188-arc-teryx-beta-down-parka-women-s",
+          "name": "Arc'teryx Beta Down Parka - Women's",
+          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1133252.jpg?v=1767734445&width=422",
+          "original_price": 900.0,
+          "sale_price": 675.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Euphoria/Phantasm",
+          "color": "Black",
           "colors": [
-            "Euphoria/Phantasm"
+            "Black"
           ],
-          "discount_pct": 20,
+          "discount_pct": 25,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -6119,27 +6254,6 @@
             "Forage"
           ],
           "discount_pct": 10,
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "region": "US",
-          "category": ""
-        },
-        {
-          "url": "https://www.evo.com/products/253188-arc-teryx-beta-down-parka-women-s",
-          "name": "Arc'teryx Beta Down Parka - Women's",
-          "image": "https://cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1133252.jpg?v=1767734445&width=422",
-          "original_price": 900.0,
-          "sale_price": 675.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [],
-          "size_stock": {},
-          "color": "Black",
-          "colors": [
-            "Black"
-          ],
-          "discount_pct": 25,
           "dealer": "evo",
           "dealer_name": "EVO",
           "region": "US",
@@ -6407,7 +6521,7 @@
           "category": ""
         }
       ],
-      "refreshed_at": "2026-07-21 10:10:12"
+      "refreshed_at": "2026-07-21 12:14:17"
     },
     "mec": {
       "name": "MEC",
@@ -8007,6 +8121,20 @@
       "count": 23,
       "items": [
         {
+          "url": "https://www.rei.com/product/249474/arcteryx-beta-ar-jacket-mens",
+          "name": "Beta AR Jacket - Men's",
+          "image": "https://www.rei.com/media/f95d0b93-106a-4d70-92ea-846ca9cfcc19.jpg",
+          "original_price": 650.0,
+          "sale_price": 399.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 38,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
           "url": "https://www.rei.com/product/228617/arcteryx-beta-jacket-mens",
           "name": "Beta Jacket - Men's",
           "image": "https://www.rei.com/media/cb27ab2b-b627-416c-9862-6d5834880f26.jpg",
@@ -8016,6 +8144,20 @@
           "in_stock": true,
           "gender": "men",
           "discount_pct": 38,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/242853/arcteryx-gamma-pants-mens",
+          "name": "Gamma Pants - Men's",
+          "image": "https://www.rei.com/media/4d33a0af-f0c0-479f-9743-1eec555ee069.jpg",
+          "original_price": 200.0,
+          "sale_price": 99.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 50,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -8049,15 +8191,15 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/242853/arcteryx-gamma-pants-mens",
-          "name": "Gamma Pants - Men's",
-          "image": "https://www.rei.com/media/4d33a0af-f0c0-479f-9743-1eec555ee069.jpg",
-          "original_price": 200.0,
-          "sale_price": 99.83,
+          "url": "https://www.rei.com/product/243175/arcteryx-atom-insulated-hoody-mens",
+          "name": "Atom Insulated Hoody - Men's",
+          "image": "https://www.rei.com/media/52561b27-472b-489b-8966-401063bc127c.jpg",
+          "original_price": 300.0,
+          "sale_price": 199.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 50,
+          "discount_pct": 33,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -8091,20 +8233,6 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/243175/arcteryx-atom-insulated-hoody-mens",
-          "name": "Atom Insulated Hoody - Men's",
-          "image": "https://www.rei.com/media/52561b27-472b-489b-8966-401063bc127c.jpg",
-          "original_price": 300.0,
-          "sale_price": 199.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 33,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
           "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
           "name": "Beta SL Jacket - Women's",
           "image": "https://www.rei.com/media/76400c1d-ce0f-4dc0-b363-f6778b24840b.jpg",
@@ -8133,34 +8261,6 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/250406/arcteryx-emblem-fleece-crew-mens",
-          "name": "Emblem Fleece Crew - Men's",
-          "image": "https://www.rei.com/media/abfaa86c-533e-4ba6-998f-6067d781cbbb.jpg",
-          "original_price": 120.0,
-          "sale_price": 83.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 30,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
-          "name": "Cerium Down Hoody - Men's",
-          "image": "https://www.rei.com/media/855de972-fc1f-4ae7-81a1-8f588976e3e3.jpg",
-          "original_price": 400.0,
-          "sale_price": 249.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 38,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
           "url": "https://www.rei.com/product/209280/arcteryx-covert-fleece-cardigan-womens",
           "name": "Covert Fleece Cardigan - Women's",
           "image": "https://www.rei.com/media/c62dfa86-a02b-4eb3-8024-255e26dac988.jpg",
@@ -8175,15 +8275,15 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
-          "name": "Atom Insulated Jacket - Men's",
-          "image": "https://www.rei.com/media/119452de-5e09-4be4-9354-0a1884072ca8.jpg",
-          "original_price": 280.0,
-          "sale_price": 179.83,
+          "url": "https://www.rei.com/product/249477/arcteryx-gamma-hoody-mens",
+          "name": "Gamma Hoody - Men's",
+          "image": "https://www.rei.com/media/044c059b-7f92-4f28-b600-46892c688efb.jpg",
+          "original_price": 300.0,
+          "sale_price": 210.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 36,
+          "discount_pct": 30,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -8194,20 +8294,6 @@
           "image": "https://www.rei.com/media/1f3ca430-ee46-40e3-8682-6ff478539c33.jpg",
           "original_price": 80.0,
           "sale_price": 55.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 30,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/249477/arcteryx-gamma-hoody-mens",
-          "name": "Gamma Hoody - Men's",
-          "image": "https://www.rei.com/media/044c059b-7f92-4f28-b600-46892c688efb.jpg",
-          "original_price": 300.0,
-          "sale_price": 210.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
@@ -8231,15 +8317,29 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/250404/arcteryx-kragg-cotton-lithographica-t-shirt-mens",
-          "name": "Kragg Cotton Lithographica T-Shirt - Men's",
-          "image": "https://www.rei.com/media/69c73d09-47c5-4cc3-b094-29bebc4a9735.jpg",
-          "original_price": 80.0,
-          "sale_price": 59.93,
+          "url": "https://www.rei.com/product/249473/arcteryx-alpha-sv-jacket-mens",
+          "name": "Alpha SV Jacket - Men's",
+          "image": "https://www.rei.com/media/c49cba68-cc72-428d-8be8-3524fff495ea.jpg",
+          "original_price": 900.0,
+          "sale_price": 599.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 25,
+          "discount_pct": 33,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
+          "name": "Atom Insulated Jacket - Men's",
+          "image": "https://www.rei.com/media/119452de-5e09-4be4-9354-0a1884072ca8.jpg",
+          "original_price": 280.0,
+          "sale_price": 179.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 36,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US"
@@ -8259,48 +8359,6 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/235366/arcteryx-kopec-mid-gtx-hiking-boots-mens",
-          "name": "Kopec Mid GTX Hiking Boots - Men's",
-          "image": "https://www.rei.com/media/e02909fa-e52f-45aa-bab4-89553f459cb2.jpg",
-          "original_price": 139.93,
-          "sale_price": 139.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/242921/arcteryx-atom-insulated-vest-mens",
-          "name": "Atom Insulated Vest - Men's",
-          "image": "https://www.rei.com/media/51e3ef48-d78e-43b8-a59a-41c26589cb17.jpg",
-          "original_price": 200.0,
-          "sale_price": 200.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
-          "url": "https://www.rei.com/product/249473/arcteryx-alpha-sv-jacket-mens",
-          "name": "Alpha SV Jacket - Men's",
-          "image": "https://www.rei.com/media/c49cba68-cc72-428d-8be8-3524fff495ea.jpg",
-          "original_price": 900.0,
-          "sale_price": 599.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 33,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US"
-        },
-        {
           "url": "https://www.rei.com/product/243328/arcteryx-coelle-shell-jacket-womens",
           "name": "Coelle Shell Jacket - Women's",
           "image": "https://www.rei.com/media/a73cd0b6-65dc-4a84-a238-7e8b8f9b26ba.jpg",
@@ -8315,11 +8373,67 @@
           "region": "US"
         },
         {
-          "url": "https://www.rei.com/product/255584/arcteryx-cerium-down-hoody-womens",
-          "name": "Cerium Down Hoody - Women's",
-          "image": "https://www.rei.com/media/02e12932-2c2a-40e9-959a-749d3a05a18e.jpg",
-          "original_price": 329.73,
-          "sale_price": 329.73,
+          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
+          "name": "Cerium Down Hoody - Men's",
+          "image": "https://www.rei.com/media/855de972-fc1f-4ae7-81a1-8f588976e3e3.jpg",
+          "original_price": 400.0,
+          "sale_price": 249.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 38,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/250406/arcteryx-emblem-fleece-crew-mens",
+          "name": "Emblem Fleece Crew - Men's",
+          "image": "https://www.rei.com/media/abfaa86c-533e-4ba6-998f-6067d781cbbb.jpg",
+          "original_price": 120.0,
+          "sale_price": 83.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 30,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/243257/arcteryx-atom-sl-hoody-mens",
+          "name": "Atom SL Hoody - Men's",
+          "image": "https://www.rei.com/media/dc0d835e-4beb-4b43-b7bd-0bcc59ad6000.jpg",
+          "original_price": 280.0,
+          "sale_price": 169.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 39,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/250404/arcteryx-kragg-cotton-lithographica-t-shirt-mens",
+          "name": "Kragg Cotton Lithographica T-Shirt - Men's",
+          "image": "https://www.rei.com/media/69c73d09-47c5-4cc3-b094-29bebc4a9735.jpg",
+          "original_price": 80.0,
+          "sale_price": 59.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 25,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US"
+        },
+        {
+          "url": "https://www.rei.com/product/209190/arcteryx-rho-zip-neck-base-layer-top-womens",
+          "name": "Rho Zip-Neck Base Layer Top - Women's",
+          "image": "https://www.rei.com/media/ca52de4b-0a1a-4594-a817-3ae4c2d36839.jpg",
+          "original_price": 69.83,
+          "sale_price": 69.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
@@ -8329,7 +8443,7 @@
           "region": "US"
         }
       ],
-      "refreshed_at": "2026-07-21 10:10:27"
+      "refreshed_at": "2026-07-21 12:14:33"
     },
     "ssense": {
       "name": "SSENSE",
@@ -8339,7 +8453,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-konseal-gtx-sneakers/17580131",
           "name": "Black Konseal GTX Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237001_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237001_1/arcteryx-black-konseal-gtx-sneakers.jpg",
           "original_price": 220.0,
           "sale_price": 220.0,
           "currency": "USD",
@@ -8353,7 +8467,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/off-white-norvan-ld-4-sneakers/18786591",
           "name": "Off-White Norvan LD 4 Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237013_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237013_1/arcteryx-off-white-norvan-ld-4-sneakers.jpg",
           "original_price": 245.0,
           "sale_price": 245.0,
           "currency": "USD",
@@ -8367,7 +8481,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/gray-sylan-2-sneakers/18786481",
           "name": "Gray Sylan 2 Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237007_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237007_1/arcteryx-gray-sylan-2-sneakers.jpg",
           "original_price": 220.0,
           "sale_price": 154.0,
           "currency": "USD",
@@ -8381,7 +8495,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-beta-sv-jacket/18785301",
           "name": "Khaki Beta SV Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180021_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M180021_1/arcteryx-khaki-beta-sv-jacket.jpg",
           "original_price": 800.0,
           "sale_price": 520.0,
           "currency": "USD",
@@ -8395,7 +8509,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/navy-beta-ar-jacket/18785271",
           "name": "Navy Beta AR Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180019_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M180019_1/arcteryx-navy-beta-ar-jacket.jpg",
           "original_price": 615.0,
           "sale_price": 615.0,
           "currency": "USD",
@@ -8409,7 +8523,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-gamma-lightweight-jacket/18785111",
           "name": "Black Gamma Lightweight Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180010_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M180010_1/arcteryx-black-gamma-lightweight-jacket.jpg",
           "original_price": 240.0,
           "sale_price": 240.0,
           "currency": "USD",
@@ -8423,7 +8537,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/purple-kragg-cotton-lithographica-ss-t-shirt/18785781",
           "name": "Purple Kragg Cotton Lithographica S/S T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213016_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M213016_1/arcteryx-purple-kragg-cotton-lithographica-ss-t-shirt.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -8437,7 +8551,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-alpha-sv-jacket/18785591",
           "name": "Black Alpha SV Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180022_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M180022_1/arcteryx-black-alpha-sv-jacket.jpg",
           "original_price": 900.0,
           "sale_price": 810.0,
           "currency": "USD",
@@ -8451,7 +8565,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/blue-beta-jacket/18785241",
           "name": "Blue Beta Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180016_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M180016_1/arcteryx-blue-beta-jacket.jpg",
           "original_price": 400.0,
           "sale_price": 400.0,
           "currency": "USD",
@@ -8465,7 +8579,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/green-and-black-beta-jacket/18785251",
           "name": "Green & Black Beta Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M180017_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M180017_1/arcteryx-green-and-black-beta-jacket.jpg",
           "original_price": 400.0,
           "sale_price": 400.0,
           "currency": "USD",
@@ -8479,7 +8593,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/beige-cronin-cotton-trousers/18785431",
           "name": "Beige Cronin Cotton Trousers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M191004_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M191004_1/arcteryx-beige-cronin-cotton-trousers.jpg",
           "original_price": 180.0,
           "sale_price": 180.0,
           "currency": "USD",
@@ -8493,7 +8607,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-sinsolo-bucket-hat/18786891",
           "name": "Black Sinsolo Bucket Hat",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M140000_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M140000_1/arcteryx-black-sinsolo-bucket-hat.jpg",
           "original_price": 85.0,
           "sale_price": 85.0,
           "currency": "USD",
@@ -8507,7 +8621,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-kragg-cotton-ls-t-shirt/18785001",
           "name": "Black Kragg Cotton LS T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213004_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M213004_1/arcteryx-black-kragg-cotton-ls-t-shirt.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -8521,7 +8635,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-cotton-ls-t-shirt/18785011",
           "name": "White Kragg Cotton LS T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213005_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M213005_1/arcteryx-white-kragg-cotton-ls-t-shirt.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -8535,7 +8649,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-cotton-lithographica-ss-t-shirt/18785761",
           "name": "White Kragg Cotton Lithographica S/S T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M213015_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M213015_1/arcteryx-white-kragg-cotton-lithographica-ss-t-shirt.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -8549,7 +8663,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/green-norvan-ld-4-sneakers/18786551",
           "name": "Green Norvan LD 4 Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237011_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237011_1/arcteryx-green-norvan-ld-4-sneakers.jpg",
           "original_price": 170.0,
           "sale_price": 170.0,
           "currency": "USD",
@@ -8563,7 +8677,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/green-sylan-2-sneakers/18786491",
           "name": "Green Sylan 2 Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237008_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237008_1/arcteryx-green-sylan-2-sneakers.jpg",
           "original_price": 220.0,
           "sale_price": 220.0,
           "currency": "USD",
@@ -8577,7 +8691,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-norvan-ld-4-gtx-sneakers/18786511",
           "name": "Black Norvan LD 4 GTX Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237009_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237009_1/arcteryx-black-norvan-ld-4-gtx-sneakers.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
@@ -8591,7 +8705,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/off-white-norvan-ld-4-gtx-sneakers/18786521",
           "name": "Off-White Norvan LD 4 GTX Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237010_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237010_1/arcteryx-off-white-norvan-ld-4-gtx-sneakers.jpg",
           "original_price": 200.0,
           "sale_price": 160.0,
           "currency": "USD",
@@ -8605,7 +8719,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-norvan-ld-4-sneakers/18786601",
           "name": "Black Norvan LD 4 Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M237014_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M237014_1/arcteryx-black-norvan-ld-4-sneakers.jpg",
           "original_price": 170.0,
           "sale_price": 170.0,
           "currency": "USD",
@@ -8619,7 +8733,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-cronin-cotton-trousers/18785411",
           "name": "Black Cronin Cotton Trousers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340M191003_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340M191003_1/arcteryx-black-cronin-cotton-trousers.jpg",
           "original_price": 180.0,
           "sale_price": 180.0,
           "currency": "USD",
@@ -8633,7 +8747,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/beige-kragg-insulated-sneakers/17580101",
           "name": "Beige Kragg Insulated Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M236000_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M236000_1/arcteryx-beige-kragg-insulated-sneakers.jpg",
           "original_price": 180.0,
           "sale_price": 180.0,
           "currency": "USD",
@@ -8647,7 +8761,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-kragg-insulated-sneakers/17580111",
           "name": "Black Kragg Insulated Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M236001_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M236001_1/arcteryx-black-kragg-insulated-sneakers.jpg",
           "original_price": 260.0,
           "sale_price": 260.0,
           "currency": "USD",
@@ -8661,7 +8775,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/pink-kragg-sneakers/17580181",
           "name": "Pink Kragg Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M237000_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M237000_1/arcteryx-pink-kragg-sneakers.jpg",
           "original_price": 225.0,
           "sale_price": 225.0,
           "currency": "USD",
@@ -8675,7 +8789,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/beige-kragg-sneakers/17580191",
           "name": "Beige Kragg Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M237001_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M237001_1/arcteryx-beige-kragg-sneakers.jpg",
           "original_price": 225.0,
           "sale_price": 225.0,
           "currency": "USD",
@@ -8689,7 +8803,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-kragg-sneakers/17580201",
           "name": "Black Kragg Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M237002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M237002_1/arcteryx-black-kragg-sneakers.jpg",
           "original_price": 225.0,
           "sale_price": 225.0,
           "currency": "USD",
@@ -8703,7 +8817,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-beta-sl-jacket/17521401",
           "name": "Khaki Beta SL Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180008_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180008_1/arcteryx-khaki-beta-sl-jacket.jpg",
           "original_price": 455.0,
           "sale_price": 455.0,
           "currency": "USD",
@@ -8717,7 +8831,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-alpha-jacket/17521431",
           "name": "Khaki Alpha Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180011_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180011_1/arcteryx-khaki-alpha-jacket.jpg",
           "original_price": 890.0,
           "sale_price": 890.0,
           "currency": "USD",
@@ -8731,7 +8845,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/gray-beta-ar-jacket/17521411",
           "name": "Gray Beta AR Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180009_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180009_1/arcteryx-gray-beta-ar-jacket.jpg",
           "original_price": 835.0,
           "sale_price": 835.0,
           "currency": "USD",
@@ -8745,7 +8859,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-beta-insulated-jacket/17521311",
           "name": "Black Beta Insulated Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M178011_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M178011_1/arcteryx-black-beta-insulated-jacket.jpg",
           "original_price": 945.0,
           "sale_price": 945.0,
           "currency": "USD",
@@ -8759,7 +8873,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/navy-beta-insulated-jacket/17521321",
           "name": "Navy Beta Insulated Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M178012_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M178012_1/arcteryx-navy-beta-insulated-jacket.jpg",
           "original_price": 940.0,
           "sale_price": 940.0,
           "currency": "USD",
@@ -8773,7 +8887,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-alpha-jacket/17521441",
           "name": "Black Alpha Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180012_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180012_1/arcteryx-black-alpha-jacket.jpg",
           "original_price": 700.0,
           "sale_price": 700.0,
           "currency": "USD",
@@ -8787,7 +8901,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-and-navy-alpha-sv-jacket/17521451",
           "name": "Black & Navy Alpha SV Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180013_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180013_1/arcteryx-black-and-navy-alpha-sv-jacket.jpg",
           "original_price": 900.0,
           "sale_price": 900.0,
           "currency": "USD",
@@ -8801,7 +8915,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-alpha-sv-jacket/17521461",
           "name": "Black Alpha SV Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M180014_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M180014_1/arcteryx-black-alpha-sv-jacket.jpg",
           "original_price": 1150.0,
           "sale_price": 1150.0,
           "currency": "USD",
@@ -8815,7 +8929,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/white-kragg-sl-cotton-ss-t-shirt/17520991",
           "name": "White Kragg SL Cotton SS T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M213002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M213002_1/arcteryx-white-kragg-sl-cotton-ss-t-shirt.jpg",
           "original_price": 75.0,
           "sale_price": 75.0,
           "currency": "USD",
@@ -8829,7 +8943,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/khaki-cronin-trousers/19258161",
           "name": "Khaki Cronin Trousers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M191004_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M191004_1/arcteryx-khaki-cronin-trousers.jpg",
           "original_price": 230.0,
           "sale_price": 230.0,
           "currency": "USD",
@@ -8843,7 +8957,7 @@
         {
           "url": "https://www.ssense.com/en-us/men/product/arcteryx/black-venta-gtx-gloves/17523701",
           "name": "Black Venta GTX Gloves",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/252340M135000_1.jpg",
+          "image": "https://img.ssensemedia.com/images/252340M135000_1/arcteryx-black-venta-gtx-gloves.jpg",
           "original_price": 190.0,
           "sale_price": 190.0,
           "currency": "USD",
@@ -8857,7 +8971,7 @@
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/navy-beta-ar-jacket/18774481",
           "name": "Navy Beta AR Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F063006_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F063006_1/arcteryx-navy-beta-ar-jacket.jpg",
           "original_price": 650.0,
           "sale_price": 650.0,
           "currency": "USD",
@@ -8871,7 +8985,7 @@
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-rula-t-shirt/439746312",
           "name": "Black Rula T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F110005_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F110005_1/arcteryx-black-rula-t-shirt.jpg",
           "original_price": 80.0,
           "sale_price": 80.0,
           "currency": "USD",
@@ -8885,7 +8999,7 @@
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/white-kragg-cotton-little-bird-crew-ss-t-shirt/18774771",
           "name": "White Kragg Cotton Little Bird Crew S/S T-shirt",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F110002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F110002_1/arcteryx-white-kragg-cotton-little-bird-crew-ss-t-shirt.jpg",
           "original_price": 70.0,
           "sale_price": 70.0,
           "currency": "USD",
@@ -8899,7 +9013,7 @@
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-atom-jacket/18774441",
           "name": "Black Atom Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F063002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F063002_1/arcteryx-black-atom-jacket.jpg",
           "original_price": 280.0,
           "sale_price": 280.0,
           "currency": "USD",
@@ -8913,7 +9027,7 @@
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-atom-hoody-jacket/18774961",
           "name": "Black Atom Hoody Jacket",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F063010_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F063010_1/arcteryx-black-atom-hoody-jacket.jpg",
           "original_price": 300.0,
           "sale_price": 300.0,
           "currency": "USD",
@@ -8927,7 +9041,7 @@
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/off-white-sonii-utility-vest/18774931",
           "name": "Off-White Sonii Utility Vest",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F068000_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F068000_1/arcteryx-off-white-sonii-utility-vest.jpg",
           "original_price": 240.0,
           "sale_price": 240.0,
           "currency": "USD",
@@ -8941,7 +9055,7 @@
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/off-white-bird-head-beanie/18774621",
           "name": "Off-White Bird Head Beanie",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F014002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F014002_1/arcteryx-off-white-bird-head-beanie.jpg",
           "original_price": 60.0,
           "sale_price": 60.0,
           "currency": "USD",
@@ -8955,7 +9069,7 @@
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/gray-norvan-ld-4-gtx-sneakers/18774691",
           "name": "Gray Norvan LD 4 GTX Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F128005_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F128005_1/arcteryx-gray-norvan-ld-4-gtx-sneakers.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
@@ -8969,7 +9083,7 @@
         {
           "url": "https://www.ssense.com/en-us/women/product/arcteryx/black-kragg-sneakers/18774651",
           "name": "Black Kragg Sneakers",
-          "image": "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F128002_1.jpg",
+          "image": "https://img.ssensemedia.com/images/261340F128002_1/arcteryx-black-kragg-sneakers.jpg",
           "original_price": 160.0,
           "sale_price": 160.0,
           "currency": "USD",
@@ -8981,10 +9095,10 @@
           "region": "US"
         }
       ],
-      "refreshed_at": "2026-07-21 10:10:50"
+      "refreshed_at": "2026-07-21 12:14:57"
     }
   },
-  "total": 447,
+  "total": 452,
   "fresh_dealers": [
     "evo",
     "rei",
