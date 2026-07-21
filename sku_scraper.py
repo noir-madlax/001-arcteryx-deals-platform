@@ -22,9 +22,9 @@ import json
 import os
 import re
 import time
+from functools import lru_cache
 from datetime import datetime
 from pathlib import Path
-
 from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 
 # ── 路径 ────────────────────────────────────────────────────────────────────
@@ -120,6 +120,74 @@ def is_junk_color(color: str) -> bool:
     if _re.match(r'^size\d+$', c, _re.IGNORECASE):
         return True
     return False
+
+
+def color_price_map_from_product_data(product_data: dict) -> dict[str, tuple[float, float]]:
+    """Map normalized color name -> authoritative (sale, original) price tuple."""
+    color_labels = {
+        str(option.get("id")): normalize_color(option.get("label") or option.get("primaryColour") or "")
+        for option in (product_data.get("colourOptions") or [])
+    }
+    candidates_by_color: dict[str, list[tuple[float, float]]] = {}
+    for variant in product_data.get("variants") or []:
+        color_key = color_labels.get(str(variant.get("colourId")))
+        if not color_key:
+            continue
+        stock_status = str(variant.get("stockStatus") or "").casefold()
+        if stock_status in {"outofstock", "unavailable", "soldout"}:
+            continue
+        sale = variant.get("discountPrice") or variant.get("price")
+        original = variant.get("price") or sale
+        try:
+            sale_value = float(sale or 0)
+            original_value = float(original or sale_value)
+        except (TypeError, ValueError):
+            continue
+        if sale_value <= 0 or original_value <= 0:
+            continue
+        candidates_by_color.setdefault(color_key, []).append((sale_value, max(original_value, sale_value)))
+
+    price_map: dict[str, tuple[float, float]] = {}
+    for color_key, candidates in candidates_by_color.items():
+        lowest_sale = min(sale for sale, _ in candidates)
+        original = max(orig for sale, orig in candidates if abs(sale - lowest_sale) <= 0.0001)
+        price_map[color_key] = (lowest_sale, original)
+    return price_map
+
+
+def price_from_variants(product_data: dict, color_name: str) -> tuple[float, float] | None:
+    """Return the authoritative PDP price tuple for one color, if available."""
+    target = normalize_color(color_name)
+    if not target:
+        return None
+    return color_price_map_from_product_data(product_data).get(target)
+
+
+def parse_next_product_from_html(html: str) -> dict | None:
+    match = re.search(r'<script id="__NEXT_DATA__"[^>]*>(\{.*?\})</script>', html, re.S)
+    if not match:
+        return None
+    parsed = json.loads(match.group(1))
+    product_raw = parsed.get("props", {}).get("pageProps", {}).get("product")
+    if not product_raw:
+        return None
+    return json.loads(product_raw)
+
+
+@lru_cache(maxsize=4096)
+def fetch_region_price_map(url: str) -> dict[str, tuple[float, float]]:
+    import requests
+
+    response = requests.get(
+        url,
+        headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"},
+        timeout=45,
+    )
+    response.raise_for_status()
+    product_data = parse_next_product_from_html(response.text)
+    if not product_data:
+        return {}
+    return color_price_map_from_product_data(product_data)
 
 def is_prehydrated_product(product: dict) -> bool:
     """True when global_data already contains color/size/image data.
@@ -286,7 +354,11 @@ async def scrape_product(page, product: dict) -> list[dict]:
         // breadcrumb / outlet category
         const crumbs = [...document.querySelectorAll('nav a, [data-testid="breadcrumb"] a')]
             .map(a => a.textContent.trim()).filter(Boolean);
-        return { title, desc, prices, crumbs };
+        let nextProduct = null;
+        try {
+            nextProduct = window.__NEXT_DATA__?.props?.pageProps?.product || null;
+        } catch (_) {}
+        return { title, desc, prices, crumbs, nextProduct };
     }""")
 
     # ── 颜色选项 ─────────────────────────────────────────────────────────────
@@ -335,6 +407,21 @@ async def scrape_product(page, product: dict) -> list[dict]:
                 await asyncio.sleep(DELAY_BETWEEN_COLORS)
             except Exception:
                 pass  # 若点击失败，用当前状态
+
+        product_data = base_info.get("nextProduct") or {}
+        if isinstance(product_data, str):
+            try:
+                product_data = json.loads(product_data)
+            except Exception:
+                product_data = {}
+        variant_price = price_from_variants(product_data, color_name)
+        if variant_price:
+            sale_price, original_price = variant_price
+            discount_pct = calc_discount(original_price, sale_price)
+        else:
+            sale_price = product.get('sale_price', 0)
+            original_price = product.get('original_price', 0)
+            discount_pct = product.get('discount_pct', 0)
 
         # ── 抓图片（从 hero gallery） ─────────────────────────────────────
         images = await page.evaluate("""() => {
@@ -414,9 +501,9 @@ async def scrape_product(page, product: dict) -> list[dict]:
             "color":         color_name,
             "sizes":         size_data.get('sizes', []),
             "size_stock":    size_data.get('size_stock', {}),
-            "original_price": product.get('original_price', 0),
-            "sale_price":    product.get('sale_price', 0),
-            "discount_pct":  product.get('discount_pct', 0),
+            "original_price": original_price,
+            "sale_price":    sale_price,
+            "discount_pct":  discount_pct,
             "currency":      product.get('currency', ''),
             "symbol":        product.get('symbol', ''),
             "gender":        product.get('gender', ''),
@@ -528,15 +615,29 @@ async def run(args):
                         # 方案B：为每个地区生成一条 SKU 记录
                         for region_code, region_product in region_variants.items():
                             sid = sku_id(slug, sku['color'], region_code)
+                            region_price = None
+                            try:
+                                region_price = fetch_region_price_map(region_product.get('url', '')).get(
+                                    normalize_color(sku['color'])
+                                )
+                            except Exception:
+                                region_price = None
+                            if region_price:
+                                region_sale, region_original = region_price
+                                region_discount = calc_discount(region_original, region_sale)
+                            else:
+                                region_sale = region_product.get('sale_price') or sku.get('sale_price', 0)
+                                region_original = region_product.get('original_price') or sku.get('original_price', 0)
+                                region_discount = calc_discount(region_original, region_sale) or sku.get('discount_pct', 0)
                             new_skus_map[sid] = normalize_outlet_sku({
                                 **sku,
                                 "sku_id":         sid,
                                 "region":         region_code,
                                 "region_name":    region_product.get('region_name', ''),
-                                "original_price": region_product.get('original_price') or sku.get('original_price', 0),
-                                "sale_price":     region_product.get('sale_price')     or sku.get('sale_price', 0),
-                                "sale_price_max": region_product.get('sale_price_max') or sku.get('sale_price', 0),
-                                "discount_pct":   region_product.get('discount_pct')   or sku.get('discount_pct', 0),
+                                "original_price": region_original,
+                                "sale_price":     region_sale,
+                                "sale_price_max": region_sale,
+                                "discount_pct":   region_discount,
                                 "currency":       region_product.get('currency', sku.get('currency', '')),
                                 "symbol":         region_product.get('symbol',   sku.get('symbol', '')),
                                 "url":            region_product.get('url',      sku.get('url', '')),
