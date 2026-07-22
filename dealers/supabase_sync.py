@@ -116,10 +116,8 @@ def should_preserve_previous_discount(
     old_sale,
     old_original,
 ) -> bool:
-    """Only preserve stale discounts for dealers with known non-PDP fallback paths."""
+    """Don't let low-trust list fallback erase a previously captured discount."""
     return bool(
-        dealer == "mec"
-        and
         price_source_quality == "list_fallback"
         and new_sale and new_original
         and abs(new_sale - new_original) < 0.01

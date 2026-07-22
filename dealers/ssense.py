@@ -168,11 +168,26 @@ class Scraper(DealerScraper):
                 body = self._fetch(s, it["url"], is_pdp=True)
                 if body:
                     detail = self.parse_detail(body, name_hint=it.get("name",""))
-                    if detail: it.update(detail)
+                    if detail:
+                        detail["price_source_quality"] = "pdp"
+                        it.update(detail)
                 if i % 5 == 0: print(f"[ssense] enriched {i}/{len(items)}", flush=True)
                 time.sleep(0.4)
         else:
-            print("[ssense] PDP enrichment skipped because direct HTTP is blocked", flush=True)
+            from camoufox.sync_api import Camoufox
+            from dealers.revalidate import fetch_ssense_pdp_browser
+
+            print("[ssense] direct PDP blocked; enriching via browser", flush=True)
+            with Camoufox(headless=True, humanize=True, geoip=True) as browser:
+                page = browser.new_page()
+                page.set_default_navigation_timeout(90000)
+                for i, it in enumerate(items, 1):
+                    detail = fetch_ssense_pdp_browser(page, it["url"])
+                    if detail and not detail.get("_err") and not detail.get("_unavailable"):
+                        detail["price_source_quality"] = "pdp_browser"
+                        it.update(detail)
+                    if i % 5 == 0: print(f"[ssense] browser enriched {i}/{len(items)}", flush=True)
+                    time.sleep(0.4)
         self.crawl_complete = len(successful_urls) == len(self.LIST_URLS) and bool(items)
         return items
 
@@ -236,6 +251,7 @@ class Scraper(DealerScraper):
                 "currency": currency,
                 "in_stock": (offer.get("availability", "").endswith("InStock")),
                 "gender": gender,
+                "price_source_quality": "list_fallback",
             })
         # HTML 兜底：扫 line-through 原价 → 配对到同一商品
         # SSENSE 商品锚 + 价格区块
