@@ -67,6 +67,7 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(len(items), 1)
         self.assertEqual(items[0]["sale_price"], 220.0)
         self.assertIn("/en-us/men/product/", items[0]["url"])
+        self.assertEqual(items[0]["price_source_quality"], "list_fallback")
 
     def test_rei_detail_parser_is_deterministic(self):
         body = (

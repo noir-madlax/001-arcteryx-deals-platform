@@ -117,9 +117,9 @@ class DealerRevalidationTests(unittest.TestCase):
             "discount_pct": 75,
         })
 
-    def test_only_mec_list_fallback_preserves_previous_discount(self):
+    def test_list_fallback_preserves_existing_discount(self):
         self.assertTrue(should_preserve_previous_discount("mec", "list_fallback", 200, 200, 100, 200))
-        self.assertFalse(should_preserve_previous_discount("evo", "list_fallback", 200, 200, 49.83, 200))
+        self.assertTrue(should_preserve_previous_discount("evo", "list_fallback", 200, 200, 49.83, 200))
         self.assertFalse(should_preserve_previous_discount("mec", "api", 200, 200, 49.83, 200))
 
     def test_mec_revalidation_session_uses_scrapling_when_warm_fails(self):
