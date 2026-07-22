@@ -2,7 +2,12 @@ import unittest
 from collections import defaultdict
 from unittest.mock import patch
 
-from dealers.revalidate import fetch_rei_pdp, underperforming_dealers
+from dealers.revalidate import (
+    fetch_rei_pdp,
+    parse_evo_browser_snapshot,
+    parse_ssense_html,
+    underperforming_dealers,
+)
 from dealers.supabase_sync import should_preserve_previous_discount
 
 
@@ -95,6 +100,45 @@ class DealerRevalidationTests(unittest.TestCase):
         dealers = {"rei": [{}] * 10, "evo": [{}] * 10}
         failed = underperforming_dealers(dealers, stats)
         self.assertEqual(failed, ["rei"])
+
+    def test_evo_browser_snapshot_uses_lowest_available_variant(self):
+        snapshot = {
+            "ShopifyAnalytics": {"meta": {"product": {"id": 1}}},
+            "igProductData": {"1": {"lowestVariantPrice": 28000}},
+            "RegiosDOPP_ProductPage": {
+                "variants": [
+                    {"priceInCents": 40000, "compareAtPriceInCents": 40000, "isOutOfStock": True},
+                    {"priceInCents": 28000, "compareAtPriceInCents": 40000, "isOutOfStock": False},
+                    {"priceInCents": 32000, "compareAtPriceInCents": 40000, "isOutOfStock": False},
+                ]
+            },
+        }
+
+        result = parse_evo_browser_snapshot(snapshot, "https://www.evo.com/products/test")
+
+        self.assertEqual(result, {
+            "sale_price": 280.0,
+            "original_price": 400.0,
+            "discount_pct": 30,
+        })
+
+    def test_ssense_html_extracts_sale_and_original(self):
+        html = """
+        <html><body>
+        <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"Product","offers":{"price":160,"priceCurrency":"USD"}}
+        </script>
+        <span class="line-through">$200 USD</span>
+        </body></html>
+        """
+
+        result = parse_ssense_html(html)
+
+        self.assertEqual(result, {
+            "sale_price": 160.0,
+            "original_price": 200.0,
+            "discount_pct": 20,
+        })
 
 
 if __name__ == "__main__":

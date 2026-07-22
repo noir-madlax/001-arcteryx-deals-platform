@@ -86,6 +86,63 @@ def fetch_evo_pdp(url: str) -> dict | None:
     return {"sale_price": round(sale, 2), "original_price": round(orig, 2), "discount_pct": _disc(orig, sale)}
 
 
+def parse_evo_browser_snapshot(snapshot: dict, url: str) -> dict | None:
+    product = (snapshot.get("ShopifyAnalytics") or {}).get("meta", {}).get("product") or {}
+    regios = snapshot.get("RegiosDOPP_ProductPage") or {}
+    inventory_blob = snapshot.get("igProductData") or {}
+    inventory = inventory_blob.get(str(product.get("id"))) or inventory_blob.get(product.get("id")) or {}
+    variants = regios.get("variants") or []
+    available = [variant for variant in variants if not variant.get("isOutOfStock")]
+    fallback_sale = (_num(inventory.get("lowestVariantPrice")) or 0) / 100
+    fallback_orig = (_num(regios.get("compareAtPriceInCents")) or 0) / 100
+    if available:
+        prices = [(_num(variant.get("priceInCents")) or 0) / 100 for variant in available]
+        compares = [(_num(variant.get("compareAtPriceInCents")) or 0) / 100 for variant in available]
+        prices = [price for price in prices if price > 0]
+        compares = [compare for compare in compares if compare > 0]
+        if fallback_sale > 0:
+            prices.append(fallback_sale)
+        if fallback_orig > 0:
+            compares.append(fallback_orig)
+        if prices:
+            sale = min(prices)
+            orig = max(compares) if compares else sale
+            if orig < sale:
+                orig = sale
+            return {
+                "sale_price": round(sale, 2),
+                "original_price": round(orig, 2),
+                "discount_pct": _disc(orig, sale),
+            }
+    if fallback_sale > 0:
+        orig = fallback_orig if fallback_orig >= fallback_sale else fallback_sale
+        return {
+            "sale_price": round(fallback_sale, 2),
+            "original_price": round(orig, 2),
+            "discount_pct": _disc(orig, fallback_sale),
+        }
+    return None
+
+
+def fetch_evo_pdp_browser(page, url: str) -> dict | None:
+    try:
+        response = page.goto(url, wait_until="domcontentloaded", timeout=90000)
+        page.wait_for_timeout(3000)
+    except Exception as e:
+        return {"_err": f"goto {type(e).__name__}"}
+    if not response or response.status != 200:
+        return {"_err": f"http {response.status if response else 'unknown'}"}
+    snapshot = page.evaluate(
+        """() => ({
+          ShopifyAnalytics: window.ShopifyAnalytics || null,
+          igProductData: window.igProductData || null,
+          RegiosDOPP_ProductPage: window.RegiosDOPP_ProductPage || null,
+        })"""
+    )
+    parsed = parse_evo_browser_snapshot(snapshot, url)
+    return parsed or {"_err": "no_browser_price"}
+
+
 def _rei_variant_price(body: str, url: str) -> tuple[float, float] | None:
     """Return the cheapest available current-product SKU and its compare-at price."""
     product_match = re.search(r"/product/(\d+)/", url or "")
@@ -211,20 +268,72 @@ def fetch_ssense_pdp(session, url: str) -> dict | None:
         body = r.text
     except Exception:
         return None
-    if "Just a moment" in body[:5000] or len(body) < 50000:
+    return parse_ssense_html(body)
+
+
+def parse_ssense_html(body: str) -> dict | None:
+    if "Just a moment" in body[:5000]:
         return {"_err": "cf_stub"}
-    for m in re.finditer(r'<script[^>]+type="application/ld\+json"[^>]*>(\{[^<]+?\})</script>', body):
+    normalized = re.sub(r"\s+", " ", body)
+
+    def _money_text(value: str | None) -> float | None:
+        cleaned = re.sub(r"[^0-9.]", "", value or "")
+        return _num(cleaned)
+
+    for m in re.finditer(r'<script[^>]+type="application/ld\+json"[^>]*>\s*(\{[^<]+?\})\s*</script>', body):
         try:
             d = json.loads(m.group(1))
             if d.get("@type") != "Product": continue
             offer = d.get("offers") or {}
             sale = _num(offer.get("price"))
             if not sale: continue
-            # SSENSE JSON-LD 不含原价, 看 HTML line-through 兜底 (略复杂, 这里先保守保留原 orig)
-            return {"sale_price": sale}   # 只更新 sale, 不动 orig
+            original = None
+            mo = re.search(r'line-through[^>]*>\s*([^<]+?)\s*</span>', body)
+            if mo:
+                original = _money_text(mo.group(1))
+            if not original:
+                text_match = re.search(r'\$([0-9.,]+)\s*USD\s*\$([0-9.,]+)\s*USD', normalized)
+                if text_match:
+                    sale_candidate = _money_text(text_match.group(1))
+                    original_candidate = _money_text(text_match.group(2))
+                    if sale_candidate and original_candidate:
+                        sale = sale_candidate
+                        original = original_candidate
+            original = max(original or sale, sale)
+            return {
+                "sale_price": round(sale, 2),
+                "original_price": round(original, 2),
+                "discount_pct": _disc(original, sale),
+            }
         except Exception:
             pass
     return None
+
+
+def fetch_ssense_pdp_browser(page, url: str) -> dict | None:
+    try:
+        response = page.goto(url, wait_until="domcontentloaded", timeout=90000)
+        page.wait_for_timeout(4000)
+    except Exception as e:
+        return {"_err": f"goto {type(e).__name__}"}
+    if not response or response.status != 200:
+        return {"_err": f"http {response.status if response else 'unknown'}"}
+    html = page.content()
+    parsed = parse_ssense_html(html)
+    if parsed and parsed.get("original_price", 0) > parsed.get("sale_price", 0):
+        return parsed
+    text = page.evaluate("() => document.body ? document.body.innerText : ''")
+    prices = re.findall(r"\$([0-9.,]+)\s*USD", text or "")
+    if parsed and len(prices) >= 2:
+        sale = _num(prices[0])
+        original = _num(prices[1])
+        if sale and original and original >= sale:
+            return {
+                "sale_price": round(sale, 2),
+                "original_price": round(original, 2),
+                "discount_pct": _disc(original, sale),
+            }
+    return parsed
 
 # ── Main runner ──────────────────────────────────────────────────────────
 def load_all_dealer_rows(client):
@@ -293,23 +402,41 @@ def main():
 
     # ── EVO: 纯 HTTP, 最快 ──
     print(f"\n[reval] EVO ({len(by_dealer.get('evo', []))})", flush=True)
-    for i, r in enumerate(by_dealer.get("evo", []), 1):
-        new = fetch_evo_pdp(r["url"])
-        if not new:
-            stats["evo"]["err"] += 1
-        elif new.get("_unavailable"):
-            stats["evo"]["unavail"] += 1
-        elif new.get("_err"):
-            stats["evo"]["err"] += 1
-        else:
-            if update_row(client, r["sku_id"], new, r):
-                stats["evo"]["ok"] += 1
-                if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
-                    stats["evo"]["diff"] += 1
-            else:
+    evo_rows = by_dealer.get("evo", [])
+    evo_browser_cm = None
+    evo_browser = None
+    evo_page = None
+    try:
+        for i, r in enumerate(evo_rows, 1):
+            new = fetch_evo_pdp(r["url"])
+            if new and new.get("_err") and "HTTPError" in new.get("_err", "") and evo_browser is None:
+                from camoufox.sync_api import Camoufox
+                evo_browser_cm = Camoufox(headless=True, humanize=True, geoip=True)
+                evo_browser = evo_browser_cm.__enter__()
+                evo_page = evo_browser.new_page()
+                evo_page.set_default_navigation_timeout(90000)
+                new = fetch_evo_pdp_browser(evo_page, r["url"])
+            if not new:
                 stats["evo"]["err"] += 1
-        if i % 50 == 0: print(f"  evo {i}/{len(by_dealer['evo'])}", flush=True)
-        time.sleep(0.1)
+            elif new.get("_unavailable"):
+                stats["evo"]["unavail"] += 1
+            elif new.get("_err"):
+                stats["evo"]["err"] += 1
+            else:
+                if update_row(client, r["sku_id"], new, r):
+                    stats["evo"]["ok"] += 1
+                    if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
+                        stats["evo"]["diff"] += 1
+                else:
+                    stats["evo"]["err"] += 1
+            if i % 50 == 0: print(f"  evo {i}/{len(evo_rows)}", flush=True)
+            time.sleep(0.1)
+    finally:
+        if evo_browser_cm is not None:
+            try:
+                evo_browser_cm.__exit__(None, None, None)
+            except Exception:
+                pass
 
     # ── REI: Camoufox (curl_cffi 在 AWS Lightsail 上被 Akamai 拒) ──
     if by_dealer.get("rei"):
@@ -374,18 +501,40 @@ def main():
                 except Exception: pass
                 time.sleep(2)
             time.sleep(2)
-            for i, r in enumerate(by_dealer["ssense"], 1):
-                new = fetch_ssense_pdp(sn_s, r["url"])
-                if not new: stats["ssense"]["err"] += 1
-                elif new.get("_unavailable"): stats["ssense"]["unavail"] += 1
-                elif new.get("_err"): stats["ssense"]["err"] += 1
-                else:
-                    if update_row(client, r["sku_id"], new, r):
-                        stats["ssense"]["ok"] += 1
-                        if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
-                            stats["ssense"]["diff"] += 1
-                if i % 10 == 0: print(f"  ssense {i}/{len(by_dealer['ssense'])}", flush=True)
-                time.sleep(0.4)
+            first_row = by_dealer["ssense"][0]
+            probe = fetch_ssense_pdp(sn_s, first_row["url"])
+            use_browser = bool(probe and probe.get("_err") in {"http 403", "cf_stub", "http 401", "http 429"})
+            if use_browser:
+                from camoufox.sync_api import Camoufox
+                print("  [ssense] direct HTTP blocked; switching to Camoufox", flush=True)
+                with Camoufox(headless=True, humanize=True, geoip=True) as browser:
+                    page = browser.new_page()
+                    page.set_default_navigation_timeout(90000)
+                    for i, r in enumerate(by_dealer["ssense"], 1):
+                        new = fetch_ssense_pdp_browser(page, r["url"])
+                        if not new: stats["ssense"]["err"] += 1
+                        elif new.get("_unavailable"): stats["ssense"]["unavail"] += 1
+                        elif new.get("_err"): stats["ssense"]["err"] += 1
+                        else:
+                            if update_row(client, r["sku_id"], new, r):
+                                stats["ssense"]["ok"] += 1
+                                if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
+                                    stats["ssense"]["diff"] += 1
+                        if i % 10 == 0: print(f"  ssense {i}/{len(by_dealer['ssense'])}", flush=True)
+                        time.sleep(0.4)
+            else:
+                for i, r in enumerate(by_dealer["ssense"], 1):
+                    new = fetch_ssense_pdp(sn_s, r["url"])
+                    if not new: stats["ssense"]["err"] += 1
+                    elif new.get("_unavailable"): stats["ssense"]["unavail"] += 1
+                    elif new.get("_err"): stats["ssense"]["err"] += 1
+                    else:
+                        if update_row(client, r["sku_id"], new, r):
+                            stats["ssense"]["ok"] += 1
+                            if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
+                                stats["ssense"]["diff"] += 1
+                    if i % 10 == 0: print(f"  ssense {i}/{len(by_dealer['ssense'])}", flush=True)
+                    time.sleep(0.4)
         except Exception as e:
             print(f"  SSENSE curl_cffi err: {e}", file=sys.stderr)
 
