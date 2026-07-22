@@ -47,6 +47,9 @@ jobs:
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_KEY"
 
+      - name: Verify MEC fallback browser runtime
+        run: python tools/check_mec_browser_runtime.py
+
       - name: Repair derived dealer discounts
         run: |
           python tools/repair_dealer_discounts.py --dealer mec --dealer evo --dealer rei --dealer ssense

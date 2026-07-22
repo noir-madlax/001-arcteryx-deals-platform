@@ -109,14 +109,17 @@ def _discount_pct(orig, sale) -> int:
 
 
 def should_preserve_previous_discount(
+    dealer: str,
     price_source_quality: str | None,
     new_sale,
     new_original,
     old_sale,
     old_original,
 ) -> bool:
-    """Keep a previously verified discount when a degraded list-only refresh loses it."""
+    """Only preserve stale discounts for dealers with known non-PDP fallback paths."""
     return bool(
+        dealer == "mec"
+        and
         price_source_quality == "list_fallback"
         and new_sale and new_original
         and abs(new_sale - new_original) < 0.01
@@ -227,6 +230,7 @@ def main():
                 new_sp, new_op = r.get("sale_price"), r.get("original_price")
                 old_sp, old_op = old.get("sale_price"), old.get("original_price")
                 if should_preserve_previous_discount(
+                    dkey,
                     r.get("_price_source_quality"),
                     new_sp,
                     new_op,

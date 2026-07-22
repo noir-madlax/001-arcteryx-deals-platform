@@ -5,6 +5,7 @@ from unittest.mock import patch
 from dealers.revalidate import (
     _evo_needs_browser_fallback,
     fetch_rei_pdp,
+    open_mec_revalidation_session,
     parse_evo_browser_snapshot,
     parse_ssense_html,
     underperforming_dealers,
@@ -26,6 +27,32 @@ class FakePage:
         if isinstance(value, Exception):
             raise value
         return value
+
+
+class FakeBrowserSession:
+    def __init__(self):
+        self.fetch_calls = []
+
+    def fetch(self, url, timeout=0):
+        self.fetch_calls.append((url, timeout))
+        return object()
+
+
+class FakeBrowserContext:
+    def __init__(self, session):
+        self.session = session
+        self.closed = False
+        self.kwargs = None
+
+    def __call__(self, **kwargs):
+        self.kwargs = kwargs
+        return self
+
+    def __enter__(self):
+        return self.session
+
+    def __exit__(self, exc_type, exc, tb):
+        self.closed = True
 
 
 def rei_html(price_markup: str, skus: str = "") -> str:
@@ -90,9 +117,28 @@ class DealerRevalidationTests(unittest.TestCase):
             "discount_pct": 75,
         })
 
-    def test_list_fallback_preserves_previous_discount(self):
-        self.assertTrue(should_preserve_previous_discount("list_fallback", 200, 200, 100, 200))
-        self.assertFalse(should_preserve_previous_discount("api", 200, 200, 49.83, 200))
+    def test_only_mec_list_fallback_preserves_previous_discount(self):
+        self.assertTrue(should_preserve_previous_discount("mec", "list_fallback", 200, 200, 100, 200))
+        self.assertFalse(should_preserve_previous_discount("evo", "list_fallback", 200, 200, 49.83, 200))
+        self.assertFalse(should_preserve_previous_discount("mec", "api", 200, 200, 49.83, 200))
+
+    def test_mec_revalidation_session_uses_scrapling_when_warm_fails(self):
+        browser_session = FakeBrowserSession()
+        browser_factory = FakeBrowserContext(browser_session)
+
+        session, cleanup, source = open_mec_revalidation_session(
+            session_factory=lambda: object(),
+            warm_fn=lambda _session: False,
+            browser_session_factory=browser_factory,
+            browser_shim_factory=lambda session: session,
+            warm_url="https://www.mec.ca/en/",
+        )
+
+        self.assertEqual(source, "scrapling")
+        self.assertIsNotNone(cleanup)
+        self.assertEqual(browser_session.fetch_calls, [("https://www.mec.ca/en/", 90000)])
+        cleanup.__exit__(None, None, None)
+        self.assertTrue(browser_factory.closed)
 
     def test_low_success_ratio_is_failure(self):
         stats = defaultdict(lambda: {"ok": 0, "unavail": 0})
@@ -149,6 +195,26 @@ class DealerRevalidationTests(unittest.TestCase):
             "sale_price": 160.0,
             "original_price": 200.0,
             "discount_pct": 20,
+        })
+
+    def test_ssense_html_prefers_pdp_price_markers_over_page_wide_line_through(self):
+        html = """
+        <html><body>
+        <span class="line-through">$300 USD</span>
+        <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"Product","offers":{"price":160,"priceCurrency":"USD"}}
+        </script>
+        <span data-test="salePriceText">$160 USD</span>
+        <span data-test="regularPriceText">$220 USD</span>
+        </body></html>
+        """
+
+        result = parse_ssense_html(html)
+
+        self.assertEqual(result, {
+            "sale_price": 160.0,
+            "original_price": 220.0,
+            "discount_pct": 27,
         })
 
 

@@ -263,6 +263,50 @@ def fetch_mec_pdp(session, url: str) -> dict | None:
         "symbol": "C$",
     }
 
+
+def open_mec_revalidation_session(
+    session_factory=None,
+    warm_fn=None,
+    browser_session_factory=None,
+    browser_shim_factory=None,
+    warm_url: str | None = None,
+):
+    """Use curl_cffi first, then Scrapling when MEC blocks the cookie warm-up flow."""
+    if session_factory is None or warm_fn is None or browser_shim_factory is None or warm_url is None:
+        from dealers.mec import HOST as MEC_HOST, _ScraplingShim, _make_session, _warm
+
+        session_factory = session_factory or _make_session
+        warm_fn = warm_fn or _warm
+        browser_shim_factory = browser_shim_factory or _ScraplingShim
+        warm_url = warm_url or f"{MEC_HOST}/en/"
+
+    session = session_factory()
+    if warm_fn(session):
+        return session, None, "curl_cffi"
+
+    if browser_session_factory is None:
+        from scrapling.fetchers import StealthySession
+
+        browser_session_factory = StealthySession
+
+    browser_ctx = None
+    try:
+        browser_ctx = browser_session_factory(
+            headless=True,
+            network_idle=True,
+            solve_cloudflare=True,
+        )
+        browser_session = browser_ctx.__enter__()
+        browser_session.fetch(warm_url, timeout=90000)
+        return browser_shim_factory(browser_session), browser_ctx, "scrapling"
+    except Exception:
+        if browser_ctx is not None:
+            try:
+                browser_ctx.__exit__(None, None, None)
+            except Exception:
+                pass
+        raise
+
 def fetch_ssense_pdp(session, url: str) -> dict | None:
     """SSENSE curl_cffi (impersonate=chrome) PDP. JSON-LD Product schema.
     URL 必须含 /en-us/ 前缀, 否则 SSENSE 返回 404 fallback (~400KB) 没价格."""
@@ -288,6 +332,14 @@ def parse_ssense_html(body: str) -> dict | None:
         cleaned = re.sub(r"[^0-9.]", "", value or "")
         return _num(cleaned)
 
+    def _extract_price_from_marker(marker: str) -> float | None:
+        match = re.search(
+            rf'data-test="{marker}"[^>]*>\s*([^<]+?)\s*</',
+            body,
+            flags=re.I | re.S,
+        )
+        return _money_text(match.group(1)) if match else None
+
     for m in re.finditer(r'<script[^>]+type="application/ld\+json"[^>]*>\s*(\{[^<]+?\})\s*</script>', body):
         try:
             d = json.loads(m.group(1))
@@ -295,10 +347,15 @@ def parse_ssense_html(body: str) -> dict | None:
             offer = d.get("offers") or {}
             sale = _num(offer.get("price"))
             if not sale: continue
-            original = None
-            mo = re.search(r'line-through[^>]*>\s*([^<]+?)\s*</span>', body)
-            if mo:
-                original = _money_text(mo.group(1))
+            marked_sale = _extract_price_from_marker("salePriceText")
+            marked_original = _extract_price_from_marker("regularPriceText")
+            if marked_sale:
+                sale = marked_sale
+            original = marked_original
+            if original is None:
+                mo = re.search(r'line-through[^>]*>\s*([^<]+?)\s*</span>', body)
+                if mo:
+                    original = _money_text(mo.group(1))
             if not original:
                 text_match = re.search(r'\$([0-9.,]+)\s*USD\s*\$([0-9.,]+)\s*USD', normalized)
                 if text_match:
@@ -483,12 +540,16 @@ def main():
     # ── MEC: curl_cffi (Chrome TLS 指纹, 不用浏览器) ──
     if by_dealer.get("mec"):
         print(f"\n[reval] MEC ({len(by_dealer['mec'])}) — curl_cffi", flush=True)
+        mec_browser_ctx = None
         try:
-            from dealers.mec import _make_session, _warm
-            mec_s = _make_session()
-            if not _warm(mec_s):
-                print("  [mec] warm failed, skip", file=sys.stderr)
-            else:
+            try:
+                mec_s, mec_browser_ctx, mec_source = open_mec_revalidation_session()
+                if mec_source == "scrapling":
+                    print("  [mec] curl_cffi warm failed; using Scrapling fallback", flush=True)
+            except Exception as e:
+                print(f"  [mec] fallback session failed: {type(e).__name__} {e}", file=sys.stderr)
+                mec_s = None
+            if mec_s is not None:
                 for i, r in enumerate(by_dealer["mec"], 1):
                     new = fetch_mec_pdp(mec_s, r["url"])
                     if not new: stats["mec"]["err"] += 1
@@ -503,6 +564,12 @@ def main():
                     time.sleep(0.4)
         except Exception as e:
             print(f"  MEC fetch err: {e}", file=sys.stderr)
+        finally:
+            if mec_browser_ctx is not None:
+                try:
+                    mec_browser_ctx.__exit__(None, None, None)
+                except Exception:
+                    pass
 
     # ── SSENSE: curl_cffi (Chrome TLS 指纹, 不用浏览器) ──
     if by_dealer.get("ssense"):
