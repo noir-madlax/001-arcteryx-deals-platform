@@ -143,6 +143,14 @@ def fetch_evo_pdp_browser(page, url: str) -> dict | None:
     return parsed or {"_err": "no_browser_price"}
 
 
+def _evo_needs_browser_fallback(result: dict | None) -> bool:
+    if not result:
+        return True
+    if result.get("_unavailable"):
+        return False
+    return bool(result.get("_err"))
+
+
 def _rei_variant_price(body: str, url: str) -> tuple[float, float] | None:
     """Return the cheapest available current-product SKU and its compare-at price."""
     product_match = re.search(r"/product/(\d+)/", url or "")
@@ -409,13 +417,20 @@ def main():
     try:
         for i, r in enumerate(evo_rows, 1):
             new = fetch_evo_pdp(r["url"])
-            if new and new.get("_err") and "HTTPError" in new.get("_err", "") and evo_browser is None:
-                from camoufox.sync_api import Camoufox
-                evo_browser_cm = Camoufox(headless=True, humanize=True, geoip=True)
-                evo_browser = evo_browser_cm.__enter__()
-                evo_page = evo_browser.new_page()
-                evo_page.set_default_navigation_timeout(90000)
-                new = fetch_evo_pdp_browser(evo_page, r["url"])
+            if _evo_needs_browser_fallback(new):
+                retry = fetch_evo_pdp(r["url"])
+                if retry and not retry.get("_err"):
+                    new = retry
+                elif retry and retry.get("_unavailable"):
+                    new = retry
+                else:
+                    if evo_browser is None:
+                        from camoufox.sync_api import Camoufox
+                        evo_browser_cm = Camoufox(headless=True, humanize=True, geoip=True)
+                        evo_browser = evo_browser_cm.__enter__()
+                        evo_page = evo_browser.new_page()
+                        evo_page.set_default_navigation_timeout(90000)
+                    new = fetch_evo_pdp_browser(evo_page, r["url"])
             if not new:
                 stats["evo"]["err"] += 1
             elif new.get("_unavailable"):

@@ -3,6 +3,7 @@ from collections import defaultdict
 from unittest.mock import patch
 
 from dealers.revalidate import (
+    _evo_needs_browser_fallback,
     fetch_rei_pdp,
     parse_evo_browser_snapshot,
     parse_ssense_html,
@@ -121,6 +122,16 @@ class DealerRevalidationTests(unittest.TestCase):
             "original_price": 400.0,
             "discount_pct": 30,
         })
+
+    def test_evo_browser_fallback_triggers_on_any_non_successful_direct_result(self):
+        self.assertTrue(_evo_needs_browser_fallback(None))
+        self.assertTrue(_evo_needs_browser_fallback({"_err": "http HTTPError"}))
+        self.assertFalse(_evo_needs_browser_fallback({"_unavailable": True}))
+        self.assertFalse(_evo_needs_browser_fallback({
+            "sale_price": 280.0,
+            "original_price": 400.0,
+            "discount_pct": 30,
+        }))
 
     def test_ssense_html_extracts_sale_and_original(self):
         html = """
