@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-23 18:10:48",
+  "generated_at": "2026-07-23 20:35:51",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6796,7 +6796,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 130,
+      "count": 131,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
@@ -7759,6 +7759,18 @@
           "region": "CA"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-528/arcteryx-cormac-logo-short-sleeve-mens",
+          "name": "Arc'teryx Cormac Logo Short Sleeve - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533779_source_1776427418.jpg",
+          "color": "Black",
+          "sale_price": 100.0,
+          "original_price": 100.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6037-662/arcteryx-ossa-jacket-mens",
           "name": "Arc'teryx Ossa Jacket - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518947_source_1782142568.png",
@@ -8359,7 +8371,7 @@
           "region": "CA"
         }
       ],
-      "refreshed_at": "2026-07-23 15:29:19"
+      "refreshed_at": "2026-07-23 20:35:51"
     },
     "rei": {
       "name": "REI",
@@ -9811,10 +9823,8 @@
       "refreshed_at": "2026-07-23 18:10:47"
     }
   },
-  "total": 449,
+  "total": 450,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
