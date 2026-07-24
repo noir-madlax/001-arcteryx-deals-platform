@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-24 18:15:43",
+  "generated_at": "2026-07-24 20:44:47",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6793,7 +6793,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 142,
+      "count": 140,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-693/arcteryx-beta-jacket-mens",
@@ -7050,7 +7050,7 @@
         {
           "url": "https://www.mec.ca/en/product/6036-464/arcteryx-gamma-superlight-short-11in-mens",
           "name": "Arc'teryx Gamma Superlight Short 11in - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509433_source_1747386696.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509321_source_1747386695.jpg",
           "color": "Black",
           "sale_price": 150.0,
           "original_price": 150.0,
@@ -7398,7 +7398,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-530/arcteryx-gamma-lightweight-hoodie-mens",
           "name": "Arc'teryx Gamma Lightweight Hoodie - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533756_source_1775153131.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533819_source_1775153132.jpg",
           "color": "Void",
           "sale_price": 340.0,
           "original_price": 340.0,
@@ -7462,18 +7462,6 @@
           "color": "Lt Renegade",
           "sale_price": 260.0,
           "original_price": 260.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6040-310/arcteryx-kopec-2-gore-tex-hiking-shoes-womens",
-          "name": "Arc'teryx Kopec 2 Gore-Tex Hiking Shoes - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555951_source_1783013206.jpg",
-          "color": "Black/Black",
-          "sale_price": 230.0,
-          "original_price": 230.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -7794,7 +7782,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-648/arcteryx-squamish-hoodie-womens",
           "name": "Arc'teryx Squamish Hoodie - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519017_source_1776715537.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518886_source_1776715530.jpg",
           "color": "Shincha",
           "sale_price": 260.0,
           "original_price": 260.0,
@@ -7988,18 +7976,6 @@
           "name": "Arc'teryx Covert Cardigan - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560752_source_1784846173.jpg",
           "color": "Mongoose Heather",
-          "sale_price": 230.0,
-          "original_price": 230.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6040-309/arcteryx-kopec-2-gore-tex-hiking-shoes-mens",
-          "name": "Arc'teryx Kopec 2 Gore-Tex Hiking Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560636_source_1784846161.jpg",
-          "color": "Black/Black",
           "sale_price": 230.0,
           "original_price": 230.0,
           "discount_pct": 0,
@@ -8500,7 +8476,7 @@
           "region": "CA"
         }
       ],
-      "refreshed_at": "2026-07-24 15:13:01"
+      "refreshed_at": "2026-07-24 20:44:47"
     },
     "rei": {
       "name": "REI",
@@ -9988,10 +9964,8 @@
       "refreshed_at": "2026-07-24 18:15:43"
     }
   },
-  "total": 463,
+  "total": 461,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
