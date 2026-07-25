@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-25 20:41:56",
+  "generated_at": "2026-07-25 22:01:05",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6796,7 +6796,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 146,
+      "count": 148,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-693/arcteryx-beta-jacket-mens",
@@ -8071,6 +8071,30 @@
           "region": "CA"
         },
         {
+          "url": "https://www.mec.ca/en/product/6039-098/arcteryx-atom-vest-mens",
+          "name": "Arc'teryx Atom Vest - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529255_source_1757627408.jpg",
+          "color": "Black Sapphire",
+          "sale_price": 260.0,
+          "original_price": 260.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA"
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6021-319/arcteryx-cerium-hoody-mens",
+          "name": "Arc'teryx Cerium Hoody - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/414053_source_1763159208.jpg",
+          "color": "Black Sapphire",
+          "sale_price": 520.0,
+          "original_price": 520.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6020-667/arcteryx-emblem-fleece-crew-womens",
           "name": "Arc'teryx Emblem Fleece Crew - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/512815_source_1772539301.jpg",
@@ -8409,8 +8433,8 @@
         {
           "url": "https://www.mec.ca/en/product/6034-790/arcteryx-kragg-superlight-cotton-bird-word-short-sleeve-mens",
           "name": "Arc'teryx Kragg Superlight Cotton Bird Word Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529394_source_1771544532.jpg",
-          "color": "Alpine Blue/Stone Red",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529390_source_1758559549.jpg",
+          "color": "24k Black",
           "sale_price": 90.0,
           "original_price": 90.0,
           "discount_pct": 0,
@@ -8551,7 +8575,7 @@
           "region": "CA"
         }
       ],
-      "refreshed_at": "2026-07-25 17:21:11"
+      "refreshed_at": "2026-07-25 22:01:05"
     },
     "rei": {
       "name": "REI",
@@ -10033,10 +10057,8 @@
       "refreshed_at": "2026-07-25 20:41:56"
     }
   },
-  "total": 465,
+  "total": 467,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
