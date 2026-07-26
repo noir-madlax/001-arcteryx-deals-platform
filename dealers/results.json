@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-26 20:48:13",
+  "generated_at": "2026-07-26 23:15:20",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -7231,7 +7231,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-528/arcteryx-cormac-logo-short-sleeve-mens",
           "name": "Arc'teryx Cormac Logo Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533902_source_1776427419.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533779_source_1776427418.jpg",
           "color": "Black",
           "sale_price": 100.0,
           "original_price": 100.0,
@@ -8672,12 +8672,12 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6034-675/arcteryx-beta-ar-jacket-mens",
-          "name": "Arc'teryx Beta AR Jacket - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519018_source_1771544470.jpg",
-          "color": "Fluidity/Vitality",
-          "sale_price": 800.0,
-          "original_price": 800.0,
+          "url": "https://www.mec.ca/en/product/6037-625/arcteryx-gamma-short-9-womens",
+          "name": "Arc'teryx Gamma Short 9\" - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534053_source_1775476845.jpg",
+          "color": "HABITAT",
+          "sale_price": 150.0,
+          "original_price": 150.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8685,12 +8685,12 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-625/arcteryx-gamma-short-9-womens",
-          "name": "Arc'teryx Gamma Short 9\" - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534026_source_1775476844.jpg",
-          "color": "HABITAT",
-          "sale_price": 150.0,
-          "original_price": 150.0,
+          "url": "https://www.mec.ca/en/product/6034-675/arcteryx-beta-ar-jacket-mens",
+          "name": "Arc'teryx Beta AR Jacket - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519018_source_1771544470.jpg",
+          "color": "Fluidity/Vitality",
+          "sale_price": 800.0,
+          "original_price": 800.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8711,7 +8711,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-07-26 17:20:39"
+      "refreshed_at": "2026-07-26 23:15:20"
     },
     "rei": {
       "name": "REI",
@@ -10240,8 +10240,6 @@
   },
   "total": 470,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
