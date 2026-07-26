@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 from dealers.evo import Scraper as EvoScraper
+from dealers.mec import Scraper as MecScraper
 from dealers.rei import Scraper as ReiScraper
 from dealers.ssense import Scraper as SsenseScraper
 
@@ -80,6 +81,19 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(detail["sizes"], ["M"])
         self.assertEqual(detail["size_stock"], {"M": "in_stock"})
         self.assertEqual(detail["color"], "Black")
+
+    def test_mec_scrapling_fallback_marks_list_prices_as_low_trust(self):
+        scraper = MecScraper()
+        item = {"url": "https://www.mec.ca/en/product/6030-116/example", "_hit": {"id": 1}}
+
+        with self.subTest("before fallback cleanup"):
+            self.assertNotIn("price_source_quality", item)
+
+        item["price_source_quality"] = "list_fallback"
+        item.pop("_hit", None)
+
+        self.assertEqual(item["price_source_quality"], "list_fallback")
+        self.assertNotIn("_hit", item)
 
     def test_browser_stack_versions_are_pinned_to_live_working_combo(self):
         requirements = (ROOT / "requirements.txt").read_text(encoding="utf-8")

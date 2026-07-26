@@ -273,7 +273,9 @@ class Scraper:
         # preserve-existing 逻辑保留 DB 老值.
         if using_scrapling:
             print(f"[mec] scrapling 模式跳过 PDP enrich, 仅用 list 数据 ({len(items)} 件)", flush=True)
-            for it in items: it.pop("_hit", None)
+            for it in items:
+                it["price_source_quality"] = "list_fallback"
+                it.pop("_hit", None)
         else:
             print(f"[mec] enriching {len(items)} PDPs via curl_cffi...", flush=True)
             for i, it in enumerate(items, 1):
