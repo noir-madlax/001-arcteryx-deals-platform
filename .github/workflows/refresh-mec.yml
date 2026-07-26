@@ -30,6 +30,7 @@ jobs:
     outputs:
       acquired: ${{ steps.lease.outputs.acquired }}
       owner: ${{ steps.lease.outputs.owner }}
+      lease_owned: ${{ steps.lease.outputs.lease_owned }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -43,15 +44,24 @@ jobs:
         run: |
           owner="github-actions-mec-${GITHUB_RUN_ID}"
           should_run="$FORCE_RUN"
+          lease_owned=false
           if [ "$should_run" != "true" ]; then
             should_run=$(python tools/crawler_lease.py needs-fallback --scope mec --stale-hours 3.1)
           fi
           acquired=false
           if [ "$should_run" = "true" ]; then
-            acquired=$(python tools/crawler_lease.py acquire --scope mec --owner "$owner" --ttl-minutes 90)
+            if [ "$FORCE_RUN" = "true" ]; then
+              acquired=true
+            else
+              acquired=$(python tools/crawler_lease.py acquire --scope mec --owner "$owner" --ttl-minutes 90)
+              if [ "$acquired" = "true" ]; then
+                lease_owned=true
+              fi
+            fi
           fi
           echo "owner=$owner" >> "$GITHUB_OUTPUT"
           echo "acquired=$acquired" >> "$GITHUB_OUTPUT"
+          echo "lease_owned=$lease_owned" >> "$GITHUB_OUTPUT"
 
   refresh-mec:
     needs: lease-gate
@@ -110,7 +120,7 @@ jobs:
         run: python tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
 
       - name: Release MEC lease
-        if: always()
+        if: always() && needs.lease-gate.outputs.lease_owned == 'true'
         env:
           LEASE_OWNER: ${{ needs.lease-gate.outputs.owner }}
           JOB_STATUS: ${{ job.status }}
