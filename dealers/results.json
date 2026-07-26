@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-25 23:53:38",
+  "generated_at": "2026-07-26 04:47:07",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6793,7 +6793,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 148,
+      "count": 149,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-693/arcteryx-beta-jacket-mens",
@@ -6892,24 +6892,24 @@
           "region": "CA"
         },
         {
-          "url": "https://www.mec.ca/en/product/6034-766/arcteryx-konseal-gore-tex-approach-shoes-mens",
-          "name": "Arc'teryx Konseal Gore-Tex Approach Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533809_source_1768950394.jpg",
-          "color": "Black/Black",
-          "sale_price": 280.0,
-          "original_price": 280.0,
+          "url": "https://www.mec.ca/en/product/6032-439/arcteryx-atom-hoodie-womens",
+          "name": "Arc'teryx Atom Hoodie - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560773_source_1784846221.jpg",
+          "color": "Alpine Rose",
+          "sale_price": 380.0,
+          "original_price": 380.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA"
         },
         {
-          "url": "https://www.mec.ca/en/product/6032-439/arcteryx-atom-hoodie-womens",
-          "name": "Arc'teryx Atom Hoodie - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518427_source_1779210372.jpg",
-          "color": "Pineberry",
-          "sale_price": 360.0,
-          "original_price": 360.0,
+          "url": "https://www.mec.ca/en/product/6034-766/arcteryx-konseal-gore-tex-approach-shoes-mens",
+          "name": "Arc'teryx Konseal Gore-Tex Approach Shoes - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533809_source_1768950394.jpg",
+          "color": "Black/Black",
+          "sale_price": 280.0,
+          "original_price": 280.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8560,6 +8560,18 @@
           "region": "CA"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-625/arcteryx-gamma-short-9-womens",
+          "name": "Arc'teryx Gamma Short 9\" - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534026_source_1775476844.jpg",
+          "color": "HABITAT",
+          "sale_price": 150.0,
+          "original_price": 150.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-785/arcteryx-rho-base-layer-bottoms-womens",
           "name": "Arc'teryx Rho Base Layer Bottoms - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509242_source_1783425700.png",
@@ -8572,7 +8584,7 @@
           "region": "CA"
         }
       ],
-      "refreshed_at": "2026-07-25 22:01:05"
+      "refreshed_at": "2026-07-26 04:47:07"
     },
     "rei": {
       "name": "REI",
@@ -10042,10 +10054,8 @@
       "refreshed_at": "2026-07-25 23:53:38"
     }
   },
-  "total": 467,
+  "total": 468,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
