@@ -116,14 +116,16 @@ def should_preserve_previous_discount(
     old_sale,
     old_original,
 ) -> bool:
-    """Don't let low-trust list fallback erase a previously captured discount."""
-    return bool(
-        price_source_quality == "list_fallback"
-        and new_sale and new_original
-        and abs(new_sale - new_original) < 0.01
-        and old_sale and old_original
-        and old_sale < old_original - 0.01
-    )
+    """Don't let low-trust list fallback erase or inflate a trusted PDP discount."""
+    if price_source_quality != "list_fallback":
+        return False
+    if not (new_sale and new_original and old_sale and old_original):
+        return False
+    if old_sale >= old_original - 0.01:
+        return False
+    if abs(new_sale - new_original) < 0.01:
+        return True
+    return abs(new_sale - old_sale) < 0.01 and new_original > old_original + 0.01
 
 def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
     name = it.get("name") or ""
