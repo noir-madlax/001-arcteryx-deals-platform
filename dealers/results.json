@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-27 18:25:45",
+  "generated_at": "2026-07-27 20:49:23",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6984,7 +6984,7 @@
           "url": "https://www.mec.ca/en/product/6034-768/arcteryx-norvan-ld-4-gore-tex-trail-run-womens",
           "name": "Arc'teryx Norvan LD 4 Gore-Tex Trail Run - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560882_source_1784846226.jpg",
-          "color": "Black/Black, Dk Alpine Rose/Dk Alpine, Forage/Ray",
+          "color": "Black/Black, Dk Alpine Rose/Dk Alpine",
           "sale_price": 166.4,
           "original_price": 260.0,
           "discount_pct": 36,
@@ -7019,8 +7019,7 @@
           },
           "colors": [
             "Black/Black",
-            "Dk Alpine Rose/Dk Alpine",
-            "Forage/Ray"
+            "Dk Alpine Rose/Dk Alpine"
           ]
         },
         {
@@ -7226,7 +7225,7 @@
         {
           "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
           "name": "Arc'teryx Covert Cardigan - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517316_source_1774556219.png",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/493675_source_1753980942.jpg",
           "color": "Black Heather II, Cloud Heather/Void, Dark Stratus Heather/Blac, Habitat Heather, Moondrop Heather",
           "sale_price": 49.93,
           "original_price": 220.0,
@@ -10393,31 +10392,24 @@
           ]
         },
         {
-          "url": "https://www.mec.ca/en/product/6040-469/arcteryx-kragg-sl-cotton-jug-short-sleeve-mens",
-          "name": "Arc'teryx Kragg SL Cotton Jug Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560644_source_1784846162.jpg",
-          "color": "Black/Violectric, Sea Salt/Vitality",
-          "sale_price": 90.0,
-          "original_price": 90.0,
+          "url": "https://www.mec.ca/en/product/6040-611/arcteryx-bird-word-toque-unisex",
+          "name": "Arc'teryx Bird Word Toque - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560586_source_1784846159.jpg",
+          "color": "Orca",
+          "sale_price": 80.0,
+          "original_price": 80.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
           "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large"
+            "One Size"
           ],
           "size_stock": {
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock"
+            "One Size": "in_stock"
           },
           "colors": [
-            "Black/Violectric",
-            "Sea Salt/Vitality"
+            "Orca"
           ]
         },
         {
@@ -11235,7 +11227,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-625/arcteryx-gamma-short-9-womens",
           "name": "Arc'teryx Gamma Short 9\" - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533984_source_1775476842.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534053_source_1775476845.jpg",
           "color": "HABITAT",
           "sale_price": 127.5,
           "original_price": 150.0,
@@ -11357,7 +11349,7 @@
           ]
         }
       ],
-      "refreshed_at": "2026-07-27 15:56:36"
+      "refreshed_at": "2026-07-27 20:49:23"
     },
     "rei": {
       "name": "REI",
@@ -12829,7 +12821,6 @@
   },
   "total": 464,
   "fresh_dealers": [
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
