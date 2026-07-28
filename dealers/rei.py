@@ -27,9 +27,7 @@ class Scraper:
     NAME   = "REI"
     REGION = "US"
 
-    LIST_URLS = [
-        "https://www.rei.com/search?q=arcteryx",
-    ]
+    BASE_LIST_URL = "https://www.rei.com/search?q=arcteryx"
 
     # Card 标志：
     # <a href="/product/<id>/<slug>"> ... <img alt="Arc'teryx <name> 0">
@@ -56,9 +54,16 @@ class Scraper:
     NAV_TIMEOUT_MS = 45000
     DETAIL_TIMEOUT_MS = 20000
     MIN_LIST_ITEMS = 10
+    DEFAULT_MAX_PAGES = 4
 
     def __init__(self):
         self.crawl_complete = False
+
+    def list_urls(self) -> list[str]:
+        max_pages = _env_int("REI_MAX_PAGES", self.DEFAULT_MAX_PAGES, 1)
+        urls = [self.BASE_LIST_URL]
+        urls.extend(f"{self.BASE_LIST_URL}&page={page}" for page in range(2, max_pages + 1))
+        return urls
 
     def parse_detail(self, body: str) -> dict:
         """REI PDP: 抓 size buttons + color swatch"""
@@ -136,7 +141,8 @@ class Scraper:
             print("[rei] warm: home")
             page.goto(f"{HOST}/", wait_until="domcontentloaded", timeout=self.NAV_TIMEOUT_MS)
             time.sleep(2)
-            for list_url in self.LIST_URLS:
+            list_urls = self.list_urls()
+            for page_index, list_url in enumerate(list_urls, 1):
                 print(f"[rei] {list_url}", flush=True)
                 try:
                     page.goto(list_url, wait_until="domcontentloaded", timeout=self.NAV_TIMEOUT_MS)
@@ -172,9 +178,10 @@ class Scraper:
                 # find all product anchor positions
                 positions = [(m.start(), m.group(1), m.group(2)) for m in self.URL_RE.finditer(body)]
                 unique_position_ids = {pid for _, pid, _ in positions}
+                before_count = len(items)
                 if len(unique_position_ids) >= self.MIN_LIST_ITEMS:
                     successful_lists += 1
-                else:
+                elif page_index == 1:
                     print(
                         f"[rei] WARNING: list only exposed {len(unique_position_ids)} unique products; scope incomplete",
                         flush=True,
@@ -237,12 +244,16 @@ class Scraper:
                         "region":         self.REGION,
                         "price_source_quality": "list_fallback",
                     })
-                print(f"[rei] list +{len(items)} (total)")
+                page_new = len(items) - before_count
+                print(f"[rei] list page {page_index} +{page_new} (total {len(items)})", flush=True)
+                if page_index > 1 and page_new == 0:
+                    print(f"[rei] page {page_index} added no new products; stopping pagination", flush=True)
+                    break
             if _env_bool("REI_ENRICH_DETAILS", False):
                 self.enrich_details(browser, items)
             else:
                 print("[rei] detail enrichment disabled (set REI_ENRICH_DETAILS=1 to enable)", flush=True)
-        self.crawl_complete = successful_lists == len(self.LIST_URLS) and bool(items)
+        self.crawl_complete = successful_lists >= 1 and bool(items)
         return items
 
 

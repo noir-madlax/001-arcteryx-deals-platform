@@ -82,6 +82,18 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(detail["size_stock"], {"M": "in_stock"})
         self.assertEqual(detail["color"], "Black")
 
+    def test_rei_list_urls_paginate_search_results(self):
+        scraper = ReiScraper()
+        self.assertEqual(
+            scraper.list_urls(),
+            [
+                "https://www.rei.com/search?q=arcteryx",
+                "https://www.rei.com/search?q=arcteryx&page=2",
+                "https://www.rei.com/search?q=arcteryx&page=3",
+                "https://www.rei.com/search?q=arcteryx&page=4",
+            ],
+        )
+
     def test_mec_scrapling_fallback_marks_list_prices_as_low_trust(self):
         scraper = MecScraper()
         item = {"url": "https://www.mec.ca/en/product/6030-116/example", "_hit": {"id": 1}}
