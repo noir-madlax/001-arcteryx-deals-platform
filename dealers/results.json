@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-28 01:27:01",
+  "generated_at": "2026-07-28 04:34:25",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6752,7 +6752,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 148,
+      "count": 146,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
@@ -8211,19 +8211,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6040-611/arcteryx-bird-word-toque-unisex",
-          "name": "Arc'teryx Bird Word Toque - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560586_source_1784846159.jpg",
-          "color": "Orca",
-          "sale_price": 80.0,
-          "original_price": 80.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6037-525/arcteryx-cormac-crew-short-sleeve-mens",
           "name": "Arc'teryx Cormac Crew Short Sleeve - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560878_source_1784846226.jpg",
@@ -8253,19 +8240,6 @@
           "url": "https://www.mec.ca/en/product/6030-494/arcteryx-mantis-2-waist-pack-unisex",
           "name": "Arc'teryx Mantis 2 Waist Pack - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/493670_source_1745313831.jpg",
-          "color": "24k Black",
-          "sale_price": 60.0,
-          "original_price": 60.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6040-688/arcteryx-index-10-gear-organizer",
-          "name": "Arc'teryx Index 10 Gear Organizer",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555821_source_1782759948.png",
           "color": "24k Black",
           "sale_price": 60.0,
           "original_price": 60.0,
@@ -8679,7 +8653,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-07-28 01:01:09"
+      "refreshed_at": "2026-07-28 04:34:25"
     },
     "rei": {
       "name": "REI",
@@ -10176,10 +10150,8 @@
       "refreshed_at": "2026-07-28 01:27:01"
     }
   },
-  "total": 466,
+  "total": 464,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
