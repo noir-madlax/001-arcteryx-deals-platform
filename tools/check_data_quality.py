@@ -267,6 +267,12 @@ def validate(
         for dealer in sorted(required_dealers):
             if by_dealer.get(dealer, 0) == 0:
                 errors["missing_dealer_rows"].append({"dealer": dealer})
+            elif by_dealer.get(dealer, 0) < min_rows:
+                errors["dealer_below_min_rows"].append({
+                    "dealer": dealer,
+                    "row_count": by_dealer.get(dealer, 0),
+                    "min_rows": min_rows,
+                })
 
     if max_age_hours is not None and timestamps:
         latest = max(timestamps)

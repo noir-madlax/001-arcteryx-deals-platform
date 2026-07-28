@@ -11,10 +11,70 @@ from dealers.supabase_sync import (
     recovered_url_health,
 )
 from tools.check_mec_partial import validate_partial
-from tools.check_data_quality import product_freshness_timestamp
+from tools.check_data_quality import product_freshness_timestamp, validate
 
 
 class DealerFreshnessTests(unittest.TestCase):
+    def test_validate_requires_min_rows_for_each_requested_dealer(self):
+        rows = [
+            {
+                "sku_id": f"rei-{i}",
+                "dealer": "rei",
+                "status": "active",
+                "sale_price": 100,
+                "original_price": 150,
+                "discount_pct": 33,
+                "currency": "USD",
+                "symbol": "$",
+                "gender": "men",
+                "region": "us",
+                "url": f"https://example.com/rei/{i}",
+                "last_updated": "2026-07-28T15:59:12+00:00",
+            }
+            for i in range(21)
+        ] + [
+            {
+                "sku_id": f"ssense-{i}",
+                "dealer": "ssense",
+                "status": "active",
+                "sale_price": 100,
+                "original_price": 150,
+                "discount_pct": 33,
+                "currency": "USD",
+                "symbol": "$",
+                "gender": "men",
+                "region": "us",
+                "url": f"https://example.com/ssense/{i}",
+                "last_updated": "2026-07-28T16:03:35+00:00",
+            }
+            for i in range(46)
+        ] + [
+            {
+                "sku_id": f"evo-{i}",
+                "dealer": "evo",
+                "status": "active",
+                "sale_price": 100,
+                "original_price": 150,
+                "discount_pct": 33,
+                "currency": "USD",
+                "symbol": "$",
+                "gender": "men",
+                "region": "us",
+                "url": f"https://example.com/evo/{i}",
+                "last_updated": "2026-07-28T15:56:26+00:00",
+            }
+            for i in range(50)
+        ]
+        rc = validate(
+            rows,
+            max_age_hours=36,
+            max_product_age_hours=72,
+            min_rows=50,
+            required_dealers={"evo", "rei", "ssense"},
+            forbidden_regions=None,
+        )
+        self.assertEqual(rc, 1)
+
     def test_dealer_product_freshness_uses_last_updated(self):
         ts = product_freshness_timestamp({
             "dealer": "rei",
