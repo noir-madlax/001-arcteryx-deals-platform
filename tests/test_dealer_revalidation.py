@@ -3,7 +3,9 @@ from collections import defaultdict
 from unittest.mock import patch
 
 from dealers.revalidate import (
+    _evo_choose_more_informative_price,
     _evo_needs_browser_fallback,
+    _evo_should_confirm_with_browser,
     fetch_rei_pdp,
     open_mec_revalidation_session,
     parse_evo_browser_snapshot,
@@ -180,6 +182,34 @@ class DealerRevalidationTests(unittest.TestCase):
             "original_price": 400.0,
             "discount_pct": 30,
         }))
+
+    def test_evo_browser_confirmation_targets_full_price_direct_results(self):
+        self.assertTrue(_evo_should_confirm_with_browser({
+            "sale_price": 180.0,
+            "original_price": 180.0,
+            "discount_pct": 0,
+        }))
+        self.assertFalse(_evo_should_confirm_with_browser({
+            "sale_price": 119.99,
+            "original_price": 180.0,
+            "discount_pct": 33,
+        }))
+        self.assertFalse(_evo_should_confirm_with_browser({"_err": "http HTTPError"}))
+
+    def test_evo_browser_price_overrides_flat_direct_snapshot_when_discounted(self):
+        direct = {
+            "sale_price": 180.0,
+            "original_price": 180.0,
+            "discount_pct": 0,
+        }
+        browser = {
+            "sale_price": 119.99,
+            "original_price": 180.0,
+            "discount_pct": 33,
+        }
+
+        self.assertEqual(_evo_choose_more_informative_price(direct, browser), browser)
+        self.assertEqual(_evo_choose_more_informative_price(direct, {"_err": "goto TimeoutError"}), direct)
 
     def test_ssense_html_extracts_sale_and_original(self):
         html = """

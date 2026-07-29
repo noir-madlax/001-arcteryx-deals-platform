@@ -151,6 +151,39 @@ def _evo_needs_browser_fallback(result: dict | None) -> bool:
     return bool(result.get("_err"))
 
 
+def _evo_should_confirm_with_browser(result: dict | None) -> bool:
+    """Shopify .js can return an in-stock full-price snapshot while PDP shows a sale."""
+    if not result or result.get("_err") or result.get("_unavailable"):
+        return False
+    sale = _num(result.get("sale_price"))
+    original = _num(result.get("original_price"))
+    if not sale or not original:
+        return False
+    return abs(sale - original) < 0.01
+
+
+def _evo_choose_more_informative_price(direct_result: dict | None, browser_result: dict | None) -> dict | None:
+    if not browser_result or browser_result.get("_err") or browser_result.get("_unavailable"):
+        return direct_result
+    if not direct_result or direct_result.get("_err") or direct_result.get("_unavailable"):
+        return browser_result
+
+    direct_sale = _num(direct_result.get("sale_price"))
+    direct_original = _num(direct_result.get("original_price"))
+    browser_sale = _num(browser_result.get("sale_price"))
+    browser_original = _num(browser_result.get("original_price"))
+    if not browser_sale or not browser_original:
+        return direct_result
+    if not direct_sale or not direct_original:
+        return browser_result
+
+    if browser_original > browser_sale + 0.01 and (
+        abs(direct_sale - direct_original) < 0.01 or browser_sale < direct_sale - 0.01
+    ):
+        return browser_result
+    return direct_result
+
+
 def _rei_variant_price(body: str, url: str) -> tuple[float, float] | None:
     """Return the cheapest available current-product SKU and its compare-at price."""
     product_match = re.search(r"/product/(\d+)/", url or "")
@@ -488,6 +521,17 @@ def main():
                         evo_page = evo_browser.new_page()
                         evo_page.set_default_navigation_timeout(90000)
                     new = fetch_evo_pdp_browser(evo_page, r["url"])
+            elif _evo_should_confirm_with_browser(new):
+                if evo_browser is None:
+                    from camoufox.sync_api import Camoufox
+                    evo_browser_cm = Camoufox(headless=True, humanize=True, geoip=True)
+                    evo_browser = evo_browser_cm.__enter__()
+                    evo_page = evo_browser.new_page()
+                    evo_page.set_default_navigation_timeout(90000)
+                new = _evo_choose_more_informative_price(
+                    new,
+                    fetch_evo_pdp_browser(evo_page, r["url"]),
+                )
             if not new:
                 stats["evo"]["err"] += 1
             elif new.get("_unavailable"):
