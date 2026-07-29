@@ -202,39 +202,25 @@ class Scraper:
         expected_pages = 0
         print("[evo] Shopify JSON blocked; using Camoufox collection fallback", flush=True)
         with Camoufox(headless=True, humanize=True, geoip=True) as browser:
-            page = browser.new_page()
-            page.set_default_navigation_timeout(90000)
             for gender, slug in self.BROWSER_COLLECTIONS:
                 base_url = f"{HOST}/collections/{slug}"
                 page_number = 1
                 max_page = 1
                 page_count_discovered = False
                 while page_number <= max_page:
-                    url = base_url if page_number == 1 else f"{base_url}?numResults=40&page={page_number}"
                     try:
-                        response = page.goto(url, wait_until="domcontentloaded", timeout=90000)
-                        page.wait_for_timeout(3500)
-                        if not response or response.status != 200:
-                            raise RuntimeError(f"HTTP {response.status if response else 'unknown'}")
-                        snapshot = self._browser_snapshot(page)
-                        scope_items = self.parse_browser_snapshot(snapshot, gender)
+                        scope_items, discovered_max_page = self._fetch_browser_page(
+                            browser=browser,
+                            base_url=base_url,
+                            slug=slug,
+                            gender=gender,
+                            page_number=page_number,
+                            max_page=max_page,
+                        )
                         if page_number == 1:
-                            pagination_urls = page.locator(
-                                f'a[href*="/collections/{slug}"][href*="page="]'
-                            ).evaluate_all("els => [...new Set(els.map(a => a.href))]")
-                            page_numbers = [
-                                int(match.group(1))
-                                for href in pagination_urls
-                                if (match := re.search(r"[?&]page=(\d+)", href))
-                            ]
-                            max_page = max(page_numbers or [1])
+                            max_page = discovered_max_page
                             expected_pages += max_page
                             page_count_discovered = True
-                        minimum_items = 40 if page_number < max_page else 1
-                        if len(scope_items) < minimum_items:
-                            raise RuntimeError(
-                                f"rendered page contained only {len(scope_items)} Arc'teryx products; expected at least {minimum_items}"
-                            )
                     except Exception as exc:
                         if page_number == 1 and not page_count_discovered:
                             expected_pages += 1
@@ -252,6 +238,63 @@ class Scraper:
                     print(f"[evo] browser {slug} page {page_number}/{max_page}: +{added} ({len(scope_items)} parsed)", flush=True)
                     page_number += 1
         return out, expected_pages > 0 and successful_pages == expected_pages
+
+    @staticmethod
+    def _close_page(page) -> None:
+        try:
+            page.close()
+        except Exception:
+            pass
+
+    def _fetch_browser_page(
+        self,
+        browser,
+        base_url: str,
+        slug: str,
+        gender: str,
+        page_number: int,
+        max_page: int,
+    ) -> tuple[list[dict], int]:
+        attempts = max(1, int(os.environ.get("EVO_BROWSER_PAGE_RETRIES", "3")))
+        url = base_url if page_number == 1 else f"{base_url}?numResults=40&page={page_number}"
+        last_error = RuntimeError("unknown browser page failure")
+        for attempt in range(1, attempts + 1):
+            page = browser.new_page()
+            page.set_default_navigation_timeout(90000)
+            try:
+                response = page.goto(url, wait_until="domcontentloaded", timeout=90000)
+                page.wait_for_timeout(3500)
+                if not response or response.status != 200:
+                    raise RuntimeError(f"HTTP {response.status if response else 'unknown'}")
+                snapshot = self._browser_snapshot(page)
+                scope_items = self.parse_browser_snapshot(snapshot, gender)
+                discovered_max_page = max_page
+                if page_number == 1:
+                    pagination_urls = page.locator(
+                        f'a[href*="/collections/{slug}"][href*="page="]'
+                    ).evaluate_all("els => [...new Set(els.map(a => a.href))]")
+                    page_numbers = [
+                        int(match.group(1))
+                        for href in pagination_urls
+                        if (match := re.search(r"[?&]page=(\d+)", href))
+                    ]
+                    discovered_max_page = max(page_numbers or [1])
+                minimum_items = 40 if page_number < discovered_max_page else 1
+                if len(scope_items) < minimum_items:
+                    raise RuntimeError(
+                        f"rendered page contained only {len(scope_items)} Arc'teryx products; expected at least {minimum_items}"
+                    )
+                return scope_items, discovered_max_page
+            except Exception as exc:
+                last_error = exc
+                if attempt < attempts:
+                    print(
+                        f"[evo] browser page retry {slug}/{page_number} attempt {attempt}/{attempts}: {str(exc)[:160]}",
+                        flush=True,
+                    )
+            finally:
+                self._close_page(page)
+        raise last_error
 
     def _scrape_http(self) -> tuple[list[dict], bool]:
         out = []

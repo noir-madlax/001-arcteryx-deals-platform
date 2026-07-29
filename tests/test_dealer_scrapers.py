@@ -51,6 +51,69 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(items[0]["discount_pct"], 25)
         self.assertTrue(items[0]["in_stock"])
 
+    def test_evo_browser_page_retry_recovers_from_single_timeout(self):
+        scraper = EvoScraper()
+
+        class FakeResponse:
+            status = 200
+
+        class FakeLocator:
+            def evaluate_all(self, _script):
+                return [
+                    "https://www.evo.com/collections/arcteryx?page=2",
+                    "https://www.evo.com/collections/arcteryx?page=3",
+                ]
+
+        class FakePage:
+            def __init__(self, index):
+                self.index = index
+                self.closed = False
+
+            def set_default_navigation_timeout(self, _timeout):
+                return None
+
+            def goto(self, _url, wait_until=None, timeout=None):
+                del wait_until, timeout
+                if self.index == 1:
+                    raise RuntimeError("transient timeout")
+                return FakeResponse()
+
+            def wait_for_timeout(self, _timeout):
+                return None
+
+            def locator(self, _selector):
+                return FakeLocator()
+
+            def close(self):
+                self.closed = True
+
+        class FakeBrowser:
+            def __init__(self):
+                self.pages = []
+
+            def new_page(self):
+                page = FakePage(len(self.pages) + 1)
+                self.pages.append(page)
+                return page
+
+        browser = FakeBrowser()
+        scraper._browser_snapshot = lambda _page: {"products": [], "inventory": {}, "cards": []}
+        scraper.parse_browser_snapshot = lambda _snapshot, _gender: [{"url": "https://www.evo.com/products/test"}] * 40
+
+        items, discovered_max_page = scraper._fetch_browser_page(
+            browser=browser,
+            base_url="https://www.evo.com/collections/arcteryx",
+            slug="arcteryx",
+            gender="auto",
+            page_number=1,
+            max_page=1,
+        )
+
+        self.assertEqual(len(items), 40)
+        self.assertEqual(discovered_max_page, 3)
+        self.assertEqual(len(browser.pages), 2)
+        self.assertTrue(all(page.closed for page in browser.pages))
+
     def test_ssense_rendered_html_uses_existing_json_ld_parser(self):
         product = {
             "@type": "Product",
