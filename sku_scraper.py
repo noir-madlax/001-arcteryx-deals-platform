@@ -174,6 +174,11 @@ def color_price_map_from_product_data(product_data: dict) -> dict[str, tuple[flo
     return price_map
 
 
+def available_color_keys_from_product_data(product_data: dict) -> set[str]:
+    """Return the authoritative set of currently purchasable color keys."""
+    return set(color_price_map_from_product_data(product_data))
+
+
 def price_from_variants(product_data: dict, color_name: str) -> tuple[float, float] | None:
     """Return the authoritative PDP price tuple for one color, if available."""
     target = normalize_color(color_name)
@@ -194,7 +199,7 @@ def parse_next_product_from_html(html: str) -> dict | None:
 
 
 @lru_cache(maxsize=4096)
-def fetch_region_price_map(url: str) -> dict[str, tuple[float, float]]:
+def fetch_region_price_map(url: str) -> dict[str, tuple[float, float]] | None:
     import requests
 
     response = requests.get(
@@ -205,8 +210,33 @@ def fetch_region_price_map(url: str) -> dict[str, tuple[float, float]]:
     response.raise_for_status()
     product_data = parse_next_product_from_html(response.text)
     if not product_data:
-        return {}
+        return None
     return color_price_map_from_product_data(product_data)
+
+
+def region_variant_pricing(
+    region_price_map: dict[str, tuple[float, float]] | None,
+    color_name: str,
+    region_product: dict,
+    sku: dict,
+) -> tuple[float, float, int] | None:
+    """Return authoritative region pricing for one color, or None when absent.
+
+    If the region PDP was parsed successfully, the region-specific color set is
+    authoritative. A missing color must therefore be skipped instead of falling
+    back to another region's swatch list price.
+    """
+    if region_price_map is not None:
+        region_price = region_price_map.get(normalize_color(color_name))
+        if not region_price:
+            return None
+        region_sale, region_original = region_price
+        return region_sale, region_original, calc_discount(region_original, region_sale)
+
+    region_sale = region_product.get('sale_price') or sku.get('sale_price', 0)
+    region_original = region_product.get('original_price') or sku.get('original_price', 0)
+    region_discount = calc_discount(region_original, region_sale) or sku.get('discount_pct', 0)
+    return region_sale, region_original, region_discount
 
 def is_prehydrated_product(product: dict) -> bool:
     """True when global_data already contains color/size/image data.
@@ -410,6 +440,23 @@ async def scrape_product(page, product: dict) -> list[dict]:
     if not color_options:
         color_options = [{"value": "Default", "inputId": None, "available": True}]
 
+    product_data = base_info.get("nextProduct") or {}
+    if isinstance(product_data, str):
+        try:
+            product_data = json.loads(product_data)
+        except Exception:
+            product_data = {}
+    available_color_keys = available_color_keys_from_product_data(product_data)
+
+    if available_color_keys:
+        filtered_color_options = [
+            color_opt
+            for color_opt in color_options
+            if normalize_color((color_opt.get('value') or '').strip()) in available_color_keys
+        ]
+        if filtered_color_options:
+            color_options = filtered_color_options
+
     print(f"    颜色数: {len(color_options)}")
 
     for color_opt in color_options:
@@ -427,12 +474,6 @@ async def scrape_product(page, product: dict) -> list[dict]:
             except Exception:
                 pass  # 若点击失败，用当前状态
 
-        product_data = base_info.get("nextProduct") or {}
-        if isinstance(product_data, str):
-            try:
-                product_data = json.loads(product_data)
-            except Exception:
-                product_data = {}
         variant_price = price_from_variants(product_data, color_name)
         if variant_price:
             sale_price, original_price = variant_price
@@ -637,20 +678,16 @@ async def run(args):
                         # 方案B：为每个地区生成一条 SKU 记录
                         for region_code, region_product in region_variants.items():
                             sid = sku_id(slug, sku['color'], region_code)
-                            region_price = None
+                            region_price_map = None
                             try:
-                                region_price = fetch_region_price_map(region_product.get('url', '')).get(
-                                    normalize_color(sku['color'])
-                                )
+                                region_price_map = fetch_region_price_map(region_product.get('url', ''))
                             except Exception:
-                                region_price = None
-                            if region_price:
-                                region_sale, region_original = region_price
-                                region_discount = calc_discount(region_original, region_sale)
-                            else:
-                                region_sale = region_product.get('sale_price') or sku.get('sale_price', 0)
-                                region_original = region_product.get('original_price') or sku.get('original_price', 0)
-                                region_discount = calc_discount(region_original, region_sale) or sku.get('discount_pct', 0)
+                                region_price_map = None
+                            pricing = region_variant_pricing(region_price_map, sku['color'], region_product, sku)
+                            if pricing is None:
+                                print(f"    ↷ 跳过地区缺色: {region_code} {sku['color']}")
+                                continue
+                            region_sale, region_original, region_discount = pricing
                             new_skus_map[sid] = normalize_outlet_sku({
                                 **sku,
                                 "sku_id":         sid,
