@@ -83,6 +83,25 @@ def product_key(product: dict) -> str:
     gender = gender_from_url(product.get('url', '')) or product.get('gender', '')
     return f"{slug}::{gender}" if gender else slug
 
+
+def prune_existing_skus_for_key(sku_map: dict[str, dict], key: str) -> int:
+    """Drop previously cached SKU colors for one product before re-populating it.
+
+    The scraper seeds `new_skus_map` from the prior snapshot so interrupted runs
+    can resume, but once a slug is successfully re-scraped we must treat the
+    current color set as authoritative. Otherwise colors removed from the live
+    PDP linger forever in the generated SKU list and keep stale production rows
+    active.
+    """
+    stale_ids = [
+        sku_id
+        for sku_id, sku in sku_map.items()
+        if product_key(sku) == key
+    ]
+    for sku_id in stale_ids:
+        sku_map.pop(sku_id, None)
+    return len(stale_ids)
+
 def _replace_gender_marker(text: str | None, gender: str | None) -> str | None:
     if not text or gender not in ('men', 'women'):
         return text
@@ -601,6 +620,9 @@ async def run(args):
             if skus:
                 # 获取该 slug 的所有地区价格信息
                 region_variants = regions_map.get(key, {})
+                pruned = prune_existing_skus_for_key(new_skus_map, key)
+                if pruned:
+                    print(f"    ↺ 清理旧颜色 SKU: {pruned} 条")
 
                 added = 0
                 for sku in skus:
