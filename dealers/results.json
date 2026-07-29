@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-29 18:20:54",
+  "generated_at": "2026-07-29 20:21:58",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6795,7 +6795,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 145,
+      "count": 144,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
@@ -7463,7 +7463,7 @@
         {
           "url": "https://www.mec.ca/en/product/6040-303/arcteryx-konseal-approach-shoes-mens",
           "name": "Arc'teryx Konseal Approach Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560642_source_1784846162.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560642_source_1785326490.png",
           "color": "Forage/Black",
           "sale_price": 240.0,
           "original_price": 240.0,
@@ -8657,19 +8657,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-625/arcteryx-gamma-short-9-womens",
-          "name": "Arc'teryx Gamma Short 9\" - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533984_source_1775476842.jpg",
-          "color": "HABITAT",
-          "sale_price": 150.0,
-          "original_price": 150.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6034-785/arcteryx-rho-base-layer-bottoms-womens",
           "name": "Arc'teryx Rho Base Layer Bottoms - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509242_source_1783425700.png",
@@ -8683,7 +8670,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-07-29 15:24:33"
+      "refreshed_at": "2026-07-29 20:21:58"
     },
     "rei": {
       "name": "REI",
@@ -11070,10 +11057,8 @@
       "refreshed_at": "2026-07-29 18:20:54"
     }
   },
-  "total": 513,
+  "total": 512,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
