@@ -75,6 +75,97 @@ class DealerFreshnessTests(unittest.TestCase):
         )
         self.assertEqual(rc, 1)
 
+    def test_validate_allows_ssense_below_legacy_floor_when_above_source_floor(self):
+        rows = [
+            {
+                "sku_id": f"ssense-{i}",
+                "dealer": "ssense",
+                "status": "active",
+                "sale_price": 100,
+                "original_price": 150,
+                "discount_pct": 33,
+                "currency": "USD",
+                "symbol": "$",
+                "gender": "men",
+                "region": "us",
+                "url": f"https://example.com/ssense/{i}",
+                "last_updated": "2026-07-29T05:52:45+00:00",
+            }
+            for i in range(46)
+        ]
+        rc = validate(
+            rows,
+            max_age_hours=36,
+            max_product_age_hours=72,
+            min_rows=50,
+            required_dealers={"ssense"},
+            forbidden_regions=None,
+        )
+        self.assertEqual(rc, 0)
+
+    def test_validate_still_fails_ssense_when_below_source_floor(self):
+        rows = [
+            {
+                "sku_id": f"ssense-{i}",
+                "dealer": "ssense",
+                "status": "active",
+                "sale_price": 100,
+                "original_price": 150,
+                "discount_pct": 33,
+                "currency": "USD",
+                "symbol": "$",
+                "gender": "men",
+                "region": "us",
+                "url": f"https://example.com/ssense/{i}",
+                "last_updated": "2026-07-29T05:52:45+00:00",
+            }
+            for i in range(39)
+        ]
+        rc = validate(
+            rows,
+            max_age_hours=36,
+            max_product_age_hours=72,
+            min_rows=50,
+            required_dealers={"ssense"},
+            forbidden_regions=None,
+        )
+        self.assertEqual(rc, 1)
+
+    def test_validate_uses_source_aware_total_floor_for_legacy_full_gate(self):
+        rows = []
+        for dealer, count in {
+            "arcteryx_outlet": 4360,
+            "evo": 252,
+            "mec": 145,
+            "rei": 67,
+            "ssense": 46,
+        }.items():
+            for i in range(count):
+                rows.append({
+                    "sku_id": f"{dealer}-{i}",
+                    "dealer": dealer,
+                    "status": "active",
+                    "sale_price": 100,
+                    "original_price": 150,
+                    "discount_pct": 33,
+                    "currency": "CAD" if dealer == "mec" else "USD",
+                    "symbol": "C$" if dealer == "mec" else "$",
+                    "gender": "men",
+                    "region": "ca" if dealer == "mec" else "us",
+                    "url": f"https://example.com/{dealer}/{i}",
+                    "last_seen_at": "2026-07-29T05:52:45+00:00",
+                    "last_updated": "2026-07-29T05:52:45+00:00",
+                })
+        rc = validate(
+            rows,
+            max_age_hours=36,
+            max_product_age_hours=72,
+            min_rows=5000,
+            required_dealers=None,
+            forbidden_regions=None,
+        )
+        self.assertEqual(rc, 0)
+
     def test_dealer_product_freshness_uses_last_updated(self):
         ts = product_freshness_timestamp({
             "dealer": "rei",
