@@ -1,6 +1,7 @@
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from dealers.evo import Scraper as EvoScraper
 from dealers.mec import Scraper as MecScraper
@@ -69,6 +70,59 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(items[0]["sale_price"], 220.0)
         self.assertIn("/en-us/men/product/", items[0]["url"])
         self.assertEqual(items[0]["price_source_quality"], "list_fallback")
+
+    def test_ssense_list_page_urls_add_pagination(self):
+        scraper = SsenseScraper()
+        self.assertEqual(
+            scraper.list_page_urls("https://www.ssense.com/en-us/men/designers/arcteryx"),
+            [
+                "https://www.ssense.com/en-us/men/designers/arcteryx",
+                "https://www.ssense.com/en-us/men/designers/arcteryx?page=2",
+                "https://www.ssense.com/en-us/men/designers/arcteryx?page=3",
+                "https://www.ssense.com/en-us/men/designers/arcteryx?page=4",
+                "https://www.ssense.com/en-us/men/designers/arcteryx?page=5",
+                "https://www.ssense.com/en-us/men/designers/arcteryx?page=6",
+            ],
+        )
+
+    @patch("curl_cffi.requests.Session")
+    def test_ssense_scrape_advances_to_later_pages(self, session_cls):
+        session = session_cls.return_value
+        session.get.return_value.status_code = 200
+
+        scraper = SsenseScraper()
+        scraper.LIST_URLS = ["https://www.ssense.com/en-us/men/designers/arcteryx"]
+        scraper.MIN_LIST_ITEMS = 1
+
+        fetched_urls = []
+        page_items = {
+            "https://www.ssense.com/en-us/men/designers/arcteryx": [
+                {"url": "https://www.ssense.com/en-us/men/product/arcteryx/a/1", "name": "A", "sale_price": 100.0, "original_price": 120.0, "currency": "USD", "in_stock": True, "gender": "men"}
+            ],
+            "https://www.ssense.com/en-us/men/designers/arcteryx?page=2": [
+                {"url": "https://www.ssense.com/en-us/men/product/arcteryx/b/2", "name": "B", "sale_price": 90.0, "original_price": 110.0, "currency": "USD", "in_stock": True, "gender": "men"}
+            ],
+        }
+
+        def fake_fetch(_session, url, retries=4, is_pdp=False):
+            del retries, is_pdp
+            fetched_urls.append(url)
+            return url if url in page_items else ""
+
+        def fake_parse_list(body, page_url):
+            self.assertEqual(body, page_url)
+            return page_items.get(page_url, [])
+
+        scraper._fetch = fake_fetch
+        scraper.parse_list = fake_parse_list
+
+        items = scraper.scrape()
+        self.assertEqual([item["url"] for item in items], [
+            "https://www.ssense.com/en-us/men/product/arcteryx/a/1",
+            "https://www.ssense.com/en-us/men/product/arcteryx/b/2",
+        ])
+        self.assertIn("https://www.ssense.com/en-us/men/designers/arcteryx?page=2", fetched_urls)
+        self.assertTrue(scraper.crawl_complete)
 
     def test_rei_detail_parser_is_deterministic(self):
         body = (

@@ -1,6 +1,6 @@
 """SSENSE Arc'teryx scraper with curl_cffi and Camoufox list fallback."""
 from __future__ import annotations
-import re, json, time, sys
+import os, re, json, time, sys
 from .base import DealerScraper, normalize_price, discount_pct
 
 HOST = "https://www.ssense.com"
@@ -11,6 +11,7 @@ class Scraper(DealerScraper):
     REGION = "US"
     TIER   = "stealthy_cf"
     MIN_LIST_ITEMS = 5
+    DEFAULT_MAX_PAGES = 6
     LIST_URLS = [
         "https://www.ssense.com/en-us/men/designers/arcteryx",
         "https://www.ssense.com/en-us/women/designers/arcteryx",
@@ -18,6 +19,20 @@ class Scraper(DealerScraper):
 
     def __init__(self):
         self.crawl_complete = False
+
+    @staticmethod
+    def _env_int(name: str, default: int, minimum: int = 1) -> int:
+        try:
+            value = int(os.environ.get(name, default))
+        except (TypeError, ValueError):
+            value = default
+        return max(minimum, value)
+
+    def list_page_urls(self, base_url: str) -> list[str]:
+        max_pages = self._env_int("SSENSE_MAX_PAGES", self.DEFAULT_MAX_PAGES)
+        urls = [base_url]
+        urls.extend(f"{base_url}?page={page}" for page in range(2, max_pages + 1))
+        return urls
 
     def _merge_page_items(self, items: list[dict], seen: set[str], page_items: list[dict]) -> int:
         added = 0
@@ -119,50 +134,76 @@ class Scraper(DealerScraper):
             time.sleep(2)
         time.sleep(2)
         # Stage 1: list pages
-        failed_urls = []
-        successful_urls = set()
-        for url in self.LIST_URLS:
-            print(f"[ssense] list {url}", flush=True)
-            body = self._fetch(s, url)
-            if not body:
-                print("[ssense] list fetch failed", flush=True)
-                failed_urls.append(url)
-                continue
-            page_items = self.parse_list(body, url)
-            if len(page_items) < self.MIN_LIST_ITEMS:
-                print(f"[ssense] list parse returned only {len(page_items)} products", flush=True)
-                failed_urls.append(url)
-                continue
-            successful_urls.add(url)
-            new = self._merge_page_items(items, seen, page_items)
-            print(f"[ssense] list +{new} (total {len(items)})", flush=True)
+        failed_scopes = []
+        successful_scopes = set()
+        for base_url in self.LIST_URLS:
+            scope_ok = False
+            scope_items = 0
+            for page_num, page_url in enumerate(self.list_page_urls(base_url), 1):
+                print(f"[ssense] list {page_url}", flush=True)
+                body = self._fetch(s, page_url)
+                if not body:
+                    if page_num == 1:
+                        print("[ssense] list fetch failed", flush=True)
+                        failed_scopes.append(base_url)
+                    break
+                page_items = self.parse_list(body, page_url)
+                if not page_items:
+                    break
+                if page_num == 1 and len(page_items) < self.MIN_LIST_ITEMS:
+                    print(f"[ssense] list parse returned only {len(page_items)} products", flush=True)
+                    failed_scopes.append(base_url)
+                    scope_ok = False
+                    break
+                scope_ok = True
+                scope_items += len(page_items)
+                new = self._merge_page_items(items, seen, page_items)
+                print(f"[ssense] list page {page_num} +{new} (scope {len(page_items)}, total {len(items)})", flush=True)
+                if new == 0:
+                    break
+                # A short page after page 1 is the natural pagination tail.
+                if page_num > 1 and len(page_items) < self.MIN_LIST_ITEMS:
+                    break
+            if scope_ok:
+                successful_scopes.add(base_url)
 
-        if failed_urls:
+        if failed_scopes:
             from camoufox.sync_api import Camoufox
 
-            print(f"[ssense] using Camoufox fallback for {len(failed_urls)} list page(s)", flush=True)
+            print(f"[ssense] using Camoufox fallback for {len(failed_scopes)} list scope(s)", flush=True)
             with Camoufox(headless=True, humanize=True, geoip=True) as browser:
                 page = browser.new_page()
                 page.set_default_navigation_timeout(90000)
-                for url in failed_urls:
-                    try:
-                        response = page.goto(url, wait_until="domcontentloaded", timeout=90000)
-                        page.wait_for_timeout(5000)
-                        if not response or response.status != 200:
-                            raise RuntimeError(f"HTTP {response.status if response else 'unknown'}")
-                        page_items = self.parse_list(page.content(), url)
-                        if len(page_items) < self.MIN_LIST_ITEMS:
-                            raise RuntimeError(f"rendered page contained only {len(page_items)} Arc'teryx products")
-                    except Exception as exc:
-                        print(f"[ssense] browser list failed {url}: {str(exc)[:160]}", flush=True)
-                        continue
-                    successful_urls.add(url)
-                    new = self._merge_page_items(items, seen, page_items)
-                    print(f"[ssense] browser list +{new} (scope {len(page_items)}, total {len(items)})", flush=True)
+                for base_url in failed_scopes:
+                    scope_ok = False
+                    for page_num, page_url in enumerate(self.list_page_urls(base_url), 1):
+                        try:
+                            response = page.goto(page_url, wait_until="domcontentloaded", timeout=90000)
+                            page.wait_for_timeout(5000)
+                            if not response or response.status != 200:
+                                raise RuntimeError(f"HTTP {response.status if response else 'unknown'}")
+                            page_items = self.parse_list(page.content(), page_url)
+                            if page_num == 1 and len(page_items) < self.MIN_LIST_ITEMS:
+                                raise RuntimeError(f"rendered page contained only {len(page_items)} Arc'teryx products")
+                            if not page_items:
+                                break
+                        except Exception as exc:
+                            print(f"[ssense] browser list failed {page_url}: {str(exc)[:160]}", flush=True)
+                            scope_ok = False
+                            break
+                        scope_ok = True
+                        new = self._merge_page_items(items, seen, page_items)
+                        print(f"[ssense] browser list page {page_num} +{new} (scope {len(page_items)}, total {len(items)})", flush=True)
+                        if new == 0:
+                            break
+                        if page_num > 1 and len(page_items) < self.MIN_LIST_ITEMS:
+                            break
+                    if scope_ok:
+                        successful_scopes.add(base_url)
 
         # Direct PDP enrichment is optional metadata. Skip it when direct list
         # access was blocked, otherwise every PDP would repeat the same 403 wait.
-        if not failed_urls:
+        if not failed_scopes:
             print(f"[ssense] enriching {len(items)} PDPs via curl_cffi...", flush=True)
             for i, it in enumerate(items, 1):
                 body = self._fetch(s, it["url"], is_pdp=True)
@@ -188,7 +229,7 @@ class Scraper(DealerScraper):
                         it.update(detail)
                     if i % 5 == 0: print(f"[ssense] browser enriched {i}/{len(items)}", flush=True)
                     time.sleep(0.4)
-        self.crawl_complete = len(successful_urls) == len(self.LIST_URLS) and bool(items)
+        self.crawl_complete = len(successful_scopes) == len(self.LIST_URLS) and bool(items)
         return items
 
     @staticmethod
