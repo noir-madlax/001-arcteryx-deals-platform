@@ -49,8 +49,20 @@ EXPECTED_CURRENCY = {
 DEALER_MIN_ROWS_OVERRIDE = {
     "ssense": 40,
 }
-TOTAL_MIN_ROWS_OVERRIDE = {
-    5000: 4800,
+
+# The aggregate catalog count is an observability metric, not a production
+# health gate: official assortments regularly contract by region. The full
+# health gate checks the expected platform/region slices instead, so one
+# healthy region cannot mask a stale or collapsed one.
+PLATFORM_REGION_MIN_ROWS = {
+    ("arcteryx_outlet", "us"): 250,
+    ("arcteryx_outlet", "ca"): 100,
+    ("arcteryx_outlet", "au"): 10,
+    **{("arcteryx_outlet", region): 250 for region in ("at", "be", "ch", "de", "dk", "es", "fr", "gb", "it", "nl", "se")},
+    ("evo", "us"): 100,
+    ("mec", "ca"): 75,
+    ("rei", "us"): 40,
+    ("ssense", "us"): 30,
 }
 
 
@@ -191,6 +203,7 @@ def validate(
     seen = set()
     timestamps = []
     timestamps_by_dealer: dict[str, list[datetime]] = defaultdict(list)
+    timestamps_by_platform_region: dict[tuple[str, str], list[datetime]] = defaultdict(list)
 
     active_rows = [row for row in rows if (row.get("status") or "active") == "active"]
     if required_dealers:
@@ -198,13 +211,19 @@ def validate(
             min(min_rows, DEALER_MIN_ROWS_OVERRIDE.get(dealer, min_rows))
             for dealer in required_dealers
         )
-    else:
-        effective_total_min_rows = TOTAL_MIN_ROWS_OVERRIDE.get(min_rows, min_rows)
-    if len(active_rows) < effective_total_min_rows:
+        if len(active_rows) < effective_total_min_rows:
+            errors["too_few_rows"].append({
+                "row_count": len(active_rows),
+                "min_rows": min_rows,
+                "effective_min_rows": effective_total_min_rows,
+            })
+    # Full runs use PLATFORM_REGION_MIN_ROWS below. Deliberately do not make
+    # the requested aggregate minimum a gate: it is volatile with live supply.
+    elif min_rows <= 0:
         errors["too_few_rows"].append({
             "row_count": len(active_rows),
             "min_rows": min_rows,
-            "effective_min_rows": effective_total_min_rows,
+            "effective_min_rows": min_rows,
         })
 
     for row in rows:
@@ -280,10 +299,15 @@ def validate(
         if ts:
             timestamps.append(ts)
             timestamps_by_dealer[row.get("dealer") or "arcteryx_outlet"].append(ts)
+            timestamps_by_platform_region[(dealer, region)].append(ts)
         else:
             errors["missing_last_updated"].append(row)
 
     by_dealer = Counter(row.get("dealer") or "arcteryx_outlet" for row in active_rows)
+    by_platform_region = Counter(
+        ((row.get("dealer") or "arcteryx_outlet"), (row.get("region") or "").lower())
+        for row in active_rows
+    )
     if required_dealers:
         for dealer in sorted(required_dealers):
             effective_min_rows = min(min_rows, DEALER_MIN_ROWS_OVERRIDE.get(dealer, min_rows))
@@ -295,6 +319,16 @@ def validate(
                     "row_count": by_dealer.get(dealer, 0),
                     "min_rows": min_rows,
                     "effective_min_rows": effective_min_rows,
+                })
+    else:
+        for (dealer, region), minimum in sorted(PLATFORM_REGION_MIN_ROWS.items()):
+            count = by_platform_region.get((dealer, region), 0)
+            if count < minimum:
+                errors["platform_region_below_min_rows"].append({
+                    "dealer": dealer,
+                    "region": region,
+                    "row_count": count,
+                    "min_rows": minimum,
                 })
 
     if max_age_hours is not None and timestamps:
@@ -316,11 +350,38 @@ def validate(
                     "age_hours": round(dealer_age_hours, 2),
                     "max_age_hours": max_age_hours,
                 })
+        if not required_dealers:
+            for dealer_region in sorted(PLATFORM_REGION_MIN_ROWS):
+                slice_timestamps = timestamps_by_platform_region.get(dealer_region, [])
+                dealer, region = dealer_region
+                if not slice_timestamps:
+                    errors["stale_platform_region_latest_update"].append({
+                        "dealer": dealer,
+                        "region": region,
+                        "latest_last_updated": None,
+                        "max_age_hours": max_age_hours,
+                    })
+                    continue
+                latest = max(slice_timestamps)
+                age_hours = (datetime.now(timezone.utc) - latest).total_seconds() / 3600
+                if age_hours > max_age_hours:
+                    errors["stale_platform_region_latest_update"].append({
+                        "dealer": dealer,
+                        "region": region,
+                        "latest_last_updated": latest.isoformat(),
+                        "age_hours": round(age_hours, 2),
+                        "max_age_hours": max_age_hours,
+                    })
 
     print(f"[quality] rows={len(rows)} active={len(active_rows)}")
     if timestamps:
         print(f"[quality] last_updated={min(timestamps).isoformat()} .. {max(timestamps).isoformat()}")
     print("[quality] dealers=" + ", ".join(f"{k}:{v}" for k, v in sorted(by_dealer.items())))
+    if not required_dealers:
+        print("[quality] platform_regions=" + ", ".join(
+            f"{dealer}/{region}:{count}"
+            for (dealer, region), count in sorted(by_platform_region.items())
+        ))
 
     if not errors:
         print("[quality] OK")

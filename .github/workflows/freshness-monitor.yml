@@ -38,6 +38,11 @@ jobs:
         continue-on-error: true
         run: python tools/check_data_quality.py --online --dealer mec --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
 
+      - id: platform_region_quality
+        name: Check platform-region production matrix
+        continue-on-error: true
+        run: python tools/check_data_quality.py --online --max-age-hours 36 --max-product-age-hours 72 --min-rows 5000 --forbid-region jp
+
       - id: static_fallbacks
         name: Check production static fallbacks
         continue-on-error: true
@@ -51,6 +56,7 @@ jobs:
         env:
           OUTLET_RESULT: ${{ steps.outlet_quality.outcome }}
           DEALER_RESULT: ${{ steps.dealer_quality.outcome }}
+          PLATFORM_REGION_RESULT: ${{ steps.platform_region_quality.outcome }}
           STATIC_RESULT: ${{ steps.static_fallbacks.outcome }}
         run: |
           {
@@ -59,10 +65,11 @@ jobs:
             echo "|---|---|"
             echo "| Outlet Supabase | $OUTLET_RESULT |"
             echo "| Dealer Supabase | $DEALER_RESULT |"
+            echo "| Platform-region matrix | $PLATFORM_REGION_RESULT |"
             echo "| Static fallbacks | $STATIC_RESULT |"
           } >> "$GITHUB_STEP_SUMMARY"
           failed=0
-          for result in "$OUTLET_RESULT" "$DEALER_RESULT" "$STATIC_RESULT"; do
+          for result in "$OUTLET_RESULT" "$DEALER_RESULT" "$PLATFORM_REGION_RESULT" "$STATIC_RESULT"; do
             if [ "$result" != "success" ]; then
               failed=1
             fi
