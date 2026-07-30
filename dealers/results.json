@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-30 00:07:32",
+  "generated_at": "2026-07-30 04:32:59",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6611,7 +6611,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 144,
+      "count": 145,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
@@ -8473,6 +8473,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-625/arcteryx-gamma-short-9-womens",
+          "name": "Arc'teryx Gamma Short 9\" - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534053_source_1775476845.jpg",
+          "color": "HABITAT",
+          "sale_price": 150.0,
+          "original_price": 150.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-785/arcteryx-rho-base-layer-bottoms-womens",
           "name": "Arc'teryx Rho Base Layer Bottoms - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509242_source_1783425700.png",
@@ -8486,7 +8499,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-07-29 20:21:58"
+      "refreshed_at": "2026-07-30 04:32:59"
     },
     "rei": {
       "name": "REI",
@@ -10859,10 +10872,8 @@
       "refreshed_at": "2026-07-30 00:07:32"
     }
   },
-  "total": 500,
+  "total": 501,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
