@@ -1,11 +1,15 @@
 import unittest
 from collections import defaultdict
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from dealers.revalidate import (
+    _chunks,
     _evo_choose_more_informative_price,
     _evo_needs_browser_fallback,
     _evo_should_confirm_with_browser,
+    fetch_evo_pdp_browser,
+    fetch_evo_pdp_browser_with_retry,
     fetch_rei_pdp,
     open_mec_revalidation_session,
     parse_evo_browser_snapshot,
@@ -55,6 +59,40 @@ class FakeBrowserContext:
 
     def __exit__(self, exc_type, exc, tb):
         self.closed = True
+
+
+class FakeEvoPage:
+    def __init__(self, snapshot=None):
+        self.snapshot = snapshot or {}
+        self.closed = False
+        self.goto_url = None
+        self.wait_ms = None
+
+    def set_default_navigation_timeout(self, timeout):
+        self.navigation_timeout = timeout
+
+    def goto(self, url, *, wait_until, timeout):
+        self.goto_url = url
+        self.wait_until = wait_until
+        self.timeout = timeout
+        return SimpleNamespace(status=200)
+
+    def wait_for_timeout(self, wait_ms):
+        self.wait_ms = wait_ms
+
+    def evaluate(self, _script):
+        return self.snapshot
+
+    def close(self):
+        self.closed = True
+
+
+class FakeEvoBrowser:
+    def __init__(self, pages):
+        self.pages = iter(pages)
+
+    def new_page(self):
+        return next(self.pages)
 
 
 def rei_html(price_markup: str, skus: str = "") -> str:
@@ -211,7 +249,10 @@ class DealerRevalidationTests(unittest.TestCase):
         }
 
         self.assertEqual(_evo_choose_more_informative_price(direct, browser), browser)
-        self.assertEqual(_evo_choose_more_informative_price(direct, {"_err": "goto TimeoutError"}), direct)
+        self.assertEqual(
+            _evo_choose_more_informative_price(direct, {"_err": "goto TimeoutError"}),
+            {"_err": "browser_confirmation_failed:goto TimeoutError"},
+        )
 
     def test_evo_browser_price_overrides_shallower_direct_discount(self):
         direct = {
@@ -226,6 +267,67 @@ class DealerRevalidationTests(unittest.TestCase):
         }
 
         self.assertEqual(_evo_choose_more_informative_price(direct, browser), browser)
+
+    @patch.dict("os.environ", {"EVO_BROWSER_SETTLE_SECONDS": "3"})
+    def test_evo_browser_fetch_uses_fresh_url_and_waits_for_runtime_price(self):
+        snapshot = {
+            "ShopifyAnalytics": {"meta": {"product": {"id": 1}}},
+            "igProductData": {"1": {"lowestVariantPrice": 4200}},
+            "RegiosDOPP_ProductPage": {
+                "variants": [
+                    {
+                        "priceInCents": 4200,
+                        "compareAtPriceInCents": 6000,
+                        "isOutOfStock": False,
+                    }
+                ]
+            },
+        }
+        page = FakeEvoPage(snapshot)
+
+        result = fetch_evo_pdp_browser(page, "https://www.evo.com/products/test")
+
+        self.assertEqual(result["sale_price"], 42.0)
+        self.assertIn("price_revalidate=", page.goto_url)
+        self.assertEqual(page.wait_until, "commit")
+        self.assertEqual(page.wait_ms, 3000)
+
+    @patch("dealers.revalidate.time.sleep")
+    @patch.dict(
+        "os.environ",
+        {
+            "EVO_BROWSER_CONFIRM_ATTEMPTS": "2",
+            "EVO_BROWSER_RETRY_DELAY_SECONDS": "0",
+        },
+    )
+    def test_evo_browser_confirmation_retries_with_a_fresh_page(self, _sleep):
+        first = FakeEvoPage()
+        second = FakeEvoPage()
+        browser = FakeEvoBrowser([first, second])
+        expected = {
+            "sale_price": 42.0,
+            "original_price": 60.0,
+            "discount_pct": 30,
+        }
+
+        with patch(
+            "dealers.revalidate.fetch_evo_pdp_browser",
+            side_effect=[{"_err": "http 429"}, expected],
+        ):
+            result = fetch_evo_pdp_browser_with_retry(
+                browser,
+                "https://www.evo.com/products/test",
+            )
+
+        self.assertEqual(result, expected)
+        self.assertTrue(first.closed)
+        self.assertTrue(second.closed)
+
+    def test_browser_rotation_chunks_cover_every_row(self):
+        chunks = list(_chunks(list(range(65)), 30))
+
+        self.assertEqual([start for start, _rows in chunks], [0, 30, 60])
+        self.assertEqual([len(rows) for _start, rows in chunks], [30, 30, 5])
 
     def test_ssense_html_extracts_sale_and_original(self):
         html = """

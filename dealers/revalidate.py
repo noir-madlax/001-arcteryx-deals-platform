@@ -38,6 +38,12 @@ def _env_float(name: str, default: float, minimum: float = 0.0) -> float:
     except (TypeError, ValueError):
         return max(minimum, default)
 
+def _env_int(name: str, default: int, minimum: int = 1) -> int:
+    try:
+        return max(minimum, int(os.environ.get(name, default)))
+    except (TypeError, ValueError):
+        return max(minimum, default)
+
 def _num(s):
     if s is None: return None
     s = str(s).replace(",","").strip().lstrip("$€£")
@@ -125,9 +131,12 @@ def parse_evo_browser_snapshot(snapshot: dict, url: str) -> dict | None:
 
 
 def fetch_evo_pdp_browser(page, url: str) -> dict | None:
+    separator = "&" if "?" in url else "?"
+    request_url = f"{url}{separator}price_revalidate={time.time_ns()}"
     try:
-        response = page.goto(url, wait_until="domcontentloaded", timeout=90000)
-        page.wait_for_timeout(3000)
+        response = page.goto(request_url, wait_until="commit", timeout=90000)
+        wait_ms = int(_env_float("EVO_BROWSER_SETTLE_SECONDS", 8.0, 3.0) * 1000)
+        page.wait_for_timeout(wait_ms)
     except Exception as e:
         return {"_err": f"goto {type(e).__name__}"}
     if not response or response.status != 200:
@@ -141,6 +150,27 @@ def fetch_evo_pdp_browser(page, url: str) -> dict | None:
     )
     parsed = parse_evo_browser_snapshot(snapshot, url)
     return parsed or {"_err": "no_browser_price"}
+
+
+def fetch_evo_pdp_browser_with_retry(browser, url: str) -> dict | None:
+    attempts = _env_int("EVO_BROWSER_CONFIRM_ATTEMPTS", 2, 1)
+    retry_delay = _env_float("EVO_BROWSER_RETRY_DELAY_SECONDS", 5.0, 0.0)
+    result = None
+    for attempt in range(attempts):
+        page = browser.new_page()
+        page.set_default_navigation_timeout(90000)
+        try:
+            try:
+                result = fetch_evo_pdp_browser(page, url)
+            except Exception as exc:
+                result = {"_err": f"browser {type(exc).__name__}"}
+        finally:
+            page.close()
+        if result and not result.get("_err"):
+            return result
+        if attempt + 1 < attempts:
+            time.sleep(retry_delay)
+    return result or {"_err": "empty_browser_confirmation"}
 
 
 def _evo_needs_browser_fallback(result: dict | None) -> bool:
@@ -164,7 +194,8 @@ def _evo_should_confirm_with_browser(result: dict | None) -> bool:
 
 def _evo_choose_more_informative_price(direct_result: dict | None, browser_result: dict | None) -> dict | None:
     if not browser_result or browser_result.get("_err") or browser_result.get("_unavailable"):
-        return direct_result
+        reason = (browser_result or {}).get("_err") or "unavailable_or_empty"
+        return {"_err": f"browser_confirmation_failed:{reason}"}
     if not direct_result or direct_result.get("_err") or direct_result.get("_unavailable"):
         return browser_result
 
@@ -173,7 +204,7 @@ def _evo_choose_more_informative_price(direct_result: dict | None, browser_resul
     browser_sale = _num(browser_result.get("sale_price"))
     browser_original = _num(browser_result.get("original_price"))
     if not browser_sale or not browser_original:
-        return direct_result
+        return {"_err": "browser_confirmation_failed:invalid_price"}
     if not direct_sale or not direct_original:
         return browser_result
 
@@ -483,6 +514,18 @@ def underperforming_dealers(by_dealer, stats, minimum_success_ratio: float = 0.7
         ) / len(dealer_rows) < minimum_success_ratio
     )
 
+def _chunks(rows, size):
+    for start in range(0, len(rows), size):
+        yield start, rows[start:start + size]
+
+def _close_context(context):
+    if context is None:
+        return
+    try:
+        context.__exit__(None, None, None)
+    except Exception:
+        pass
+
 def main():
     if not SB_KEY:
         sys.exit("SUPABASE_KEY required (service_role)")
@@ -503,7 +546,6 @@ def main():
     evo_rows = by_dealer.get("evo", [])
     evo_browser_cm = None
     evo_browser = None
-    evo_page = None
     try:
         for i, r in enumerate(evo_rows, 1):
             new = fetch_evo_pdp(r["url"])
@@ -518,19 +560,15 @@ def main():
                         from camoufox.sync_api import Camoufox
                         evo_browser_cm = Camoufox(headless=True, humanize=True, geoip=True)
                         evo_browser = evo_browser_cm.__enter__()
-                        evo_page = evo_browser.new_page()
-                        evo_page.set_default_navigation_timeout(90000)
-                    new = fetch_evo_pdp_browser(evo_page, r["url"])
+                    new = fetch_evo_pdp_browser_with_retry(evo_browser, r["url"])
             elif _evo_should_confirm_with_browser(new):
                 if evo_browser is None:
                     from camoufox.sync_api import Camoufox
                     evo_browser_cm = Camoufox(headless=True, humanize=True, geoip=True)
                     evo_browser = evo_browser_cm.__enter__()
-                    evo_page = evo_browser.new_page()
-                    evo_page.set_default_navigation_timeout(90000)
                 new = _evo_choose_more_informative_price(
                     new,
-                    fetch_evo_pdp_browser(evo_page, r["url"]),
+                    fetch_evo_pdp_browser_with_retry(evo_browser, r["url"]),
                 )
             if not new:
                 stats["evo"]["err"] += 1
@@ -559,61 +597,73 @@ def main():
         # Oldest first ensures rate-limited tail rows are first on the next run.
         rei_rows = sorted(by_dealer["rei"], key=lambda row: row.get("last_updated") or "")
         rei_delay = _env_float("REI_REVALIDATE_DELAY_SECONDS", 3.0, 0.5)
-        print(f"\n[reval] REI ({len(rei_rows)}) — Camoufox, delay={rei_delay}s", flush=True)
-        try:
-            from camoufox.sync_api import Camoufox
-            with Camoufox(headless=True, humanize=True, geoip=True) as br:
-                page = br.new_page()
-                page.goto("https://www.rei.com/", wait_until="networkidle", timeout=60000)
-                time.sleep(2)
-                for i, r in enumerate(rei_rows, 1):
-                    new = fetch_rei_pdp(page, r["url"])
-                    if not new: stats["rei"]["err"] += 1
-                    elif new.get("_unavailable"): stats["rei"]["unavail"] += 1
-                    elif new.get("_err"): stats["rei"]["err"] += 1
-                    else:
-                        if update_row(client, r["sku_id"], new, r):
-                            stats["rei"]["ok"] += 1
-                            if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
-                                stats["rei"]["diff"] += 1
-                    if i % 5 == 0: print(f"  rei {i}/{len(rei_rows)}", flush=True)
-                    time.sleep(rei_delay)
-        except Exception as e:
-            print(f"  REI Camoufox launch err: {e}", file=sys.stderr)
+        chunk_size = _env_int("REI_BROWSER_ROTATE_ROWS", 30, 5)
+        print(
+            f"\n[reval] REI ({len(rei_rows)}) — Camoufox, "
+            f"delay={rei_delay}s, rotate={chunk_size}",
+            flush=True,
+        )
+        from camoufox.sync_api import Camoufox
+        for start, chunk in _chunks(rei_rows, chunk_size):
+            try:
+                with Camoufox(headless=True, humanize=True, geoip=True) as br:
+                    page = br.new_page()
+                    page.goto("https://www.rei.com/", wait_until="networkidle", timeout=60000)
+                    time.sleep(2)
+                    for offset, r in enumerate(chunk, 1):
+                        i = start + offset
+                        new = fetch_rei_pdp(page, r["url"])
+                        if not new: stats["rei"]["err"] += 1
+                        elif new.get("_unavailable"): stats["rei"]["unavail"] += 1
+                        elif new.get("_err"): stats["rei"]["err"] += 1
+                        else:
+                            if update_row(client, r["sku_id"], new, r):
+                                stats["rei"]["ok"] += 1
+                                if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
+                                    stats["rei"]["diff"] += 1
+                        if i % 5 == 0: print(f"  rei {i}/{len(rei_rows)}", flush=True)
+                        time.sleep(rei_delay)
+            except Exception as e:
+                print(f"  REI Camoufox chunk {start + 1} launch err: {e}", file=sys.stderr)
 
     # ── MEC: curl_cffi (Chrome TLS 指纹, 不用浏览器) ──
     if by_dealer.get("mec"):
         print(f"\n[reval] MEC ({len(by_dealer['mec'])}) — curl_cffi", flush=True)
+        rotate_rows = _env_int("MEC_BROWSER_ROTATE_ROWS", 40, 10)
+        mec_s = None
         mec_browser_ctx = None
+        mec_source = None
         try:
-            try:
-                mec_s, mec_browser_ctx, mec_source = open_mec_revalidation_session()
-                if mec_source == "scrapling":
-                    print("  [mec] curl_cffi warm failed; using Scrapling fallback", flush=True)
-            except Exception as e:
-                print(f"  [mec] fallback session failed: {type(e).__name__} {e}", file=sys.stderr)
-                mec_s = None
-            if mec_s is not None:
-                for i, r in enumerate(by_dealer["mec"], 1):
-                    new = fetch_mec_pdp(mec_s, r["url"])
-                    if not new: stats["mec"]["err"] += 1
-                    elif new.get("_unavailable"): stats["mec"]["unavail"] += 1
-                    elif new.get("_err"): stats["mec"]["err"] += 1
-                    else:
-                        if update_row(client, r["sku_id"], new, r):
-                            stats["mec"]["ok"] += 1
-                            if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
-                                stats["mec"]["diff"] += 1
-                    if i % 20 == 0: print(f"  mec {i}/{len(by_dealer['mec'])}", flush=True)
-                    time.sleep(0.4)
+            for i, r in enumerate(by_dealer["mec"], 1):
+                rotate = (
+                    mec_source == "scrapling"
+                    and i > 1
+                    and (i - 1) % rotate_rows == 0
+                )
+                if mec_s is None or rotate:
+                    _close_context(mec_browser_ctx)
+                    mec_s, mec_browser_ctx, mec_source = open_mec_revalidation_session()
+                    if mec_source == "scrapling":
+                        print(
+                            f"  [mec] using Scrapling fallback for rows "
+                            f"{i}-{min(i + rotate_rows - 1, len(by_dealer['mec']))}",
+                            flush=True,
+                        )
+                new = fetch_mec_pdp(mec_s, r["url"])
+                if not new: stats["mec"]["err"] += 1
+                elif new.get("_unavailable"): stats["mec"]["unavail"] += 1
+                elif new.get("_err"): stats["mec"]["err"] += 1
+                else:
+                    if update_row(client, r["sku_id"], new, r):
+                        stats["mec"]["ok"] += 1
+                        if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
+                            stats["mec"]["diff"] += 1
+                if i % 20 == 0: print(f"  mec {i}/{len(by_dealer['mec'])}", flush=True)
+                time.sleep(0.4)
         except Exception as e:
             print(f"  MEC fetch err: {e}", file=sys.stderr)
         finally:
-            if mec_browser_ctx is not None:
-                try:
-                    mec_browser_ctx.__exit__(None, None, None)
-                except Exception:
-                    pass
+            _close_context(mec_browser_ctx)
 
     # ── SSENSE: curl_cffi (Chrome TLS 指纹, 不用浏览器) ──
     if by_dealer.get("ssense"):
