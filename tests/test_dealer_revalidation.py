@@ -123,7 +123,9 @@ class DealerRevalidationTests(unittest.TestCase):
         self.assertTrue(should_preserve_previous_discount("mec", "list_fallback", 200, 200, 100, 200))
         self.assertTrue(should_preserve_previous_discount("evo", "list_fallback", 200, 200, 49.83, 200))
         self.assertTrue(should_preserve_previous_discount("rei", "list_fallback", 125.93, 200, 125.93, 180))
-        self.assertFalse(should_preserve_previous_discount("rei", "list_fallback", 129.93, 180, 125.93, 180))
+        self.assertTrue(should_preserve_previous_discount("evo", "list_fallback", 450, 600, 379.99, 600))
+        self.assertTrue(should_preserve_previous_discount("rei", "list_fallback", 129.93, 180, 125.93, 180))
+        self.assertFalse(should_preserve_previous_discount("rei", "list_fallback", 119.93, 180, 125.93, 180))
         self.assertFalse(should_preserve_previous_discount("mec", "api", 200, 200, 49.83, 200))
 
     def test_mec_revalidation_session_uses_scrapling_when_warm_fails(self):
@@ -183,13 +185,13 @@ class DealerRevalidationTests(unittest.TestCase):
             "discount_pct": 30,
         }))
 
-    def test_evo_browser_confirmation_targets_full_price_direct_results(self):
+    def test_evo_browser_confirmation_targets_every_usable_direct_result(self):
         self.assertTrue(_evo_should_confirm_with_browser({
             "sale_price": 180.0,
             "original_price": 180.0,
             "discount_pct": 0,
         }))
-        self.assertFalse(_evo_should_confirm_with_browser({
+        self.assertTrue(_evo_should_confirm_with_browser({
             "sale_price": 119.99,
             "original_price": 180.0,
             "discount_pct": 33,
@@ -210,6 +212,20 @@ class DealerRevalidationTests(unittest.TestCase):
 
         self.assertEqual(_evo_choose_more_informative_price(direct, browser), browser)
         self.assertEqual(_evo_choose_more_informative_price(direct, {"_err": "goto TimeoutError"}), direct)
+
+    def test_evo_browser_price_overrides_shallower_direct_discount(self):
+        direct = {
+            "sale_price": 450.0,
+            "original_price": 600.0,
+            "discount_pct": 25,
+        }
+        browser = {
+            "sale_price": 379.99,
+            "original_price": 600.0,
+            "discount_pct": 37,
+        }
+
+        self.assertEqual(_evo_choose_more_informative_price(direct, browser), browser)
 
     def test_ssense_html_extracts_sale_and_original(self):
         html = """

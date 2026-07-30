@@ -123,6 +123,8 @@ def should_preserve_previous_discount(
         return False
     if old_sale >= old_original - 0.01:
         return False
+    if new_sale > old_sale + 0.01:
+        return True
     if abs(new_sale - new_original) < 0.01:
         return True
     return abs(new_sale - old_sale) < 0.01 and new_original > old_original + 0.01
