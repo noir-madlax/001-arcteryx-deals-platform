@@ -22,6 +22,7 @@ env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
   GITHUB_TOKEN: ${{ github.token }}
+  REI_BROWSER_ROTATE_ROWS: "5"
 
 jobs:
   revalidate-dealer-prices:

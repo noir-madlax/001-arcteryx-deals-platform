@@ -723,7 +723,7 @@ def main():
         # Oldest first ensures rate-limited tail rows are first on the next run.
         rei_rows = sorted(by_dealer["rei"], key=lambda row: row.get("last_updated") or "")
         rei_delay = _env_float("REI_REVALIDATE_DELAY_SECONDS", 3.0, 0.5)
-        chunk_size = _env_int("REI_BROWSER_ROTATE_ROWS", 30, 5)
+        chunk_size = _env_int("REI_BROWSER_ROTATE_ROWS", 5, 5)
         print(
             f"\n[reval] REI ({len(rei_rows)}) — Camoufox, "
             f"delay={rei_delay}s, rotate={chunk_size}",
