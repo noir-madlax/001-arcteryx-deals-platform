@@ -28,4 +28,3 @@ assert.ok(colorType !== 4 && colorType !== 6, `App Store icon must not have an a
 assert.ok(!chunks.includes('tRNS'), 'App Store icon must not contain a transparency chunk');
 
 console.log(`release_assets_ok icon=${width}x${height} colorType=${colorType} alpha=false`);
-
