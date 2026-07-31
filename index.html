@@ -886,7 +886,11 @@
         <a href="https://www.evo.com/shop/arcteryx" target="_blank" rel="noopener">EVO</a>、
         <a href="https://www.rei.com/search?q=arcteryx" target="_blank" rel="noopener">REI</a>
         等经销商 · 价格汇率仅供参考，以各平台实际为准。</p>
-    <p style="margin-top:6px">© Arc'teryx Outlet Tracker · Non-affiliated</p>
+    <p style="margin-top:6px">
+        <a href="/support.html">GearDrop Support</a> ·
+        <a href="/privacy.html">Privacy Policy</a> ·
+        © Arc'teryx Outlet Tracker · Non-affiliated
+    </p>
 </footer>
 
 <!-- 今日上新弹窗 (有数据才显示) -->
@@ -1053,7 +1057,14 @@ function isBlockedProduct(p) {
     const dealer = p.dealer || platformKey(p);
     if (dealer !== 'arcteryx_outlet') return false;
     const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
-    return /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url)
+    const seenAt = Date.parse(p.last_seen_at || p.last_updated || '');
+    const stale = !Number.isFinite(seenAt) || Date.now() - seenAt > 72 * 60 * 60 * 1000;
+    return (p.status && p.status !== 'active')
+        || p.url_http_status === 404
+        || p.url_http_status === 410
+        || stale
+        || /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url)
+        || /outlet\.arcteryx\.com\/us\/en\/shop\/womens\/alpha-pant$/.test(url)
         || allKnownSizesOutOfStock(p);
 }
 

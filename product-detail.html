@@ -661,8 +661,15 @@ const allKnownSizesOutOfStock = (p) => {
 const isBlockedProduct = (p) => {
     const dealer = p.dealer || '';
     const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
+    const seenAt = Date.parse(p.last_seen_at || p.last_updated || '');
+    const stale = !Number.isFinite(seenAt) || Date.now() - seenAt > 72 * 60 * 60 * 1000;
     return (!dealer || dealer === 'arcteryx_outlet') &&
-        (/outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url)
+        ((p.status && p.status !== 'active')
+            || p.url_http_status === 404
+            || p.url_http_status === 410
+            || stale
+            || /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url)
+            || /outlet\.arcteryx\.com\/us\/en\/shop\/womens\/alpha-pant$/.test(url)
             || allKnownSizesOutOfStock(p));
 };
 
@@ -1160,12 +1167,6 @@ loadProduct();
 const SUPABASE_URL_PUBLIC  = 'https://bupqagkrcvrezjkdbald.supabase.co';
 const SUPABASE_ANON_PUBLIC = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDU1NTMsImV4cCI6MjA5MjAyMTU1M30.oszdUJIEKMCvpD9XFzTYTCYXj078uwjzFx84tfStfRU';
 
-function uuid4() {
-    return crypto?.randomUUID ? crypto.randomUUID() : ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-}
-
 function openAlertModal() {
     const btn = document.querySelector('.alert-btn');
     if (!btn) return;
@@ -1219,25 +1220,17 @@ async function submitAlert() {
     submitBtn.disabled = true;
     submitBtn.textContent = '提交中…';
     try {
-        const r = await fetch(`${SUPABASE_URL_PUBLIC}/rest/v1/price_alerts`, {
+        const r = await fetch(`${SUPABASE_URL_PUBLIC}/rest/v1/rpc/register_price_alert`, {
             method: 'POST',
             headers: {
                 'apikey': SUPABASE_ANON_PUBLIC,
                 'Authorization': `Bearer ${SUPABASE_ANON_PUBLIC}`,
                 'Content-Type': 'application/json',
-                'Prefer': 'return=minimal',
             },
             body: JSON.stringify({
-                email,
-                sku_id: d.sku,
-                target_price: target,
-                last_price_seen: sale,
-                currency: d.currency,
-                region: d.region,
-                product_name: d.name,
-                product_url: d.url,
-                image_url: d.image,
-                unsubscribe_token: uuid4(),
+                p_email: email,
+                p_sku_id: d.sku,
+                p_target_price: target,
             }),
         });
         if (!r.ok) {
