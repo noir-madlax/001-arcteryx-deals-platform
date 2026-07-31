@@ -10,6 +10,11 @@ on:
         required: false
         type: boolean
         default: false
+      dealers:
+        description: "Optional comma-separated revalidation subset: evo,mec,rei,ssense"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -23,6 +28,7 @@ env:
   SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
   GITHUB_TOKEN: ${{ github.token }}
   REI_BROWSER_ROTATE_ROWS: "5"
+  REVALIDATE_DEALERS: ${{ inputs.dealers }}
 
 jobs:
   revalidate-dealer-prices:

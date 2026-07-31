@@ -18,6 +18,7 @@ from dealers.revalidate import (
     open_mec_revalidation_session,
     parse_evo_browser_snapshot,
     parse_ssense_html,
+    requested_dealers,
     underperforming_dealers,
 )
 from dealers.supabase_sync import should_preserve_previous_discount
@@ -138,6 +139,15 @@ class DealerRevalidationTests(unittest.TestCase):
     def test_runtime_error_preserves_exception_detail(self):
         message = _format_error("goto", RuntimeError("connection closed"))
         self.assertEqual(message, "goto RuntimeError: connection closed")
+
+    def test_requested_dealers_accepts_only_supported_subset(self):
+        self.assertEqual(
+            requested_dealers(" REI,mec,ssense "),
+            {"rei", "mec", "ssense"},
+        )
+        self.assertIsNone(requested_dealers(""))
+        with self.assertRaisesRegex(ValueError, "unsupported.*outlet"):
+            requested_dealers("rei,outlet")
 
     @patch("dealers.revalidate.time.sleep")
     def test_rei_current_buy_box_full_price(self, _sleep):

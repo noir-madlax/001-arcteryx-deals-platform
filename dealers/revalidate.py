@@ -123,6 +123,24 @@ def _price_is_discounted(result: dict | None) -> bool:
     original = _num(result.get("original_price"))
     return bool(sale and original and original > sale + 0.01)
 
+def requested_dealers(value: str | None = None) -> set[str] | None:
+    """Return an optional validated dealer subset for bounded repair runs."""
+    raw = os.environ.get("REVALIDATE_DEALERS", "") if value is None else value
+    if not raw.strip():
+        return None
+    requested = {
+        dealer.strip().lower()
+        for dealer in raw.split(",")
+        if dealer.strip()
+    }
+    supported = {"evo", "mec", "rei", "ssense"}
+    unknown = sorted(requested - supported)
+    if unknown:
+        raise ValueError(
+            "unsupported REVALIDATE_DEALERS: " + ", ".join(unknown)
+        )
+    return requested
+
 # ── Per-dealer PDP fetchers ──────────────────────────────────────────────
 def fetch_evo_pdp(url: str) -> dict | None:
     """EVO Shopify, 用 /products/<handle>.js (注意 .js 不是 .json)
@@ -646,6 +664,13 @@ def main():
     from supabase import create_client
     client = create_client(SB_URL, SB_KEY)
     rows = load_all_dealer_rows(client)
+    selected = requested_dealers()
+    if selected is not None:
+        rows = [row for row in rows if row.get("dealer") in selected]
+        print(
+            "[reval] bounded dealer subset: " + ", ".join(sorted(selected)),
+            flush=True,
+        )
     print(f"[reval] loaded {len(rows)} dealer rows", flush=True)
     by_dealer = defaultdict(list)
     for r in rows:
