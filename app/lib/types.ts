@@ -19,6 +19,11 @@ export type ProductRow = {
   image_url: string | null;
   images: string[] | string | null;
   description: string | null;
+  status?: 'active' | 'missing' | 'inactive' | 'unavailable' | null;
+  last_seen_at?: string | null;
+  missing_runs?: number | null;
+  url_http_status?: number | null;
+  url_checked_at?: string | null;
   last_updated: string | null;
   created_at: string | null;
   dealer: string | null;
@@ -63,6 +68,7 @@ export type DealSignal = {
   isLow: boolean;
   minPrice: number | null;
   pointCount: number;
+  dropAmount?: number;
 };
 
 export type WatchEntry = {
@@ -73,15 +79,8 @@ export type WatchEntry = {
   alertTarget?: number;
 };
 
-export type PriceAlertPayload = {
+export type PriceAlertRequest = {
   email: string;
   sku_id: string;
   target_price: number | null;
-  last_price_seen: number;
-  currency: string;
-  region: string;
-  product_name: string;
-  product_url: string;
-  image_url: string;
-  unsubscribe_token: string;
 };

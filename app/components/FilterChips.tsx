@@ -1,11 +1,13 @@
-import { ScrollView, StyleSheet, Text, Pressable, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useMemo, useState } from 'react';
+import { Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { CATEGORY_ORDER, GENDER_LABEL, PLATFORM, REGION_LABEL, REGION_OPTIONS, SORT_OPTIONS, GENDER_OPTIONS } from '../lib/catalog';
-import { colors, radii } from '../lib/theme';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { CATEGORY_ORDER, PLATFORM, SORT_OPTIONS, GENDER_OPTIONS } from '../lib/catalog';
+import { colors, radii, typography } from '../lib/theme';
 
 type FilterState = {
   platform: string;
-  region: string;
   category: string;
   gender: string;
   series: string;
@@ -20,150 +22,396 @@ type Props = {
   onChange: (next: Partial<FilterState>) => void;
 };
 
-const SORT_LABEL: Record<string, string> = {
-  discount_desc: 'Discount',
-  price_asc: 'Low price',
-  price_desc: 'High price',
-  recent: 'Fresh',
-};
-
-export function FilterChips({ value, platforms, categories, series, onChange }: Props) {
-  const normalizedPlatforms = ['all', ...platforms.slice().sort((a, b) => (PLATFORM[a]?.label || a).localeCompare(PLATFORM[b]?.label || b))];
-  const normalizedCategories = [
-    'all',
-    ...categories
-      .slice()
-      .sort((a, b) => {
-        const ai = CATEGORY_ORDER.indexOf(a);
-        const bi = CATEGORY_ORDER.indexOf(b);
-        if (ai !== -1 && bi !== -1) return ai - bi;
-        if (ai !== -1) return -1;
-        if (bi !== -1) return 1;
-        return a.localeCompare(b);
-      })
-      .slice(0, 12),
-      ];
-  const normalizedSeries = ['all', ...series.slice().filter((name) => name !== '其他').sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' })).slice(0, 20)];
+export function FilterChips({ value, platforms, categories, series: _series, onChange }: Props) {
+  const { categoryLabel, genderLabel, t } = usePreferences();
+  const [sortOpen, setSortOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const normalizedPlatforms = useMemo(
+    () => ['all', ...platforms.slice().sort((a, b) => (PLATFORM[a]?.label || a).localeCompare(PLATFORM[b]?.label || b))],
+    [platforms],
+  );
+  const normalizedCategories = useMemo(
+    () => [
+      'all',
+      ...categories
+        .slice()
+        .sort((a, b) => {
+          const ai = CATEGORY_ORDER.indexOf(a);
+          const bi = CATEGORY_ORDER.indexOf(b);
+          if (ai !== -1 && bi !== -1) return ai - bi;
+          if (ai !== -1) return -1;
+          if (bi !== -1) return 1;
+          return a.localeCompare(b);
+        })
+        .slice(0, 14),
+    ],
+    [categories],
+  );
+  const activeFilters = [
+    value.platform !== 'all'
+      ? {
+          key: 'platform',
+          label: PLATFORM[value.platform]?.label || value.platform,
+          clear: () => onChange({ platform: 'all' }),
+        }
+      : null,
+    value.category !== 'all' ? { key: 'category', label: categoryLabel(value.category), clear: () => onChange({ category: 'all' }) } : null,
+    value.gender !== 'all'
+      ? {
+          key: 'gender',
+          label: genderLabel(value.gender),
+          clear: () => onChange({ gender: 'all' }),
+        }
+      : null,
+  ].filter(Boolean) as Array<{ key: string; label: string; clear: () => void }>;
+  const hasActiveFilters = activeFilters.length > 0;
 
   return (
     <View style={styles.wrap}>
-      <ChipRow
-        label="Source"
-        options={normalizedPlatforms}
-        value={value.platform}
-        getLabel={(option) => (option === 'all' ? 'All' : PLATFORM[option]?.label || option)}
-        onSelect={(platform) => onChange({ platform })}
-      />
-      <ChipRow
-        label="Region"
-        options={REGION_OPTIONS}
-        value={value.region}
-        getLabel={(option) => (option === 'all' ? 'All' : REGION_LABEL[option] || option.toUpperCase())}
-        onSelect={(region) => onChange({ region })}
-      />
-      <ChipRow
-        label="Category"
-        options={normalizedCategories}
-        value={value.category}
-        getLabel={(option) => (option === 'all' ? 'All' : option)}
-        onSelect={(category) => onChange({ category })}
-      />
-      <ChipRow
-        label="Gender"
-        options={GENDER_OPTIONS}
-        value={value.gender}
-        getLabel={(option) => (option === 'all' ? 'All' : GENDER_LABEL[option] || option)}
-        onSelect={(gender) => onChange({ gender })}
-      />
-      <ChipRow
-        label="Series"
-        options={normalizedSeries}
-        value={value.series}
-        getLabel={(option) => (option === 'all' ? 'All' : option)}
-        onSelect={(series) => onChange({ series })}
-      />
-      <ChipRow
-        label="Sort"
+      <View style={styles.controlRow}>
+        <Pressable accessibilityRole="button" accessibilityLabel={`${t('filters.sort')}: ${t(`sort.${value.sort}`)}`} style={styles.sortButton} onPress={() => setSortOpen(true)}>
+          <Text style={styles.sortPrefix}>{t('filters.sort')}</Text>
+          <Text style={styles.sortText}>{t(`sort.${value.sort}`)}</Text>
+          <Ionicons name="chevron-down" size={14} color={colors.ink} />
+        </Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('filters.filters')} style={styles.filterButton} onPress={() => setFilterOpen(true)}>
+          <Ionicons name="filter" size={18} color={colors.ink} />
+          {hasActiveFilters ? <View style={styles.filterDot} /> : null}
+        </Pressable>
+      </View>
+
+      {hasActiveFilters ? (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.activeRow}>
+          {activeFilters.map((filter) => (
+            <Pressable key={filter.key} accessibilityRole="button" accessibilityLabel={`Clear ${filter.label}`} style={styles.activeChip} onPress={filter.clear}>
+              <Text style={styles.activeChipText} numberOfLines={1}>
+                {filter.label}
+              </Text>
+              <Ionicons name="close" size={12} color={colors.disc} />
+            </Pressable>
+          ))}
+        </ScrollView>
+      ) : null}
+
+      <SelectionSheet
+        visible={sortOpen}
+        title={t('filters.sort')}
+        onClose={() => setSortOpen(false)}
         options={SORT_OPTIONS}
         value={value.sort}
-        getLabel={(option) => SORT_LABEL[option] || option}
-        onSelect={(sort) => onChange({ sort })}
+        getLabel={(option) => t(`sort.${option}`)}
+        onSelect={(sort) => {
+          onChange({ sort });
+          setSortOpen(false);
+        }}
       />
+
+      <Modal visible={filterOpen} animationType={Platform.OS === 'web' ? 'fade' : 'slide'} transparent onRequestClose={() => setFilterOpen(false)}>
+        <View style={styles.backdrop}>
+          <View style={styles.sheet}>
+            <View style={styles.sheetHead}>
+              <Text style={styles.sheetTitle}>{t('filters.filters')}</Text>
+              <Pressable style={styles.closeButton} onPress={() => setFilterOpen(false)}>
+                <Ionicons name="close" size={20} color={colors.ink} />
+              </Pressable>
+            </View>
+            <FilterSection
+              title={t('filters.brand')}
+              options={normalizedPlatforms}
+              value={value.platform}
+              getLabel={(option) => (option === 'all' ? t('filters.allBrands') : PLATFORM[option]?.label || option)}
+              onSelect={(platform) => onChange({ platform })}
+            />
+            <FilterSection
+              title={t('filters.category')}
+              options={normalizedCategories}
+              value={value.category}
+              getLabel={(option) => (option === 'all' ? t('filters.allCategories') : categoryLabel(option))}
+              onSelect={(category) => onChange({ category })}
+            />
+            <FilterSection
+              title={t('filters.gender')}
+              options={GENDER_OPTIONS}
+              value={value.gender}
+              getLabel={(option) => (option === 'all' ? t('filters.allGenders') : genderLabel(option))}
+              onSelect={(gender) => onChange({ gender })}
+            />
+            <View style={styles.sheetActions}>
+              <Pressable style={styles.resetButton} onPress={() => onChange({ platform: 'all', category: 'all', gender: 'all', series: 'all' })}>
+                <Text style={styles.resetText}>{t('common.reset')}</Text>
+              </Pressable>
+              <Pressable style={styles.doneButton} onPress={() => setFilterOpen(false)}>
+                <Text style={styles.doneText}>{t('common.done')}</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
 
-function ChipRow({
-  label,
+function FilterSection({
+  title,
   options,
   value,
   getLabel,
   onSelect,
 }: {
-  label: string;
+  title: string;
   options: string[];
   value: string;
   getLabel: (option: string) => string;
   onSelect: (option: string) => void;
 }) {
   return (
-    <View style={styles.rowWrap}>
-      <Text style={styles.rowLabel}>{label}</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      <View style={styles.optionWrap}>
         {options.map((option) => {
           const active = value === option;
           return (
-            <Pressable key={option} accessibilityRole="button" accessibilityLabel={`${label}: ${getLabel(option)}`} accessibilityState={{ selected: active }} style={[styles.chip, active && styles.chipActive]} onPress={() => onSelect(option)}>
-              <Text style={[styles.chipText, active && styles.chipTextActive]} numberOfLines={1}>
+            <Pressable key={option} accessibilityRole="button" accessibilityLabel={`${title}: ${getLabel(option)}`} accessibilityState={{ selected: active }} style={[styles.option, active && styles.optionActive]} onPress={() => onSelect(option)}>
+              <Text style={[styles.optionText, active && styles.optionTextActive]} numberOfLines={1}>
                 {getLabel(option)}
               </Text>
             </Pressable>
           );
         })}
-      </ScrollView>
+      </View>
     </View>
+  );
+}
+
+function SelectionSheet({
+  visible,
+  title,
+  options,
+  value,
+  getLabel,
+  onSelect,
+  onClose,
+}: {
+  visible: boolean;
+  title: string;
+  options: string[];
+  value: string;
+  getLabel: (option: string) => string;
+  onSelect: (option: string) => void;
+  onClose: () => void;
+}) {
+  return (
+    <Modal visible={visible} animationType={Platform.OS === 'web' ? 'fade' : 'slide'} transparent onRequestClose={onClose}>
+      <View style={styles.backdrop}>
+        <View style={styles.sheet}>
+          <View style={styles.sheetHead}>
+            <Text style={styles.sheetTitle}>{title}</Text>
+            <Pressable style={styles.closeButton} onPress={onClose}>
+              <Ionicons name="close" size={20} color={colors.ink} />
+            </Pressable>
+          </View>
+          <View style={styles.optionList}>
+            {options.map((option) => {
+              const active = value === option;
+              return (
+                <Pressable key={option} style={styles.sortOption} onPress={() => onSelect(option)}>
+                  <Text style={[styles.sortOptionText, active && styles.sortOptionTextActive]}>{getLabel(option)}</Text>
+                  {active ? <Ionicons name="checkmark" size={18} color={colors.buy} /> : null}
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    gap: 8,
-    paddingBottom: 12,
+    gap: 10,
   },
-  rowWrap: {
+  controlRow: {
+    minHeight: 36,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  sortButton: {
+    minHeight: 34,
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 6,
   },
-  rowLabel: {
-    color: colors.faint,
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-    paddingHorizontal: 20,
-  },
-  row: {
-    gap: 8,
-    paddingHorizontal: 20,
-  },
-  chip: {
-    minHeight: 32,
-    justifyContent: 'center',
-    borderRadius: radii.sm,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
-    paddingHorizontal: 12,
-    backgroundColor: colors.surface,
-  },
-  chipActive: {
-    backgroundColor: colors.accentSoft,
-    borderColor: colors.accent,
-  },
-  chipText: {
+  sortPrefix: {
     color: colors.muted,
     fontSize: 13,
     fontWeight: '600',
   },
-  chipTextActive: {
-    color: colors.accent,
+  sortText: {
+    color: colors.ink,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  filterButton: {
+    width: 34,
+    height: 34,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.borderStrong,
+    backgroundColor: colors.screen,
+  },
+  filterDot: {
+    position: 'absolute',
+    right: -3,
+    top: -3,
+    width: 9,
+    height: 9,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: colors.card,
+    backgroundColor: colors.disc,
+  },
+  activeRow: {
+    gap: 7,
+    paddingRight: 2,
+  },
+  activeChip: {
+    minHeight: 27,
+    maxWidth: 170,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    borderRadius: radii.sm,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.discLine,
+    backgroundColor: colors.discBg,
+    paddingHorizontal: 8,
+  },
+  activeChipText: {
+    color: colors.disc,
+    fontSize: 11,
+    fontWeight: '800',
+  },
+  backdrop: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(8,9,10,.38)',
+  },
+  sheet: {
+    maxHeight: '82%',
+    gap: 18,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: colors.card,
+    padding: 18,
+    paddingBottom: 34,
+  },
+  sheetHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  sheetTitle: {
+    color: colors.ink,
+    fontSize: 19,
+    fontWeight: '900',
+  },
+  closeButton: {
+    width: 34,
+    height: 34,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 17,
+    backgroundColor: colors.screen,
+  },
+  section: {
+    gap: 9,
+  },
+  sectionTitle: {
+    color: colors.faint,
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 0.7,
+    textTransform: 'uppercase',
+  },
+  optionWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  option: {
+    minHeight: 34,
+    justifyContent: 'center',
+    borderRadius: radii.sm,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+    backgroundColor: colors.screen,
+    paddingHorizontal: 11,
+  },
+  optionActive: {
+    borderColor: colors.buyLine,
+    backgroundColor: colors.buyBg,
+  },
+  optionText: {
+    color: colors.muted,
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  optionTextActive: {
+    color: colors.buy,
+  },
+  sheetActions: {
+    flexDirection: 'row',
+    gap: 10,
+    paddingTop: 2,
+  },
+  resetButton: {
+    flex: 1,
+    minHeight: 46,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: radii.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.borderStrong,
+  },
+  doneButton: {
+    flex: 1,
+    minHeight: 46,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: radii.lg,
+    backgroundColor: colors.pill,
+  },
+  resetText: {
+    color: colors.ink,
+    fontWeight: '900',
+  },
+  doneText: {
+    color: colors.onPill,
+    fontWeight: '900',
+  },
+  optionList: {
+    gap: 2,
+  },
+  sortOption: {
+    minHeight: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.border,
+  },
+  sortOptionText: {
+    color: colors.ink,
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  sortOptionTextActive: {
+    color: colors.buy,
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
   },
 });

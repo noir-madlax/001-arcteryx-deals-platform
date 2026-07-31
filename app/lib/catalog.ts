@@ -48,8 +48,10 @@ export const PLATFORM: Record<string, { label: string; color: string }> = {
 };
 
 export const REGION_OPTIONS = ['all', 'us', 'ca', 'gb', 'de', 'fr', 'nl', 'fi', 'ie', 'jp'];
+export const DEFAULT_REGION = 'us';
 export const GENDER_OPTIONS = ['all', 'women', 'men', 'unisex'];
 export const SORT_OPTIONS = ['discount_desc', 'price_asc', 'price_desc', 'recent'];
+export const MAX_OUTLET_STALE_HOURS = 72;
 export const CATEGORY_ORDER = [
   '冲锋衣',
   '保暖羽绒',
@@ -64,6 +66,10 @@ export const CATEGORY_ORDER = [
   'Veilance',
   '其他',
 ];
+
+export function normalizeRegion(value: string | null | undefined) {
+  return value && REGION_OPTIONS.includes(value) ? value : DEFAULT_REGION;
+}
 
 const GENDER_MARKERS = ["Women's", "Men's", 'Unisex', 'Damen', 'Herren', 'Femme', 'Homme'];
 const NAME_PREFIX_STRIP = /^(?:Der|Die|Das|Veste à capuche|Veste|system_a)\s*/i;
@@ -259,11 +265,26 @@ function allKnownSizesOutOfStock(product: ProductRow) {
   return keys.length > 0 && keys.every((size) => stock[size] === 'out_of_stock');
 }
 
+function isStaleOutletProduct(product: ProductRow) {
+  const value = product.last_seen_at || product.last_updated;
+  if (!value) return true;
+  const stamp = Date.parse(value);
+  return Number.isNaN(stamp) || Date.now() - stamp > MAX_OUTLET_STALE_HOURS * 3600000;
+}
+
 export function isBlockedProduct(product: ProductRow) {
   const dealer = product.dealer || platformKey(product);
   if (dealer !== 'arcteryx_outlet') return false;
   const url = (String(product.url || '').split('?')[0] || '').replace(/\/$/, '').toLowerCase();
-  return /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url) || allKnownSizesOutOfStock(product);
+  return (
+    Boolean(product.status && product.status !== 'active') ||
+    product.url_http_status === 404 ||
+    product.url_http_status === 410 ||
+    isStaleOutletProduct(product) ||
+    /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url) ||
+    /outlet\.arcteryx\.com\/us\/en\/shop\/womens\/alpha-pant$/.test(url) ||
+    allKnownSizesOutOfStock(product)
+  );
 }
 
 export function normalizeProduct(row: ProductRow): Product | null {

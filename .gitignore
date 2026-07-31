@@ -11,6 +11,7 @@ __pycache__/
 # Secrets / local credentials
 .env
 .env.*
+!.env.example
 private.*.key
 *.pem
 miniprogram/project.private.config.json

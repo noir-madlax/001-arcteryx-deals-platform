@@ -3,9 +3,12 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { usePreferences } from '../contexts/PreferencesContext';
+import { openSupportUrl } from '../lib/actions';
 import { colors, radii } from '../lib/theme';
 
 export default function PrivacyScreen() {
+  const { t } = usePreferences();
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.nav}>
@@ -14,28 +17,32 @@ export default function PrivacyScreen() {
         </Pressable>
       </View>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.kicker}>GearDrop</Text>
-        <Text style={styles.title}>Privacy policy</Text>
+        <Text style={styles.kicker}>{t('brand.name')}</Text>
+        <Text style={styles.title}>{t('privacy.title')}</Text>
         <PolicyBlock
-          title="What we store"
-          body="Saved products and Pro status are stored on this device. Price alerts submit your email, target price, product SKU, region, product URL, and unsubscribe token so alerts can be delivered."
+          title={t('privacy.storeTitle')}
+          body={t('privacy.storeBody')}
         />
         <PolicyBlock
-          title="What we read"
-          body="The app reads public product and price-history data from the GearDrop catalog. It does not read other users' price-alert subscriptions."
+          title={t('privacy.readTitle')}
+          body={t('privacy.readBody')}
         />
         <PolicyBlock
-          title="Notifications"
-          body="Local notifications are used for alert testing in this version. Remote push notifications are not enabled."
+          title={t('privacy.notificationsTitle')}
+          body={t('privacy.notificationsBody')}
         />
         <PolicyBlock
-          title="Purchases"
-          body="Pro status is stored locally in this version. Apple in-app purchases are not connected yet."
+          title={t('privacy.purchasesTitle')}
+          body={t('privacy.purchasesBody')}
         />
         <PolicyBlock
-          title="Contact"
-          body="For data or privacy requests, use the contact channel associated with 001.100app.dev."
+          title={t('privacy.contactTitle')}
+          body={t('privacy.contactBody')}
         />
+        <Pressable accessibilityRole="link" style={styles.supportButton} onPress={openSupportUrl}>
+          <Text style={styles.supportButtonText}>{t('privacy.openSupport')}</Text>
+          <Ionicons name="open-outline" size={18} color={colors.onPill} />
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
@@ -106,5 +113,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     fontWeight: '600',
+  },
+  supportButton: {
+    minHeight: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    borderRadius: radii.md,
+    backgroundColor: colors.accent,
+    paddingHorizontal: 16,
+  },
+  supportButtonText: {
+    color: colors.onPill,
+    fontSize: 15,
+    fontWeight: '900',
   },
 });

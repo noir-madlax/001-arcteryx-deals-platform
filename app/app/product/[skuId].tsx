@@ -1,27 +1,31 @@
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
+import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, Image, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, useColorScheme, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AlertModal } from '../../components/AlertModal';
 import { PriceChart } from '../../components/PriceChart';
 import { ScreenState } from '../../components/ScreenState';
+import { TopoPlaceholder } from '../../components/TopoPlaceholder';
 import { useProducts } from '../../contexts/ProductsContext';
+import { usePreferences } from '../../contexts/PreferencesContext';
 import { usePro } from '../../contexts/ProContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
-import { cleanName, formatPrice, GENDER_LABEL, productCategory, REGION_LABEL, releaseSeason } from '../../lib/catalog';
-import { openBuyUrl, scheduleTestPriceNotification, softImpact, uuid4 } from '../../lib/actions';
-import { buildPriceAlertPayload } from '../../lib/priceAlerts';
+import { cleanName, productCategory, releaseSeason } from '../../lib/catalog';
+import { openBuyUrl, scheduleTestPriceNotification, softImpact } from '../../lib/actions';
+import { buildPriceAlertRequest } from '../../lib/priceAlerts';
 import { computeSignal, historyToPoints, recentPoints } from '../../lib/signals';
 import { fetchPriceHistory, fetchProductFamilyBySku, insertPriceAlert } from '../../lib/supabase';
-import { colors, radii, shadow } from '../../lib/theme';
+import { colors, radii, typography } from '../../lib/theme';
 import type { PriceHistoryRow, Product } from '../../lib/types';
 
 export default function ProductDetailScreen() {
   const { skuId } = useLocalSearchParams<{ skuId: string }>();
   const { getProduct, cheaperAlternatives } = useProducts();
+  const { categoryLabel, formatMoney, genderLabel, regionLabel, t } = usePreferences();
   const watchlist = useWatchlist();
   const { isPro } = usePro();
   const [fallbackFamily, setFallbackFamily] = useState<Product[]>([]);
@@ -29,7 +33,9 @@ export default function ProductDetailScreen() {
   const [loadingProduct, setLoadingProduct] = useState(false);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
   const { width } = useWindowDimensions();
+  const scheme = useColorScheme();
   const contextProduct = getProduct(skuId);
   const product = contextProduct || fallbackFamily.find((row) => row.sku_id === skuId) || fallbackFamily[0];
 
@@ -49,27 +55,36 @@ export default function ProductDetailScreen() {
       .finally(() => setLoadingHistory(false));
   }, [product?.sku_id]);
 
+  useEffect(() => {
+    setFailedImages({});
+  }, [product?.sku_id]);
+
   const points = useMemo(() => (product ? historyToPoints(history, product) : []), [history, product]);
   const chartPoints = useMemo(() => (isPro ? points : recentPoints(points, 30)), [isPro, points]);
   const signal = useMemo(() => (product ? computeSignal(product, history) : null), [history, product]);
   const alternatives = product ? cheaperAlternatives(product) : [];
   const saved = product ? watchlist.isSaved(product.sku_id) : false;
+  const verdictText = signal?.isLow ? t('product.goodVerdict') : t('product.waitVerdict');
 
   if (!product && loadingProduct) {
-    return <ScreenState title="Loading product" body="Checking the latest price." loading />;
+    return <ScreenState title={t('product.loading')} body={t('product.loadingBody')} loading />;
   }
 
   if (!product) {
-    return <ScreenState title="Product not found" body="It may be sold out or removed from the catalog." />;
+    return <ScreenState title={t('product.notFound')} body={t('product.notFoundBody')} />;
   }
 
   const currentProduct = product;
   const name = cleanName(currentProduct.full_name || currentProduct.model);
-  const images = (currentProduct.images.length ? currentProduct.images : [currentProduct.image_url]).filter(Boolean) as string[];
+  const imageCandidates = Array.from(new Set([currentProduct.image_url, ...currentProduct.images].filter(Boolean))) as string[];
+  const visibleImages = imageCandidates.filter((uri) => !failedImages[uri]);
+  const galleryImages = visibleImages.length ? visibleImages : ['__placeholder__'];
   const season = releaseSeason(currentProduct);
+  const galleryWidth = Math.max(width - 30, 1);
+  const currentCategory = categoryLabel(productCategory(currentProduct));
 
   async function submitAlert(email: string, target: number | null) {
-    await insertPriceAlert(buildPriceAlertPayload(currentProduct, name, email, target, uuid4()));
+    await insertPriceAlert(buildPriceAlertRequest(currentProduct, email, target));
     await watchlist.setAlertTarget(currentProduct, target);
     await scheduleTestPriceNotification(name);
   }
@@ -86,7 +101,7 @@ export default function ProductDetailScreen() {
             onPress={async () => {
               const savedNow = await watchlist.toggle(currentProduct);
               if (!savedNow) {
-                Alert.alert('Watchlist limit reached', `Free watchlists hold ${watchlist.freeLimit} items. Upgrade to Pro for unlimited saves.`);
+                Alert.alert(t('deals.watchLimitTitle'), t('deals.watchLimitBody', { count: watchlist.freeLimit }));
               }
             }}
           >
@@ -95,45 +110,59 @@ export default function ProductDetailScreen() {
         </View>
 
         <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} style={styles.gallery}>
-          {images.map((uri) => (
-            <View style={[styles.imageFrame, { width }]} key={uri}>
-              <Image source={{ uri }} resizeMode="cover" style={styles.image} />
+          {galleryImages.map((uri, index) => (
+            <View style={[styles.imageFrame, { width: galleryWidth }]} key={uri}>
+              <TopoPlaceholder label={currentCategory} showLabel={false} />
+              {uri !== '__placeholder__' && !failedImages[uri] ? (
+                <Image source={{ uri }} contentFit="cover" transition={180} style={styles.image} onError={() => setFailedImages((current) => ({ ...current, [uri]: true }))} />
+              ) : null}
+              <View style={styles.imageDiscount}>
+                <Text style={styles.imageDiscountText}>-{currentProduct.discount_pct}%</Text>
+              </View>
+              <Text style={styles.imageLabel}>{currentCategory}</Text>
+              {visibleImages.length > 1 ? (
+                <View style={styles.imageDots}>
+                  {visibleImages.slice(0, 4).map((dot, dotIndex) => (
+                    <View key={dot} style={[styles.imageDot, dotIndex === index && styles.imageDotActive]} />
+                  ))}
+                </View>
+              ) : null}
             </View>
           ))}
         </ScrollView>
 
         <View style={styles.block}>
-          <Text style={styles.category}>{productCategory(currentProduct)}</Text>
+          <Text style={styles.category}>{currentCategory}</Text>
           <Text style={styles.title}>{name}</Text>
-          <Text style={styles.meta}>{[currentProduct.color, GENDER_LABEL[currentProduct.gender || ''] || currentProduct.gender, REGION_LABEL[currentProduct.region] || currentProduct.region.toUpperCase(), season].filter(Boolean).join(' · ')}</Text>
+          <Text style={styles.meta}>{[currentProduct.color, genderLabel(currentProduct.gender || 'unknown'), regionLabel(currentProduct.region), season].filter(Boolean).join(' · ')}</Text>
         </View>
 
         <View style={styles.priceBlock}>
-          <Text style={styles.sale}>{formatPrice(currentProduct.sale_price, currentProduct.symbol)}</Text>
-          {currentProduct.original_price > currentProduct.sale_price ? <Text style={styles.original}>{formatPrice(currentProduct.original_price, currentProduct.symbol)}</Text> : null}
+          <Text style={styles.sale}>{formatMoney(currentProduct.sale_price, currentProduct.currency, currentProduct.symbol)}</Text>
+          {currentProduct.original_price > currentProduct.sale_price ? <Text style={styles.original}>{formatMoney(currentProduct.original_price, currentProduct.currency, currentProduct.symbol)}</Text> : null}
           <View style={styles.discount}>
             <Text style={styles.discountText}>-{currentProduct.discount_pct}%</Text>
           </View>
           {isPro && signal?.kind === 'all_time_low' ? (
             <View style={styles.lowBadge}>
-              <Text style={styles.lowBadgeText}>All-time low</Text>
+              <Text style={styles.lowBadgeText}>{t('signal.all_time_low')}</Text>
             </View>
           ) : null}
         </View>
 
         <View style={styles.section}>
           <View style={styles.sectionHead}>
-            <Text style={styles.sectionTitle}>Price history</Text>
-            {loadingHistory ? <ActivityIndicator color={colors.accent} /> : <Text style={styles.sectionMeta}>{isPro ? 'Full history' : 'Last 30 days'}</Text>}
+            <Text style={styles.sectionTitle}>{t('product.priceHistory')}</Text>
+            {loadingHistory ? <ActivityIndicator color={colors.accent} /> : <Text style={styles.sectionMeta}>{isPro ? t('product.fullHistory') : t('product.last30Days')}</Text>}
           </View>
           <View style={styles.chartWrap}>
             <PriceChart points={chartPoints} product={currentProduct} />
             {!isPro ? (
-              <BlurView intensity={22} tint="light" style={styles.paywallOverlay}>
-                <Text style={styles.paywallTitle}>Upgrade for full history</Text>
-                <Text style={styles.paywallSub}>Unlock all-time lows and cross-season context.</Text>
+              <BlurView intensity={22} tint={scheme === 'dark' ? 'dark' : 'light'} style={styles.paywallOverlay}>
+                <Text style={styles.paywallTitle}>{t('product.upgradeHistory')}</Text>
+                <Text style={styles.paywallSub}>{t('product.upgradeHistorySub')}</Text>
                 <Pressable style={styles.paywallButton} onPress={() => router.push('/paywall')}>
-                  <Text style={styles.paywallButtonText}>View Pro</Text>
+                  <Text style={styles.paywallButtonText}>{t('product.viewPro')}</Text>
                 </Pressable>
               </BlurView>
             ) : null}
@@ -142,22 +171,23 @@ export default function ProductDetailScreen() {
 
         {signal ? (
           <View style={[styles.verdict, signal.isLow ? styles.verdictGood : styles.verdictNeutral]}>
-            <Text style={[styles.verdictText, signal.isLow && styles.verdictGoodText]}>{signal.verdict}</Text>
+            <Ionicons name={signal.isLow ? 'checkmark' : 'time-outline'} size={15} color={signal.isLow ? colors.buy : colors.muted} />
+            <Text style={[styles.verdictText, signal.isLow && styles.verdictGoodText]}>{verdictText}</Text>
           </View>
         ) : null}
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Also cheaper</Text>
+        <View style={styles.regionLine}>
+          <Text style={styles.regionLead}>{t('product.alsoCheaper')}</Text>
           {alternatives.length ? (
             <View style={styles.alternatives}>
               {alternatives.map((item) => (
                 <Pressable key={item.sku_id} style={styles.altPill} onPress={() => router.push({ pathname: '/product/[skuId]', params: { skuId: item.sku_id } })}>
-                  <Text style={styles.altText}>{REGION_LABEL[item.region] || item.region.toUpperCase()} {formatPrice(item.sale_price, item.symbol)}</Text>
+                  <Text style={styles.altText}>{regionLabel(item.region)} {formatMoney(item.sale_price, item.currency, item.symbol)}</Text>
                 </Pressable>
               ))}
             </View>
           ) : (
-            <Text style={styles.muted}>No cheaper region in the loaded catalog.</Text>
+            <Text style={styles.muted}>{t('product.noCheaper')}</Text>
           )}
         </View>
 
@@ -170,11 +200,11 @@ export default function ProductDetailScreen() {
             }}
           >
             <Ionicons name="notifications-outline" size={18} color={colors.ink} />
-            <Text style={styles.alertText}>Alert</Text>
+            <Text style={styles.alertText}>{t('product.alert')}</Text>
           </Pressable>
           <Pressable style={[styles.actionButton, styles.buyButton]} onPress={() => openBuyUrl(currentProduct.url)}>
-            <Text style={styles.buyText}>Buy</Text>
-            <Ionicons name="open-outline" size={18} color="#fff" />
+            <Text style={styles.buyText}>{t('product.buy')}</Text>
+            <Ionicons name="open-outline" size={18} color={colors.onPill} />
           </Pressable>
         </View>
       </ScrollView>
@@ -198,29 +228,86 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   iconButton: {
-    width: 42,
-    height: 42,
+    width: 34,
+    height: 34,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 21,
-    backgroundColor: colors.surface,
+    borderRadius: 17,
+    backgroundColor: colors.card,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
+    borderColor: colors.borderStrong,
   },
   gallery: {
-    width: '100%',
+    marginHorizontal: 15,
   },
   imageFrame: {
     aspectRatio: 4 / 5,
-    backgroundColor: colors.surfaceAlt,
+    overflow: 'hidden',
+    borderRadius: radii.xl,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+    backgroundColor: colors.photo,
   },
   image: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     width: '100%',
     height: '100%',
   },
+  imageDiscount: {
+    position: 'absolute',
+    left: 12,
+    top: 10,
+    borderRadius: radii.sm,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.discLine,
+    backgroundColor: colors.onPhotoBadge,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+  },
+  imageDiscountText: {
+    color: colors.onPhotoDisc,
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
+    fontSize: 11,
+    fontWeight: '900',
+  },
+  imageLabel: {
+    position: 'absolute',
+    left: 12,
+    bottom: 10,
+    color: colors.photoCat,
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 0.7,
+    textTransform: 'uppercase',
+  },
+  imageDots: {
+    position: 'absolute',
+    right: 12,
+    bottom: 12,
+    flexDirection: 'row',
+    gap: 4,
+  },
+  imageDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: colors.photoDot,
+    opacity: 0.35,
+  },
+  imageDotActive: {
+    backgroundColor: colors.photoDot,
+    opacity: 0.9,
+  },
   block: {
-    gap: 8,
-    padding: 20,
+    gap: 5,
+    paddingHorizontal: 20,
+    paddingTop: 14,
+    paddingBottom: 0,
   },
   category: {
     color: colors.faint,
@@ -231,9 +318,10 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.ink,
-    fontSize: 27,
-    lineHeight: 33,
+    fontSize: 21,
+    lineHeight: 27,
     fontWeight: '900',
+    letterSpacing: 0,
   },
   meta: {
     color: colors.muted,
@@ -245,50 +333,56 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: 9,
     marginHorizontal: 20,
-    borderRadius: radii.md,
-    backgroundColor: colors.surface,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
-    padding: 14,
-    ...shadow,
+    marginTop: 11,
   },
   sale: {
-    color: colors.danger,
-    fontSize: 28,
+    color: colors.disc,
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
+    fontSize: 26,
     fontWeight: '900',
+    letterSpacing: 0,
   },
   original: {
     color: colors.faint,
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
     fontSize: 16,
     fontWeight: '700',
     textDecorationLine: 'line-through',
   },
   discount: {
     borderRadius: radii.sm,
-    backgroundColor: colors.dangerSoft,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.discLine,
+    backgroundColor: colors.discBg,
     paddingHorizontal: 8,
     paddingVertical: 5,
   },
   discountText: {
-    color: colors.danger,
+    color: colors.disc,
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
     fontWeight: '900',
   },
   lowBadge: {
     borderRadius: radii.sm,
-    backgroundColor: colors.successSoft,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.buyLine,
+    backgroundColor: colors.buyBg,
     paddingHorizontal: 8,
     paddingVertical: 5,
   },
   lowBadgeText: {
-    color: colors.success,
+    color: colors.buy,
     fontWeight: '900',
   },
   section: {
     gap: 10,
     paddingHorizontal: 20,
-    paddingTop: 22,
+    paddingTop: 18,
   },
   sectionHead: {
     flexDirection: 'row',
@@ -297,11 +391,13 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: colors.ink,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '900',
   },
   sectionMeta: {
     color: colors.muted,
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
     fontSize: 12,
     fontWeight: '800',
   },
@@ -319,7 +415,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
     padding: 18,
-    backgroundColor: 'rgba(247,245,239,0.58)',
+    backgroundColor: colors.overlay,
   },
   paywallTitle: {
     color: colors.ink,
@@ -335,33 +431,54 @@ const styles = StyleSheet.create({
   paywallButton: {
     marginTop: 4,
     borderRadius: radii.sm,
-    backgroundColor: colors.ink,
+    backgroundColor: colors.pill,
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
   paywallButtonText: {
-    color: '#fff',
+    color: colors.onPill,
     fontWeight: '900',
   },
   verdict: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
     marginHorizontal: 20,
     marginTop: 18,
-    borderRadius: radii.md,
-    padding: 14,
+    borderRadius: 11,
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
   },
   verdictGood: {
-    backgroundColor: colors.successSoft,
+    borderColor: colors.buyLine,
+    backgroundColor: colors.buyBg,
   },
   verdictNeutral: {
-    backgroundColor: colors.surfaceAlt,
+    borderColor: colors.border,
+    backgroundColor: colors.screen,
   },
   verdictText: {
+    flex: 1,
     color: colors.muted,
-    fontSize: 15,
+    fontSize: 12.5,
     fontWeight: '900',
   },
   verdictGoodText: {
-    color: colors.success,
+    color: colors.buy,
+  },
+  regionLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 8,
+    paddingHorizontal: 20,
+    paddingTop: 14,
+  },
+  regionLead: {
+    color: colors.muted,
+    fontSize: 12,
+    fontWeight: '700',
   },
   alternatives: {
     flexDirection: 'row',
@@ -369,17 +486,14 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   altPill: {
-    borderRadius: radii.sm,
-    backgroundColor: colors.surface,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 2,
   },
   altText: {
     color: colors.ink,
-    fontSize: 13,
-    fontWeight: '800',
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
+    fontSize: 12,
+    fontWeight: '900',
   },
   muted: {
     color: colors.muted,
@@ -389,12 +503,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     paddingHorizontal: 20,
-    paddingTop: 22,
+    paddingTop: 18,
   },
   actionButton: {
     flex: 1,
-    minHeight: 52,
-    borderRadius: radii.sm,
+    minHeight: 48,
+    borderRadius: radii.lg,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -406,14 +520,14 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   buyButton: {
-    backgroundColor: colors.ink,
+    backgroundColor: colors.pill,
   },
   alertText: {
     color: colors.ink,
     fontWeight: '900',
   },
   buyText: {
-    color: '#fff',
+    color: colors.onPill,
     fontWeight: '900',
   },
 });

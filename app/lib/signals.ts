@@ -91,6 +91,7 @@ export function computeSignal(product: Product, historyRows: PriceHistoryRow[]):
       isLow: false,
       minPrice: minAll,
       pointCount: points.length,
+      dropAmount: delta,
     };
   }
 

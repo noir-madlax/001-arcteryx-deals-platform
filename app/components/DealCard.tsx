@@ -1,9 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { cleanName, formatPrice, freshnessLabel, productCategory, REGION_LABEL, staleDays } from '../lib/catalog';
-import { colors, radii, shadow } from '../lib/theme';
+import { TopoPlaceholder } from './TopoPlaceholder';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { cleanName, freshnessLabel, productCategory, staleDays } from '../lib/catalog';
+import { colors, radii, typography } from '../lib/theme';
 import type { DealSignal, Product } from '../lib/types';
 
 type Props = {
@@ -16,187 +19,255 @@ type Props = {
 };
 
 export function DealCard({ product, signal, saved = false, hero = false, onPress, onToggleSave }: Props) {
+  const { categoryLabel, formatMoney, t } = usePreferences();
   const name = cleanName(product.full_name || product.model);
-  const imageUri = product.image_url || product.images[0];
-  const [imageFailed, setImageFailed] = useState(false);
+  const imageCandidates = Array.from(new Set([product.image_url, ...product.images].filter(Boolean))) as string[];
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+  const imageUri = imageCandidates.find((uri) => !failedImages[uri]);
   const stale = staleDays(product.last_updated) > 3;
-  const signalLabel = signal?.label || (signal?.kind === 'insufficient' ? `${product.discount_pct}% off` : 'Checking price signal');
-  const tone = signal?.tone === 'success' ? styles.signalSuccess : styles.signalNeutral;
+  const category = categoryLabel(productCategory(product));
+  const allTimeLow = signal?.kind === 'all_time_low';
+  const signalLabel = stale
+    ? t('signal.seen', { when: freshnessLabel(product.last_updated) })
+    : signal?.kind === 'all_time_low'
+      ? t('signal.all_time_low')
+      : signal?.kind === 'ninety_day_low'
+        ? t('signal.ninety_day_low')
+        : signal?.kind === 'drop_today' && signal.dropAmount
+          ? t('signal.drop_today', { amount: formatMoney(signal.dropAmount, product.currency, product.symbol) })
+          : signal?.kind === 'steady'
+            ? t('signal.steady')
+            : signal?.kind === 'insufficient'
+              ? t('signal.off', { percent: product.discount_pct })
+              : t('signal.checking');
+  const signalStyle = stale ? styles.signalStale : signal?.tone === 'success' ? styles.signalGood : styles.signalFlat;
 
   useEffect(() => {
-    setImageFailed(false);
-  }, [imageUri]);
+    setFailedImages({});
+  }, [product.sku_id]);
 
   return (
     <Pressable style={[styles.card, hero && styles.heroCard]} onPress={onPress}>
-      <View style={[styles.imageWrap, hero && styles.heroImageWrap]}>
-        {imageUri && !imageFailed ? <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" onError={() => setImageFailed(true)} /> : <View style={styles.imageFallback}><Text style={styles.fallbackText}>{name}</Text></View>}
-        <View style={styles.discountBadge}>
-          <Text style={styles.discountText}>-{product.discount_pct}%</Text>
+      <View style={styles.imageWrap}>
+        <TopoPlaceholder label={category} showLabel={false} />
+        {imageUri ? <Image source={{ uri: imageUri }} style={styles.image} contentFit="cover" transition={160} onError={() => setFailedImages((current) => ({ ...current, [imageUri]: true }))} /> : null}
+        {allTimeLow ? (
+          <View style={styles.lowRibbon}>
+            <Ionicons name="star" size={9} color="#FFFFFF" />
+            <Text style={styles.lowRibbonText}>{t('signal.all_time_low')}</Text>
+          </View>
+        ) : (
+          <View style={styles.imageBadge}>
+            <Text style={styles.imageBadgeText}>-{product.discount_pct}%</Text>
+          </View>
+        )}
+        <View style={styles.regionBadge}>
+          <Text style={styles.regionBadgeText}>{regionFlag(product.region)}</Text>
         </View>
         {onToggleSave ? (
-          <Pressable style={styles.saveButton} onPress={onToggleSave} hitSlop={10}>
-            <Ionicons name={saved ? 'heart' : 'heart-outline'} color={saved ? colors.danger : colors.ink} size={18} />
+          <Pressable accessibilityRole="button" accessibilityLabel={saved ? t('watch.remove') : t('watch.save')} style={styles.saveButton} onPress={onToggleSave} hitSlop={10}>
+            <Ionicons name={saved ? 'heart' : 'heart-outline'} color={saved ? colors.disc : colors.ink} size={16} />
           </Pressable>
         ) : null}
+        <Text style={styles.imageLabel} numberOfLines={1}>
+          {category}
+        </Text>
       </View>
       <View style={styles.body}>
-        <View style={styles.metaRow}>
-          <Text style={styles.category} numberOfLines={1}>{productCategory(product)}</Text>
-          <Text style={styles.region} numberOfLines={1}>{REGION_LABEL[product.region] || product.region.toUpperCase()}</Text>
-        </View>
-        <Text style={[styles.name, hero && styles.heroName]} numberOfLines={hero ? 2 : 2}>{name}</Text>
-        <View style={styles.signalRow}>
-          <View style={[styles.signalPill, tone]}>
-            <Text style={[styles.signalText, signal?.tone === 'success' && styles.signalTextSuccess]} numberOfLines={1}>{signalLabel}</Text>
-          </View>
-          {stale ? <Text style={styles.stale}>{freshnessLabel(product.last_updated)}</Text> : null}
-        </View>
+        <Text style={[styles.name, hero && styles.heroName]} numberOfLines={2}>
+          {name}
+        </Text>
+        {hero ? (
+          <Text style={styles.meta} numberOfLines={1}>
+            {[product.color, product.gender].filter(Boolean).join(' · ')}
+          </Text>
+        ) : null}
         <View style={styles.priceRow}>
-          <Text style={styles.sale}>{formatPrice(product.sale_price, product.symbol)}</Text>
-          {product.original_price > product.sale_price ? <Text style={styles.original}>{formatPrice(product.original_price, product.symbol)}</Text> : null}
+          <Text style={[styles.sale, hero && styles.heroSale]}>{formatMoney(product.sale_price, product.currency, product.symbol)}</Text>
+          {product.original_price > product.sale_price ? <Text style={styles.original}>{formatMoney(product.original_price, product.currency, product.symbol)}</Text> : null}
         </View>
+        <Text style={[styles.signal, signalStyle]} numberOfLines={1}>
+          {signalLabel}
+        </Text>
       </View>
     </Pressable>
   );
 }
 
+function regionFlag(region: string) {
+  const flags: Record<string, string> = {
+    us: '🇺🇸',
+    ca: '🇨🇦',
+    gb: '🇬🇧',
+    de: '🇩🇪',
+    fr: '🇫🇷',
+    nl: '🇳🇱',
+    jp: '🇯🇵',
+  };
+  return flags[region] || region.toUpperCase();
+}
+
+const numeric = {
+  fontFamily: typography.mono,
+  fontVariant: typography.tabular,
+};
+
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.md,
-    overflow: 'hidden',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
-    ...shadow,
+    flex: 1,
+    gap: 7,
+    paddingBottom: 12,
   },
   heroCard: {
-    marginHorizontal: 20,
+    paddingBottom: 12,
   },
   imageWrap: {
-    height: 190,
-    backgroundColor: colors.surfaceAlt,
-  },
-  heroImageWrap: {
-    height: 260,
+    width: '100%',
+    aspectRatio: 4 / 5,
+    overflow: 'hidden',
+    borderRadius: 11,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+    backgroundColor: colors.photo,
   },
   image: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     width: '100%',
     height: '100%',
   },
-  imageFallback: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 18,
-  },
-  fallbackText: {
-    color: colors.muted,
-    textAlign: 'center',
-    fontWeight: '700',
-  },
-  discountBadge: {
+  imageBadge: {
     position: 'absolute',
-    left: 10,
-    top: 10,
-    backgroundColor: colors.danger,
+    top: 7,
+    left: 7,
     borderRadius: radii.sm,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.discLine,
+    backgroundColor: colors.onPhotoBadge,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
   },
-  discountText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '800',
+  imageBadgeText: {
+    ...numeric,
+    color: colors.onPhotoDisc,
+    fontSize: 10,
+    fontWeight: '900',
   },
-  saveButton: {
+  lowRibbon: {
     position: 'absolute',
-    right: 10,
-    top: 10,
-    width: 34,
-    height: 34,
+    top: 7,
+    left: 7,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    borderRadius: radii.sm,
+    backgroundColor: '#1E7A52',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+  },
+  lowRibbonText: {
+    color: '#FFFFFF',
+    fontSize: 9.5,
+    fontWeight: '900',
+  },
+  regionBadge: {
+    position: 'absolute',
+    top: 7,
+    right: 7,
+    minWidth: 20,
+    minHeight: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 17,
-    backgroundColor: 'rgba(255,255,255,0.88)',
+    borderRadius: 4,
+    backgroundColor: colors.onPhotoBadge,
   },
-  body: {
-    padding: 12,
-    gap: 8,
-  },
-  metaRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 8,
-  },
-  category: {
-    flex: 1,
-    color: colors.faint,
+  regionBadgeText: {
     fontSize: 11,
-    fontWeight: '700',
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
+  },
+  imageLabel: {
+    position: 'absolute',
+    left: 8,
+    bottom: 7,
+    maxWidth: '80%',
+    color: colors.photoCat,
+    fontSize: 8.5,
+    fontWeight: '900',
+    letterSpacing: 0.6,
     textTransform: 'uppercase',
   },
-  region: {
-    maxWidth: 130,
-    color: colors.faint,
-    fontSize: 11,
-    fontWeight: '600',
+  body: {
+    minWidth: 0,
+    gap: 4,
   },
   name: {
     color: colors.ink,
-    fontSize: 15,
-    lineHeight: 20,
+    fontSize: 13.5,
+    lineHeight: 17,
     fontWeight: '800',
   },
   heroName: {
-    fontSize: 20,
-    lineHeight: 26,
+    fontSize: 14.5,
+    lineHeight: 19,
   },
-  signalRow: {
-    minHeight: 28,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  signalPill: {
-    flexShrink: 1,
-    borderRadius: radii.sm,
-    paddingHorizontal: 9,
-    paddingVertical: 5,
-  },
-  signalSuccess: {
-    backgroundColor: colors.successSoft,
-  },
-  signalNeutral: {
-    backgroundColor: colors.surfaceAlt,
-  },
-  signalText: {
+  meta: {
     color: colors.muted,
-    fontSize: 12,
-    fontWeight: '800',
+    marginTop: 1,
+    fontSize: 11.5,
+    fontWeight: '600',
   },
-  signalTextSuccess: {
-    color: colors.success,
+  saveButton: {
+    position: 'absolute',
+    right: 7,
+    bottom: 7,
+    width: 26,
+    height: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 14,
+    backgroundColor: colors.onPhotoBadge,
   },
-  stale: {
-    color: colors.danger,
-    fontSize: 12,
+  signal: {
+    fontSize: 11.5,
+    lineHeight: 15,
     fontWeight: '700',
+  },
+  signalGood: {
+    color: colors.buy,
+  },
+  signalFlat: {
+    color: colors.muted,
+    fontWeight: '600',
+  },
+  signalStale: {
+    color: colors.faint,
+    fontWeight: '600',
   },
   priceRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    gap: 8,
+    flexWrap: 'wrap',
+    gap: 7,
   },
   sale: {
-    color: colors.danger,
-    fontSize: 19,
+    ...numeric,
+    color: colors.disc,
+    fontSize: 14.5,
     fontWeight: '900',
+    letterSpacing: 0,
+  },
+  heroSale: {
+    fontSize: 17,
   },
   original: {
+    ...numeric,
     color: colors.faint,
-    fontSize: 13,
+    fontSize: 11.5,
     textDecorationLine: 'line-through',
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });

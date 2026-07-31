@@ -2,13 +2,25 @@
   "expo": {
     "name": "GearDrop",
     "slug": "geardrop",
+    "owner": "noir-madlax",
     "version": "1.0.0",
     "scheme": "geardrop",
+    "locales": {
+      "zh-Hans": {
+        "ios": {
+          "CFBundleDisplayName": "值de",
+          "CFBundleName": "值de"
+        },
+        "android": {
+          "app_name": "值de"
+        }
+      }
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "dev.100app.geardrop",
       "buildNumber": "1",
       "config": {
@@ -39,7 +51,23 @@
           "enableBackgroundRemoteNotifications": false
         }
       ],
-      "expo-font"
-    ]
+      "expo-font",
+      "expo-image",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": ["en", "zh-Hans", "de", "fr", "ja"],
+            "android": ["en", "zh-CN", "de", "fr", "ja"]
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ead43b0e-5dbf-44a2-838e-f65db29abb30"
+      }
+    }
   }
 }

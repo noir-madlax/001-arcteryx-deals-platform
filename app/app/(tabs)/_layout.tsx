@@ -1,9 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 
+import { usePreferences } from '../../contexts/PreferencesContext';
 import { colors } from '../../lib/theme';
 
 export default function TabsLayout() {
+  const { t } = usePreferences();
   return (
     <Tabs
       screenOptions={{
@@ -11,32 +13,36 @@ export default function TabsLayout() {
         tabBarActiveTintColor: colors.ink,
         tabBarInactiveTintColor: colors.faint,
         tabBarStyle: {
-          backgroundColor: colors.surface,
+          height: 78,
+          paddingTop: 8,
+          paddingBottom: 20,
+          backgroundColor: colors.card,
           borderTopColor: colors.border,
         },
         tabBarLabelStyle: {
-          fontWeight: '700',
+          fontSize: 10,
+          fontWeight: '800',
         },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Deals',
-          tabBarIcon: ({ color, size }) => <Ionicons name="pricetag-outline" color={color} size={size} />,
+          title: t('tabs.deals'),
+          tabBarIcon: ({ color, size }) => <Ionicons name="star-outline" color={color} size={size} />,
         }}
       />
       <Tabs.Screen
         name="watchlist"
         options={{
-          title: 'Watchlist',
+          title: t('tabs.watchlist'),
           tabBarIcon: ({ color, size }) => <Ionicons name="heart-outline" color={color} size={size} />,
         }}
       />
       <Tabs.Screen
         name="me"
         options={{
-          title: 'Me',
+          title: t('tabs.me'),
           tabBarIcon: ({ color, size }) => <Ionicons name="person-circle-outline" color={color} size={size} />,
         }}
       />

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { SUPABASE_ANON, SUPABASE_URL, visibleProducts } from '../lib/catalog';
+import { availableDealRegions, DEFAULT_DEAL_FILTERS, filterDeals } from '../lib/deals';
 import { computeSignal, groupHistoryBySku } from '../lib/signals';
 import type { PriceHistoryRow, Product, ProductRow } from '../lib/types';
 
@@ -66,7 +67,11 @@ async function main() {
   });
 
   const products = await loadProducts();
-  assert.ok(products.length >= 5000, `expected at least 5000 products, got ${products.length}`);
+  const availableRegions = availableDealRegions(products);
+  const regionCounts = Object.fromEntries(availableRegions.slice(1).map((region) => [region, filterDeals(products, region, '', DEFAULT_DEAL_FILTERS).length]));
+  assert.ok((regionCounts.de ?? 0) > 0, 'DE region filter should return current deals');
+  assert.ok((regionCounts.ca ?? 0) > 0, 'CA region filter should return current deals');
+  assert.equal(availableRegions.includes('jp'), false, 'regions without loaded deals must not appear in the selector');
 
   const deEuro = products.find((product) => product.region === 'de' && product.symbol === '€' && /beta/i.test(`${product.full_name || ''} ${product.model || ''}`));
   assert.ok(deEuro, 'missing DE euro beta sample');
@@ -90,6 +95,7 @@ async function main() {
         products_content_range: productsRange,
         price_history_content_range: historyRange,
         paginated_products_loaded: products.length,
+        region_counts: regionCounts,
         de_euro_beta_sample: {
           sku_id: deEuro.sku_id,
           sale_price: deEuro.sale_price,
@@ -122,6 +128,7 @@ async function main() {
       2,
     ),
   );
+  assert.ok(products.length >= 5000, `expected at least 5000 products, got ${products.length}`);
 }
 
 main().catch((error) => {

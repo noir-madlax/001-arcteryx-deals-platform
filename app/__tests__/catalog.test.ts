@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { cleanName, inferCategory, platformKey, productCategory, releaseSeason, visibleProducts } from '../lib/catalog';
+import { cleanName, inferCategory, normalizeRegion, platformKey, productCategory, releaseSeason, visibleProducts } from '../lib/catalog';
 import { product, row } from './helpers';
 
 test('cleanName strips brand prefixes and dashed gender suffixes', () => {
@@ -42,13 +42,39 @@ test('visibleProducts normalizes rows and filters known unavailable outlet produ
       size_stock: { M: 'out_of_stock' },
       sizes: ['M'],
     }),
+    row({
+      id: 4,
+      sku_id: 'alpha-pant_Black_us',
+      url: 'https://outlet.arcteryx.com/us/en/shop/womens/alpha-pant',
+    }),
+    row({
+      id: 5,
+      sku_id: 'alpha-pant_Black_de',
+      url: 'https://outlet.arcteryx.com/de/de/shop/womens/alpha-pant',
+    }),
+    row({
+      id: 6,
+      sku_id: 'missing-product_Black_us',
+      status: 'missing',
+    }),
+    row({
+      id: 7,
+      sku_id: 'gone-product_Black_us',
+      url_http_status: 410,
+    }),
+    row({
+      id: 8,
+      sku_id: 'stale-product_Black_us',
+      last_seen_at: '2026-01-01T00:00:00Z',
+    }),
   ]);
 
-  assert.equal(visible.length, 1);
+  assert.equal(visible.length, 2);
   assert.equal(visible[0]?.sale_price, 300);
   assert.deepEqual(visible[0]?.sizes, ['M', 'L']);
   assert.equal(visible[0]?._series, 'Beta');
   assert.equal(productCategory(visible[0]!), '冲锋衣');
+  assert.equal(visible[1]?.sku_id, 'alpha-pant_Black_de');
 });
 
 test('platformKey prefers dealer and falls back to URL domains', () => {
@@ -60,4 +86,11 @@ test('platformKey prefers dealer and falls back to URL domains', () => {
 test('productCategory uses catalog category unless it is generic', () => {
   assert.equal(productCategory(product({ category: '鞋类' })), '鞋类');
   assert.equal(productCategory(product({ category: '其他', full_name: 'Mantis 26 Backpack' })), '背包');
+});
+
+test('normalizeRegion accepts supported regions and falls back to US', () => {
+  assert.equal(normalizeRegion('de'), 'de');
+  assert.equal(normalizeRegion('all'), 'all');
+  assert.equal(normalizeRegion('xx'), 'us');
+  assert.equal(normalizeRegion(null), 'us');
 });

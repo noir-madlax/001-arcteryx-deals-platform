@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 
 import { SUPABASE_ANON, SUPABASE_URL, visibleProducts } from './catalog';
 import { postPriceAlert } from './priceAlerts';
-import type { PriceAlertPayload, PriceHistoryRow, Product, ProductRow } from './types';
+import type { PriceAlertRequest, PriceHistoryRow, Product, ProductRow } from './types';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: {
@@ -68,6 +68,6 @@ export async function fetchPriceHistory(skuId: string, sinceIso?: string) {
   return fetchPriceHistoryForSkus([skuId], sinceIso);
 }
 
-export async function insertPriceAlert(payload: PriceAlertPayload) {
-  await postPriceAlert(SUPABASE_URL, SUPABASE_ANON, payload);
+export async function insertPriceAlert(request: PriceAlertRequest) {
+  await postPriceAlert(SUPABASE_URL, SUPABASE_ANON, request);
 }
