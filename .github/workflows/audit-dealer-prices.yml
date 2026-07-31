@@ -1,0 +1,85 @@
+name: Audit Dealer Prices (Read Only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_start:
+        description: "Optional ISO timestamp used to reproduce a sample"
+        required: false
+        type: string
+      origin_sha:
+        description: "Optional source SHA used to reproduce a sample"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: arcteryx-readonly-price-audit
+  cancel-in-progress: false
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
+jobs:
+  audit-dealer-prices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install read-only audit runtime
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+          python -m camoufox fetch
+
+      - name: Enforce read-only credential boundary
+        run: |
+          test -z "${SUPABASE_KEY:-}"
+          test -z "${SUPABASE_SERVICE_ROLE_KEY:-}"
+          echo "No Supabase write credential is present."
+
+      - id: audit
+        name: Run official 100-SKU double-read audit
+        continue-on-error: true
+        env:
+          REQUESTED_RUN_START: ${{ inputs.run_start }}
+          REQUESTED_ORIGIN_SHA: ${{ inputs.origin_sha }}
+        run: |
+          args=(--output artifacts/price-audit.json)
+          if [ -n "$REQUESTED_RUN_START" ]; then
+            args+=(--run-start "$REQUESTED_RUN_START")
+          fi
+          if [ -n "$REQUESTED_ORIGIN_SHA" ]; then
+            args+=(--origin-sha "$REQUESTED_ORIGIN_SHA")
+          fi
+          python -u tools/audit_price_accuracy.py "${args[@]}"
+
+      - name: Upload non-sensitive audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealer-price-audit-${{ github.run_id }}
+          path: artifacts/price-audit.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Enforce price audit gate
+        if: always()
+        env:
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+        run: |
+          if [ "$AUDIT_OUTCOME" != "success" ]; then
+            echo "Read-only official price audit did not pass."
+            exit 1
+          fi
+          echo "Read-only official price audit passed."

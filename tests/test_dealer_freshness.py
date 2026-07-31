@@ -2,6 +2,7 @@ import json
 import os
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 
 from dealers import merge_partial
@@ -19,6 +20,10 @@ from tools.check_data_quality import (
 )
 
 
+def fresh_timestamp():
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
+
 class DealerFreshnessTests(unittest.TestCase):
     def test_validate_requires_min_rows_for_each_requested_dealer(self):
         rows = [
@@ -34,7 +39,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 "gender": "men",
                 "region": "us",
                 "url": f"https://example.com/rei/{i}",
-                "last_updated": "2026-07-28T15:59:12+00:00",
+                "last_updated": fresh_timestamp(),
             }
             for i in range(21)
         ] + [
@@ -50,7 +55,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 "gender": "men",
                 "region": "us",
                 "url": f"https://example.com/ssense/{i}",
-                "last_updated": "2026-07-28T16:03:35+00:00",
+                "last_updated": fresh_timestamp(),
             }
             for i in range(46)
         ] + [
@@ -66,7 +71,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 "gender": "men",
                 "region": "us",
                 "url": f"https://example.com/evo/{i}",
-                "last_updated": "2026-07-28T15:56:26+00:00",
+                "last_updated": fresh_timestamp(),
             }
             for i in range(50)
         ]
@@ -94,7 +99,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 "gender": "men",
                 "region": "us",
                 "url": f"https://example.com/ssense/{i}",
-                "last_updated": "2026-07-29T05:52:45+00:00",
+                "last_updated": fresh_timestamp(),
             }
             for i in range(46)
         ]
@@ -122,7 +127,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 "gender": "men",
                 "region": "us",
                 "url": f"https://example.com/ssense/{i}",
-                "last_updated": "2026-07-29T05:52:45+00:00",
+                "last_updated": fresh_timestamp(),
             }
             for i in range(39)
         ]
@@ -153,8 +158,8 @@ class DealerFreshnessTests(unittest.TestCase):
                     "gender": "men",
                     "region": region,
                     "url": f"https://example.com/{dealer}/{i}",
-                    "last_seen_at": "2026-07-29T05:52:45+00:00",
-                    "last_updated": "2026-07-29T05:52:45+00:00",
+                    "last_seen_at": fresh_timestamp(),
+                    "last_updated": fresh_timestamp(),
                 })
         rc = validate(
             rows,
@@ -178,8 +183,8 @@ class DealerFreshnessTests(unittest.TestCase):
                     "sale_price": 100, "original_price": 150, "discount_pct": 33,
                     "currency": currency, "symbol": symbol, "gender": "men",
                     "region": region, "url": f"https://example.com/{dealer}/{region}/{i}",
-                    "last_seen_at": "2026-07-29T05:52:45+00:00",
-                    "last_updated": "2026-07-29T05:52:45+00:00",
+                    "last_seen_at": fresh_timestamp(),
+                    "last_updated": fresh_timestamp(),
                 })
         rc = validate(rows, 36, 72, 5000, required_dealers=None, forbidden_regions=None)
         self.assertEqual(rc, 1)

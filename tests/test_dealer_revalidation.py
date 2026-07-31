@@ -4,13 +4,17 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from dealers.revalidate import (
+    _camoufox_geoip_candidates,
     _chunks,
     _evo_choose_more_informative_price,
     _evo_needs_browser_fallback,
     _evo_should_confirm_with_browser,
+    _format_error,
     fetch_evo_pdp_browser,
     fetch_evo_pdp_browser_with_retry,
     fetch_rei_pdp,
+    fetch_ssense_pdp_browser_with_retry,
+    open_camoufox_browser,
     open_mec_revalidation_session,
     parse_evo_browser_snapshot,
     parse_ssense_html,
@@ -100,6 +104,41 @@ def rei_html(price_markup: str, skus: str = "") -> str:
 
 
 class DealerRevalidationTests(unittest.TestCase):
+    def test_camoufox_auto_geoip_falls_back_only_after_startup_failure(self):
+        attempts = []
+
+        class BrowserContext:
+            def __init__(self, geoip):
+                self.geoip = geoip
+                self.closed = False
+
+            def __enter__(self):
+                if self.geoip:
+                    raise RuntimeError("InvalidIP")
+                return "browser"
+
+            def __exit__(self, _exc_type, _exc, _traceback):
+                self.closed = True
+
+        def factory(**kwargs):
+            attempts.append(kwargs)
+            return BrowserContext(kwargs["geoip"])
+
+        with patch.dict("os.environ", {"CAMOUFOX_GEOIP": "auto"}):
+            with open_camoufox_browser(factory=factory) as browser:
+                self.assertEqual(browser, "browser")
+
+        self.assertEqual([attempt["geoip"] for attempt in attempts], [True, False])
+        self.assertTrue(all(attempt["humanize"] for attempt in attempts))
+
+    def test_camoufox_explicit_geoip_setting_does_not_fallback(self):
+        self.assertEqual(_camoufox_geoip_candidates(True), [True])
+        self.assertEqual(_camoufox_geoip_candidates(False), [False])
+
+    def test_runtime_error_preserves_exception_detail(self):
+        message = _format_error("goto", RuntimeError("connection closed"))
+        self.assertEqual(message, "goto RuntimeError: connection closed")
+
     @patch("dealers.revalidate.time.sleep")
     def test_rei_current_buy_box_full_price(self, _sleep):
         page = FakePage([
@@ -268,6 +307,27 @@ class DealerRevalidationTests(unittest.TestCase):
 
         self.assertEqual(_evo_choose_more_informative_price(direct, browser), browser)
 
+    def test_evo_combines_browser_sale_with_direct_regular_price(self):
+        direct = {
+            "sale_price": 850.0,
+            "original_price": 850.0,
+            "discount_pct": 0,
+        }
+        browser = {
+            "sale_price": 679.99,
+            "original_price": 679.99,
+            "discount_pct": 0,
+        }
+
+        self.assertEqual(
+            _evo_choose_more_informative_price(direct, browser),
+            {
+                "sale_price": 679.99,
+                "original_price": 850.0,
+                "discount_pct": 20,
+            },
+        )
+
     @patch.dict("os.environ", {"EVO_BROWSER_SETTLE_SECONDS": "3"})
     def test_evo_browser_fetch_uses_fresh_url_and_waits_for_runtime_price(self):
         snapshot = {
@@ -323,6 +383,43 @@ class DealerRevalidationTests(unittest.TestCase):
         self.assertTrue(first.closed)
         self.assertTrue(second.closed)
 
+    @patch("dealers.revalidate.time.sleep")
+    @patch.dict(
+        "os.environ",
+        {
+            "EVO_BROWSER_CONFIRM_ATTEMPTS": "2",
+            "EVO_BROWSER_RETRY_DELAY_SECONDS": "0",
+        },
+    )
+    def test_evo_browser_confirmation_retries_flat_discount_snapshot(self, _sleep):
+        first = FakeEvoPage()
+        second = FakeEvoPage()
+        browser = FakeEvoBrowser([first, second])
+        flat = {
+            "sale_price": 600.0,
+            "original_price": 600.0,
+            "discount_pct": 0,
+        }
+        discounted = {
+            "sale_price": 600.0,
+            "original_price": 800.0,
+            "discount_pct": 25,
+        }
+
+        with patch(
+            "dealers.revalidate.fetch_evo_pdp_browser",
+            side_effect=[flat, discounted],
+        ):
+            result = fetch_evo_pdp_browser_with_retry(
+                browser,
+                "https://www.evo.com/products/test",
+                retry_flat=True,
+            )
+
+        self.assertEqual(result, discounted)
+        self.assertTrue(first.closed)
+        self.assertTrue(second.closed)
+
     def test_browser_rotation_chunks_cover_every_row(self):
         chunks = list(_chunks(list(range(65)), 30))
 
@@ -366,6 +463,38 @@ class DealerRevalidationTests(unittest.TestCase):
             "original_price": 220.0,
             "discount_pct": 27,
         })
+
+    @patch("dealers.revalidate.time.sleep")
+    @patch.dict(
+        "os.environ",
+        {
+            "SSENSE_BROWSER_CONFIRM_ATTEMPTS": "2",
+            "SSENSE_BROWSER_RETRY_DELAY_SECONDS": "0",
+        },
+    )
+    def test_ssense_browser_retries_flat_discount_snapshot(self, _sleep):
+        flat = {
+            "sale_price": 80.0,
+            "original_price": 80.0,
+            "discount_pct": 0,
+        }
+        discounted = {
+            "sale_price": 80.0,
+            "original_price": 300.0,
+            "discount_pct": 73,
+        }
+
+        with patch(
+            "dealers.revalidate.fetch_ssense_pdp_browser",
+            side_effect=[flat, discounted],
+        ):
+            result = fetch_ssense_pdp_browser_with_retry(
+                object(),
+                "https://www.ssense.com/en-us/men/product/test",
+                retry_flat=True,
+            )
+
+        self.assertEqual(result, discounted)
 
 
 if __name__ == "__main__":

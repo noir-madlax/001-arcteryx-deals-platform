@@ -18,6 +18,7 @@ DB 里旧价就僵在那里. 本脚本针对已知 dealer URL 重新拉 PDP 验�
 """
 from __future__ import annotations
 import os, sys, time, json, re, urllib.request, ssl
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from collections import defaultdict
 from pathlib import Path
@@ -44,6 +45,67 @@ def _env_int(name: str, default: int, minimum: int = 1) -> int:
     except (TypeError, ValueError):
         return max(minimum, default)
 
+def _format_error(prefix: str, exc: Exception) -> str:
+    detail = " ".join(str(exc).split())
+    suffix = f": {detail[:160]}" if detail else ""
+    return f"{prefix} {type(exc).__name__}{suffix}"
+
+def _camoufox_geoip_candidates(value: bool | None = None) -> list[bool]:
+    if value is not None:
+        return [value]
+    configured = os.environ.get("CAMOUFOX_GEOIP", "auto").strip().lower()
+    if configured in {"1", "true", "yes", "on"}:
+        return [True]
+    if configured in {"0", "false", "no", "off"}:
+        return [False]
+    return [True, False]
+
+@contextmanager
+def open_camoufox_browser(*, geoip: bool | None = None, factory=None):
+    """Open a humanized Camoufox browser with a fail-safe geoip fallback.
+
+    Camoufox geoip lookup is useful on ephemeral GitHub runners but can raise
+    InvalidIP on local networks. In the default ``auto`` mode, retry without
+    geoip only when browser startup itself fails.
+    """
+    if factory is None:
+        from camoufox.sync_api import Camoufox
+
+        factory = Camoufox
+
+    candidates = _camoufox_geoip_candidates(geoip)
+    last_error = None
+    for index, candidate in enumerate(candidates):
+        context = None
+        try:
+            context = factory(headless=True, humanize=True, geoip=candidate)
+            browser = context.__enter__()
+        except Exception as exc:
+            last_error = exc
+            if context is not None:
+                try:
+                    context.__exit__(type(exc), exc, exc.__traceback__)
+                except Exception:
+                    pass
+            if index + 1 < len(candidates):
+                print(
+                    f"[camoufox] geoip={candidate} startup failed "
+                    f"({_format_error('browser', exc)}); retrying without geoip",
+                    file=sys.stderr,
+                    flush=True,
+                )
+            continue
+
+        try:
+            yield browser
+        finally:
+            context.__exit__(None, None, None)
+        return
+
+    if last_error is None:
+        raise RuntimeError("Camoufox startup failed without an exception")
+    raise RuntimeError(_format_error("Camoufox startup failed", last_error)) from last_error
+
 def _num(s):
     if s is None: return None
     s = str(s).replace(",","").strip().lstrip("$€£")
@@ -53,6 +115,13 @@ def _num(s):
 def _disc(orig, sale):
     if not orig or not sale or orig <= 0 or sale > orig: return 0
     return round((1 - sale/orig) * 100)
+
+def _price_is_discounted(result: dict | None) -> bool:
+    if not result or result.get("_err") or result.get("_unavailable"):
+        return False
+    sale = _num(result.get("sale_price"))
+    original = _num(result.get("original_price"))
+    return bool(sale and original and original > sale + 0.01)
 
 # ── Per-dealer PDP fetchers ──────────────────────────────────────────────
 def fetch_evo_pdp(url: str) -> dict | None:
@@ -72,7 +141,7 @@ def fetch_evo_pdp(url: str) -> dict | None:
         with urllib.request.urlopen(req, context=_CTX, timeout=15) as r:
             p = json.loads(r.read().decode("utf-8","ignore"))
     except Exception as e:
-        return {"_err": f"http {type(e).__name__}"}
+        return {"_err": _format_error("http", e)}
     # 顶层 available=False 表示整品下架
     if p.get("available") is False:
         return {"_unavailable": True}
@@ -138,7 +207,7 @@ def fetch_evo_pdp_browser(page, url: str) -> dict | None:
         wait_ms = int(_env_float("EVO_BROWSER_SETTLE_SECONDS", 8.0, 3.0) * 1000)
         page.wait_for_timeout(wait_ms)
     except Exception as e:
-        return {"_err": f"goto {type(e).__name__}"}
+        return {"_err": _format_error("goto", e)}
     if not response or response.status != 200:
         return {"_err": f"http {response.status if response else 'unknown'}"}
     snapshot = page.evaluate(
@@ -152,10 +221,16 @@ def fetch_evo_pdp_browser(page, url: str) -> dict | None:
     return parsed or {"_err": "no_browser_price"}
 
 
-def fetch_evo_pdp_browser_with_retry(browser, url: str) -> dict | None:
+def fetch_evo_pdp_browser_with_retry(
+    browser,
+    url: str,
+    *,
+    retry_flat: bool = False,
+) -> dict | None:
     attempts = _env_int("EVO_BROWSER_CONFIRM_ATTEMPTS", 2, 1)
     retry_delay = _env_float("EVO_BROWSER_RETRY_DELAY_SECONDS", 5.0, 0.0)
     result = None
+    best_result = None
     for attempt in range(attempts):
         page = browser.new_page()
         page.set_default_navigation_timeout(90000)
@@ -163,14 +238,20 @@ def fetch_evo_pdp_browser_with_retry(browser, url: str) -> dict | None:
             try:
                 result = fetch_evo_pdp_browser(page, url)
             except Exception as exc:
-                result = {"_err": f"browser {type(exc).__name__}"}
+                result = {"_err": _format_error("browser", exc)}
         finally:
             page.close()
         if result and not result.get("_err"):
-            return result
+            best_result = (
+                result
+                if best_result is None
+                else _evo_choose_more_informative_price(best_result, result)
+            )
+            if not retry_flat or _price_is_discounted(best_result):
+                return best_result
         if attempt + 1 < attempts:
             time.sleep(retry_delay)
-    return result or {"_err": "empty_browser_confirmation"}
+    return best_result or result or {"_err": "empty_browser_confirmation"}
 
 
 def _evo_needs_browser_fallback(result: dict | None) -> bool:
@@ -208,11 +289,13 @@ def _evo_choose_more_informative_price(direct_result: dict | None, browser_resul
     if not direct_sale or not direct_original:
         return browser_result
 
-    if browser_original > browser_sale + 0.01 and (
-        abs(direct_sale - direct_original) < 0.01 or browser_sale < direct_sale - 0.01
-    ):
-        return browser_result
-    return direct_result
+    sale = min(direct_sale, browser_sale)
+    original = max(direct_original, browser_original, direct_sale, browser_sale)
+    return {
+        "sale_price": round(sale, 2),
+        "original_price": round(original, 2),
+        "discount_pct": _disc(original, sale),
+    }
 
 
 def _rei_variant_price(body: str, url: str) -> tuple[float, float] | None:
@@ -263,7 +346,7 @@ def fetch_rei_pdp(page, url: str) -> dict | None:
         page.goto(url, wait_until="domcontentloaded", timeout=60000)
         time.sleep(2)
     except Exception as e:
-        return {"_err": f"goto {type(e).__name__}"}
+        return {"_err": _format_error("goto", e)}
     body = ""
     for _ in range(6):
         try:
@@ -382,8 +465,8 @@ def fetch_ssense_pdp(session, url: str) -> dict | None:
         if r.status_code != 200:
             return {"_err": f"http {r.status_code}"}
         body = r.text
-    except Exception:
-        return None
+    except Exception as e:
+        return {"_err": _format_error("request", e)}
     return parse_ssense_html(body)
 
 
@@ -440,11 +523,13 @@ def parse_ssense_html(body: str) -> dict | None:
 
 
 def fetch_ssense_pdp_browser(page, url: str) -> dict | None:
+    separator = "&" if "?" in url else "?"
+    request_url = f"{url}{separator}price_revalidate={time.time_ns()}"
     try:
-        response = page.goto(url, wait_until="domcontentloaded", timeout=90000)
+        response = page.goto(request_url, wait_until="domcontentloaded", timeout=90000)
         page.wait_for_timeout(4000)
     except Exception as e:
-        return {"_err": f"goto {type(e).__name__}"}
+        return {"_err": _format_error("goto", e)}
     if not response or response.status != 200:
         return {"_err": f"http {response.status if response else 'unknown'}"}
     html = page.content()
@@ -463,6 +548,35 @@ def fetch_ssense_pdp_browser(page, url: str) -> dict | None:
                 "discount_pct": _disc(original, sale),
             }
     return parsed
+
+
+def fetch_ssense_pdp_browser_with_retry(
+    page,
+    url: str,
+    *,
+    retry_flat: bool = False,
+) -> dict | None:
+    """Retry transient SSENSE pages that omit the rendered compare-at price."""
+    attempts = _env_int("SSENSE_BROWSER_CONFIRM_ATTEMPTS", 2, 1)
+    retry_delay = _env_float("SSENSE_BROWSER_RETRY_DELAY_SECONDS", 3.0, 0.0)
+    result = None
+    best_result = None
+    for attempt in range(attempts):
+        try:
+            result = fetch_ssense_pdp_browser(page, url)
+        except Exception as exc:
+            result = {"_err": _format_error("browser", exc)}
+        if result and not result.get("_err"):
+            best_result = (
+                result
+                if best_result is None
+                else _evo_choose_more_informative_price(best_result, result)
+            )
+            if not retry_flat or _price_is_discounted(best_result):
+                return best_result
+        if attempt + 1 < attempts:
+            time.sleep(retry_delay)
+    return best_result or result or {"_err": "empty_browser_confirmation"}
 
 # ── Main runner ──────────────────────────────────────────────────────────
 def load_all_dealer_rows(client):
@@ -557,18 +671,30 @@ def main():
                     new = retry
                 else:
                     if evo_browser is None:
-                        from camoufox.sync_api import Camoufox
-                        evo_browser_cm = Camoufox(headless=True, humanize=True, geoip=True)
+                        evo_browser_cm = open_camoufox_browser()
                         evo_browser = evo_browser_cm.__enter__()
-                    new = fetch_evo_pdp_browser_with_retry(evo_browser, r["url"])
+                    new = fetch_evo_pdp_browser_with_retry(
+                        evo_browser,
+                        r["url"],
+                        retry_flat=(
+                            (r.get("original_price") or 0)
+                            > (r.get("sale_price") or 0) + 0.01
+                        ),
+                    )
             elif _evo_should_confirm_with_browser(new):
                 if evo_browser is None:
-                    from camoufox.sync_api import Camoufox
-                    evo_browser_cm = Camoufox(headless=True, humanize=True, geoip=True)
+                    evo_browser_cm = open_camoufox_browser()
                     evo_browser = evo_browser_cm.__enter__()
                 new = _evo_choose_more_informative_price(
                     new,
-                    fetch_evo_pdp_browser_with_retry(evo_browser, r["url"]),
+                    fetch_evo_pdp_browser_with_retry(
+                        evo_browser,
+                        r["url"],
+                        retry_flat=(
+                            (r.get("original_price") or 0)
+                            > (r.get("sale_price") or 0) + 0.01
+                        ),
+                    ),
                 )
             if not new:
                 stats["evo"]["err"] += 1
@@ -603,10 +729,9 @@ def main():
             f"delay={rei_delay}s, rotate={chunk_size}",
             flush=True,
         )
-        from camoufox.sync_api import Camoufox
         for start, chunk in _chunks(rei_rows, chunk_size):
             try:
-                with Camoufox(headless=True, humanize=True, geoip=True) as br:
+                with open_camoufox_browser() as br:
                     page = br.new_page()
                     page.goto("https://www.rei.com/", wait_until="networkidle", timeout=60000)
                     time.sleep(2)
@@ -681,13 +806,19 @@ def main():
             probe = fetch_ssense_pdp(sn_s, first_row["url"])
             use_browser = bool(probe and probe.get("_err") in {"http 403", "cf_stub", "http 401", "http 429"})
             if use_browser:
-                from camoufox.sync_api import Camoufox
                 print("  [ssense] direct HTTP blocked; switching to Camoufox", flush=True)
-                with Camoufox(headless=True, humanize=True, geoip=True) as browser:
+                with open_camoufox_browser() as browser:
                     page = browser.new_page()
                     page.set_default_navigation_timeout(90000)
                     for i, r in enumerate(by_dealer["ssense"], 1):
-                        new = fetch_ssense_pdp_browser(page, r["url"])
+                        new = fetch_ssense_pdp_browser_with_retry(
+                            page,
+                            r["url"],
+                            retry_flat=(
+                                (r.get("original_price") or 0)
+                                > (r.get("sale_price") or 0) + 0.01
+                            ),
+                        )
                         if not new: stats["ssense"]["err"] += 1
                         elif new.get("_unavailable"): stats["ssense"]["unavail"] += 1
                         elif new.get("_err"): stats["ssense"]["err"] += 1
