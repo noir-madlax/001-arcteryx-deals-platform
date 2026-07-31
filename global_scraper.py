@@ -22,6 +22,8 @@ import os
 import re
 import sys
 import ssl
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from collections import Counter, defaultdict
@@ -173,17 +175,56 @@ def release_from_images(images: list[str]) -> tuple[int | None, str | None]:
     return None, None
 
 
-def fetch_json(url: str, timeout: float = 30.0) -> dict:
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "Mozilla/5.0",
-            "Accept": "application/json",
-        },
-    )
+def fetch_json(
+    url: str,
+    timeout: float = 30.0,
+    *,
+    attempts: int = 6,
+    base_retry_delay: float = 15.0,
+) -> dict:
+    """Read official JSON with bounded retries for transient source failures."""
+    if attempts < 1:
+        raise ValueError("attempts must be at least 1")
+
     context = ssl._create_unverified_context()
-    with urllib.request.urlopen(req, context=context, timeout=timeout) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    for attempt in range(1, attempts + 1):
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "Mozilla/5.0",
+                "Accept": "application/json",
+                "Accept-Language": "en-AU,en;q=0.9",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, context=context, timeout=timeout) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            retryable = exc.code == 429 or 500 <= exc.code < 600
+            if not retryable or attempt == attempts:
+                raise
+            retry_after = exc.headers.get("Retry-After") if exc.headers else None
+            try:
+                delay = float(retry_after) if retry_after is not None else 0.0
+            except ValueError:
+                delay = 0.0
+            if delay <= 0:
+                delay = base_retry_delay * (2 ** (attempt - 1))
+        except (urllib.error.URLError, TimeoutError):
+            if attempt == attempts:
+                raise
+            delay = base_retry_delay * (2 ** (attempt - 1))
+
+        delay = min(60.0, max(0.0, delay))
+        print(
+            f"    ⚠ official JSON transient failure; retry "
+            f"{attempt + 1}/{attempts} in {delay:g}s",
+            file=sys.stderr,
+            flush=True,
+        )
+        time.sleep(delay)
+
+    raise RuntimeError("official JSON retry loop exhausted")
 
 
 def shopify_product_records(product: dict, region: dict, now: str) -> list[dict]:
