@@ -19,6 +19,7 @@ from dealers.revalidate import (
     parse_evo_browser_snapshot,
     parse_ssense_html,
     requested_dealers,
+    requested_sku_ids,
     underperforming_dealers,
 )
 from dealers.supabase_sync import should_preserve_previous_discount
@@ -148,6 +149,15 @@ class DealerRevalidationTests(unittest.TestCase):
         self.assertIsNone(requested_dealers(""))
         with self.assertRaisesRegex(ValueError, "unsupported.*outlet"):
             requested_dealers("rei,outlet")
+
+    def test_requested_sku_ids_builds_bounded_exact_allowlist(self):
+        self.assertEqual(
+            requested_sku_ids("rei:243326\nssense:17580131"),
+            {"rei:243326", "ssense:17580131"},
+        )
+        self.assertIsNone(requested_sku_ids(""))
+        with self.assertRaisesRegex(ValueError, "limited to 100"):
+            requested_sku_ids(",".join(f"rei:{index}" for index in range(101)))
 
     @patch("dealers.revalidate.time.sleep")
     def test_rei_current_buy_box_full_price(self, _sleep):

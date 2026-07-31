@@ -141,6 +141,20 @@ def requested_dealers(value: str | None = None) -> set[str] | None:
         )
     return requested
 
+def requested_sku_ids(value: str | None = None) -> set[str] | None:
+    """Return an optional exact SKU allowlist for targeted repair runs."""
+    raw = os.environ.get("REVALIDATE_SKU_IDS", "") if value is None else value
+    if not raw.strip():
+        return None
+    requested = {
+        sku_id.strip()
+        for sku_id in raw.replace("\n", ",").split(",")
+        if sku_id.strip()
+    }
+    if len(requested) > 100:
+        raise ValueError("REVALIDATE_SKU_IDS is limited to 100 exact values")
+    return requested
+
 # ── Per-dealer PDP fetchers ──────────────────────────────────────────────
 def fetch_evo_pdp(url: str) -> dict | None:
     """EVO Shopify, 用 /products/<handle>.js (注意 .js 不是 .json)
@@ -669,6 +683,20 @@ def main():
         rows = [row for row in rows if row.get("dealer") in selected]
         print(
             "[reval] bounded dealer subset: " + ", ".join(sorted(selected)),
+            flush=True,
+        )
+    selected_sku_ids = requested_sku_ids()
+    if selected_sku_ids is not None:
+        available_sku_ids = {row.get("sku_id") for row in rows}
+        missing_sku_ids = sorted(selected_sku_ids - available_sku_ids)
+        if missing_sku_ids:
+            raise ValueError(
+                "requested SKU IDs not found in selected dealer rows: "
+                + ", ".join(missing_sku_ids)
+            )
+        rows = [row for row in rows if row.get("sku_id") in selected_sku_ids]
+        print(
+            f"[reval] bounded exact SKU allowlist: {len(selected_sku_ids)}",
             flush=True,
         )
     print(f"[reval] loaded {len(rows)} dealer rows", flush=True)
