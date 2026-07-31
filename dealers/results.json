@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-31 00:05:36",
+  "generated_at": "2026-07-31 04:47:22",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6887,7 +6887,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 145,
+      "count": 147,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6034-771/arcteryx-norvan-ld-4-trail-running-shoes-womens",
@@ -6970,7 +6970,7 @@
         {
           "url": "https://www.mec.ca/en/product/6032-439/arcteryx-atom-hoodie-womens",
           "name": "Arc'teryx Atom Hoodie - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504466_source_1770811495.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504696_source_1770811510.jpg",
           "color": "Black",
           "sale_price": 380.0,
           "original_price": 380.0,
@@ -8632,6 +8632,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6040-469/arcteryx-kragg-sl-cotton-jug-short-sleeve-mens",
+          "name": "Arc'teryx Kragg SL Cotton Jug Short Sleeve - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560698_source_1784846165.jpg",
+          "color": "Black/Violectric",
+          "sale_price": 90.0,
+          "original_price": 90.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6037-640/arcteryx-sunna-tank-womens",
           "name": "Arc'teryx Sunna Tank - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533624_source_1774267279.jpg",
@@ -8762,6 +8775,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6034-690/arcteryx-patera-parka-womens",
+          "name": "Arc'teryx Patera Parka - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534637_source_1763591778.jpg",
+          "color": "Nightscape",
+          "sale_price": 950.0,
+          "original_price": 950.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-785/arcteryx-rho-base-layer-bottoms-womens",
           "name": "Arc'teryx Rho Base Layer Bottoms - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509242_source_1783425700.png",
@@ -8775,7 +8801,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-07-30 20:43:03"
+      "refreshed_at": "2026-07-31 04:47:22"
     },
     "rei": {
       "name": "REI",
@@ -11168,10 +11194,8 @@
       "refreshed_at": "2026-07-31 00:05:36"
     }
   },
-  "total": 516,
+  "total": 518,
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
