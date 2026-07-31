@@ -74,6 +74,7 @@ const filterChipsSource = readFileSync(join(root, 'components/FilterChips.tsx'),
 const watchlistSource = readFileSync(join(root, 'app/(tabs)/watchlist.tsx'), 'utf8');
 const productDetailSource = readFileSync(join(root, 'app/product/[skuId].tsx'), 'utf8');
 const priceAlertsSource = readFileSync(join(root, 'lib/priceAlerts.ts'), 'utf8');
+const liveDataVerifierSource = readFileSync(join(root, 'scripts/verify-live-data.ts'), 'utf8');
 const paywallSource = readFileSync(join(root, 'app/paywall.tsx'), 'utf8');
 const themeSource = readFileSync(join(root, 'lib/theme.ts'), 'utf8');
 const topoSource = readFileSync(join(root, 'components/TopoPlaceholder.tsx'), 'utf8');
@@ -200,6 +201,8 @@ assert.ok(webProductDetail.includes('/rest/v1/rpc/register_price_alert'), 'websi
 assert.ok(!webProductDetail.includes('/rest/v1/price_alerts'), 'website must not write price_alerts directly');
 assert.ok(supportPage.includes('/rest/v1/rpc/submit_support_request'), 'support page must use the validated support RPC');
 assert.ok(supportPage.includes('p_website'), 'support page must include the abuse-control honeypot field');
+assert.ok(liveDataVerifierSource.includes('PLATFORM_REGION_MIN_ROWS'), 'live data verification must gate every required platform/region slice');
+assert.ok(!liveDataVerifierSource.includes('products.length >= 5000'), 'live data verification must not use a volatile aggregate catalog floor');
 
 console.log(
   'config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=' +

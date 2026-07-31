@@ -10,6 +10,30 @@ const headers = {
   Authorization: `Bearer ${SUPABASE_ANON}`,
 };
 
+// Match the production quality gate's source-aware low-water marks. Aggregate
+// catalog size is diagnostic only because official assortments contract; every
+// required platform/region slice must remain independently healthy.
+const PLATFORM_REGION_MIN_ROWS: Record<string, number> = {
+  'arcteryx_outlet/us': 250,
+  'arcteryx_outlet/ca': 100,
+  'arcteryx_outlet/au': 10,
+  'arcteryx_outlet/at': 250,
+  'arcteryx_outlet/be': 250,
+  'arcteryx_outlet/ch': 250,
+  'arcteryx_outlet/de': 250,
+  'arcteryx_outlet/dk': 250,
+  'arcteryx_outlet/es': 250,
+  'arcteryx_outlet/fr': 250,
+  'arcteryx_outlet/gb': 250,
+  'arcteryx_outlet/it': 250,
+  'arcteryx_outlet/nl': 250,
+  'arcteryx_outlet/se': 250,
+  'evo/us': 100,
+  'mec/ca': 75,
+  'rei/us': 40,
+  'ssense/us': 30,
+};
+
 async function rest<T>(path: string, init: RequestInit = {}) {
   const response = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...init,
@@ -69,6 +93,14 @@ async function main() {
   const products = await loadProducts();
   const availableRegions = availableDealRegions(products);
   const regionCounts = Object.fromEntries(availableRegions.slice(1).map((region) => [region, filterDeals(products, region, '', DEFAULT_DEAL_FILTERS).length]));
+  const platformRegionCounts = products.reduce<Record<string, number>>((counts, product) => {
+    const key = `${product.dealer || 'arcteryx_outlet'}/${product.region}`;
+    counts[key] = (counts[key] || 0) + 1;
+    return counts;
+  }, {});
+  for (const [key, minimum] of Object.entries(PLATFORM_REGION_MIN_ROWS)) {
+    assert.ok((platformRegionCounts[key] ?? 0) >= minimum, `${key} expected at least ${minimum} products, got ${platformRegionCounts[key] ?? 0}`);
+  }
   assert.ok((regionCounts.de ?? 0) > 0, 'DE region filter should return current deals');
   assert.ok((regionCounts.ca ?? 0) > 0, 'CA region filter should return current deals');
   assert.equal(availableRegions.includes('jp'), false, 'regions without loaded deals must not appear in the selector');
@@ -96,6 +128,7 @@ async function main() {
         price_history_content_range: historyRange,
         paginated_products_loaded: products.length,
         region_counts: regionCounts,
+        platform_region_counts: platformRegionCounts,
         de_euro_beta_sample: {
           sku_id: deEuro.sku_id,
           sale_price: deEuro.sale_price,
@@ -128,7 +161,6 @@ async function main() {
       2,
     ),
   );
-  assert.ok(products.length >= 5000, `expected at least 5000 products, got ${products.length}`);
 }
 
 main().catch((error) => {
