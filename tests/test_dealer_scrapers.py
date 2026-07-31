@@ -148,6 +148,49 @@ class DealerScraperTests(unittest.TestCase):
             ],
         )
 
+    def test_ssense_direct_pdp_promotes_only_parsed_pdp_prices(self):
+        scraper = SsenseScraper()
+        item = {
+            "name": "Black Konseal GTX Sneakers",
+            "sale_price": 220.0,
+            "original_price": 220.0,
+            "discount_pct": 0,
+            "price_source_quality": "list_fallback",
+        }
+        product = {
+            "@type": "Product",
+            "name": "Black Konseal GTX Sneakers",
+            "offers": {"price": "220", "priceCurrency": "USD"},
+        }
+        body = (
+            f'<script type="application/ld+json">{json.dumps(product)}</script>'
+            '<span data-test="salePriceText">$220 USD</span>'
+            '<span data-test="regularPriceText">$300 USD</span>'
+        )
+
+        scraper.enrich_direct_pdp(item, body)
+
+        self.assertEqual(item["sale_price"], 220.0)
+        self.assertEqual(item["original_price"], 300.0)
+        self.assertEqual(item["discount_pct"], 27)
+        self.assertEqual(item["price_source_quality"], "pdp")
+
+    def test_ssense_direct_pdp_keeps_list_fallback_when_price_parse_fails(self):
+        scraper = SsenseScraper()
+        item = {
+            "name": "Black Konseal GTX Sneakers",
+            "sale_price": 220.0,
+            "original_price": 220.0,
+            "discount_pct": 0,
+            "price_source_quality": "list_fallback",
+        }
+
+        scraper.enrich_direct_pdp(item, '<html><body>sizes only</body></html>')
+
+        self.assertEqual(item["sale_price"], 220.0)
+        self.assertEqual(item["original_price"], 220.0)
+        self.assertEqual(item["price_source_quality"], "list_fallback")
+
     @patch("curl_cffi.requests.Session")
     def test_ssense_scrape_advances_to_later_pages(self, session_cls):
         session = session_cls.return_value

@@ -119,6 +119,17 @@ class Scraper(DealerScraper):
         if m: color = m.group(1).title()
         return {"sizes": sizes, "size_stock": size_stock, "color": color, "colors": [color] if color else []}
 
+    def enrich_direct_pdp(self, item: dict, body: str) -> None:
+        """Merge direct-PDP metadata without promoting list prices to PDP trust."""
+        from dealers.revalidate import parse_ssense_html
+
+        detail = self.parse_detail(body, name_hint=item.get("name", ""))
+        pricing = parse_ssense_html(body)
+        if pricing and not pricing.get("_err"):
+            detail.update(pricing)
+            detail["price_source_quality"] = "pdp"
+        item.update(detail)
+
     def scrape(self) -> list[dict]:
         from curl_cffi import requests as cffi
         items = []
@@ -208,10 +219,7 @@ class Scraper(DealerScraper):
             for i, it in enumerate(items, 1):
                 body = self._fetch(s, it["url"], is_pdp=True)
                 if body:
-                    detail = self.parse_detail(body, name_hint=it.get("name",""))
-                    if detail:
-                        detail["price_source_quality"] = "pdp"
-                        it.update(detail)
+                    self.enrich_direct_pdp(it, body)
                 if i % 5 == 0: print(f"[ssense] enriched {i}/{len(items)}", flush=True)
                 time.sleep(0.4)
         else:
