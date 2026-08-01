@@ -1,7 +1,7 @@
 import unittest
 from collections import defaultdict
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from dealers.revalidate import (
     _camoufox_geoip_candidates,
@@ -21,6 +21,7 @@ from dealers.revalidate import (
     requested_dealers,
     requested_sku_ids,
     underperforming_dealers,
+    update_row,
 )
 from dealers.supabase_sync import should_preserve_previous_discount
 
@@ -106,6 +107,30 @@ def rei_html(price_markup: str, skus: str = "") -> str:
 
 
 class DealerRevalidationTests(unittest.TestCase):
+    def test_successful_pdp_read_reactivates_lifecycle(self):
+        client = MagicMock()
+        old_row = {
+            "sale_price": 80.0,
+            "original_price": 80.0,
+            "status": "inactive",
+            "missing_runs": 2,
+        }
+
+        changed = update_row(
+            client,
+            "rei:249631",
+            {"sale_price": 80.0, "original_price": 80.0, "discount_pct": 0},
+            old_row,
+        )
+
+        self.assertTrue(changed)
+        payload = client.table.return_value.update.call_args.args[0]
+        self.assertEqual(payload["status"], "active")
+        self.assertEqual(payload["missing_runs"], 0)
+        self.assertEqual(payload["url_http_status"], 200)
+        self.assertEqual(payload["last_seen_at"], payload["last_updated"])
+        self.assertEqual(payload["url_checked_at"], payload["last_updated"])
+
     def test_camoufox_auto_geoip_falls_back_only_after_startup_failure(self):
         attempts = []
 

@@ -33,6 +33,38 @@ class DealerFreshnessTests(unittest.TestCase):
                 250,
             )
 
+    def test_recent_pdp_confirmation_survives_list_absence(self):
+        lifecycle = next_dealer_lifecycle(
+            {
+                "status": "active",
+                "missing_runs": 0,
+                "last_seen_at": "2026-08-01T10:00:00+00:00",
+                "url_http_status": 200,
+                "url_checked_at": "2026-08-01T10:00:00+00:00",
+            },
+            present=False,
+            observed_at="2026-08-02T10:00:00+00:00",
+        )
+
+        self.assertEqual(lifecycle["status"], "active")
+        self.assertEqual(lifecycle["missing_runs"], 0)
+
+    def test_stale_pdp_confirmation_does_not_mask_list_absence(self):
+        lifecycle = next_dealer_lifecycle(
+            {
+                "status": "active",
+                "missing_runs": 0,
+                "last_seen_at": "2026-07-30T10:00:00+00:00",
+                "url_http_status": 200,
+                "url_checked_at": "2026-07-30T10:00:00+00:00",
+            },
+            present=False,
+            observed_at="2026-08-02T10:00:00+00:00",
+        )
+
+        self.assertEqual(lifecycle["status"], "missing")
+        self.assertEqual(lifecycle["missing_runs"], 1)
+
     def test_validate_requires_min_rows_for_each_requested_dealer(self):
         rows = [
             {

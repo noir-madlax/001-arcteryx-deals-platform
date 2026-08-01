@@ -21,6 +21,7 @@ DEFAULT_CURRENCY_BY_DEALER = {
 }
 DEAD_URL_STATUSES = {404, 410}
 INACTIVE_AFTER_MISSING_RUNS = 2
+PDP_REVALIDATION_GRACE_HOURS = 36
 REGION_NAME = {
     "us":"美国","ca":"加拿大","gb":"英国","de":"德国","fr":"法国","nl":"荷兰",
     "at":"奥地利","ch":"瑞士","it":"意大利","es":"西班牙","be":"比利时",
@@ -40,11 +41,46 @@ def fresh_dealer_keys(payload: dict) -> set[str] | None:
     return {str(key) for key in value}
 
 
+def _parse_iso_timestamp(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def has_recent_pdp_confirmation(existing: dict | None, observed_at: str) -> bool:
+    """Keep a list-absent row active when a recent official PDP read confirmed it."""
+    existing = existing or {}
+    if existing.get("url_http_status") != 200:
+        return False
+    checked = _parse_iso_timestamp(existing.get("url_checked_at"))
+    observed = _parse_iso_timestamp(observed_at)
+    if not checked or not observed:
+        return False
+    age_seconds = (observed - checked).total_seconds()
+    return 0 <= age_seconds <= PDP_REVALIDATION_GRACE_HOURS * 3600
+
+
 def next_dealer_lifecycle(existing: dict | None, *, present: bool, observed_at: str) -> dict:
     """Return the lifecycle transition for one trusted, complete dealer snapshot."""
     existing = existing or {}
     if present:
         return {"status": "active", "missing_runs": 0, "last_seen_at": observed_at}
+    if has_recent_pdp_confirmation(existing, observed_at):
+        return {
+            "status": "active",
+            "missing_runs": 0,
+            "last_seen_at": (
+                existing.get("last_seen_at")
+                or existing.get("url_checked_at")
+                or existing.get("last_updated")
+            ),
+        }
     missing_runs = int(existing.get("missing_runs") or 0) + 1
     return {
         "status": "inactive" if missing_runs >= INACTIVE_AFTER_MISSING_RUNS else "missing",

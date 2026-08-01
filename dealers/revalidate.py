@@ -10,7 +10,7 @@ DB 里旧价就僵在那里. 本脚本针对已知 dealer URL 重新拉 PDP 验�
 - SSENSE : curl_cffi (impersonate=chrome), JSON-LD "@type":"Product" offers.price
 
 更新逻辑:
-- 成功拿到价格 → UPDATE sale/orig/disc/last_updated
+- 成功拿到价格 → UPDATE sale/orig/disc，并恢复 active 生命周期与 PDP-200 证据
 - 失败 (404 / CF stub / 网络错) → 不更新 last_updated, 让 14 天 stale 兜底清理
 - 价格变化 → 同步写一行 price_history
 
@@ -616,7 +616,8 @@ def load_all_dealer_rows(client):
     page = 0
     while True:
         res = client.table("products").select(
-            "sku_id,dealer,url,sale_price,original_price,last_updated"
+            "sku_id,dealer,url,sale_price,original_price,last_updated,"
+            "status,missing_runs,last_seen_at,url_http_status,url_checked_at"
         ).neq("dealer", "arcteryx_outlet").range(page*1000, page*1000+999).execute()
         data = res.data or []
         rows.extend(data)
@@ -625,11 +626,18 @@ def load_all_dealer_rows(client):
     return rows
 
 def update_row(client, sku_id, patch, old_row):
-    """写 Supabase + 如果价格变了同时 insert price_history."""
+    """Persist a successful official PDP read and reactivate its lifecycle."""
     if not patch: return False
     now_iso = datetime.now(timezone.utc).isoformat()
     patch = dict(patch)
-    patch["last_updated"] = now_iso
+    patch.update({
+        "status": "active",
+        "missing_runs": 0,
+        "last_seen_at": now_iso,
+        "last_updated": now_iso,
+        "url_http_status": 200,
+        "url_checked_at": now_iso,
+    })
     try:
         client.table("products").update(patch).eq("sku_id", sku_id).execute()
     except Exception as e:
