@@ -2,7 +2,17 @@ import unittest
 import urllib.error
 from unittest.mock import MagicMock, patch
 
-from global_scraper import fetch_json, next_stable_bottom_rounds
+from global_scraper import REGIONS, fetch_json, next_stable_bottom_rounds
+
+
+class OutletRegionConfigTests(unittest.TestCase):
+    def test_finland_and_ireland_use_official_euro_outlet_routes(self):
+        by_code = {region["code"]: region for region in REGIONS}
+
+        for code in ("fi", "ie"):
+            self.assertEqual(by_code[code]["lang"], "en")
+            self.assertEqual(by_code[code]["currency"], "EUR")
+            self.assertEqual(by_code[code]["symbol"], "€")
 
 
 class GlobalScraperScrollTests(unittest.TestCase):

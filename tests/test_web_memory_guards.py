@@ -10,6 +10,15 @@ class WebMemoryGuardTests(unittest.TestCase):
     def setUpClass(cls):
         cls.index = (ROOT / "index.html").read_text(encoding="utf-8")
         cls.detail = (ROOT / "product-detail.html").read_text(encoding="utf-8")
+        cls.catalog = (ROOT / "app/lib/catalog.ts").read_text(encoding="utf-8")
+
+    def test_finland_and_ireland_are_mapped_on_all_catalog_surfaces(self):
+        for region, label in (("fi", "芬兰"), ("ie", "爱尔兰")):
+            self.assertIn(f"{region}:'{label}'", self.index)
+            self.assertIn(f"{region}:'{label}'", self.detail)
+        self.assertIn("fi: 'Finland'", self.catalog)
+        self.assertIn("ie: 'Ireland'", self.catalog)
+        self.assertIn("'fi', 'ie'", self.catalog)
 
     def test_homepage_renders_one_bounded_page(self):
         self.assertIn("const PAGE_SIZE = 60;", self.index)

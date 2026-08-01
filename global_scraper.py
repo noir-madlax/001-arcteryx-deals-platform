@@ -3,7 +3,7 @@
 Arc'teryx 全球 Outlet 数据采集器 (Playwright 版)
 ────────────────────────────────────────────────
 抓取 outlet.arcteryx.com 各区域站点商品列表页：
-  1. 遍历 15 个地区 × (mens + womens) 分类页
+  1. 遍历 17 个地区 × (mens + womens) 分类页
   2. 自动滚动加载全部商品瓦片
   3. 提取商品 URL、名称、价格、折扣等
   4. 合并写入 global_data.json（保留已有数据，新增/更新条目）
@@ -47,6 +47,8 @@ REGIONS = [
     {"code": "de", "lang": "de", "name": "德国",    "currency": "EUR", "symbol": "€"},
     {"code": "fr", "lang": "fr", "name": "法国",    "currency": "EUR", "symbol": "€"},
     {"code": "nl", "lang": "en", "name": "荷兰",    "currency": "EUR", "symbol": "€"},
+    {"code": "fi", "lang": "en", "name": "芬兰",    "currency": "EUR", "symbol": "€"},
+    {"code": "ie", "lang": "en", "name": "爱尔兰",  "currency": "EUR", "symbol": "€"},
     {"code": "se", "lang": "en", "name": "瑞典",    "currency": "SEK", "symbol": "kr"},
     {"code": "at", "lang": "de", "name": "奥地利",  "currency": "EUR", "symbol": "€"},
     {"code": "ch", "lang": "de", "name": "瑞士",    "currency": "CHF", "symbol": "CHF"},

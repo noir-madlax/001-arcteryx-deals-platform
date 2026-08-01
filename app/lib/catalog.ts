@@ -11,6 +11,8 @@ export const REGION_LABEL: Record<string, string> = {
   de: 'Germany',
   fr: 'France',
   nl: 'Netherlands',
+  fi: 'Finland',
+  ie: 'Ireland',
   au: 'Australia',
   se: 'Sweden',
   at: 'Austria',
@@ -45,7 +47,7 @@ export const PLATFORM: Record<string, { label: string; color: string }> = {
   zalando_lounge: { label: 'Zalando Lounge', color: '#ff6900' },
 };
 
-export const REGION_OPTIONS = ['all', 'us', 'ca', 'gb', 'de', 'fr', 'nl', 'jp'];
+export const REGION_OPTIONS = ['all', 'us', 'ca', 'gb', 'de', 'fr', 'nl', 'fi', 'ie', 'jp'];
 export const GENDER_OPTIONS = ['all', 'women', 'men', 'unisex'];
 export const SORT_OPTIONS = ['discount_desc', 'price_asc', 'price_desc', 'recent'];
 export const CATEGORY_ORDER = [

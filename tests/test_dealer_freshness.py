@@ -25,6 +25,14 @@ def fresh_timestamp():
 
 
 class DealerFreshnessTests(unittest.TestCase):
+    def test_new_outlet_regions_have_currency_and_low_water_marks(self):
+        for region in ("fi", "ie"):
+            self.assertEqual(EXPECTED_CURRENCY[region], ("EUR", "€"))
+            self.assertEqual(
+                PLATFORM_REGION_MIN_ROWS[("arcteryx_outlet", region)],
+                250,
+            )
+
     def test_validate_requires_min_rows_for_each_requested_dealer(self):
         rows = [
             {
