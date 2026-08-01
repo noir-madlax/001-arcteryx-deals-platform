@@ -50,10 +50,9 @@ DEALER_MIN_ROWS_OVERRIDE = {
     "ssense": 40,
 }
 
-# The aggregate catalog count is an observability metric, not a production
-# health gate: official assortments regularly contract by region. The full
-# health gate checks the expected platform/region slices instead, so one
-# healthy region cannot mask a stale or collapsed one.
+# Full runs enforce both the caller-provided aggregate floor and the
+# platform/region floors below. The two checks catch different regressions:
+# a broad catalog contraction and a single collapsed source, respectively.
 PLATFORM_REGION_MIN_ROWS = {
     ("arcteryx_outlet", "us"): 250,
     ("arcteryx_outlet", "ca"): 100,
@@ -217,9 +216,7 @@ def validate(
                 "min_rows": min_rows,
                 "effective_min_rows": effective_total_min_rows,
             })
-    # Full runs use PLATFORM_REGION_MIN_ROWS below. Deliberately do not make
-    # the requested aggregate minimum a gate: it is volatile with live supply.
-    elif min_rows <= 0:
+    elif len(active_rows) < min_rows:
         errors["too_few_rows"].append({
             "row_count": len(active_rows),
             "min_rows": min_rows,

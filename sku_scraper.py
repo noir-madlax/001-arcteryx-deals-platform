@@ -23,9 +23,11 @@ import os
 import re
 import time
 from functools import lru_cache
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from playwright.async_api import async_playwright, TimeoutError as PWTimeout
+
+from tools.product_lifecycle import load_manifest, seen_in_successful_scope
 
 # ── 路径 ────────────────────────────────────────────────────────────────────
 PROJECT = Path(__file__).parent
@@ -34,6 +36,8 @@ SKU_FILE     = PROJECT / "arcteryx_skus.json"
 ROOT_DATA_JS = PROJECT / "data.js"
 H5_DATA_JS   = PROJECT / "h5" / "data.js"
 PROGRESS_FILE = PROJECT / ".sku_progress.json"
+CRAWL_MANIFEST_FILE = PROJECT / ".crawl_manifest.json"
+STATIC_MAX_AGE_HOURS = 72
 
 # ── 每请求间隔（秒）──────────────────────────────────────────────────────────
 DELAY_BETWEEN_PRODUCTS = 2.0
@@ -77,6 +81,31 @@ def all_sizes_out_of_stock(item: dict) -> bool:
 
 def is_blocked_outlet_product(product: dict) -> bool:
     return is_blocked_outlet_url(product.get('url', '')) or all_sizes_out_of_stock(product)
+
+
+def is_static_fallback_eligible(
+    product: dict,
+    manifest: dict,
+    *,
+    now: datetime | None = None,
+    max_age_hours: float = STATIC_MAX_AGE_HOURS,
+) -> bool:
+    """Keep static fallback rows aligned with the fail-closed live lifecycle."""
+    if is_blocked_outlet_product(product):
+        return False
+    # A successful current list read is authoritative when it says the parent
+    # product disappeared. Failed scopes remain eligible until their age limit.
+    if seen_in_successful_scope(product, manifest) is False:
+        return False
+    value = product.get("last_updated")
+    try:
+        timestamp = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        if timestamp.tzinfo is None:
+            timestamp = timestamp.replace(tzinfo=timezone.utc)
+    except (TypeError, ValueError):
+        return False
+    now = now or datetime.now(timezone.utc)
+    return timestamp >= now - timedelta(hours=max_age_hours)
 
 def product_key(product: dict) -> str:
     slug = slug_from_url(product.get('url', ''))
@@ -737,7 +766,13 @@ def expand_data_js(skus: list, fallback_products: list):
     把所有 SKU 扁平化为 data.js 格式（每个颜色独立一条）。
     若某商品无 SKU（未抓到详情），保留原始记录。
     """
-    slug_has_sku = set(slug_from_url(s['url']) for s in skus)
+    manifest = load_manifest(CRAWL_MANIFEST_FILE)
+    eligible_skus = [
+        s for s in skus
+        if not is_junk_color(s.get('color', ''))
+        and is_static_fallback_eligible(s, manifest)
+    ]
+    slug_has_sku = set(slug_from_url(s['url']) for s in eligible_skus)
 
     # SKU → PRODUCTS 格式
     def sku_to_product(s):
@@ -772,13 +807,14 @@ def expand_data_js(skus: list, fallback_products: list):
 
     expanded = [
         sku_to_product(s)
-        for s in skus
-        if not is_junk_color(s.get('color', '')) and not is_blocked_outlet_product(s)
+        for s in eligible_skus
     ]
 
     # 补充未抓到 SKU 的原始商品
     fallback_map = best_product_per_key(fallback_products)
     for key, p in fallback_map.items():
+        if not is_static_fallback_eligible(p, manifest):
+            continue
         slug = slug_from_url(p.get('url', ''))
         if slug not in slug_has_sku:
             fallback = normalize_outlet_sku(p)
@@ -786,7 +822,12 @@ def expand_data_js(skus: list, fallback_products: list):
                 fallback['sku_id'] = sku_id(slug, fallback.get('color', '') or 'default', fallback.get('region', ''))
             expanded.append(fallback)
 
-    print(f"\n📦 写入 data.js: {len(expanded)} 条（{len(skus)} SKU + {len(expanded)-len(skus)} 无SKU原始条目）")
+    dropped = len(skus) - len(eligible_skus)
+    print(
+        f"\n📦 写入 data.js: {len(expanded)} 条"
+        f"（{len(eligible_skus)} eligible SKU + "
+        f"{len(expanded)-len(eligible_skus)} 无SKU原始条目；过滤 {dropped} 条）"
+    )
     js_payload = f"const PRODUCTS = {json.dumps(expanded, ensure_ascii=False, separators=(',', ':'))};\n"
     with open(ROOT_DATA_JS, 'w', encoding='utf-8') as f:
         f.write(js_payload)

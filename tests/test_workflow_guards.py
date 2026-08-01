@@ -27,6 +27,13 @@ class WorkflowGuardTests(unittest.TestCase):
             primary_runner,
         )
 
+    def test_mec_fallback_installs_camoufox_runtime_before_preflight(self):
+        workflow = (ROOT / ".github/workflows/refresh-mec.yml").read_text(encoding="utf-8")
+        self.assertLess(
+            workflow.index("python -m camoufox fetch"),
+            workflow.index("python tools/check_mec_browser_runtime.py"),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

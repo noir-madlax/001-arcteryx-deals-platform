@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -8,6 +9,7 @@ from tools.check_product_urls import classify_url, product_identity
 from tools.crawler_lease import needs_fallback
 from tools.product_lifecycle import load_manifest, next_lifecycle, validate_scope_counts
 from supabase_sync import url_health_after_observation
+from sku_scraper import is_static_fallback_eligible
 
 
 class ProductLifecycleTests(unittest.TestCase):
@@ -106,6 +108,34 @@ class ProductLifecycleTests(unittest.TestCase):
         errors = validate_scope_counts(self.manifest([f"https://example.test/{i}" for i in range(60)]), previous)
         self.assertEqual(len(errors), 1)
         self.assertIn("dropped from 100 to 60", errors[0])
+
+    def test_static_fallback_rejects_row_absent_from_successful_scope(self):
+        now = datetime(2026, 8, 1, 12, 0, tzinfo=timezone.utc)
+        row = {
+            "url": "https://example.test/removed", "region": "us", "gender": "women",
+            "last_updated": "2026-08-01T11:00:00+00:00",
+        }
+        self.assertFalse(is_static_fallback_eligible(row, self.manifest([]), now=now))
+
+    def test_static_fallback_retains_recent_row_when_scope_failed(self):
+        now = datetime(2026, 8, 1, 12, 0, tzinfo=timezone.utc)
+        row = {
+            "url": "https://example.test/preserved", "region": "us", "gender": "women",
+            "last_updated": "2026-08-01T11:00:00+00:00",
+        }
+        self.assertTrue(
+            is_static_fallback_eligible(row, self.manifest([], status="failed"), now=now)
+        )
+
+    def test_static_fallback_rejects_row_older_than_72_hours(self):
+        now = datetime(2026, 8, 1, 12, 0, tzinfo=timezone.utc)
+        row = {
+            "url": "https://example.test/stale", "region": "us", "gender": "women",
+            "last_updated": "2026-07-29T11:59:59+00:00",
+        }
+        self.assertFalse(
+            is_static_fallback_eligible(row, self.manifest([], status="failed"), now=now)
+        )
 
     def test_manifest_loader_normalizes_gender_and_urls(self):
         with tempfile.TemporaryDirectory() as directory:

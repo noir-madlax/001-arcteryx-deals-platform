@@ -141,7 +141,7 @@ class DealerFreshnessTests(unittest.TestCase):
         )
         self.assertEqual(rc, 1)
 
-    def test_validate_full_gate_uses_platform_region_matrix_not_aggregate_floor(self):
+    def test_validate_full_gate_enforces_aggregate_floor(self):
         rows = []
         for (dealer, region), count in PLATFORM_REGION_MIN_ROWS.items():
             currency, symbol = EXPECTED_CURRENCY[region]
@@ -169,6 +169,38 @@ class DealerFreshnessTests(unittest.TestCase):
             required_dealers=None,
             forbidden_regions=None,
         )
+        self.assertEqual(rc, 1)
+
+    def test_validate_full_gate_passes_aggregate_and_platform_region_floors(self):
+        rows = []
+        for (dealer, region), count in PLATFORM_REGION_MIN_ROWS.items():
+            currency, symbol = EXPECTED_CURRENCY[region]
+            for i in range(count):
+                rows.append({
+                    "sku_id": f"{dealer}-{region}-{i}",
+                    "dealer": dealer,
+                    "status": "active",
+                    "sale_price": 100,
+                    "original_price": 150,
+                    "discount_pct": 33,
+                    "currency": currency,
+                    "symbol": symbol,
+                    "gender": "men",
+                    "region": region,
+                    "url": f"https://example.com/{dealer}/{region}/{i}",
+                    "last_seen_at": fresh_timestamp(),
+                    "last_updated": fresh_timestamp(),
+                })
+        while len(rows) < 5000:
+            i = len(rows)
+            rows.append({
+                "sku_id": f"extra-{i}", "dealer": "arcteryx_outlet", "status": "active",
+                "sale_price": 100, "original_price": 150, "discount_pct": 33,
+                "currency": "USD", "symbol": "$", "gender": "men", "region": "us",
+                "url": f"https://example.com/extra/{i}",
+                "last_seen_at": fresh_timestamp(), "last_updated": fresh_timestamp(),
+            })
+        rc = validate(rows, 36, 72, 5000, required_dealers=None, forbidden_regions=None)
         self.assertEqual(rc, 0)
 
     def test_validate_full_gate_identifies_collapsed_platform_region(self):
@@ -260,6 +292,31 @@ class DealerFreshnessTests(unittest.TestCase):
                 merged = json.loads(Path("dealers/results.json").read_text())
                 self.assertEqual(merged["fresh_dealers"], [])
                 self.assertEqual(merged["dealers"]["ssense"]["items"][0]["url"], "old")
+            finally:
+                os.chdir(previous_cwd)
+
+    def test_merge_rejects_complete_but_collapsed_snapshot(self):
+        previous_cwd = os.getcwd()
+        with tempfile.TemporaryDirectory() as tmp:
+            os.chdir(tmp)
+            try:
+                Path("dealers/_partial").mkdir(parents=True)
+                Path("dealers/results.json").write_text(json.dumps({
+                    "dealers": {"evo": {
+                        "name": "EVO", "count": 242,
+                        "items": [{"url": f"old-{i}"} for i in range(242)],
+                    }},
+                }))
+                Path("dealers/_partial/evo.json").write_text(json.dumps({
+                    "name": "EVO", "count": 50,
+                    "items": [{"url": f"new-{i}"} for i in range(50)],
+                    "crawl_complete": True,
+                }))
+                merge_partial.main()
+                merged = json.loads(Path("dealers/results.json").read_text())
+                self.assertEqual(merged["fresh_dealers"], [])
+                self.assertEqual(merged["dealers"]["evo"]["count"], 242)
+                self.assertIn("collapsed 242->50", merged["rejected_dealers"]["evo"])
             finally:
                 os.chdir(previous_cwd)
 

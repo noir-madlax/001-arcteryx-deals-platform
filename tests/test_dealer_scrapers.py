@@ -114,6 +114,17 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(len(browser.pages), 2)
         self.assertTrue(all(page.closed for page in browser.pages))
 
+    def test_evo_complete_but_small_http_snapshot_uses_browser_fallback(self):
+        scraper = EvoScraper()
+        http_items = [{"url": f"https://www.evo.com/products/http-{i}"} for i in range(50)]
+        browser_items = [{"url": f"https://www.evo.com/products/browser-{i}"} for i in range(120)]
+        with patch.object(scraper, "_scrape_http", return_value=(http_items, True)), patch.object(
+            scraper, "_scrape_browser", return_value=(browser_items, True)
+        ) as browser:
+            self.assertEqual(scraper.scrape(), browser_items)
+        browser.assert_called_once_with()
+        self.assertTrue(scraper.crawl_complete)
+
     def test_ssense_rendered_html_uses_existing_json_ld_parser(self):
         product = {
             "@type": "Product",

@@ -31,6 +31,11 @@ class Scraper:
         ("women", "womens-arcteryx-accessories"),
     ]
     BROWSER_COLLECTIONS = [("auto", "arcteryx")]
+    # The legacy category JSON endpoints can return a syntactically complete
+    # but severely truncated assortment on some egresses. The rendered
+    # Arc'teryx collection is the formal fallback and currently spans well
+    # above the production evo/us floor.
+    MIN_DIRECT_ITEMS = 100
 
     def __init__(self):
         self.crawl_complete = False
@@ -384,9 +389,15 @@ class Scraper:
 
     def scrape(self) -> list[dict]:
         items, complete = self._scrape_http()
-        if complete and items:
+        if complete and len(items) >= self.MIN_DIRECT_ITEMS:
             self.crawl_complete = True
             return items
+        if complete and items:
+            print(
+                f"[evo] direct snapshot only returned {len(items)} items; "
+                f"expected at least {self.MIN_DIRECT_ITEMS}, using browser fallback",
+                flush=True,
+            )
         items, complete = self._scrape_browser()
         self.crawl_complete = complete and bool(items)
         return items

@@ -5,6 +5,23 @@ from pathlib import Path
 PARTIAL_DIR = "dealers/_partial"
 OUT = "dealers/results.json"
 KEY_BY_NAME = {"SSENSE":"ssense","MEC":"mec","EVO":"evo","REI":"rei"}
+MIN_SNAPSHOT_RATIO = 0.70
+
+
+def snapshot_rejection_reason(items: list, partial: dict, previous: dict) -> str | None:
+    """Reject incomplete or implausibly collapsed dealer snapshots."""
+    if not items:
+        return "empty"
+    if partial.get("crawl_complete") is not True:
+        return "incomplete"
+    previous_items = previous.get("items") or []
+    previous_count = len(previous_items) or int(previous.get("count") or 0)
+    if previous_count >= 10 and len(items) < previous_count * MIN_SNAPSHOT_RATIO:
+        return (
+            f"collapsed {previous_count}->{len(items)} "
+            f"({len(items) / previous_count:.0%} < {MIN_SNAPSHOT_RATIO:.0%})"
+        )
+    return None
 
 def main():
     out = {"generated_at": time.strftime("%Y-%m-%d %H:%M:%S"), "dealers": {}}
@@ -22,17 +39,19 @@ def main():
             print(f"  (could not seed from previous results.json: {e})")
 
     fresh_keys = []
+    rejected = {}
     for path in sorted(glob.glob(f"{PARTIAL_DIR}/*.json")):
         d = json.loads(Path(path).read_text())
         key = KEY_BY_NAME.get(d.get("name"), os.path.basename(path).replace(".json",""))
         items = d.get("items") or []
-        trusted = bool(items) and d.get("crawl_complete") is True
+        previous = out["dealers"].get(key, {})
+        rejection_reason = snapshot_rejection_reason(items, d, previous)
+        trusted = rejection_reason is None
         # 只有抓取器明确声明完整成功的非空范围才可驱动 freshness/lifecycle。
         # 空结果或部分结果保留上一轮快照，不能伪装成新鲜数据。
         if not trusted:
-            reason = "empty" if not items else "incomplete"
-            previous = out["dealers"].get(key, {})
-            print(f"  {key}: {len(items)} 件 [{reason} scrape — 保留上一轮 {previous.get('count', 0)} 件]")
+            rejected[key] = rejection_reason
+            print(f"  {key}: {len(items)} 件 [{rejection_reason} scrape — 保留上一轮 {previous.get('count', 0)} 件]")
             continue
         out["dealers"][key] = {
             "name":   d.get("name"),
@@ -51,6 +70,7 @@ def main():
 
     total = sum((b.get("count") or 0) for b in out["dealers"].values())
     out["total"] = total
+    out["rejected_dealers"] = rejected
     # supabase_sync 只允许本轮真实产出非空 partial 的 dealer 更新时间。
     # 缺失/空抓取仍保留静态快照，但不能伪装成本轮新鲜数据。
     out["fresh_dealers"] = fresh_keys
