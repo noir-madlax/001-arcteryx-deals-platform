@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-07-31T21:29:48.152520+00:00",
+  "generated_at": "2026-08-01T00:35:42.338908+00:00",
   "scopes": [
     {
       "region": "us",
@@ -635,27 +635,19 @@
     },
     {
       "region": "au",
-      "gender": "*",
-      "status": "success",
-      "product_count": 16,
-      "urls": [
-        "https://arcteryx.com.au/products/alpha-jacket-mens-l08450800",
-        "https://arcteryx.com.au/products/alpha-sv-jacket-mens-15",
-        "https://arcteryx.com.au/products/alpha-sv-jacket-mens-x00000731915",
-        "https://arcteryx.com.au/products/beta-ar-jacket-mens-x00000708202",
-        "https://arcteryx.com.au/products/beta-ar-pant-mens-copy",
-        "https://arcteryx.com.au/products/beta-jacket-m-x00000858401",
-        "https://arcteryx.com.au/products/beta-jacket-mens-16",
-        "https://arcteryx.com.au/products/beta-jacket-mens-copy-5",
-        "https://arcteryx.com.au/products/beta-jacket-mens-x00000772609",
-        "https://arcteryx.com.au/products/beta-pant-mens-l08529200",
-        "https://arcteryx.com.au/products/beta-pant-mens-x00000718902",
-        "https://arcteryx.com.au/products/beta-pant-womens",
-        "https://arcteryx.com.au/products/beta-sl-jacket-m-x00000968501",
-        "https://arcteryx.com.au/products/beta-sl-jacket-m-x00000968502",
-        "https://arcteryx.com.au/products/beta-sl-jacket-mens-x00000968101",
-        "https://arcteryx.com.au/products/beta-sl-jacket-mens-x00000968106"
-      ]
+      "gender": "mens",
+      "status": "failed",
+      "reason": "region_exception",
+      "product_count": 0,
+      "urls": []
+    },
+    {
+      "region": "au",
+      "gender": "womens",
+      "status": "failed",
+      "reason": "region_exception",
+      "product_count": 0,
+      "urls": []
     },
     {
       "region": "de",
