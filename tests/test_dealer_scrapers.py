@@ -273,7 +273,22 @@ class DealerScraperTests(unittest.TestCase):
         self.assertIn("playwright==1.58.0", requirements)
         self.assertIn("patchright==1.58.2", requirements)
         self.assertIn("curl_cffi==0.15.0", requirements)
-        self.assertIn("scrapling==0.4.1", requirements)
+        self.assertIn("scrapling==0.3.12", requirements)
+
+    def test_scrapling_browser_headers_support_linux_runner(self):
+        from scrapling.engines.toolbelt import fingerprints
+
+        original_os_name = fingerprints.__OS_NAME__
+        fingerprints.__OS_NAME__ = "Linux"
+        fingerprints.get_os_name.cache_clear()
+        try:
+            for browser_mode in (True, "chrome"):
+                with self.subTest(browser_mode=browser_mode):
+                    headers = fingerprints.generate_headers(browser_mode=browser_mode)
+                    self.assertIn("Linux", headers["User-Agent"])
+        finally:
+            fingerprints.__OS_NAME__ = original_os_name
+            fingerprints.get_os_name.cache_clear()
 
 
 if __name__ == "__main__":

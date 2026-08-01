@@ -3,6 +3,6 @@ curl_cffi==0.15.0
 playwright==1.58.0
 patchright==1.58.2
 requests>=2.32,<3
-scrapling==0.4.1
+scrapling==0.3.12
 msgspec>=0.19,<1
 supabase>=2.15,<3
