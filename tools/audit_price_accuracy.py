@@ -85,6 +85,23 @@ DEALER_TARGETS = {
 
 BLOCKED_HTTP_ERRORS = ("http 401", "http 403", "http 429", "cf_stub")
 
+TRANSIENT_AUDIT_ERROR_MARKERS = (
+    "browser",
+    "cf_stub",
+    "connection",
+    "goto",
+    "http 401",
+    "http 403",
+    "http 429",
+    "missing_dealer_result",
+    "proxyerror",
+    "readtimeout",
+    "runtimeerror",
+    "timeout",
+    "unstable_document",
+    "warmup",
+)
+
 
 class AuditSetupError(RuntimeError):
     """The audit could not establish its required read-only evidence surface."""
@@ -602,6 +619,56 @@ PASS_READERS: dict[str, Callable[[list[dict]], dict[str, dict]]] = {
 }
 
 
+def is_retryable_audit_result(result: dict | None) -> bool:
+    error = str((result or {}).get("_err") or "").lower()
+    return bool(error) and any(
+        marker in error for marker in TRANSIENT_AUDIT_ERROR_MARKERS
+    )
+
+
+def run_reader_with_transient_retries(
+    dealer: str,
+    rows: list[dict],
+) -> dict[str, dict]:
+    reader = PASS_READERS[dealer]
+
+    def invoke(target_rows: list[dict]) -> dict[str, dict]:
+        try:
+            return reader(target_rows)
+        except Exception as exc:
+            failed: dict[str, dict] = {}
+            assign_runtime_error(failed, target_rows, dealer, exc)
+            return failed
+
+    results = invoke(rows)
+    retry_attempts = env_int("AUDIT_TRANSIENT_RETRY_ATTEMPTS", 1, 0)
+    retry_delay = env_float("AUDIT_TRANSIENT_RETRY_DELAY_SECONDS", 5.0, 0.0)
+    for attempt in range(1, retry_attempts + 1):
+        retry_rows = [
+            row
+            for row in rows
+            if is_retryable_audit_result(
+                results.get(row["sku_id"], {"_err": "missing_dealer_result"})
+            )
+        ]
+        if not retry_rows:
+            break
+        print(
+            f"[audit] dealer={dealer} transient retry "
+            f"{attempt}/{retry_attempts} rows={len(retry_rows)}",
+            flush=True,
+        )
+        if retry_delay:
+            time.sleep(retry_delay * attempt)
+        retried = invoke(retry_rows)
+        for row in retry_rows:
+            results[row["sku_id"]] = retried.get(
+                row["sku_id"],
+                {"_err": "missing_dealer_result"},
+            )
+    return results
+
+
 def run_official_pass(sample: list[dict], pass_number: int) -> dict[str, dict]:
     print(f"[audit] official pass {pass_number}/2", flush=True)
     results: dict[str, dict] = {}
@@ -614,11 +681,7 @@ def run_official_pass(sample: list[dict], pass_number: int) -> dict[str, dict]:
         print(f"[audit] pass={pass_number} dealer={dealer} rows={len(rows)}", flush=True)
         if not rows:
             continue
-        try:
-            dealer_results = PASS_READERS[dealer](rows)
-        except Exception as exc:
-            dealer_results = {}
-            assign_runtime_error(dealer_results, rows, dealer, exc)
+        dealer_results = run_reader_with_transient_retries(dealer, rows)
         for row in rows:
             results[row["sku_id"]] = dealer_results.get(
                 row["sku_id"],

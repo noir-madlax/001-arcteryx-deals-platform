@@ -11,6 +11,14 @@ on:
         description: "Optional source SHA used to reproduce a sample"
         required: false
         type: string
+      sample_gzip_base64:
+        description: "Optional gzip+base64 prior 100-SKU audit artifact"
+        required: false
+        type: string
+      sample_sha256:
+        description: "Required SHA-256 when an exact sample payload is supplied"
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -26,6 +34,10 @@ jobs:
   audit-dealer-prices:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      AUDIT_INDEPENDENT_READ_DELAY_SECONDS: "15"
+      AUDIT_TRANSIENT_RETRY_ATTEMPTS: "1"
+      AUDIT_TRANSIENT_RETRY_DELAY_SECONDS: "8"
 
     steps:
       - uses: actions/checkout@v4
@@ -48,6 +60,18 @@ jobs:
           test -z "${SUPABASE_SERVICE_ROLE_KEY:-}"
           echo "No Supabase write credential is present."
 
+      - name: Materialize hash-bound exact sample
+        if: ${{ inputs.sample_gzip_base64 != '' || inputs.sample_sha256 != '' }}
+        env:
+          PRICE_AUDIT_SAMPLE_GZIP_BASE64: ${{ inputs.sample_gzip_base64 }}
+          REQUESTED_SAMPLE_SHA256: ${{ inputs.sample_sha256 }}
+        run: |
+          test -n "$PRICE_AUDIT_SAMPLE_GZIP_BASE64"
+          test -n "$REQUESTED_SAMPLE_SHA256"
+          python tools/prepare_price_audit_sample.py \
+            --expected-sha256 "$REQUESTED_SAMPLE_SHA256" \
+            --output artifacts/source-sample.json
+
       - id: audit
         name: Run official 100-SKU double-read audit
         continue-on-error: true
@@ -56,6 +80,9 @@ jobs:
           REQUESTED_ORIGIN_SHA: ${{ inputs.origin_sha }}
         run: |
           args=(--output artifacts/price-audit.json)
+          if [ -f artifacts/source-sample.json ]; then
+            args+=(--sample-file artifacts/source-sample.json)
+          fi
           if [ -n "$REQUESTED_RUN_START" ]; then
             args+=(--run-start "$REQUESTED_RUN_START")
           fi
