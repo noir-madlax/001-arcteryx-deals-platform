@@ -1,10 +1,10 @@
-# TASK: automation-5 精确价格样本远端复核（更新：2026-08-01 20:22 UTC）
+# TASK: automation-5 精确价格样本远端复核（更新：2026-08-01 21:03 UTC）
 
 ## Why（一句话）
 
 让远端只读价格审计真正重放首次固定 100-SKU 工件，并把官方读取可靠性恢复到 `verified >= 90`，不换样、不写生产价格。
 
-## 当前状态：进行中
+## 当前状态：完成
 
 ## 边界
 
@@ -42,12 +42,16 @@
 - 已实现 hash-bound exact-sample input：base64/gzip 解码、20,000 字符输入上限、1 MB 解压上限、SHA-256、100 个唯一 SKU 与 `60/10/10/10/10` 分层均 fail closed，之后 workflow 调用正式 `--sample-file`。
 - 已实现 dealer pass 瞬态失败 fresh-session 重试一次；只重试 Proxy/timeout/429/`cf_stub`/browser 等标记，不重试 `color_variant_not_found`。
 - 定向 14 tests、完整 108 tests、compileall、workflow YAML parse、`git diff --check` 和首次真实工件 materialize+`cmp` 均 exit 0。`actionlint` / `shellcheck` 本机不可用，未宣称执行。
+- 修复提交 `ce0ae4464eb0842982388efb0bc64a4cea6e56d9` 已推分支并快进推入 `main`；随后定时 dealer 静态数据提交 `c4d946ce1e5dd8a388b607874040f6d23c69acb4` 保留该提交为祖先。
+- 分支远端只读审计 run `30717169272` 成功；输入工件 SHA-256 `75ad5a8f5b9099e5ea5c13c7b818e1b345ac302fdb86f2b576308376a03d2a5e`，输出与首次 100 个 `sku_id` 顺序完全一致，结果 `100/100/100/0/0`。
+- `main` 部署后只读审计 run `30717690864` 成功；输出再次与首次样本顺序完全一致，结果仍为 `100/100/100/0/0`，五个 dealer 准确率均为 100%。
+- 定时 dealer 刷新 run `30717244494` 成功后，最终三门均 exit 0：Outlet `5186`；dealers `508`（Evo 249 / MEC 147 / REI 68 / SSENSE 44）；全量 `5694`。
+- 最终静态读回：`/`、`/data.js`、`/dealers/results.json` 均 HTTP 200；`data.js` 5186 条，dealer JSON 507 条、`generated_at=2026-08-01 20:56:21`，无 rejected dealer。
 
 ## 下一步（按序）
 
-1. 检查最终 diff，提交并推修复分支。
-2. 在分支上用首次 payload/hash 运行远端 exact-sample 只读审计。
-3. 远端通过后推 `main`，重新运行生产质量门并完成清理。
+1. 更新 automation memory。
+2. 移除本任务创建的临时 worktree，确认用户主 checkout 的 HEAD/clean 状态未变。
 
 ## 死路
 
