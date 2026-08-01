@@ -4,7 +4,7 @@
 
 让生产数据健康结论真正由用户要求的硬门和同一批官方价格证据决定，而不是由被绕过的聚合下限或替换样本决定。
 
-## 当前状态：进行中
+## 当前状态：已停止自动修复（生产仍不健康）
 
 ## 边界
 
@@ -25,11 +25,17 @@
 - Evo 直接 Shopify 分类 JSON 会把仅 50 条的结果标记完整；渲染后的正式 collection fallback 能产出 242 条。来源：`dealers/evo.py` 调用链、生产两次快照及 run `30694326819` 日志。
 - MEC run `30697976158` 原始错误是 Camoufox `version.json` 缺失，而 `refresh-mec.yml` 安装步骤没有执行 `python -m camoufox fetch`。来源：`gh run view --log-failed` 与 workflow 当前内容。
 - 当前 `arcteryx_skus.json` 4238 条按 manifest/lifecycle 规则投影后恰好 3980 条 eligible，与生产 Outlet active 完全一致；来源：本 worktree 只读投影脚本与在线 API。
+- 修复提交 `b8a3e6138279c351d348adff42be212df0ca411a` 已直接快进到 `main`；dealer/MEC 数据提交 `8712188`、`85816cd` 均以它为祖先。来源：push 原始输出、`git log origin/main`。
+- Dealer fallback run `30698389256` 成功，正式产出 Evo 249、REI 65、SSENSE 44；生产 dealer active 从 309 恢复到 506。来源：workflow 原始日志与在线质量门。
+- MEC run `30698972147` 在修复 head 上成功，preflight 输出 `[mec] browser fallback runtime OK`，抓取/partial/sync 均为 148/148。来源：workflow 原始日志。
+- 最终 active 4486：Outlet 3980、Evo 249、MEC 148、REI 65、SSENSE 44；时间范围 `2026-08-01T03:06:26Z .. 2026-08-01T12:12:14Z`。Outlet 与 dealer 门 exit 0；严格 full 门 exit 1，原始错误 `too_few_rows 4486 < 5000`。来源：2026-08-01T12:13Z 三个正式在线命令。
+- 固定样本 replay 在最新 dealer/MEC 刷新后仍 exit 2：`rei:236297`、`rei:243366` 不再 eligible；未换样。原唯一确认错价 Evo 279633 的生产值已为 450/600 USD，独立两次官方 PDP 读取均为 450/600。来源：正式 `--sample-file` 输出、目标在线行与两次现有读取函数输出。
+- 线上 `data.js` 仍 4321 条且 111 条超过 72h；新生成器的临时投影为 3980 条、最旧 `2026-08-01 03:06:26`。非强制 Outlet run `30699308546` 因 OCI 主 lease 正在运行而安全 skipped。来源：端点解析、投影命令与 workflow jobs。
+- 只读 freshness monitor run `30699342191` 按预期失败：Outlet/Dealer/静态可访问检查成功，strict full check 输出 `too_few_rows`，aggregate step exit 1。来源：workflow 原始日志。
 
 ## 假设（未验证；验证后移入上区）
 
-- GitHub dealer fallback run `30698389256` 正在执行；预计可再次把 Evo 从 50 恢复到完整 collection 数量，需等待 live readback。
-- 在不引入非官方地区/不可购买记录的前提下，当前官方 active 供给可能不足 5000；必须由严格门和刷新后的实时总数确认，不能调低用户门槛。
+- 当前官方 active 供给可能低于 5000；已确认正规 Outlet/Dealer/MEC 刷新后的生产总数为 4486，但未扩大到新的官方地区来源，不能把“暂无 514 条”断言为永久供给上限。
 
 ## 验收标准
 
@@ -48,10 +54,10 @@
 
 ## 下一步（按序）
 
-1. 跑完整 unittest 与静态 fallback 临时投影，审阅第一轮 diff。
-2. 等待 run `30698389256`，对 live dealer rows 独立读回。
-3. 提交/推送第一轮修复，触发 MEC、Dealer、Outlet 必要 workflow 并等待。
-4. 生产三个门、静态端点、首次固定样本复核；更新记忆与清理。
+1. 下次 Outlet 主 lease 结束后，让基于 `b8a3e61` 的正式 Outlet run 发布已修静态 fallback，再读回 72h 尾部应为 0。
+2. 后续 run 继续保留同一首批 100 SKU；两条 REI 重新符合 active 官方候选前不得关闭固定样本门。
+3. 若业务坚持 5000 硬门，需要通过新的、逐 SKU 官方可验证地区/来源补足 514 条，不能降低门或恢复历史 inactive 行。
+4. 更新 automation/Obsidian 记忆，清理临时 worktree。
 
 ## 死路
 
