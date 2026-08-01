@@ -273,6 +273,7 @@ class DealerScraperTests(unittest.TestCase):
         self.assertIn("playwright==1.58.0", requirements)
         self.assertIn("patchright==1.58.2", requirements)
         self.assertIn("curl_cffi==0.15.0", requirements)
+        self.assertIn("scrapling==0.4.1", requirements)
 
 
 if __name__ == "__main__":
