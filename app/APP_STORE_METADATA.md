@@ -84,7 +84,7 @@ outdoor gear,deals,price tracker,watchlist,markdowns,sale,shopping,hiking,climbi
 https://001.100app.dev/support.html
 ```
 
-The dedicated form accepts app help, purchase, price-alert, privacy, and data requests. Confirm the live URL and one end-to-end request before entering it in App Store Connect.
+The dedicated form accepts app help, purchase, price-alert, privacy, and data requests. As of 2026-08-02 the live URL returns HTTP 404 because this branch has not been merged/deployed. Do not enter it in App Store Connect until the page and RPC migration are deployed and one controlled end-to-end request is verified.
 
 ## Privacy Policy URL
 

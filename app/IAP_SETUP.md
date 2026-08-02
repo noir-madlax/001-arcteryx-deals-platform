@@ -1,8 +1,8 @@
 # GearDrop Apple IAP Setup
 
-The app-side RevenueCat integration, matching App Store products, RevenueCat `Pro` entitlement/default offering, and EAS public iOS SDK key are configured. Real purchases remain unverified until the sandbox matrix below runs on a signed build.
+The app-side RevenueCat integration, matching App Store products, RevenueCat `Pro` entitlement/default offering, and EAS public iOS SDK key are configured. They were rechecked live on 2026-08-02: the default offering is Active with three real App Store packages, `Pro` is Active, and the IAP key remains `Valid credentials`. Real purchases remain unverified until the sandbox matrix below runs on a signed build.
 
-The real-key iPhone Simulator probe returned no StoreKit products and logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`. A 2026-07-13 11:38 EDT rerun produced the same result. RevenueCat email and DSA are complete, but Paid Apps Agreement is still `Pending User Info` while banking processes and tax information remains incomplete. Re-run after App Store Connect visibly shows the paid agreement `Active` and the product metadata reaches at least Ready to Submit.
+The last real-key iPhone Simulator probe returned no StoreKit products and logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`; a 2026-07-13 11:38 EDT rerun produced the same result. App Store Connect requires a fresh login on 2026-08-02, so the old `Pending User Info` and product metadata state must be rechecked before rerunning the probe.
 
 ## Fixed Contract
 

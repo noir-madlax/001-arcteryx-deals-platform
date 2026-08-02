@@ -1,15 +1,17 @@
 # GearDrop iOS Release Readiness
 
-Last updated: 2026-07-13 11:39 EDT.
+Last updated: 2026-08-02 10:31 EDT.
 
-This file separates locally proven work from evidence that still requires Apple, App Store Connect, deployment, or product decisions. The 2026-07-12 snapshot below is authoritative; older evidence is retained as history.
+This file separates locally proven work from evidence that still requires Apple, App Store Connect, deployment, or product decisions. The 2026-08-02 snapshot below is authoritative for local/EAS/RevenueCat state; Apple account state remains unrefreshed until the current login handoff completes.
 
 ## Current Launch Snapshot
 
 ### Proven now
 
+- The preserved iOS release work is now on `codex/ios-appstore-launch-20260802`, based on the 2026-08-02 `origin/main` snapshot. It has not been merged into `main` or deployed.
+- `npm run verify` passed end to end on 2026-08-02: 37/37 tests, config, release assets, typecheck, Expo Doctor 20/20, live exchange rates, 5,812 products, 83,934 price-history rows, and an iOS export of 1,492 modules / 5.4 MB. The command ended with `verify_local_ok`.
 - Expo account: `noir-madlax`; EAS project: `@noir-madlax/geardrop` (`ead43b0e-5dbf-44a2-838e-f65db29abb30`).
-- EAS iOS build list currently returns `[]`; no cloud production build has been created or charged by this preparation pass.
+- EAS iOS build list returned `[]` again on 2026-08-02; no cloud production build has been created or charged by this continuation pass.
 - EAS production config resolves to `credentialsSource=remote`, `distribution=store`, and `autoIncrement=true`; production and preview each contain the Sensitive variable `EXPO_PUBLIC_REVENUECAT_IOS_API_KEY`.
 - Bundle ID `dev.100app.geardrop`, version `1.0.0`, local build number `1`, portrait orientation.
 - Physical iPhone 16 Pro Release build, Apple Development signing, wireless install, launch, live Deals, localization, currency switching, persistence, and Chinese “值de” branding have runtime evidence in `.agent/TASK-ios-app-port.md`.
@@ -22,21 +24,22 @@ This file separates locally proven work from evidence that still requires Apple,
 - A clean Expo prebuild and CocoaPods install auto-linked `RNPurchases 10.4.2`, `PurchasesHybridCommon 18.19.0`, and `RevenueCat 5.80.2`. A code-signing-disabled iOS Simulator Release build completed with exit 0.
 - That Release app was installed and launched on the iPhone 17 simulator. An intentionally invalid public SDK key produced RevenueCat `Invalid API Key` logs and the paywall's localized unavailable state without a crash or local Pro grant. The Me screen showed Free with no manual Pro toggle.
 - A second arm64 Release was built with the real RevenueCat public key injected only through the process environment. It installed and launched, but StoreKit returned no products; RevenueCat logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`, and the paywall stayed unavailable. A 16:01 EDT post-account-action rerun produced the same StoreKit/RevenueCat result. This proves real-key configuration/failure handling, not a successful offering or transaction.
-- RevenueCat email confirmation and Apple DSA compliance are now verified complete. The Apple paid agreement has an effective period but is `Pending User Info`: banking updates are processing and one tax-information item remains. An 11:38 EDT offering rerun still returned no StoreKit products.
+- RevenueCat was rechecked live on 2026-08-02: the `default` offering is Active with three packages, all three real App Store product identifiers are attached, `Pro` is Active with six total products, and the App Store IAP key still shows `Valid credentials`. There are still no sandbox transactions.
+- App Store Connect is currently at the login page in both available browsers. Paid Apps Agreement, banking/tax, IAP metadata, and iOS 1.0 status therefore remain unverified for 2026-08-02; the 2026-07-13 `Pending User Info` and `Missing Metadata` observations are historical only.
 
 ### Submission blockers
 
 1. **IAP transaction proof:** the three matching App Store products, RevenueCat `Pro` entitlement, default monthly/annual/lifetime offering, EAS public key, and submit `ascAppId` are configured. The real-key Simulator run still returns empty StoreKit products. After Apple commercial/metadata blockers clear, verify localized prices, purchase, cancellation, pending purchase, entitlement activation, reinstall/restore, and no-purchase restore on a signed sandbox/TestFlight build.
-2. **Apple commercial/metadata state:** Paid Apps Agreement is `Pending User Info`, with banking processing and one missing tax-information item; it is not yet `Active`. DSA is complete. All three products last showed `Missing Metadata`, while iOS 1.0 last showed 0 screenshots, empty Description, Keywords, Support URL, Copyright and review contact fields, and no uploaded build.
+2. **Apple commercial/metadata state:** current state is unverified because App Store Connect requires login. The last verified 2026-07-13 state was Paid Apps Agreement `Pending User Info`, banking processing, one missing tax item, three products at `Missing Metadata`, and an empty iOS 1.0 submission page.
 3. **Distribution credentials:** this Mac currently has an Apple Development identity, not an Apple Distribution identity. EAS/Apple distribution credentials have not been inspected because the credentials command is interactive.
-4. **Public support contact:** `https://001.100app.dev/` is live but contains no support/contact channel. A public support email or form is required before final metadata is ready.
+4. **Public support contact:** `https://001.100app.dev/support.html` returns HTTP 404 on 2026-08-02. This branch contains the page and hardened RPC migration, but neither is deployed; the Support URL cannot be entered as live yet.
 5. **Content rights:** merchant product names, images, and prices require a defensible rights/permission basis for the selected storefronts.
 6. **App Privacy answers:** email, price-alert interaction data, and RevenueCat purchase history must be declared in App Store Connect and reviewed against all bundled third-party SDKs.
 7. **Metadata and screenshots:** final free/IAP copy, age rating, DSA trader status, availability, localized metadata, and 1–10 accepted-size iPhone screenshots remain ASC work.
-8. **Full local gate:** the 16:04 EDT rerun passed 36/36 tests, config, release assets, typecheck, Doctor 20/20, and rates, then exited at the live data requirement because `4,948 < 5,000`; the threshold has not been lowered. A prior skipped final iOS export was run separately and passed with 1488 modules / 5.4 MB HBC.
+8. **Full local gate:** cleared on 2026-08-02 with live `5,812 >= 5,000`; the complete command passed and emitted `verify_local_ok`.
 11. **RevenueCat account email:** verified complete on the refreshed GearDrop Overview page; the unconfirmed-email and resend-failure alerts are absent.
 9. **Dependency audit:** `npm audit --omit=dev` exits 1 with 35 moderate findings rooted in Expo's build-time `@expo/config-plugins -> xcode -> uuid <11.1.1` chain; npm reports `No fix available`. Do not use a forced dependency downgrade as a release fix.
-10. **Price-alert abuse control:** the client inserts through the public anon key and the current RLS insert policy uses `WITH CHECK (true)`. Add server-side rate limiting or verification before broad release; do not solve this by exposing stronger credentials in the app.
+10. **Price-alert abuse control:** the branch contains hardened support/price-alert RPCs and direct-table revocations, but the migration is not verified in production. Deployment plus receipt/readback smoke remains required.
 
 ### Release boundary
 

@@ -1,11 +1,17 @@
-# TASK: iOS 上线准备（更新：2026-07-13 11:39 EDT）
+# TASK: iOS 上线准备（更新：2026-08-02 10:31 EDT）
 
 ## Why（一句话）
 把当前可运行的 GearDrop / 值de iPhone App 收敛为可提交构建，并把代码内问题与必须在 Apple / App Store Connect 完成的外部步骤明确分开。
 
-## 当前状态：RevenueCat 邮箱与 DSA 已验证完成；Paid Apps Agreement 为 `Pending User Info`（银行处理中、税务信息缺失），真实 StoreKit 仍拉不到三项商品；完整 verify 另受 live `4,948 < 5,000` 阻塞
+## 当前状态：最新 `origin/main` 上的独立上线分支已恢复且完整本地门转绿；RevenueCat 配置实时复核通过；Apple 账户状态仍待本轮登录复核，support 页面尚未部署且防滥用迁移尚未完成生产验收
 
 ## 已确认事实
+- 2026-08-02 已从最新 `origin/main` 创建 `codex/ios-appstore-launch-20260802`，把 2026-07-31 保存的五个 iOS/上线安全提交迁入；冲突仅在 `app/lib/catalog.ts` 与 `tests/test_web_memory_guards.py`，合并保留了最新 FI/IE catalog 覆盖、iOS 默认地区逻辑和 support/RPC 回归。（来源：本轮 `git cherry-pick`、冲突 diff 与提交日志）
+- 2026-08-02 完整 `npm run verify` exit 0：37/37 tests、config、release assets、typecheck、Expo Doctor 20/20、汇率、live products `5,812`、price history `83,934`、iOS export 1,492 modules / 5.4 MB 均通过，最终原文 `verify_local_ok`；历史 `4,948 < 5,000` 数据门阻塞已由本轮实时结果关闭。（来源：本轮命令原始输出）
+- 2026-08-02 EAS 只读复核：登录 `noir-madlax`，项目仍为 `@noir-madlax/geardrop` / `ead43b0e-5dbf-44a2-838e-f65db29abb30`；iOS build list 仍为 `[]`，production/preview 均显示遮罩后的 Sensitive RevenueCat public key。本机 `security find-identity` 仍只返回一张 Apple Development identity。（来源：本轮 EAS CLI 20.5.1 与 security 原始输出）
+- 2026-08-02 RevenueCat 实时复核：`default` offering 为 Active 且含 3 packages，三项真实 App Store 商品分别绑定 `$rc_monthly` / `$rc_annual` / `$rc_lifetime`；`Pro` entitlement 为 Active 且含 6 products（3 个 App Store + 3 个 Test Store）；GearDrop App Store app bundle 仍为 `dev.100app.geardrop`，IAP `.p8` 显示 `Valid credentials`，SDK compatibility 显示 `react-native-purchases 10.4.2`。Overview 仍无 sandbox transaction。（来源：本轮 RevenueCat 实际 DOM）
+- 2026-08-02 App Store Connect 在内置浏览器与 Chrome 都停在登录页，尚未取得 Paid Apps Agreement、税务/银行、IAP metadata 或 iOS 1.0 的新页面状态；不得把 2026-07-13 结论当作当前状态。（来源：本轮两个浏览器的实际 URL 与 DOM）
+- 2026-08-02 线上 `https://001.100app.dev/` 与 `/privacy.html` 返回 HTTP 200，但 `/support.html` 返回 404；隐私页 Contact 只回链首页，首页没有实际客服渠道。独立分支内已有 support 页面与 RPC migration，但 support 尚未合入/部署，migration 也没有本轮生产读回或 smoke 证据。（来源：本轮 curl；分支 `support.html` 与 `supabase/migrations/20260719131646_geardrop_submission_security.sql`）
 - Expo/EAS 已登录账号 `noir-madlax`；`eas project:info` 返回 `@noir-madlax/geardrop`、project ID `ead43b0e-5dbf-44a2-838e-f65db29abb30`。（来源：2026-07-12 本机只读命令）
 - `eas build:list --platform ios --limit 5 --json --non-interactive` 返回 `[]`，当前没有 EAS iOS build 记录。（来源：2026-07-12 本机只读命令）
 - 本机有一张有效 Apple Development identity：`Apple Development: Jenova Huang (BM8N8W2A26)`；没有本机 Apple Distribution identity。（来源：`security find-identity -v -p codesigning`）
@@ -63,6 +69,7 @@
 - 首个 App Store 版本只支持 iPhone；若要支持 iPad，需要恢复 `supportsTablet` 并新增 iPad 布局和截图验收。
 - RevenueCat entitlement/offering/public SDK key 已配置，但真实 StoreKit 价格、购买、恢复和 entitlement 激活仍未验证。
 - 公开 support email 不能使用未验证或未明确同意公开的私人邮箱。
+- 2026-07-13 的 Paid Apps Agreement、银行、税务和 IAP `Missing Metadata` 状态可能已经变化；本轮 Apple 登录完成前一律按未核验处理。
 
 ## 验收标准
 1. `app.json` 明确首版 iPhone-only，配置校验覆盖该约束。
@@ -74,6 +81,7 @@
 7. IAP SDK 必须通过单元测试、TypeScript、配置校验、干净 prebuild/CocoaPods 和 iOS Release 原生编译；真实交易必须另以 sandbox/TestFlight 证据验收。
 
 ## 已完成且已验证
+- 2026-08-02 上线代码已恢复到最新远端基线的独立分支；完整 App 门、网站 guard 测试与 `git diff --check` 均通过，RevenueCat/EAS 只读状态已刷新。
 - 2026-07-12 已完成 EAS 登录、项目绑定、EAS iOS build 列表、Apple 本机签名身份、线上 URL、图标尺寸/alpha 和 Apple 当前规则的只读审计；结果见“已确认事实”。
 - `app.json` 已收敛为 `supportsTablet=false`；`expo config --type public` 与 EAS production config 均解析为 iPhone-only。
 - 主图标已移除 alpha，视觉构图未改；`sips` 返回 `1024×1024 / hasAlpha: no`，`npm run verify:release-assets` 返回 `release_assets_ok icon=1024x1024 colorType=2 alpha=false`。
@@ -92,16 +100,15 @@
 - post-IAP 完整门已实跑且如实失败于 live `4,970 < 5,000`；单独 iOS export 和 `git diff --check` 通过。依赖审计的 Expo build-tooling moderate advisory 已记录为未解决风险。
 
 ## 下一步
-1. 账号持有人在已打开的 Apple Business 页面完成剩余税务信息；银行更新当前为处理中，等待页面承诺的最长 24 小时窗口后复查 Paid Apps Agreement 是否转为 `Active`。
-2. Paid Apps Agreement 变为 `Active` 后重跑同一真实 key Simulator offering 探针；商品可取回后再拍 paywall 审核截图并上传三项 ASC 产品，使其从 `Missing Metadata` 推进到可提交。
-3. RevenueCat 邮箱和 DSA 已完成，无需重复处理。
-4. 完成 iOS 1.0 的 screenshots、Description、Keywords、Support URL、Copyright、App Review 联系信息、App Privacy 与售卖地区。
-5. 取得可公开客服邮箱或已部署的客服表单 URL，再发布专用 support 页面。
-6. 生成签名 build，按 `app/IAP_SETUP.md` 跑真实 sandbox 购买与恢复矩阵；确认 Distribution 凭证、内容权利与 RevenueCat purchase history 的 App Privacy 答案。
-7. 为 price alerts 增加服务端限流/验证防滥用；该项需要单独允许后端改动。
-8. live 商品恢复到至少 5,000 后重跑完整门；外部 IAP 验收后再拍最终截图、生成 production build、上传 TestFlight。
+1. 账号持有人完成当前 Chrome App Store Connect 登录；本轮只读复核 Paid Apps Agreement、银行/税务、三项 IAP metadata、iOS 1.0 metadata 与 build 状态。
+2. 审核并合入本独立分支后，部署 `support.html`；先读回 Supabase RPC 是否已存在，缺失时再执行 migration；使用批准的测试邮箱完成一次 receipt-gated support/price-alert smoke。
+3. Apple 商业协议与商品 metadata 达标后，重跑真实 key StoreKit offering 探针；商品可取回后再生成 paywall review screenshot。
+4. 完成 iOS 1.0 的 screenshots、Description、Keywords、Support URL、Copyright、App Review 联系信息、App Privacy、内容权利与售卖地区。
+5. 在用户明确授权付费外部动作后生成签名 build，按 `app/IAP_SETUP.md` 跑真实 sandbox/TestFlight 购买与恢复矩阵；验证 EAS remote Distribution 凭证。
+6. sandbox 矩阵通过后再生成 production build、上传 TestFlight，并在动作时确认后提交审核。
 
 ## 死路
+- 2026-08-02 直接用默认 npm cache 启动 EAS CLI 时，大量 tarball integrity retry 后 3 分钟无结果；中止后改用独立空 cache，`eas-cli/20.5.1` 正常安装并完成全部只读查询。该问题是本机 npm cache 路径，不是 EAS 登录失败。
 - `eas credentials --platform ios --non-interactive`：EAS CLI 20.5.1 不支持 `--non-interactive`，原文 `Nonexistent flag: --non-interactive`；未进入交互菜单，也未改凭证。
 - 首次临时 Release 构建把 `node_modules` symlink 回含空格的 workspace，ExpoModulesJSI 报 `fatal error: 'hermes/hermes.h' file not found`。改为 `/private/tmp/geardrop-signed-source` 实体依赖后同一 Release 配置 exit 0，确认是临时路径/symlink 问题而非 RevenueCat 兼容问题。
 - 2026-07-12 ASC 内置浏览器与 Chrome 都返回 `authResult=FAILED`，RevenueCat 也无现成登录会话；不绕过登录，也不读取浏览器凭据，改为保留登录页等待用户亲自完成认证。
