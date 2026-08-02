@@ -2,7 +2,7 @@
 
 The app-side RevenueCat integration, matching App Store products, RevenueCat `Pro` entitlement/default offering, and EAS public iOS SDK key are configured. They were rechecked live on 2026-08-02: the default offering is Active with three real App Store packages, `Pro` is Active, and the IAP key remains `Valid credentials`. Real purchases remain unverified until the sandbox matrix below runs on a signed build.
 
-The last real-key iPhone Simulator probe returned no StoreKit products and logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`; a 2026-07-13 11:38 EDT rerun produced the same result. App Store Connect requires a fresh login on 2026-08-02, so the old `Pending User Info` and product metadata state must be rechecked before rerunning the probe.
+The last real-key iPhone Simulator probe returned no StoreKit products and logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`; a 2026-07-13 11:38 EDT rerun produced the same result. A fresh read-only App Store Connect audit on 2026-08-02 confirmed that Paid Apps Agreement is still `Pending User Info`, banking is still `Processing`, W-8BEN is still missing, and all three products are still `Prepare for Submission` without Review Information screenshots. Do not treat the empty Simulator offering as resolved until those Apple blockers clear and the signed sandbox matrix passes.
 
 ## Fixed Contract
 
