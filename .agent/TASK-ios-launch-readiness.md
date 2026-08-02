@@ -1,9 +1,9 @@
-# TASK: iOS 上线准备（更新：2026-08-02 10:46 EDT）
+# TASK: iOS 上线准备（更新：2026-08-02 11:07 EDT）
 
 ## Why（一句话）
 把当前可运行的 GearDrop / 值de iPhone App 收敛为可提交构建，并把代码内问题与必须在 Apple / App Store Connect 完成的外部步骤明确分开。
 
-## 当前状态：最新 `origin/main` 上的独立上线分支已恢复且完整本地门转绿；RevenueCat 配置实时复核通过；Apple 实时审计确认商业资料、商店元数据、构建与交易仍有硬缺口；support 页面尚未部署且防滥用迁移尚未完成生产验收
+## 当前状态：最新 `origin/main` 上的独立上线分支已恢复且完整本地门转绿；RevenueCat 配置实时复核通过；W-8BEN 已 Active，Paid Apps Agreement 与银行等待 Apple Processing；商店元数据、构建与交易仍有硬缺口；support 页面尚未部署且防滥用迁移尚未完成生产验收
 
 ## 已确认事实
 - 2026-08-02 已从最新 `origin/main` 创建 `codex/ios-appstore-launch-20260802`，把 2026-07-31 保存的五个 iOS/上线安全提交迁入；冲突仅在 `app/lib/catalog.ts` 与 `tests/test_web_memory_guards.py`，合并保留了最新 FI/IE catalog 覆盖、iOS 默认地区逻辑和 support/RPC 回归。（来源：本轮 `git cherry-pick`、冲突 diff 与提交日志）
@@ -11,7 +11,8 @@
 - 2026-08-02 EAS 只读复核：登录 `noir-madlax`，项目仍为 `@noir-madlax/geardrop` / `ead43b0e-5dbf-44a2-838e-f65db29abb30`；iOS build list 仍为 `[]`，production/preview 均显示遮罩后的 Sensitive RevenueCat public key。本机 `security find-identity` 仍只返回一张 Apple Development identity。（来源：本轮 EAS CLI 20.5.1 与 security 原始输出）
 - 2026-08-02 `npm audit --omit=dev` exit 1，当前为 10 moderate，仍来自 `@expo/config-plugins -> xcode -> uuid <11.1.1`；npm 的唯一自动修复路径是 `--force` 并把 Expo 换成 46.0.21，属于破坏性降级，未执行。（来源：本轮 npm audit 原始输出）
 - 2026-08-02 RevenueCat 实时复核：`default` offering 为 Active 且含 3 packages，三项真实 App Store 商品分别绑定 `$rc_monthly` / `$rc_annual` / `$rc_lifetime`；`Pro` entitlement 为 Active 且含 6 products（3 个 App Store + 3 个 Test Store）；GearDrop App Store app bundle 仍为 `dev.100app.geardrop`，IAP `.p8` 显示 `Valid credentials`，SDK compatibility 显示 `react-native-purchases 10.4.2`。Overview 仍无 sandbox transaction。（来源：本轮 RevenueCat 实际 DOM）
-- 2026-08-02 用户完成 Chrome 登录后只读复核 App Store Connect：Free Apps Agreement `Active`，Paid Apps Agreement 仍为 `Pending User Info`，银行仍为 `Processing`，U.S. Form W-8BEN 仍为 `Missing Tax Info`；本轮未提交或修改任何商业、税务或银行表单。（来源：本轮 ASC Business 实际 DOM；个人与银行明细不写入档案）
+- 2026-08-02 10:46 EDT 用户完成 Chrome 登录后只读复核 App Store Connect：Free Apps Agreement `Active`，Paid Apps Agreement 为 `Pending User Info`，银行为 `Processing`，U.S. Form W-8BEN 为 `Missing Tax Info`。（来源：本轮 ASC Business 实际 DOM；个人与银行明细不写入档案）
+- 2026-08-02 11:07 EDT 账号持有人亲自完成两项税务声明并点击 Submit；提交后的独立页面读回显示 W-8BEN `Active`、Paid Apps Agreement 已转为 `Processing`、银行仍为 `Processing`。页面提示银行更新预计 24 小时内反映。本档案不记录出生日期、税号或其他表单正文。（来源：本轮 ASC Business 提交后实际 DOM）
 - 2026-08-02 iOS 1.0 仍为 `Prepare for Submission`，TestFlight 显示 `No Builds`，App Review 列表为空。版本页有 0 张截图，Description、Keywords、Support URL、Copyright、审核登录/联系人/Notes 均为空；App Information 还缺 Subtitle、Category、Content Rights、Age Ratings；App Privacy URL 为空且 questionnaire 未开始；App 本体价格和 availability 未设置。（来源：本轮 ASC 版本、App Information、App Privacy、Pricing、TestFlight、App Review 实际 DOM）
 - 2026-08-02 ASC 三项真实商品仍分别为 monthly / annual / lifetime 精确 identifier，175 地区可售、价格和 English (U.S.) localization 已存在，但三项状态均为 `Prepare for Submission` 且 Review Information screenshot 均为空。首批 subscription/IAP 必须与新 App 版本一同送审。（来源：本轮 ASC subscription group 与三个商品详情页实际 DOM）
 - 2026-08-02 ASC Media Manager 明确接受 iPhone 6.3-inch 的 1206x2622 截图；分支已有 5 张该尺寸本地截图，但 ASC 仍为 0 张，且档案要求在签名 sandbox/TestFlight candidate 通过后重截最终图。本轮未上传素材。（来源：本轮 ASC Media Manager DOM、`app/store-assets/iphone-6.3/README.md` 与 `sips`）
@@ -104,7 +105,7 @@
 - post-IAP 完整门已实跑且如实失败于 live `4,970 < 5,000`；单独 iOS export 和 `git diff --check` 通过。依赖审计的 Expo build-tooling moderate advisory 已记录为未解决风险。
 
 ## 下一步
-1. 账号持有人完成 W-8BEN 与银行处理，直到 Paid Apps Agreement 从 `Pending User Info` 变为 `Active`；这些法律/税务字段由账号持有人亲自填写。
+1. 等待 Apple 完成银行与 Paid Apps Agreement 的 `Processing`，并在后续实时读回确认 Agreement 变为 `Active`；W-8BEN 已 `Active`，无需重复提交。
 2. 审核并合入本独立分支后，部署 `support.html`；先读回 Supabase RPC 是否已存在，缺失时再执行 migration；使用批准的测试邮箱完成一次 receipt-gated support/price-alert smoke。
 3. 在明确授权 App Store Connect 写入后，按 `app/APP_STORE_METADATA.md` 填写 Subtitle、Shopping Category、Content Rights、Age Ratings、App Privacy、免费 App 价格、availability、Description、Keywords、Support URL、Copyright 与 Review Information；最终截图只使用签名 candidate 复测后的素材。
 4. Apple 商业协议与商品 metadata 达标后，生成签名 preview/TestFlight build，重跑真实 key StoreKit offering 探针并按 `app/IAP_SETUP.md` 完成 sandbox 购买/恢复矩阵；随后生成 paywall 与三项商品 review screenshot。

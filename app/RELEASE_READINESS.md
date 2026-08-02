@@ -1,6 +1,6 @@
 # GearDrop iOS Release Readiness
 
-Last updated: 2026-08-02 10:46 EDT.
+Last updated: 2026-08-02 11:07 EDT.
 
 This file separates locally proven work from evidence that still requires Apple, App Store Connect, deployment, or product decisions. The 2026-08-02 snapshot below is authoritative for local, EAS, RevenueCat, and the read-only App Store Connect audit completed after fresh login.
 
@@ -25,7 +25,7 @@ This file separates locally proven work from evidence that still requires Apple,
 - That Release app was installed and launched on the iPhone 17 simulator. An intentionally invalid public SDK key produced RevenueCat `Invalid API Key` logs and the paywall's localized unavailable state without a crash or local Pro grant. The Me screen showed Free with no manual Pro toggle.
 - A second arm64 Release was built with the real RevenueCat public key injected only through the process environment. It installed and launched, but StoreKit returned no products; RevenueCat logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`, and the paywall stayed unavailable. A 16:01 EDT post-account-action rerun produced the same StoreKit/RevenueCat result. This proves real-key configuration/failure handling, not a successful offering or transaction.
 - RevenueCat was rechecked live on 2026-08-02: the `default` offering is Active with three packages, all three real App Store product identifiers are attached, `Pro` is Active with six total products, and the App Store IAP key still shows `Valid credentials`. There are still no sandbox transactions.
-- App Store Connect was rechecked live after fresh login on 2026-08-02. Paid Apps Agreement remains `Pending User Info`, the bank account remains `Processing`, and U.S. Form W-8BEN remains `Missing Tax Info`; Free Apps Agreement is `Active`.
+- App Store Connect was rechecked live after the account holder submitted W-8BEN on 2026-08-02. W-8BEN is now `Active`, Paid Apps Agreement advanced from `Pending User Info` to `Processing`, the bank account remains `Processing`, and Free Apps Agreement remains `Active`.
 - iOS 1.0 remains `Prepare for Submission` with no build and no App Review submission. The version has 0 screenshots and blank Description, Keywords, Support URL, Copyright, and App Review contact/account fields. App Information still lacks Subtitle, Category, Content Rights, and Age Ratings; App Privacy has no URL and its questionnaire has not started. App price and availability are not set.
 - Monthly, annual, and lifetime products are present with the expected identifiers, all-region availability, prices, and English (U.S.) localization. All three remain `Prepare for Submission`; their required Review Information screenshots are absent. RevenueCat remains correctly bound to those same identifiers.
 - Five local 1206x2622 screenshots match App Store Connect's live iPhone 6.3-inch slot, but they are unsigned-Simulator readiness evidence and have not been uploaded. The paywall screenshot is intentionally absent until a signed sandbox/TestFlight purchase and restore pass.
@@ -33,7 +33,7 @@ This file separates locally proven work from evidence that still requires Apple,
 ### Submission blockers
 
 1. **IAP transaction proof:** the three matching App Store products, RevenueCat `Pro` entitlement, default monthly/annual/lifetime offering, EAS public key, and submit `ascAppId` are configured. The real-key Simulator run still returns empty StoreKit products. After Apple commercial/metadata blockers clear, verify localized prices, purchase, cancellation, pending purchase, entitlement activation, reinstall/restore, and no-purchase restore on a signed sandbox/TestFlight build.
-2. **Apple commercial state:** Paid Apps Agreement is still `Pending User Info`; banking is still `Processing`; W-8BEN is still `Missing Tax Info`. Paid IAP cannot launch until the account holder completes these and the agreement becomes Active.
+2. **Apple commercial state:** W-8BEN is `Active`, closing the tax-form gap. Paid Apps Agreement and banking are still `Processing`; paid IAP cannot launch until Apple finishes processing and the agreement becomes `Active`.
 3. **App Store metadata:** Subtitle, Category, Content Rights, Age Ratings, App Privacy, app price/availability, Description, Keywords, Support URL, Copyright, review credentials/contact/notes, and final screenshots are incomplete.
 4. **IAP review metadata:** the three products are configured and localized, but each is still `Prepare for Submission` and lacks its Review Information screenshot. The first products must be reviewed with iOS 1.0.
 5. **Distribution credentials/build:** this Mac currently has an Apple Development identity, not an Apple Distribution identity. EAS remote Distribution credentials remain uninspected; EAS and TestFlight both show no iOS builds.
