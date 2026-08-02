@@ -38,7 +38,7 @@ This file separates locally proven work from evidence that still requires Apple,
 7. **Metadata and screenshots:** final free/IAP copy, age rating, DSA trader status, availability, localized metadata, and 1–10 accepted-size iPhone screenshots remain ASC work.
 8. **Full local gate:** cleared on 2026-08-02 with live `5,812 >= 5,000`; the complete command passed and emitted `verify_local_ok`.
 11. **RevenueCat account email:** verified complete on the refreshed GearDrop Overview page; the unconfirmed-email and resend-failure alerts are absent.
-9. **Dependency audit:** `npm audit --omit=dev` exits 1 with 35 moderate findings rooted in Expo's build-time `@expo/config-plugins -> xcode -> uuid <11.1.1` chain; npm reports `No fix available`. Do not use a forced dependency downgrade as a release fix.
+9. **Dependency audit:** the 2026-08-02 `npm audit --omit=dev` exits 1 with 10 moderate findings rooted in Expo's build-time `@expo/config-plugins -> xcode -> uuid <11.1.1` chain. npm's forced fix would install Expo 46.0.21, a breaking downgrade; do not use it as a release fix.
 10. **Price-alert abuse control:** the branch contains hardened support/price-alert RPCs and direct-table revocations, but the migration is not verified in production. Deployment plus receipt/readback smoke remains required.
 
 ### Release boundary
