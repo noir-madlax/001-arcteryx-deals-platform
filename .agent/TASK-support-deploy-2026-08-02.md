@@ -1,4 +1,4 @@
-# TASK: GearDrop Support 上线（更新：2026-08-02 11:23 EDT）
+# TASK: GearDrop Support 上线（更新：2026-08-02 11:28 EDT）
 
 ## Why（一句话）
 
@@ -20,10 +20,10 @@
 - `public.submit_support_request`、`public.register_price_alert`、`public.unsubscribe_alert` 与 `private.consume_public_request_quota` 均为 `SECURITY DEFINER` 且 `search_path` 为空（Supabase `execute_sql` live 读回）。
 - `anon`/`authenticated` 对 `public.support_requests`、`public.price_alerts` 无底层表权限，对 `private` schema 无 `USAGE`；三项公开 RPC 有 `EXECUTE`（Supabase `execute_sql` live 读回）。
 - 开工时 `public.support_requests` 行数为 0（Supabase `execute_sql` live 读回）。
+- Vercel 项目 `prj_xRYhGGeWK40qlv4jEDg3PDbnaAcs` 的 PR #25 Preview `dpl_4T3SR9x2qCH8VM8XRcbM37VQQBzu` 为 `READY`，commit 为 `7bb47a3`（Vercel live 读回）。
 
 ## 假设
 
-- GitHub 到 Vercel 的既有生产 Git 集成仍有效；需由 PR 预览和合并后的 live 部署回读验证。
 - `https://001.100app.dev` 仍映射到本仓库生产项目；需由 Vercel 项目元数据和 HTTP live 回读验证。
 
 ## 已完成且已验证
@@ -35,12 +35,14 @@
 - 本地 HTTP 读回：`/`、`/support.html`、`/privacy.html`、`/product-detail.html` 均为 200，所需链接、表单 ID 与 RPC 路径存在。
 - Node `vm.Script` 编译：主页 1 个、详情页 2 个、Support 页 1 个可执行 inline script 均语法通过。
 - 生产 honeypot RPC 返回 HTTP 200 与 UUID 形状；前后 `public.support_requests` 行数均为 0。
+- Vercel Preview 四页 `/`、`/support.html`、`/privacy.html`、`/product-detail.html` 均为 200 且内容契约通过。
+- 真实 Chrome 预览表单以 honeypot 路径成功显示 `Request received`，按钮恢复、控制台 0 error；390px 视口为 `scrollWidth=viewportWidth=390`，表单边界为 18–372px，提交后数据库仍为 0 条。
+- `origin/main` 自动推进至 `4356a78` 后已合入分支；合并后目标测试仍为 8/8、四个可执行脚本语法通过，PR 相对最新 main 仍只有上述 7 个 Support 相关文件。
 
 ## 下一步
 
-1. 检查完整 staged diff，提交并推送分支。
-2. 创建 draft PR，验证 Vercel Preview。
-3. 合并到 `main`，验证生产部署及公开页面。
+1. 提交最新任务证据并推送，等待更新后的 Vercel Preview。
+2. 合并 PR #25 到 `main`，验证生产部署及公开页面。
 
 ## 死路
 
