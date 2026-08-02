@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-02 00:04:51",
+  "generated_at": "2026-08-02 04:46:13",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6572,7 +6572,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 148,
+      "count": 147,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -8545,25 +8545,13 @@
           "url": "https://www.mec.ca/en/product/6032-375/arcteryx-sinsolo-bucket-hat-unisex",
           "name": "Arc'teryx Sinsolo Bucket Hat - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/512792_source_1744881682.jpg",
-          "color": "Black, Verve",
+          "color": "Black",
           "sale_price": 100.0,
           "original_price": 100.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Large/X-Large",
-            "Small/Medium"
-          ],
-          "size_stock": {
-            "Small/Medium": "in_stock",
-            "Large/X-Large": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Verve"
-          ]
+          "region": "CA"
         },
         {
           "url": "https://www.mec.ca/en/product/6020-674/arcteryx-kyanite-hoodie-womens",
@@ -11093,43 +11081,6 @@
           ]
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-625/arcteryx-gamma-short-9-womens",
-          "name": "Arc'teryx Gamma Short 9\" - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533984_source_1775476842.jpg",
-          "color": "",
-          "sale_price": 127.5,
-          "original_price": 150.0,
-          "discount_pct": 15,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "0",
-            "00",
-            "2",
-            "4",
-            "6",
-            "8",
-            "10",
-            "12",
-            "14",
-            "16"
-          ],
-          "size_stock": {
-            "00": "in_stock",
-            "0": "in_stock",
-            "2": "in_stock",
-            "4": "in_stock",
-            "6": "in_stock",
-            "8": "in_stock",
-            "10": "in_stock",
-            "12": "in_stock",
-            "14": "in_stock",
-            "16": "in_stock"
-          },
-          "colors": []
-        },
-        {
           "url": "https://www.mec.ca/en/product/6037-509/arcteryx-sima-5-panel-cap",
           "name": "Arc'teryx Sima 5 Panel Cap",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/554143_source_1783033538.png",
@@ -11211,7 +11162,7 @@
           ]
         }
       ],
-      "refreshed_at": "2026-08-01 23:18:51"
+      "refreshed_at": "2026-08-02 04:46:13"
     },
     "rei": {
       "name": "REI",
@@ -13595,11 +13546,9 @@
       "refreshed_at": "2026-08-02 00:04:51"
     }
   },
-  "total": 503,
+  "total": 502,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
