@@ -1,10 +1,10 @@
-# TASK: GearDrop Support 上线（更新：2026-08-02 11:28 EDT）
+# TASK: GearDrop Support 上线（更新：2026-08-02 11:30 EDT）
 
 ## Why（一句话）
 
 为 App Store 上线提供公开、可用、隐私披露一致的客服入口，同时不把整个 iOS 开发分支带入生产网站。
 
-## 当前状态：进行中
+## 当前状态：已完成
 
 ## 边界
 
@@ -21,10 +21,12 @@
 - `anon`/`authenticated` 对 `public.support_requests`、`public.price_alerts` 无底层表权限，对 `private` schema 无 `USAGE`；三项公开 RPC 有 `EXECUTE`（Supabase `execute_sql` live 读回）。
 - 开工时 `public.support_requests` 行数为 0（Supabase `execute_sql` live 读回）。
 - Vercel 项目 `prj_xRYhGGeWK40qlv4jEDg3PDbnaAcs` 的 PR #25 Preview `dpl_4T3SR9x2qCH8VM8XRcbM37VQQBzu` 为 `READY`，commit 为 `7bb47a3`（Vercel live 读回）。
+- PR #25 已合并，merge commit 为 `9693743e9a0e4b0e53a9754f231b8708f7a1f557`；对应生产部署 `dpl_2dwWT1qxqiCM4ABzGjYSoLRconcS` 为 `READY`（GitHub/Vercel live 读回）。
+- `https://001.100app.dev` 已读回本次 Support 内容并映射到该 Vercel 项目：四个目标页面均为 200（生产 HTTP 读回）。
 
 ## 假设
 
-- `https://001.100app.dev` 仍映射到本仓库生产项目；需由 Vercel 项目元数据和 HTTP live 回读验证。
+- 无。
 
 ## 已完成且已验证
 
@@ -38,11 +40,12 @@
 - Vercel Preview 四页 `/`、`/support.html`、`/privacy.html`、`/product-detail.html` 均为 200 且内容契约通过。
 - 真实 Chrome 预览表单以 honeypot 路径成功显示 `Request received`，按钮恢复、控制台 0 error；390px 视口为 `scrollWidth=viewportWidth=390`，表单边界为 18–372px，提交后数据库仍为 0 条。
 - `origin/main` 自动推进至 `4356a78` 后已合入分支；合并后目标测试仍为 8/8、四个可执行脚本语法通过，PR 相对最新 main 仍只有上述 7 个 Support 相关文件。
+- 生产 `/`、`/support.html`、`/privacy.html`、`/product-detail.html` 均为 200，Support/Privacy 链接与两项 RPC 路径均命中预期。
+- 生产 Support 页面解析出的真实配置调用 honeypot RPC 返回 HTTP 200 与 UUID；最终 `public.support_requests` 行数仍为 0。
 
 ## 下一步
 
-1. 提交最新任务证据并推送，等待更新后的 Vercel Preview。
-2. 合并 PR #25 到 `main`，验证生产部署及公开页面。
+- 无；本任务边界内的 Support 上线已完成。App Store 协议处理与 iOS 提交继续由独立上线任务跟踪。
 
 ## 死路
 
