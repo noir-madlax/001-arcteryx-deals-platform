@@ -16,7 +16,7 @@ class WebMemoryGuardTests(unittest.TestCase):
             ROOT
             / "supabase"
             / "migrations"
-            / "20260719131646_geardrop_submission_security.sql"
+            / "20260719161928_geardrop_submission_security.sql"
         ).read_text(encoding="utf-8").lower()
 
     def test_finland_and_ireland_are_mapped_on_all_catalog_surfaces(self):
