@@ -18,6 +18,7 @@ from dealers.revalidate import (
     open_mec_revalidation_session,
     parse_evo_browser_snapshot,
     parse_ssense_html,
+    quarantine_invalid_price_row,
     requested_dealers,
     requested_sku_ids,
     underperforming_dealers,
@@ -27,11 +28,13 @@ from dealers.supabase_sync import should_preserve_previous_discount
 
 
 class FakePage:
-    def __init__(self, bodies):
+    def __init__(self, bodies, final_url=None):
         self.bodies = iter(bodies)
+        self.final_url = final_url
         self.wait_until = None
 
     def goto(self, _url, *, wait_until, timeout):
+        self.url = self.final_url or _url
         self.wait_until = wait_until
         self.timeout = timeout
 
@@ -130,6 +133,38 @@ class DealerRevalidationTests(unittest.TestCase):
         self.assertEqual(payload["url_http_status"], 200)
         self.assertEqual(payload["last_seen_at"], payload["last_updated"])
         self.assertEqual(payload["url_checked_at"], payload["last_updated"])
+
+    def test_invalid_price_order_is_never_persisted(self):
+        client = MagicMock()
+
+        changed = update_row(
+            client,
+            "rei:255689",
+            {"sale_price": 186.93, "original_price": 180.0, "discount_pct": 0},
+            {"sale_price": 186.93, "original_price": 180.0},
+        )
+
+        self.assertFalse(changed)
+        client.table.assert_not_called()
+
+    def test_invalid_active_price_can_be_quarantined_without_price_write(self):
+        client = MagicMock()
+        row = {
+            "sku_id": "rei:255689",
+            "sale_price": 186.93,
+            "original_price": 180.0,
+            "status": "active",
+            "missing_runs": 0,
+        }
+
+        quarantined = quarantine_invalid_price_row(client, row, "product_redirect")
+
+        self.assertTrue(quarantined)
+        payload = client.table.return_value.update.call_args.args[0]
+        self.assertEqual(payload, {"status": "missing", "missing_runs": 1})
+        self.assertNotIn("sale_price", payload)
+        self.assertNotIn("original_price", payload)
+        self.assertNotIn("last_updated", payload)
 
     def test_camoufox_auto_geoip_falls_back_only_after_startup_failure(self):
         attempts = []
@@ -241,6 +276,23 @@ class DealerRevalidationTests(unittest.TestCase):
             "discount_pct": 75,
         })
 
+    @patch("dealers.revalidate.time.sleep")
+    def test_rei_product_redirect_is_not_parsed_as_a_pdp(self, _sleep):
+        page = FakePage(
+            [rei_html(
+                '<span data-ui="sale-price">$186.93</span>'
+                '<span data-ui="full-price">$180.00</span>'
+            )],
+            final_url="https://www.rei.com/b/arcteryx/c/day-packs",
+        )
+
+        result = fetch_rei_pdp(
+            page,
+            "https://www.rei.com/product/255689/arcteryx-mantis-16-pack",
+        )
+
+        self.assertEqual(result, {"_err": "product_redirect"})
+
     def test_list_fallback_preserves_existing_discount(self):
         self.assertTrue(should_preserve_previous_discount("mec", "list_fallback", 200, 200, 100, 200))
         self.assertTrue(should_preserve_previous_discount("evo", "list_fallback", 200, 200, 49.83, 200))
@@ -275,6 +327,12 @@ class DealerRevalidationTests(unittest.TestCase):
         dealers = {"rei": [{}] * 10, "evo": [{}] * 10}
         failed = underperforming_dealers(dealers, stats)
         self.assertEqual(failed, ["rei"])
+
+    def test_quarantined_invalid_row_counts_as_bounded_coverage(self):
+        stats = defaultdict(lambda: {"ok": 0, "unavail": 0, "quarantined": 0})
+        stats["rei"]["quarantined"] = 1
+
+        self.assertEqual(underperforming_dealers({"rei": [{}]}, stats), [])
 
     def test_evo_browser_snapshot_uses_lowest_available_variant(self):
         snapshot = {

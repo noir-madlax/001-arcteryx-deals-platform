@@ -10,8 +10,9 @@ DB 里旧价就僵在那里. 本脚本针对已知 dealer URL 重新拉 PDP 验�
 - SSENSE : curl_cffi (impersonate=chrome), JSON-LD "@type":"Product" offers.price
 
 更新逻辑:
-- 成功拿到价格 → UPDATE sale/orig/disc，并恢复 active 生命周期与 PDP-200 证据
+- 成功拿到有效价格 → UPDATE sale/orig/disc，并恢复 active 生命周期与 PDP-200 证据
 - 失败 (404 / CF stub / 网络错) → 不更新 last_updated, 让 14 天 stale 兜底清理
+- PDP 重定向或无效价序绝不覆盖价格；已 active 的无效价序只做可逆 missing 隔离
 - 价格变化 → 同步写一行 price_history
 
 每日 06:30 UTC 跑一次, 错开 outlet 06:00 + dealer 03/09/15/21
@@ -115,6 +116,19 @@ def _num(s):
 def _disc(orig, sale):
     if not orig or not sale or orig <= 0 or sale > orig: return 0
     return round((1 - sale/orig) * 100)
+
+def _price_integrity_error(result: dict | None) -> str | None:
+    if not result or result.get("_err") or result.get("_unavailable"):
+        return None
+    sale = _num(result.get("sale_price"))
+    original = _num(result.get("original_price")) or sale
+    if not sale or sale <= 0:
+        return "non_positive_sale"
+    if not original or original <= 0:
+        return "non_positive_original"
+    if original < sale:
+        return "original_below_sale"
+    return None
 
 def _price_is_discounted(result: dict | None) -> bool:
     if not result or result.get("_err") or result.get("_unavailable"):
@@ -379,6 +393,13 @@ def fetch_rei_pdp(page, url: str) -> dict | None:
         time.sleep(2)
     except Exception as e:
         return {"_err": _format_error("goto", e)}
+    product_match = re.search(r"/product/(\d+)(?:/|$)", url or "")
+    effective_url = str(getattr(page, "url", "") or "")
+    if product_match and effective_url and not re.search(
+        rf"/product/{re.escape(product_match.group(1))}(?:/|$)",
+        effective_url,
+    ):
+        return {"_err": "product_redirect"}
     body = ""
     for _ in range(6):
         try:
@@ -418,7 +439,9 @@ def fetch_rei_pdp(page, url: str) -> dict | None:
         sale = orig = _num(mitem.group(1))
     if not sale: return None
     if not orig: orig = sale
-    return {"sale_price": sale, "original_price": orig, "discount_pct": _disc(orig, sale)}
+    result = {"sale_price": sale, "original_price": orig, "discount_pct": _disc(orig, sale)}
+    integrity_error = _price_integrity_error(result)
+    return {"_err": integrity_error} if integrity_error else result
 
 def fetch_mec_pdp(session, url: str) -> dict | None:
     """MEC curl_cffi (impersonate=chrome). 解 __NEXT_DATA__.product 的 price.
@@ -628,6 +651,13 @@ def load_all_dealer_rows(client):
 def update_row(client, sku_id, patch, old_row):
     """Persist a successful official PDP read and reactivate its lifecycle."""
     if not patch: return False
+    integrity_error = _price_integrity_error(patch)
+    if integrity_error:
+        print(
+            f"  INVALID PRICE {sku_id}: {integrity_error}; refusing update",
+            file=sys.stderr,
+        )
+        return False
     now_iso = datetime.now(timezone.utc).isoformat()
     patch = dict(patch)
     patch.update({
@@ -660,11 +690,39 @@ def update_row(client, sku_id, patch, old_row):
     return True
 
 
+def quarantine_invalid_price_row(client, row: dict, reason: str) -> bool:
+    """Hide one already-invalid active row without changing its price evidence."""
+    if row.get("status") != "active":
+        return False
+    if _price_integrity_error(row) != "original_below_sale":
+        return False
+    try:
+        missing_runs = max(1, int(row.get("missing_runs") or 0))
+    except (TypeError, ValueError):
+        missing_runs = 1
+    patch = {"status": "missing", "missing_runs": missing_runs}
+    try:
+        client.table("products").update(patch).eq("sku_id", row["sku_id"]).execute()
+    except Exception as exc:
+        print(
+            f"  QUARANTINE ERR {row.get('sku_id')}: {str(exc)[:100]}",
+            file=sys.stderr,
+        )
+        return False
+    print(
+        f"  quarantined {row['sku_id']}: {reason}; prices unchanged",
+        flush=True,
+    )
+    return True
+
+
 def underperforming_dealers(by_dealer, stats, minimum_success_ratio: float = 0.70) -> list[str]:
     return sorted(
         d for d, dealer_rows in by_dealer.items()
         if dealer_rows and (
-            stats[d]["ok"] + stats[d]["unavail"]
+            stats[d]["ok"]
+            + stats[d]["unavail"]
+            + stats[d].get("quarantined", 0)
         ) / len(dealer_rows) < minimum_success_ratio
     )
 
@@ -714,7 +772,16 @@ def main():
     for d, rs in by_dealer.items():
         print(f"  {d}: {len(rs)}", flush=True)
 
-    stats = defaultdict(lambda: {"ok":0, "skip":0, "err":0, "unavail":0, "diff":0})
+    stats = defaultdict(
+        lambda: {
+            "ok": 0,
+            "skip": 0,
+            "err": 0,
+            "unavail": 0,
+            "diff": 0,
+            "quarantined": 0,
+        }
+    )
 
     # ── EVO: 纯 HTTP, 最快 ──
     print(f"\n[reval] EVO ({len(by_dealer.get('evo', []))})", flush=True)
@@ -801,7 +868,14 @@ def main():
                         new = fetch_rei_pdp(page, r["url"])
                         if not new: stats["rei"]["err"] += 1
                         elif new.get("_unavailable"): stats["rei"]["unavail"] += 1
-                        elif new.get("_err"): stats["rei"]["err"] += 1
+                        elif new.get("_err"):
+                            if (
+                                new["_err"] in {"product_redirect", "original_below_sale"}
+                                and quarantine_invalid_price_row(client, r, new["_err"])
+                            ):
+                                stats["rei"]["quarantined"] += 1
+                            else:
+                                stats["rei"]["err"] += 1
                         else:
                             if update_row(client, r["sku_id"], new, r):
                                 stats["rei"]["ok"] += 1
@@ -909,7 +983,10 @@ def main():
     print("\n=== REVAL DONE ===")
     for d in sorted(by_dealer):
         s = stats[d]
-        print(f"  {d:8s} ok={s['ok']:4d}  价变={s['diff']:3d}  缺货={s['unavail']:3d}  错={s['err']:3d}")
+        print(
+            f"  {d:8s} ok={s['ok']:4d}  价变={s['diff']:3d}  "
+            f"缺货={s['unavail']:3d}  隔离={s['quarantined']:3d}  错={s['err']:3d}"
+        )
 
     failed_dealers = underperforming_dealers(by_dealer, stats)
     if failed_dealers:
