@@ -1,11 +1,17 @@
-# TASK: iOS 上线准备（更新：2026-08-02 11:07 EDT）
+# TASK: iOS 上线准备（更新：2026-08-03）
 
 ## Why（一句话）
 把当前可运行的 GearDrop / 值de iPhone App 收敛为可提交构建，并把代码内问题与必须在 Apple / App Store Connect 完成的外部步骤明确分开。
 
-## 当前状态：最新 `origin/main` 上的独立上线分支已恢复且完整本地门转绿；RevenueCat 配置实时复核通过；W-8BEN 已 Active，Paid Apps Agreement 与银行等待 Apple Processing；商店元数据、构建与交易仍有硬缺口；support 页面尚未部署且防滥用迁移尚未完成生产验收
+## 当前状态：发布代码已与最新 `origin/main` 合并到干净独立分支且完整本地门转绿；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；首个签名构建、真实 StoreKit 交易、最终截图和提审仍待完成
 
 ## 已确认事实
+- 2026-08-03 从发布提交 `c7277d7` 新建 `codex/ios-appstore-submit-20260803`，合并最新 `origin/main` `5129eed`；冲突仅在 `privacy.html` 的更新时间和 `tests/test_web_memory_guards.py` 的迁移文件名，均保留主线最新值。合并后网站定向单测 37/37 通过，提交为 `7d5a9db`。（来源：本轮 Git、冲突 diff 与 unittest 原始输出）
+- 2026-08-03 完整 `npm run verify` exit 0：37/37 tests、config、release assets、typecheck、Expo Doctor 20/20、实时汇率、live products `5,803`、price history `83,982`、iOS export 1,492 modules / 5.4 MB 均通过，最终原文 `verify_local_ok`。（来源：本轮命令原始输出）
+- 2026-08-03 EAS 只读复核：登录 `noir-madlax`（Owner），项目 `@noir-madlax/geardrop` / `ead43b0e-5dbf-44a2-838e-f65db29abb30`；iOS build list 为 `[]`；production/preview 均存在遮罩后的 Sensitive RevenueCat iOS key。（来源：本轮 EAS CLI 20.5.1 原始输出）
+- 2026-08-03 `npm audit --omit=dev` 仍为 10 moderate / 0 high / 0 critical，根链为 Expo build tooling 的 `xcode -> uuid <11.1.1`；npm 建议的自动修复会把 Expo 降为 46.0.21，未执行破坏性 `--force`。（来源：本轮 npm audit JSON）
+- 2026-08-03 App Store Connect 实时完成并读回：Free/Paid Apps Agreement、银行与 W-8BEN 均为 Active；版本文案、分类、年龄分级、内容权利、隐私问卷与隐私 URL 已保存，隐私状态为 Published；App Availability 为 174 个国家或地区，中国大陆为 Not Available，港澳台为 Available on App Release；审核联系人已保存且自动发布已选。三项 IAP 均为 Prepare for Submission，但仍缺审核截图；版本页仍无构建、无最终截图，尚未提交审核。（来源：本轮 ASC 实际 DOM）
+- 2026-08-03 `https://001.100app.dev/support.html` 已从公开网络返回 HTTP 200，并已作为 Support URL 保存到版本元数据。（来源：本轮 curl 与 ASC 实际 DOM）
 - 2026-08-02 已从最新 `origin/main` 创建 `codex/ios-appstore-launch-20260802`，把 2026-07-31 保存的五个 iOS/上线安全提交迁入；冲突仅在 `app/lib/catalog.ts` 与 `tests/test_web_memory_guards.py`，合并保留了最新 FI/IE catalog 覆盖、iOS 默认地区逻辑和 support/RPC 回归。（来源：本轮 `git cherry-pick`、冲突 diff 与提交日志）
 - 2026-08-02 完整 `npm run verify` exit 0：37/37 tests、config、release assets、typecheck、Expo Doctor 20/20、汇率、live products `5,812`、price history `83,934`、iOS export 1,492 modules / 5.4 MB 均通过，最终原文 `verify_local_ok`；历史 `4,948 < 5,000` 数据门阻塞已由本轮实时结果关闭。（来源：本轮命令原始输出）
 - 2026-08-02 EAS 只读复核：登录 `noir-madlax`，项目仍为 `@noir-madlax/geardrop` / `ead43b0e-5dbf-44a2-838e-f65db29abb30`；iOS build list 仍为 `[]`，production/preview 均显示遮罩后的 Sensitive RevenueCat public key。本机 `security find-identity` 仍只返回一张 Apple Development identity。（来源：本轮 EAS CLI 20.5.1 与 security 原始输出）
@@ -105,11 +111,10 @@
 - post-IAP 完整门已实跑且如实失败于 live `4,970 < 5,000`；单独 iOS export 和 `git diff --check` 通过。依赖审计的 Expo build-tooling moderate advisory 已记录为未解决风险。
 
 ## 下一步
-1. 等待 Apple 完成银行与 Paid Apps Agreement 的 `Processing`，并在后续实时读回确认 Agreement 变为 `Active`；W-8BEN 已 `Active`，无需重复提交。
-2. 审核并合入本独立分支后，部署 `support.html`；先读回 Supabase RPC 是否已存在，缺失时再执行 migration；使用批准的测试邮箱完成一次 receipt-gated support/price-alert smoke。
-3. 在明确授权 App Store Connect 写入后，按 `app/APP_STORE_METADATA.md` 填写 Subtitle、Shopping Category、Content Rights、Age Ratings、App Privacy、免费 App 价格、availability、Description、Keywords、Support URL、Copyright 与 Review Information；最终截图只使用签名 candidate 复测后的素材。
-4. Apple 商业协议与商品 metadata 达标后，生成签名 preview/TestFlight build，重跑真实 key StoreKit offering 探针并按 `app/IAP_SETUP.md` 完成 sandbox 购买/恢复矩阵；随后生成 paywall 与三项商品 review screenshot。
-5. sandbox 矩阵通过后再生成 production build、上传 TestFlight，并在动作时确认后把 iOS 1.0 与首批 IAP/订阅一起提交审核。
+1. 在动作时确认后，从干净分支启动首个 EAS production iOS 签名构建；该动作会使用 EAS 构建额度，并可能首次创建/选择 Apple Distribution certificate 与 provisioning profile。
+2. 构建完成后上传 TestFlight，安装签名 candidate，重跑真实 StoreKit offering 探针并按 `app/IAP_SETUP.md` 完成 sandbox 购买、恢复和 entitlement 矩阵。
+3. 从通过交易验收的签名 candidate 重截 App Store 最终图和三项 IAP review screenshot，上传后独立读回。
+4. 逐页复核版本、构建、IAP、出口合规与审核信息；在最终动作时确认后，把 iOS 1.0 与首批 IAP/订阅一起提交审核。
 
 ## 死路
 - 2026-08-02 直接用默认 npm cache 启动 EAS CLI 时，大量 tarball integrity retry 后 3 分钟无结果；中止后改用独立空 cache，`eas-cli/20.5.1` 正常安装并完成全部只读查询。该问题是本机 npm cache 路径，不是 EAS 登录失败。
