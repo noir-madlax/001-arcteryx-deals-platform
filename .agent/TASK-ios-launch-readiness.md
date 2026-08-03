@@ -3,9 +3,12 @@
 ## Why（一句话）
 把当前可运行的 GearDrop / 值de iPhone App 收敛为可提交构建，并把代码内问题与必须在 Apple / App Store Connect 完成的外部步骤明确分开。
 
-## 当前状态：发布代码已与最新 `origin/main` 合并到干净独立分支且完整本地门转绿；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；首个签名构建、真实 StoreKit 交易、最终截图和提审仍待完成
+## 当前状态：发布代码已与最新 `origin/main` 合并到干净独立分支且完整本地门转绿；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；首个 production iOS 签名构建已成功，App Store Connect 上传任务已排队；真实 StoreKit 交易、最终截图和提审仍待完成
 
 ## 已确认事实
+- 2026-08-03 App Store Connect API access 已由 Account Holder 申请并即时获批；团队 API key `GearDrop EAS Build` 已创建为 Active / Admin，一次性 `.p8` 已下载且未读取或输出正文。该 key 的官方 App Store Connect API JWT 实测可读取现有 bundle ID `dev.100app.geardrop`。（来源：本轮 ASC 实际 DOM、文件 `stat` 与官方 API 200 响应）
+- 2026-08-03 EAS production iOS Build `67577ec9-d05c-4085-86d2-f201f7dc707c` 已读回 `FINISHED`：App `1.0.0`、build `2`；Fastlane 原文 `Successfully exported and signed the ipa file`，产物 `GearDrop.ipa` 27.5 MB，全部上传阶段 result=success。（来源：本轮 EAS build JSON 与云端构建日志）
+- 2026-08-03 EAS Submit 已绑定 API key 并为 build 2 创建 submission `725f9c4d-18a7-42b6-8a19-75b2886feb3a`；当前服务器状态为 `waiting for an available submitter`，尚未取得 Apple 上传成功或失败回执。（来源：本轮 EAS Submit 原始输出）
 - 2026-08-03 从发布提交 `c7277d7` 新建 `codex/ios-appstore-submit-20260803`，合并最新 `origin/main` `5129eed`；冲突仅在 `privacy.html` 的更新时间和 `tests/test_web_memory_guards.py` 的迁移文件名，均保留主线最新值。合并后网站定向单测 37/37 通过，提交为 `7d5a9db`。（来源：本轮 Git、冲突 diff 与 unittest 原始输出）
 - 2026-08-03 完整 `npm run verify` exit 0：37/37 tests、config、release assets、typecheck、Expo Doctor 20/20、实时汇率、live products `5,803`、price history `83,982`、iOS export 1,492 modules / 5.4 MB 均通过，最终原文 `verify_local_ok`。（来源：本轮命令原始输出）
 - 2026-08-03 EAS 只读复核：登录 `noir-madlax`（Owner），项目 `@noir-madlax/geardrop` / `ead43b0e-5dbf-44a2-838e-f65db29abb30`；iOS build list 为 `[]`；production/preview 均存在遮罩后的 Sensitive RevenueCat iOS key。（来源：本轮 EAS CLI 20.5.1 原始输出）
@@ -92,6 +95,7 @@
 7. IAP SDK 必须通过单元测试、TypeScript、配置校验、干净 prebuild/CocoaPods 和 iOS Release 原生编译；真实交易必须另以 sandbox/TestFlight 证据验收。
 
 ## 已完成且已验证
+- App Store Connect API access/key、Apple Distribution certificate、App Store provisioning profile 与首个 production iOS 签名构建均已完成；EAS build 记录读回 `FINISHED`，build 2 的 27.5 MB `.ipa` 已生成并上传为构建产物。
 - 2026-08-02 上线代码已恢复到最新远端基线的独立分支；完整 App 门、网站 guard 测试与 `git diff --check` 均通过，RevenueCat/EAS 只读状态已刷新。
 - 2026-07-12 已完成 EAS 登录、项目绑定、EAS iOS build 列表、Apple 本机签名身份、线上 URL、图标尺寸/alpha 和 Apple 当前规则的只读审计；结果见“已确认事实”。
 - `app.json` 已收敛为 `supportsTablet=false`；`expo config --type public` 与 EAS production config 均解析为 iPhone-only。
@@ -111,12 +115,14 @@
 - post-IAP 完整门已实跑且如实失败于 live `4,970 < 5,000`；单独 iOS export 和 `git diff --check` 通过。依赖审计的 Expo build-tooling moderate advisory 已记录为未解决风险。
 
 ## 下一步
-1. 在动作时确认后，从干净分支启动首个 EAS production iOS 签名构建；该动作会使用 EAS 构建额度，并可能首次创建/选择 Apple Distribution certificate 与 provisioning profile。
-2. 构建完成后上传 TestFlight，安装签名 candidate，重跑真实 StoreKit offering 探针并按 `app/IAP_SETUP.md` 完成 sandbox 购买、恢复和 entitlement 矩阵。
+1. 等待 EAS Submit 取得 Apple 上传回执，并在 App Store Connect / TestFlight 独立读回 build 2 的处理状态。
+2. 安装签名 candidate，重跑真实 StoreKit offering 探针并按 `app/IAP_SETUP.md` 完成 sandbox 购买、恢复和 entitlement 矩阵。
 3. 从通过交易验收的签名 candidate 重截 App Store 最终图和三项 IAP review screenshot，上传后独立读回。
-4. 逐页复核版本、构建、IAP、出口合规与审核信息；在最终动作时确认后，把 iOS 1.0 与首批 IAP/订阅一起提交审核。
+4. 逐页复核版本、构建、IAP、出口合规与审核信息；把 iOS 1.0 与首批 IAP/订阅一起提交审核。
 
 ## 死路
+- 2026-08-03 Apple ID 密码登录在清理 Keychain并升级 EAS CLI 后仍连续返回 `Apple 302 detected`，Apple 官方状态无故障；改用 Account Holder 新建的 App Store Connect API key，不再要求用户重复输入密码。
+- 本机 `HTTP_PROXY` / `HTTPS_PROXY` 令 `@expo/apple-utils` 对正确的 App Store Connect API URL收到 HTML 404；同时本机时钟比 Apple 响应快约 20 秒，令按本机时间签发的 JWT 收到 401。仅对本次 EAS 进程取消代理变量并将 `Date.now()` 偏移 -60 秒后，同一 `BundleId.findAsync` 精确返回现有 bundle ID；未修改系统代理或系统时间。
 - 2026-08-02 直接用默认 npm cache 启动 EAS CLI 时，大量 tarball integrity retry 后 3 分钟无结果；中止后改用独立空 cache，`eas-cli/20.5.1` 正常安装并完成全部只读查询。该问题是本机 npm cache 路径，不是 EAS 登录失败。
 - `eas credentials --platform ios --non-interactive`：EAS CLI 20.5.1 不支持 `--non-interactive`，原文 `Nonexistent flag: --non-interactive`；未进入交互菜单，也未改凭证。
 - 首次临时 Release 构建把 `node_modules` symlink 回含空格的 workspace，ExpoModulesJSI 报 `fatal error: 'hermes/hermes.h' file not found`。改为 `/private/tmp/geardrop-signed-source` 实体依赖后同一 Release 配置 exit 0，确认是临时路径/symlink 问题而非 RevenueCat 兼容问题。

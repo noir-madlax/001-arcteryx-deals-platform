@@ -22,7 +22,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "dev.100app.geardrop",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -57,8 +57,20 @@
         "expo-localization",
         {
           "supportedLocales": {
-            "ios": ["en", "zh-Hans", "de", "fr", "ja"],
-            "android": ["en", "zh-CN", "de", "fr", "ja"]
+            "ios": [
+              "en",
+              "zh-Hans",
+              "de",
+              "fr",
+              "ja"
+            ],
+            "android": [
+              "en",
+              "zh-CN",
+              "de",
+              "fr",
+              "ja"
+            ]
           }
         }
       ]

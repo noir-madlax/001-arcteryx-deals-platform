@@ -60,7 +60,7 @@ Latest recorded result after the local notification fix, native Simulator regres
 ```text
 # tests 23
 # pass 23
-config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
+config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=2 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=expo-router,expo-status-bar,expo-web-browser,expo-notifications,expo-font
 20/20 checks passed. No issues detected!
 products_content_range=0-0/6108
 price_history_content_range=0-0/73302
