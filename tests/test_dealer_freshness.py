@@ -1,7 +1,9 @@
 import json
+import io
 import os
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,6 +27,42 @@ def fresh_timestamp():
 
 
 class DealerFreshnessTests(unittest.TestCase):
+    def test_validate_rejects_unresolved_image_templates(self):
+        template_url = "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/item.jpg"
+        for field, value in (
+            ("image_url", template_url),
+            ("image", template_url),
+            ("images", [template_url]),
+        ):
+            with self.subTest(field=field):
+                row = {
+                    "sku_id": f"ssense-{field}",
+                    "dealer": "ssense",
+                    "status": "active",
+                    "sale_price": 100,
+                    "original_price": 150,
+                    "discount_pct": 33,
+                    "currency": "USD",
+                    "symbol": "$",
+                    "gender": "men",
+                    "region": "us",
+                    "url": f"https://example.com/ssense/{field}",
+                    field: value,
+                    "last_updated": fresh_timestamp(),
+                }
+                output = io.StringIO()
+                with redirect_stdout(output):
+                    rc = validate(
+                        [row],
+                        max_age_hours=36,
+                        max_product_age_hours=72,
+                        min_rows=1,
+                        required_dealers={"ssense"},
+                        forbidden_regions=None,
+                    )
+                self.assertEqual(rc, 1)
+                self.assertIn("unresolved_image_template: 1", output.getvalue())
+
     def test_new_outlet_regions_have_currency_and_low_water_marks(self):
         for region in ("fi", "ie"):
             self.assertEqual(EXPECTED_CURRENCY[region], ("EUR", "€"))

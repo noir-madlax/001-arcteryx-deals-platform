@@ -4,6 +4,19 @@ import os, re, json, time, sys
 from .base import DealerScraper, normalize_price, discount_pct
 
 HOST = "https://www.ssense.com"
+SSENSE_IMAGE_TEMPLATE = "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/"
+SSENSE_IMAGE_PARAMS = "w_480,q_auto"
+
+
+def normalize_image_url(value: str | None) -> str | None:
+    if not isinstance(value, str):
+        return value
+    return value.replace(
+        SSENSE_IMAGE_TEMPLATE,
+        f"https://res.cloudinary.com/ssenseweb/image/upload/{SSENSE_IMAGE_PARAMS}/",
+        1,
+    )
+
 
 class Scraper(DealerScraper):
     KEY    = "ssense"
@@ -291,10 +304,11 @@ class Scraper(DealerScraper):
             # 否则 PDP 返回 404 (但仍 ~400KB fallback) 导致 variants[] 抓不到
             if "/en-us/" not in url:
                 url = url.replace("/men/product/", "/en-us/men/product/").replace("/women/product/", "/en-us/women/product/")
+            raw_image = (d.get("image") or [None])[0] if isinstance(d.get("image"), list) else d.get("image")
             items.append({
                 "url": url,
                 "name": d.get("name", ""),
-                "image": (d.get("image") or [None])[0] if isinstance(d.get("image"), list) else d.get("image"),
+                "image": normalize_image_url(raw_image),
                 "original_price": None,    # SSENSE JSON-LD 不暴露原价；后续从 HTML 兜底
                 "sale_price": sale,
                 "currency": currency,

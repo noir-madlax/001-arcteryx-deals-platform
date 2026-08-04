@@ -22,7 +22,7 @@ INDEX_FILE = ROOT / "index.html"
 SELECT = (
     "sku_id,dealer,full_name,model,original_price,sale_price,discount_pct,"
     "currency,symbol,gender,region,url,status,last_seen_at,missing_runs,"
-    "url_http_status,url_checked_at,last_updated"
+    "url_http_status,url_checked_at,last_updated,image_url,images"
 )
 
 EXPECTED_CURRENCY = {
@@ -185,6 +185,19 @@ def expected_currency(row: dict) -> tuple[str, str] | None:
     return EXPECTED_CURRENCY.get(region)
 
 
+def product_image_urls(row: dict) -> list[str]:
+    urls = [row.get("image_url"), row.get("image")]
+    images = row.get("images")
+    if isinstance(images, str):
+        try:
+            images = json.loads(images)
+        except (TypeError, ValueError):
+            images = []
+    if isinstance(images, list):
+        urls.extend(images)
+    return [str(url) for url in urls if url]
+
+
 def product_freshness_timestamp(row: dict) -> datetime | None:
     dealer = row.get("dealer") or "arcteryx_outlet"
     if dealer == "arcteryx_outlet":
@@ -258,6 +271,11 @@ def validate(
             ccy, sym = expected_ccy
             if row.get("currency") != ccy or row.get("symbol") != sym:
                 errors["currency_mismatch"].append({**row, "expected_currency": ccy, "expected_symbol": sym})
+
+        if (row.get("status") or "active") == "active" and any(
+            "__IMAGE_PARAMS__" in url for url in product_image_urls(row)
+        ):
+            errors["unresolved_image_template"].append(row)
 
         if forbidden_regions and dealer == "arcteryx_outlet" and region in forbidden_regions:
             errors["forbidden_region"].append(row)
@@ -400,6 +418,7 @@ def validate(
                     "expected_discount", "latest_last_updated", "age_hours",
                     "max_age_hours", "status", "last_seen_at", "missing_runs",
                     "url_http_status", "url_checked_at", "last_updated", "url",
+                    "image_url", "image", "images",
                 )
                 if k in row
             }

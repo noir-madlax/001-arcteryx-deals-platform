@@ -6,7 +6,7 @@ from unittest.mock import patch
 from dealers.evo import Scraper as EvoScraper
 from dealers.mec import Scraper as MecScraper
 from dealers.rei import Scraper as ReiScraper
-from dealers.ssense import Scraper as SsenseScraper
+from dealers.ssense import Scraper as SsenseScraper, normalize_image_url
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -131,7 +131,7 @@ class DealerScraperTests(unittest.TestCase):
             "brand": {"name": "Arc'teryx"},
             "name": "Black Konseal GTX Sneakers",
             "url": "/men/product/arcteryx/black-konseal-gtx-sneakers/17580131",
-            "image": ["https://img.example/konseal.jpg"],
+            "image": ["https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/konseal.jpg"],
             "offers": {
                 "price": "220",
                 "priceCurrency": "USD",
@@ -143,7 +143,18 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(len(items), 1)
         self.assertEqual(items[0]["sale_price"], 220.0)
         self.assertIn("/en-us/men/product/", items[0]["url"])
+        self.assertEqual(
+            items[0]["image"],
+            "https://res.cloudinary.com/ssenseweb/image/upload/w_480,q_auto/konseal.jpg",
+        )
         self.assertEqual(items[0]["price_source_quality"], "list_fallback")
+
+    def test_ssense_image_normalizer_preserves_regular_urls(self):
+        self.assertEqual(
+            normalize_image_url("https://img.example/konseal.jpg"),
+            "https://img.example/konseal.jpg",
+        )
+        self.assertIsNone(normalize_image_url(None))
 
     def test_ssense_list_page_urls_add_pagination(self):
         scraper = SsenseScraper()
