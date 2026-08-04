@@ -161,7 +161,12 @@ class DealerRevalidationTests(unittest.TestCase):
 
         self.assertTrue(quarantined)
         payload = client.table.return_value.update.call_args.args[0]
-        self.assertEqual(payload, {"status": "missing", "missing_runs": 1})
+        self.assertEqual(payload, {
+            "status": "missing",
+            "missing_runs": 1,
+            "url_http_status": None,
+            "url_checked_at": None,
+        })
         self.assertNotIn("sale_price", payload)
         self.assertNotIn("original_price", payload)
         self.assertNotIn("last_updated", payload)

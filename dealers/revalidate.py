@@ -700,7 +700,12 @@ def quarantine_invalid_price_row(client, row: dict, reason: str) -> bool:
         missing_runs = max(1, int(row.get("missing_runs") or 0))
     except (TypeError, ValueError):
         missing_runs = 1
-    patch = {"status": "missing", "missing_runs": missing_runs}
+    patch = {
+        "status": "missing",
+        "missing_runs": missing_runs,
+        "url_http_status": None,
+        "url_checked_at": None,
+    }
     try:
         client.table("products").update(patch).eq("sku_id", row["sku_id"]).execute()
     except Exception as exc:

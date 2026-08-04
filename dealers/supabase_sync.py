@@ -56,7 +56,7 @@ def _parse_iso_timestamp(value: str | None) -> datetime | None:
 def has_recent_pdp_confirmation(existing: dict | None, observed_at: str) -> bool:
     """Keep a list-absent row active when a recent official PDP read confirmed it."""
     existing = existing or {}
-    if existing.get("url_http_status") != 200:
+    if existing.get("status") != "active" or existing.get("url_http_status") != 200:
         return False
     checked = _parse_iso_timestamp(existing.get("url_checked_at"))
     observed = _parse_iso_timestamp(observed_at)
