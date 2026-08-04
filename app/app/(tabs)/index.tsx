@@ -10,6 +10,7 @@ import { ScreenState } from '../../components/ScreenState';
 import { useProducts } from '../../contexts/ProductsContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
 import { cleanName, productCategory } from '../../lib/catalog';
+import { INITIAL_SIGNAL_WINDOW } from '../../lib/productPreview';
 import { colors } from '../../lib/theme';
 import type { Product } from '../../lib/types';
 
@@ -36,7 +37,7 @@ export default function DealsScreen() {
     sort: 'discount_desc',
   });
   const [visibleLimit, setVisibleLimit] = useState(500);
-  const [signalWindow, setSignalWindow] = useState(120);
+  const [signalWindow, setSignalWindow] = useState(INITIAL_SIGNAL_WINDOW);
 
   const categories = useMemo(() => [...new Set(products.map(productCategory))], [products]);
   const platforms = useMemo(() => [...new Set(products.map((product) => product._platform))], [products]);
@@ -122,7 +123,7 @@ export default function DealsScreen() {
             series={series}
             onFilterChange={(next) => {
               setVisibleLimit(500);
-              setSignalWindow(120);
+              setSignalWindow(INITIAL_SIGNAL_WINDOW);
               setFilters((current) => ({ ...current, ...next }));
             }}
             hero={hero}
@@ -143,11 +144,17 @@ export default function DealsScreen() {
             />
           </View>
         )}
-        ListEmptyComponent={<ScreenState title="No matching deals" body="Adjust filters or search terms." />}
+        ListEmptyComponent={
+          loading ? (
+            <ScreenState title="Loading more deals" body="The first deals are ready while the full catalog loads." loading />
+          ) : (
+            <ScreenState title="No matching deals" body="Adjust filters or search terms." />
+          )
+        }
         onEndReachedThreshold={0.4}
         onEndReached={() => {
           setVisibleLimit((current) => Math.min(current + 300, filtered.length));
-          setSignalWindow((current) => Math.min(current + 160, filtered.length));
+          setSignalWindow((current) => Math.min(current + 40, filtered.length));
         }}
       />
     </SafeAreaView>

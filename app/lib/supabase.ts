@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 
 import { SUPABASE_ANON, SUPABASE_URL, visibleProducts } from './catalog';
 import { postPriceAlert } from './priceAlerts';
+import { INITIAL_PRODUCT_LIMIT, INITIAL_PRODUCT_REGION } from './productPreview';
 import type { PriceAlertPayload, PriceHistoryRow, Product, ProductRow } from './types';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
@@ -14,16 +15,31 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
   },
 });
 
-export async function fetchAllProducts(onPage?: (rows: Product[]) => void) {
+export async function fetchInitialProducts() {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('region', INITIAL_PRODUCT_REGION)
+    .order('discount_pct', { ascending: false })
+    .order('sku_id', { ascending: true })
+    .limit(INITIAL_PRODUCT_LIMIT);
+  if (error) throw error;
+  return visibleProducts((data || []) as ProductRow[]);
+}
+
+export async function fetchAllProducts() {
   const pageSize = 1000;
-  let all: ProductRow[] = [];
+  const all: ProductRow[] = [];
 
   for (let offset = 0; ; offset += pageSize) {
-    const { data, error } = await supabase.from('products').select('*').range(offset, offset + pageSize - 1);
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('sku_id', { ascending: true })
+      .range(offset, offset + pageSize - 1);
     if (error) throw error;
     if (!data?.length) break;
-    all = all.concat(data as ProductRow[]);
-    onPage?.(visibleProducts(all));
+    all.push(...(data as ProductRow[]));
     if (data.length < pageSize || offset > 50000) break;
   }
 

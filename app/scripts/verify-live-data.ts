@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { SUPABASE_ANON, SUPABASE_URL, visibleProducts } from '../lib/catalog';
+import { INITIAL_PRODUCT_LIMIT, INITIAL_PRODUCT_REGION } from '../lib/productPreview';
 import { computeSignal, groupHistoryBySku } from '../lib/signals';
 import type { PriceHistoryRow, Product, ProductRow } from '../lib/types';
 
@@ -68,6 +69,14 @@ async function main() {
   const products = await loadProducts();
   assert.ok(products.length >= 5000, `expected at least 5000 products, got ${products.length}`);
 
+  const { data: previewRows } = await rest<ProductRow[]>(
+    `products?select=*&region=eq.${INITIAL_PRODUCT_REGION}&order=discount_pct.desc,sku_id.asc&limit=${INITIAL_PRODUCT_LIMIT}`,
+  );
+  const preview = visibleProducts(previewRows || []);
+  assert.ok(preview.length >= 190, `expected at least 190 startup preview products, got ${preview.length}`);
+  assert.ok(preview.every((product) => product.region === INITIAL_PRODUCT_REGION), 'startup preview must stay in the default region');
+  assert.ok(preview.every((product) => product.image_url || product.images.length), 'startup preview must have product images');
+
   const deEuro = products.find((product) => product.region === 'de' && product.symbol === '€' && /beta/i.test(`${product.full_name || ''} ${product.model || ''}`));
   assert.ok(deEuro, 'missing DE euro beta sample');
 
@@ -90,6 +99,8 @@ async function main() {
         products_content_range: productsRange,
         price_history_content_range: historyRange,
         paginated_products_loaded: products.length,
+        startup_preview_loaded: preview.length,
+        startup_preview_region: INITIAL_PRODUCT_REGION,
         de_euro_beta_sample: {
           sku_id: deEuro.sku_id,
           sale_price: deEuro.sale_price,
