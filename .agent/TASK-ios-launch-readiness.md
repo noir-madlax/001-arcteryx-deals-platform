@@ -3,9 +3,13 @@
 ## Why（一句话）
 把当前可运行的 GearDrop / 值de iPhone App 收敛为可提交构建，并把代码内问题与必须在 Apple / App Store Connect 完成的外部步骤明确分开。
 
-## 当前状态：build 2 早于 2026-08-04 的首页图片与首次加载修复，已停止继续送审；build 3 候选已在干净独立分支完成最小移植和完整本地门，等待 EAS production 构建；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；真实 StoreKit 交易、最终截图和提审仍待完成
+## 当前状态：build 3 已完成 EAS production 签名构建、Apple 官方校验与直传、处理为 `VALID`、加入 3 人内部 TestFlight 组，并替换 build 2 绑定到 iOS 1.0；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；build 3 真机 StoreKit 交易、最终截图和提审仍待完成
 
 ## 已确认事实
+- 2026-08-04 EAS production build `2e452513-21a1-4203-8b50-abf877ed3e41` 读回 `FINISHED`：App `1.0.0`、build `3`、源码提交 `6d28b0b`，签名 IPA 28,879,988 bytes。EAS 自动递增后的 `app.json` build number 3 已另行提交并推送为 `06a786b`。（来源：本轮 EAS build JSON、IPA Info.plist 与 Git 原始输出）
+- 2026-08-04 EAS Submit `600b9758-ef08-41b6-848d-758d7ad14638` 进入 Free Tier Queue；上一次同类任务从 17:17 到 18:49 用时约 92 分钟。本轮先用 Apple Content Delivery tool 对同一 SHA-256 `2cc287c653dbd9538a69a689c514781c4cddd84d594e9e4f7f869ddfc99cc3a9` IPA 校验，得到 `VERIFY SUCCEEDED with no errors`，随后取消尚未启动的 EAS 队列并直传，得到 `UPLOAD SUCCEEDED with no errors`。（来源：本轮 EAS submission DOM/CLI、altool 原始输出）
+- 2026-08-04 Apple delivery `a458f9ee-7a50-4e32-8a36-fb9760df3413` 最终读回 `VALID` / `APP_STORE_ELIGIBLE` / `usesNonExemptEncryption=false`，最低 iOS 16.4。官方 API 以同一 build ID 读回 `processingState=VALID`，并将其 POST 加入 `GearDrop Internal`（HTTP 204）及 PATCH 绑定 iOS 1.0（HTTP 204）；独立关系 GET 分别返回 build 2 + build 3，以及 iOS 1.0 当前唯一 build 3。（来源：本轮 Apple Content Delivery 与 App Store Connect API 原始输出）
+- 2026-08-04 build 3 beta detail 独立读回 `internalBuildState=IN_BETA_TESTING`、`externalBuildState=READY_FOR_BETA_SUBMISSION`。内部组为 3 testers；浏览器在 build 3 加入前读回 Jerry 和 `5331627@qq.com` 已安装 build 2，Account Holder 仍为 Invited。（来源：本轮 App Store Connect API 与实际 TestFlight DOM）
 - 2026-08-04 build 2 源提交 `bfc9103` 生成于 2026-08-03，祖先检查明确不含图片数据门提交 `abd642c` 或首次加载提交 `cbf29c`。旧 5 张 1206×2622 模拟器截图中的首页仍有缺图占位，且 README 明确要求从通过交易验收的签名候选重截；因此本轮未上传旧截图、未继续提审。（来源：Git ancestry、截图目视检查、`app/store-assets/iphone-6.3/README.md` 与 ASC Media Manager 实际 DOM）
 - 2026-08-04 从 App Store 提交分支 `45841fb` 创建干净独立分支 `codex/ios-appstore-build3-20260804`。只移植启动预览、24 小时缓存、稳定全量分页和首轮信号窗口优化，保留原分支的 IAP、地区、多语言和发布配置；Expo Doctor 要求的 5 个 SDK 57 包仅升级兼容补丁版本。（来源：Git 工作树、diff 与 Expo Doctor 原始输出）
 - 2026-08-04 build 3 候选完整 `npm run verify` exit 0：39/39 tests、config、release assets、typecheck、Expo Doctor 20/20、实时汇率、live products `5,803`、price history `84,040`、美国区启动预览 `200` 且全部通过图片断言、iOS export 1,494 modules / 5.4 MB，最终原文 `verify_local_ok`。（来源：本轮完整命令原始输出）
@@ -124,10 +128,9 @@
 - post-IAP 完整门已实跑且如实失败于 live `4,970 < 5,000`；单独 iOS export 和 `git diff --check` 通过。依赖审计的 Expo build-tooling moderate advisory 已记录为未解决风险。
 
 ## 下一步
-1. 提交并推送 `codex/ios-appstore-build3-20260804`，发起 EAS production build 3；完成后从 EAS 与 Apple/TestFlight 独立读回版本、build number 和 processing state。
-2. 从 TestFlight 安装 build 3，验证首页无缺图占位和冷启动预览，并按 `app/IAP_SETUP.md` 完成真实 StoreKit offering、sandbox 购买、恢复和 entitlement 矩阵。
-3. 从通过交易验收的 build 3 重截 App Store 最终图和三项 IAP review screenshot，上传后独立读回。
-4. 把三项 IAP/订阅附加到 iOS 1.0，逐页复核版本、构建、出口合规与审核信息后一起提交审核。
+1. 从 TestFlight 安装或升级到 build 3，验证首页无缺图占位和冷启动预览，并按 `app/IAP_SETUP.md` 完成真实 StoreKit offering、sandbox 购买、恢复和 entitlement 矩阵。
+2. 从通过交易验收的 build 3 重截 App Store 最终图和三项 IAP review screenshot，上传后独立读回。
+3. 把三项 IAP/订阅附加到 iOS 1.0，逐页复核版本、构建、出口合规与审核信息后一起提交审核。
 
 ## 死路
 - 2026-08-03 Apple ID 密码登录在清理 Keychain并升级 EAS CLI 后仍连续返回 `Apple 302 detected`，Apple 官方状态无故障；改用 Account Holder 新建的 App Store Connect API key，不再要求用户重复输入密码。
