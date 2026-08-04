@@ -69,6 +69,7 @@ const iapSource = readFileSync(join(root, 'lib/iap.ts'), 'utf8');
 const i18nSource = readFileSync(join(root, 'lib/i18n.ts'), 'utf8');
 const meSource = readFileSync(join(root, 'app/(tabs)/me.tsx'), 'utf8');
 const dealsSource = readFileSync(join(root, 'app/(tabs)/index.tsx'), 'utf8');
+const privacySource = readFileSync(join(root, 'app/privacy.tsx'), 'utf8');
 const dealCardSource = readFileSync(join(root, 'components/DealCard.tsx'), 'utf8');
 const filterChipsSource = readFileSync(join(root, 'components/FilterChips.tsx'), 'utf8');
 const watchlistSource = readFileSync(join(root, 'app/(tabs)/watchlist.tsx'), 'utf8');
@@ -76,6 +77,7 @@ const productDetailSource = readFileSync(join(root, 'app/product/[skuId].tsx'), 
 const priceAlertsSource = readFileSync(join(root, 'lib/priceAlerts.ts'), 'utf8');
 const liveDataVerifierSource = readFileSync(join(root, 'scripts/verify-live-data.ts'), 'utf8');
 const paywallSource = readFileSync(join(root, 'app/paywall.tsx'), 'utf8');
+const brandLogoSource = readFileSync(join(root, 'components/BrandLogo.tsx'), 'utf8');
 const themeSource = readFileSync(join(root, 'lib/theme.ts'), 'utf8');
 const topoSource = readFileSync(join(root, 'components/TopoPlaceholder.tsx'), 'utf8');
 const expo = appConfig.expo;
@@ -89,23 +91,40 @@ assert.equal(expo.locales?.['zh-Hans']?.ios?.CFBundleName, '值de');
 assert.equal(expo.locales?.['zh-Hans']?.android?.app_name, '值de');
 assert.equal(expo.ios?.bundleIdentifier, 'dev.100app.geardrop');
 assert.equal(expo.ios?.supportsTablet, false, 'v1 release must remain iPhone-only until iPad UI and screenshots are verified');
-assert.equal(expo.ios?.buildNumber, '2');
+assert.equal(expo.ios?.buildNumber, '3');
 assert.equal(expo.ios?.config?.usesNonExemptEncryption, false);
 assertNoTrademark(expo.name, 'expo.name');
 assertNoTrademark(expo.slug, 'expo.slug');
 assertNoTrademark(expo.scheme, 'expo.scheme');
 assertNoTrademark(expo.ios?.bundleIdentifier || '', 'ios.bundleIdentifier');
 
-for (const assetPath of ['./assets/icon.png', './assets/splash-icon.png', './assets/favicon.png']) {
+for (const assetPath of [
+  './assets/icon.png',
+  './assets/splash-icon.png',
+  './assets/favicon.png',
+  './assets/android-icon-foreground.png',
+  './assets/android-icon-background.png',
+  './assets/android-icon-monochrome.png',
+  './assets/brand/geardrop-logo.png',
+  './assets/brand/geardrop-mark.png',
+]) {
   assert.ok(existsSync(join(root, assetPath)), `missing asset ${assetPath}`);
 }
 
 const pluginNames = new Set((expo.plugins || []).map((plugin) => (Array.isArray(plugin) ? plugin[0] : plugin)));
-for (const plugin of ['expo-router', 'expo-notifications', 'expo-web-browser', 'expo-font', 'expo-image', 'expo-localization']) {
+for (const plugin of ['expo-router', 'expo-splash-screen', 'expo-notifications', 'expo-web-browser', 'expo-font', 'expo-image', 'expo-localization']) {
   assert.ok(pluginNames.has(plugin), `missing Expo plugin ${plugin}`);
 }
+const splashPlugin = (expo.plugins || []).find(
+  (plugin): plugin is [string, Record<string, unknown>] => Array.isArray(plugin) && plugin[0] === 'expo-splash-screen',
+);
+assert.ok(splashPlugin, 'missing configured Expo splash plugin');
+assert.equal(splashPlugin[1].backgroundColor, '#F7F5EF');
+assert.equal(splashPlugin[1].image, './assets/splash-icon.png');
+assert.equal(splashPlugin[1].imageWidth, 280);
+assert.equal(splashPlugin[1].resizeMode, 'contain');
 
-for (const dependency of ['expo', 'expo-router', '@supabase/supabase-js', '@react-native-async-storage/async-storage', 'expo-notifications', 'expo-image', 'expo-localization', 'react-native-svg', 'react-native-purchases']) {
+for (const dependency of ['expo', 'expo-router', 'expo-splash-screen', '@supabase/supabase-js', '@react-native-async-storage/async-storage', 'expo-notifications', 'expo-image', 'expo-localization', 'react-native-svg', 'react-native-purchases']) {
   assert.ok(packageJson.dependencies[dependency], `missing dependency ${dependency}`);
 }
 
@@ -148,6 +167,8 @@ assert.ok(dealsSource.includes('useRegion()'), 'Deals must consume the global re
 assert.ok(!dealsSource.includes("region: 'us'"), 'Deals must not own a local default region filter');
 assert.ok(dealsSource.includes('numColumns={2}'), 'Deals must render as a 2-column grid');
 assert.ok(dealsSource.includes('RegionSheet'), 'Deals region selector must live in the title-bar pill sheet');
+assert.ok(dealsSource.includes('<BrandLogo'), 'Deals header must render the GearDrop logo');
+assert.ok(privacySource.includes('<BrandLogo'), 'Privacy screen must render the GearDrop logo');
 assert.ok(!dealsSource.includes('heroSection'), 'Deals must not keep the old single-row hero stream');
 assert.ok(filterChipsSource.includes("t('filters.brand')"), 'Filter sheet must include localized Brand');
 assert.ok(filterChipsSource.includes("t('filters.category')"), 'Filter sheet must include localized Category');
@@ -164,6 +185,8 @@ assert.ok(themeSource.includes("photo: '#F1F0EC'"), 'theme must define the fixed
 assert.ok(themeSource.includes("onPhotoDisc: '#A6321F'"), 'theme must define fixed on-photo discount token');
 assert.ok(topoSource.includes('colors.photo') && topoSource.includes('colors.photoTopo'), 'Topo placeholder must use fixed photo-frame tokens');
 assert.ok(paywallSource.includes('PRO_FEATURES'), 'Paywall must render from a PRO_FEATURES data source');
+assert.ok(paywallSource.includes('<BrandLogo markOnly'), 'Paywall must use the GearDrop mark');
+assert.ok(brandLogoSource.includes('geardrop-logo.png') && brandLogoSource.includes('geardrop-mark.png'), 'BrandLogo must use the selected GearDrop assets');
 assert.equal(paywallSource.match(/shipped: true/g)?.length, 2, 'Paywall production table should ship only the two core rows');
 assert.ok(paywallSource.includes('feature.shipped || __DEV__'), 'Paywall must hide non-shipped roadmap rows in production builds');
 assert.ok(paywallSource.includes("t('paywall.title')"), 'Paywall must render the localized value proposition');
@@ -205,6 +228,6 @@ assert.ok(liveDataVerifierSource.includes('PLATFORM_REGION_MIN_ROWS'), 'live dat
 assert.ok(!liveDataVerifierSource.includes('products.length >= 5000'), 'live data verification must not use a volatile aggregate catalog floor');
 
 console.log(
-  'config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=2 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=' +
+  'config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=3 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=' +
     [...pluginNames].join(','),
 );

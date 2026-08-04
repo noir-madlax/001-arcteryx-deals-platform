@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arc'teryx Outlet 瀑布流展示</title>
+    <meta name="theme-color" content="#17372F">
+    <title>GearDrop · 全球折扣瀑布流</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/brand/favicon-48.png">
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
     <style>
         * {
             margin: 0;
@@ -31,6 +36,13 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
             backdrop-filter: blur(10px);
+        }
+
+        .brand-logo {
+            display: block;
+            width: min(230px, 70vw);
+            height: auto;
+            margin: 0 auto 12px;
         }
 
         h1 {
@@ -409,7 +421,10 @@
 <body>
     <div class="container">
         <header>
-            <h1>🏔️ Arc'teryx Outlet 瀑布流</h1>
+            <a href="/" aria-label="GearDrop 首页">
+                <img class="brand-logo" src="/assets/brand/geardrop-logo-dark.png" alt="GearDrop">
+            </a>
+            <h1>全球折扣瀑布流</h1>
             <p class="subtitle">全球折扣商品实时监控 | 共 <span id="total-count">0</span> 件商品</p>
         </header>
 

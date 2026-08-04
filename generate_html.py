@@ -97,11 +97,17 @@ html = f'''<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arc'teryx 全球折扣监控平台</title>
+    <meta name="theme-color" content="#17372F">
+    <title>GearDrop · 全球折扣监控平台</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/brand/favicon-48.png">
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; color: #e5e5e5; min-height: 100vh; }}
         .header {{ background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; text-align: center; border-bottom: 2px solid #0f3460; }}
+        .brand-logo {{ display: block; width: min(240px, 72vw); height: auto; margin: 0 auto 0.75rem; }}
         .header h1 {{ font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }}
         .header p {{ color: #94a3b8; font-size: 0.9rem; }}
         .stats {{ display: flex; justify-content: center; gap: 2rem; padding: 1rem 2rem; background: #111; flex-wrap: wrap; }}
@@ -136,7 +142,8 @@ html = f'''<!DOCTYPE html>
 </head>
 <body>
     <div class="header">
-        <h1>Arc'teryx 全球折扣监控平台</h1>
+        <a href="/" aria-label="GearDrop 首页"><img class="brand-logo" src="/assets/brand/geardrop-logo-dark.png" alt="GearDrop"></a>
+        <h1>全球折扣监控平台</h1>
         <p>实时追踪全球 Outlet 折扣信息</p>
     </div>
     <div class="stats">
@@ -187,7 +194,7 @@ for region_code in sorted(by_region.keys()):
 
 html += f'''<div class="footer">
         <p>数据来源：Arc'teryx Outlet 官方站点 | 最后更新：{now}</p>
-        <p>© 2026 Arc'teryx 折扣监控平台</p>
+        <p>© 2026 GearDrop</p>
     </div>
 </body>
 </html>'''

@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://bupqagkrcvrezjkdbald.supabase.co")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")          # service_role
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")       # 可选
-RESEND_FROM = os.environ.get("RESEND_FROM", "Arc'teryx Deals <onboarding@resend.dev>")
+RESEND_FROM = os.environ.get("RESEND_FROM", "GearDrop <onboarding@resend.dev>")
 SITE_URL = os.environ.get("SITE_URL", "https://001.100app.dev")
 
 if not SUPABASE_KEY:
@@ -69,6 +69,7 @@ def render_email(alert: dict, current_price: float) -> tuple[str, str]:
     unsub_url = f"{SITE_URL}/unsubscribe.html?t={urllib.parse.quote(alert['unsubscribe_token'])}"
     subject = f"🔥 {name} 已降至 {sym}{current_price:.2f}"
     html = f"""<!DOCTYPE html><html><body style="font-family:-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#1a1a1a">
+<img src="{SITE_URL}/assets/brand/geardrop-logo.png" alt="GearDrop" width="180" style="display:block;width:180px;height:auto;margin:0 0 24px">
 <h2 style="margin:0 0 16px;font-size:20px">🔥 你订阅的商品降价了</h2>
 {f'<img src="{img}" alt="" style="width:200px;height:auto;border-radius:8px;display:block;margin:0 0 18px">' if img else ''}
 <div style="font-size:16px;font-weight:600;margin-bottom:10px">{name}</div>

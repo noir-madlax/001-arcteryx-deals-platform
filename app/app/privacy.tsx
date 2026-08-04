@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BrandLogo } from '../components/BrandLogo';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { openSupportUrl } from '../lib/actions';
 import { colors, radii } from '../lib/theme';
@@ -17,7 +18,7 @@ export default function PrivacyScreen() {
         </Pressable>
       </View>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.kicker}>{t('brand.name')}</Text>
+        <BrandLogo style={styles.brandLogo} />
         <Text style={styles.title}>{t('privacy.title')}</Text>
         <PolicyBlock
           title={t('privacy.storeTitle')}
@@ -81,12 +82,9 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 36,
   },
-  kicker: {
-    color: colors.accent,
-    fontSize: 12,
-    fontWeight: '900',
-    letterSpacing: 0.8,
-    textTransform: 'uppercase',
+  brandLogo: {
+    width: 150,
+    height: 42,
   },
   title: {
     color: colors.ink,

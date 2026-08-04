@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BrandLogo } from '../components/BrandLogo';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { usePro } from '../contexts/ProContext';
 import { ProPlan, ProPlanId } from '../lib/iap';
@@ -81,7 +82,7 @@ export default function PaywallScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.topbar}>
           <View style={styles.mark}>
-            <Ionicons name="analytics-outline" size={17} color={colors.ink} />
+            <BrandLogo markOnly style={styles.brandMark} />
           </View>
           <Pressable accessibilityRole="button" accessibilityLabel="Close paywall" style={styles.close} onPress={() => router.back()}>
             <Ionicons name="close" size={22} color={colors.ink} />
@@ -206,6 +207,7 @@ const styles = StyleSheet.create({
   content: { padding: 22, paddingBottom: 36 },
   topbar: { minHeight: 36, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   mark: { width: 34, height: 34, alignItems: 'center', justifyContent: 'center', borderRadius: 8, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.borderStrong, backgroundColor: colors.card },
+  brandMark: { width: 27, height: 27 },
   close: { width: 38, height: 38, alignItems: 'center', justifyContent: 'center', borderRadius: 19 },
   head: { marginTop: 12, paddingBottom: 22 },
   kicker: { color: colors.muted, fontSize: 11, fontWeight: '800', letterSpacing: 1.4, textTransform: 'uppercase' },

@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#fafaf8">
-    <title>Arc'teryx Deals Tracker · 始祖鸟全球折扣实时追踪</title>
+    <meta name="theme-color" content="#17372F">
+    <title>GearDrop · 始祖鸟全球折扣实时追踪</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/brand/favicon-48.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/brand/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
 
     <!-- SEO: 描述与关键词（Google / Baidu 通用） -->
-    <meta name="description" content="Arc'teryx Deals Tracker：聚合 Arc'teryx Outlet 官方奥莱与 SSENSE、MEC、EVO、REI 等经销商的始祖鸟实时折扣，跨美国、加拿大、英国、欧盟、日本等 15 个区域，每日更新原价、折扣价、库存与折扣率。">
+    <meta name="description" content="GearDrop 聚合 Arc'teryx Outlet 官方奥莱与 SSENSE、MEC、EVO、REI 等经销商的始祖鸟实时折扣，跨美国、加拿大、英国、欧盟、日本等 15 个区域，每日更新原价、折扣价、库存与折扣率。">
     <meta name="keywords" content="Arc'teryx,始祖鸟,Arc'teryx Outlet,始祖鸟奥莱,始祖鸟折扣,始祖鸟打折,Beta AR,Atom Hoody,Cerium,Alpha SV,Arc'teryx Sale,户外品牌折扣,arcteryx deals,arcteryx tracker">
-    <meta name="author" content="Arc'teryx Deals Tracker">
+    <meta name="author" content="GearDrop">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="googlebot" content="index,follow">
     <meta name="baiduspider" content="index,follow">
@@ -19,17 +23,18 @@
 
     <!-- Open Graph (Facebook / Telegram / 微信内置浏览器) -->
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Arc'teryx Deals Tracker">
-    <meta property="og:title" content="Arc'teryx Deals Tracker · 始祖鸟全球折扣实时追踪">
+    <meta property="og:site_name" content="GearDrop">
+    <meta property="og:title" content="GearDrop · 始祖鸟全球折扣实时追踪">
     <meta property="og:description" content="聚合 Arc'teryx Outlet、SSENSE、MEC、EVO、REI 等始祖鸟全球折扣，每日更新。">
     <meta property="og:url" content="https://001.100app.dev/">
     <meta property="og:locale" content="zh_CN">
-    <meta property="og:image" content="https://images.arcteryx.com/F25-OG-arcteryx-deals-tracker.jpg">
+    <meta property="og:image" content="https://001.100app.dev/assets/brand/geardrop-og.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Arc'teryx Deals Tracker · 始祖鸟全球折扣实时追踪">
+    <meta name="twitter:title" content="GearDrop · 始祖鸟全球折扣实时追踪">
     <meta name="twitter:description" content="Arc'teryx 全球经销商折扣聚合，每日更新。">
+    <meta name="twitter:image" content="https://001.100app.dev/assets/brand/geardrop-og.png">
 
     <!-- Schema.org JSON-LD：网站 + 检索 + ItemList（结构化数据，对 Google 富结果有用） -->
     <script type="application/ld+json">
@@ -40,7 +45,7 @@
                 "@type": "WebSite",
                 "@id": "https://001.100app.dev/#website",
                 "url": "https://001.100app.dev/",
-                "name": "Arc'teryx Deals Tracker",
+                "name": "GearDrop",
                 "description": "Arc'teryx 全球经销商实时折扣追踪",
                 "inLanguage": "zh-CN",
                 "potentialAction": {
@@ -52,8 +57,9 @@
             {
                 "@type": "Organization",
                 "@id": "https://001.100app.dev/#org",
-                "name": "Arc'teryx Deals Tracker",
-                "url": "https://001.100app.dev/"
+                "name": "GearDrop",
+                "url": "https://001.100app.dev/",
+                "logo": "https://001.100app.dev/assets/brand/icon-512.png"
             }
         ]
     }
@@ -122,17 +128,15 @@
         }
         .brand {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             gap: 10px;
             min-width: 0;
             flex: 1 1 auto;        /* allow brand to take remaining space */
         }
-        .brand-mark {
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            white-space: nowrap;
-            flex-shrink: 0;        /* never clip the brand wordmark */
+        .brand-logo {
+            width: 142px;
+            height: auto;
+            flex-shrink: 0;
         }
         .brand-sub {
             font-size: 11px;
@@ -159,7 +163,7 @@
         }
         @media (max-width: 640px) {
             .header-inner { padding: 12px 14px; gap: 10px; }
-            .brand-mark { font-size: 14px; letter-spacing: 0.01em; }
+            .brand-logo { width: 126px; }
             .brand-sub { display: none; }
             .header-stats { gap: 10px; font-size: 11px; flex-wrap: wrap; justify-content: flex-end; }
             .header-stats .hide-sm { display: none; }
@@ -817,8 +821,8 @@
 <header class="site-header">
     <div class="header-inner">
         <div class="brand">
-            <span class="brand-mark">ARC'TERYX</span>
-            <span class="brand-sub">Deals Tracker</span>
+            <a href="/" aria-label="GearDrop home"><img class="brand-logo" src="/assets/brand/geardrop-logo.png" alt="GearDrop"></a>
+            <span class="brand-sub">Global Outdoor Deals</span>
         </div>
         <div class="header-stats">
             <span><strong id="stat-total">—</strong> 件</span>
@@ -889,7 +893,7 @@
     <p style="margin-top:6px">
         <a href="/support.html">GearDrop Support</a> ·
         <a href="/privacy.html">Privacy Policy</a> ·
-        © Arc'teryx Outlet Tracker · Non-affiliated
+        © GearDrop · Non-affiliated
     </p>
 </footer>
 

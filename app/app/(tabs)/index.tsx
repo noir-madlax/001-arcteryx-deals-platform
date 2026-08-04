@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Alert, FlatList, Modal, Platform, Pressable, RefreshControl, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BrandLogo } from '../../components/BrandLogo';
 import { DealCard } from '../../components/DealCard';
 import { FilterChips } from '../../components/FilterChips';
 import { ScreenState } from '../../components/ScreenState';
@@ -165,7 +166,7 @@ function Header({
     <View style={styles.header}>
       <View style={styles.topBar}>
         <View>
-          <Text style={styles.title}>{t('tabs.deals')}</Text>
+          <BrandLogo style={styles.brandLogo} />
           <Text style={styles.subtitle}>{t('deals.loadedShown', { loaded: formatNumber(loadedCount), shown: formatNumber(resultCount) })}</Text>
         </View>
         <View style={styles.titleActions}>
@@ -279,12 +280,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 14,
   },
-  title: {
-    color: colors.ink,
-    fontSize: 28,
-    lineHeight: 34,
-    fontWeight: '900',
-    letterSpacing: 0,
+  brandLogo: {
+    width: 156,
+    height: 44,
   },
   subtitle: {
     color: colors.muted,
