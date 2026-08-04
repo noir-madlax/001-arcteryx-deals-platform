@@ -11,6 +11,7 @@ from dealers import merge_partial
 from dealers.supabase_sync import (
     fresh_dealer_keys,
     next_dealer_lifecycle,
+    preserve_previous_images,
     recovered_url_health,
 )
 from tools.check_mec_partial import validate_partial
@@ -27,6 +28,17 @@ def fresh_timestamp():
 
 
 class DealerFreshnessTests(unittest.TestCase):
+    def test_preserve_previous_images_only_fills_missing_snapshot_data(self):
+        existing_url = "https://cdn.example/existing.jpg"
+        missing = {"image_url": None, "images": []}
+        preserve_previous_images(missing, {"image_url": existing_url, "images": [existing_url]})
+        self.assertEqual(missing, {"image_url": existing_url, "images": [existing_url]})
+
+        fresh_url = "https://cdn.example/fresh.jpg"
+        fresh = {"image_url": fresh_url, "images": [fresh_url]}
+        preserve_previous_images(fresh, {"image_url": existing_url, "images": [existing_url]})
+        self.assertEqual(fresh, {"image_url": fresh_url, "images": [fresh_url]})
+
     def test_validate_rejects_unresolved_image_templates(self):
         template_url = "https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/item.jpg"
         for field, value in (

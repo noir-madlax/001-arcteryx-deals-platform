@@ -165,6 +165,20 @@ def should_preserve_previous_discount(
         return True
     return abs(new_sale - old_sale) < 0.01 and new_original > old_original + 0.01
 
+
+def preserve_previous_images(row: dict, previous: dict | None) -> None:
+    """Keep a known image when a transient dealer snapshot omits image metadata."""
+    if row.get("image_url") or not previous:
+        return
+    previous_images = previous.get("images") or []
+    previous_url = previous.get("image_url")
+    if not previous_url and isinstance(previous_images, list) and previous_images:
+        previous_url = previous_images[0]
+    if previous_url:
+        row["image_url"] = previous_url
+        row["images"] = previous_images or [previous_url]
+
+
 def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
     name = it.get("name") or ""
     url = it.get("url","")
@@ -240,7 +254,7 @@ def main():
             while True:
                 res = client.table("products").select(
                     "sku_id,first_seen,sizes,size_stock,color,original_price,sale_price,discount_pct,"
-                    "status,last_seen_at,missing_runs,url_http_status,url_checked_at,last_updated"
+                    "status,last_seen_at,missing_runs,url_http_status,url_checked_at,last_updated,image_url,images"
                 ).eq("dealer", dkey).range(page*1000, page*1000+999).execute()
                 data = res.data or []
                 for r in data:
@@ -262,6 +276,7 @@ def main():
                     r["size_stock"] = old.get("size_stock") or {}
                 if not (r.get("color") or "").strip() and (old.get("color") or "").strip():
                     r["color"] = old["color"]
+                preserve_previous_images(r, old)
                 # 保留 DB 老的真折扣价: 若本轮 disc=0 (list-only fallback 模式)
                 # 但 DB 老值有 sale < orig (PDP enrich 抓到的真折扣), 保留 DB 老价格.
                 # 避免 mec scrapling fallback 覆盖掉之前的折扣信息 → 前端假满价.

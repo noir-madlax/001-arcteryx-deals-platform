@@ -51,6 +51,34 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(items[0]["discount_pct"], 25)
         self.assertTrue(items[0]["in_stock"])
 
+    def test_evo_rendered_snapshot_uses_product_image_when_card_image_is_missing(self):
+        snapshot = {
+            "products": [{
+                "id": 236923,
+                "vendor": "Arc'teryx",
+                "type": "Gloves & Mittens",
+                "handle": "236923-arc-teryx-sabre-mittens",
+                "featured_image": {"src": "https://www.evo.com/cdn/shop/files/product-image-1043638.jpg"},
+                "variants": [{"price": 9999, "public_title": "Black / L"}],
+            }],
+            "inventory": {"236923": {"inventory": 1, "lowestVariantPrice": 9999}},
+            "cards": [{
+                "url": "https://www.evo.com/products/236923-arc-teryx-sabre-mittens",
+                "name": "Arc'teryx Sabre Mittens",
+                "current_price": "Current price $99.99",
+                "original_price": "Original price $180.00",
+                "image": None,
+                "colors": ["Black"],
+            }],
+        }
+
+        items = EvoScraper().parse_browser_snapshot(snapshot, "men")
+
+        self.assertEqual(
+            items[0]["image"],
+            "https://www.evo.com/cdn/shop/files/product-image-1043638.jpg",
+        )
+
     def test_evo_browser_page_retry_recovers_from_single_timeout(self):
         scraper = EvoScraper()
 

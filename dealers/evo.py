@@ -41,6 +41,30 @@ class Scraper:
         self.crawl_complete = False
         self.http_blocked = False
 
+    @staticmethod
+    def _product_image(product: dict, card: dict) -> str | None:
+        def image_url(value) -> str | None:
+            if isinstance(value, str):
+                return value or None
+            if isinstance(value, dict):
+                return value.get("src") or value.get("url")
+            if isinstance(value, list):
+                for candidate in value:
+                    if resolved := image_url(candidate):
+                        return resolved
+            return None
+
+        if resolved := image_url(card.get("image")):
+            return resolved
+        for key in ("featured_image", "featuredImage", "image", "images"):
+            if resolved := image_url(product.get(key)):
+                return resolved
+        for variant in product.get("variants") or []:
+            for key in ("featured_image", "featuredImage", "image"):
+                if resolved := image_url(variant.get(key)):
+                    return resolved
+        return None
+
     def _fetch_json(self, url: str, retries: int = 2) -> dict | None:
         last = None
         for i in range(retries + 1):
@@ -148,7 +172,7 @@ class Scraper:
             out.append({
                 "url": f"{HOST}/products/{handle}",
                 "name": name,
-                "image": card.get("image"),
+                "image": self._product_image(product, card),
                 "original_price": orig,
                 "sale_price": sale,
                 "currency": "USD",
@@ -183,7 +207,15 @@ class Scraper:
               for (let i = 0; i < 6 && card && !card.querySelector('img'); i++) card = card.parentElement;
               const current = card?.querySelector('[aria-label^="Current price"]');
               const original = card?.querySelector('[aria-label^="Original price"]');
-              const image = card?.querySelector('img[src]');
+              const image = card?.querySelector('img');
+              const srcset = image?.getAttribute('srcset') || image?.getAttribute('data-srcset') || '';
+              const srcsetUrl = srcset.split(',').map(value => value.trim().split(/\s+/)[0]).filter(Boolean).pop();
+              const imageUrl = [
+                image?.currentSrc,
+                image?.getAttribute('src'),
+                image?.getAttribute('data-src'),
+                srcsetUrl,
+              ].find(value => value && !value.startsWith('data:'));
               const colors = [...(card?.querySelectorAll('[aria-label^="Color option:"]') || [])]
                 .map(node => (node.getAttribute('aria-label') || '').replace(/^Color option:\s*/, '').replace(/\s*\(selected\)$/, ''));
               return {
@@ -191,7 +223,7 @@ class Scraper:
                 name: (a.innerText || '').trim(),
                 current_price: current?.getAttribute('aria-label') || '',
                 original_price: original?.getAttribute('aria-label') || '',
-                image: image?.src || null,
+                image: imageUrl ? new URL(imageUrl, window.location.href).href : null,
                 colors,
               };
             }).filter(Boolean);

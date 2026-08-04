@@ -3,7 +3,7 @@
 ## Why（一句话）
 让当前 TestFlight Build 2 的首页重新显示真实商品图，并阻止 SSENSE 图片模板占位符再次进入生产数据。
 
-## 当前状态：已完成（代码与生产数据均通过独立回读）
+## 当前状态：已完成（SSENSE 模板故障与 EVO 缺图均已修复）
 
 ## 已确认事实
 - 当前工作树基于最新 `origin/main` `08f5b2d175220e75d5a516f051193008af05612e`，分支为 `codex/fix-home-images-20260804`；来源：本轮 `git fetch`、`git rev-parse HEAD`。
@@ -25,6 +25,10 @@
 - 生产事务仅更新 `image_url`/`images`，并在事务内断言目标数为 54 且无非 SSENSE 行。写后目标数为 0，规范化行数为 54；SKU digest 写前写后均为 `5f9ec73813ff79375d6534b8f1f07648`，非图片字段 digest 均为 `2f924a7eae7cb2b4a72febe0d2daf7cf`。
 - App 匿名权限独立读回：SSENSE 57 行、模板占位符 0、规范化 54、非图片字段逐行规范化哈希不变；美国区折扣前 10 行占位符 0、9 行有图片；代表性修复图 GET 为 `200 image/jpeg`、32,271 bytes。
 - 工作流同款线上门禁命令读回 427 行（evo 269、rei 101、ssense 57）并返回 `[quality] OK`。
+- EVO 官方 Sabre Mittens 商品页明确展示商品图；选定主图 `product-image-1043638.jpg` 实测 `200 image/jpeg`、21,825 bytes、422×422，并目视确认是黑色 Sabre Mittens。
+- 生产写前精确读回唯一 SKU `evo:products/236923-arc-teryx-sabre-mittens` 为 `image_url=null`、`images=[]`，完整 before-state 保存于 `/private/tmp/geardrop-evo-image-before.R0gg1U/before.json`。
+- 生产事务只补该 SKU 的 `image_url`/`images`。App 匿名权限写后读回为 1 行、图片数组 1 项、非图片字段规范化哈希不变；美国区折扣前十从 9/10 有图变为 10/10，缺图为 0。
+- EVO browser snapshot 现在支持 `currentSrc`、`src`、`data-src`、`srcset` 和 Shopify product/variant 图片回退；dealer sync 会在临时快照漏图时保留数据库现有图片。定向 36 测试、全量 119 测试和线上 427 行质量门均通过。
 
 ## 验收标准
 1. SSENSE parser 单测证明 `__IMAGE_PARAMS__` 被规范化为可用 Cloudinary 变体；普通 URL 保持不变。
