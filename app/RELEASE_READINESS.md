@@ -8,12 +8,12 @@ This file separates locally proven work from evidence that still requires Apple,
 
 ### Proven now
 
-- The current signed candidate is on `codex/ios-appstore-build3-20260804` in a clean isolated worktree. It has not been merged into `main` or deployed.
-- `npm run verify` passed end to end on 2026-08-04: 39/39 tests, config, release assets, typecheck, Expo Doctor 20/20, live exchange rates, 5,803 products, 84,040 price-history rows, a 200-item image-complete startup preview, and an iOS export of 1,494 modules / 5.4 MB. The command ended with `verify_local_ok`.
+- The current signed candidate is on `codex/ios-appstore-build4-logo-20260804` in a clean isolated worktree. It has not been merged into `main` or deployed.
+- `npm run verify` passed end to end on 2026-08-04: 39/39 tests, config, release assets, typecheck, Expo Doctor 20/20, live exchange rates, 5,689 products, 84,047 price-history rows, a 200-item image-complete startup preview, and an iOS export of 1,497 modules / 5.4 MB. The command ended with `verify_local_ok`.
 - Expo account: `noir-madlax`; EAS project: `@noir-madlax/geardrop` (`ead43b0e-5dbf-44a2-838e-f65db29abb30`).
-- EAS production build `2e452513-21a1-4203-8b50-abf877ed3e41` finished successfully as App `1.0.0`, build `3`, from source commit `6d28b0b`. The signed IPA was independently validated and uploaded with Apple's Content Delivery tool; Apple returned `UPLOAD SUCCEEDED with no errors`, then `processingState=VALID` / `APP_STORE_ELIGIBLE`.
+- EAS production build `33fcb413-26c7-4282-9903-1021eeb40909` finished successfully as App `1.0.0`, build `4`, from source commit `2e73e3b5553dca15c9658393d9ec866dbe1b6aa6`. Its 30,078,471-byte signed IPA has SHA-256 `ebbfcd65a1fedcf0c444b102d0639b526dfb2dc5f68c29921c2fa8175d9df8d5`; signing, Info.plist, AppIcon, Splash, and embedded logo assets were independently validated. Apple returned `VERIFY SUCCEEDED with no errors`, `UPLOAD SUCCEEDED with no errors`, then `processingState=VALID` / `APP_STORE_ELIGIBLE`.
 - EAS production config resolves to `credentialsSource=remote`, `distribution=store`, and `autoIncrement=true`; production and preview each contain the Sensitive variable `EXPO_PUBLIC_REVENUECAT_IOS_API_KEY`.
-- Bundle ID `dev.100app.geardrop`, version `1.0.0`, submitted build number `3`, portrait orientation.
+- Bundle ID `dev.100app.geardrop`, version `1.0.0`, submitted build number `4`, portrait orientation.
 - Physical iPhone 16 Pro Release build, Apple Development signing, wireless install, launch, live Deals, localization, currency switching, persistence, and Chinese “值de” branding have runtime evidence in `.agent/TASK-ios-app-port.md`.
 - Privacy URL, website, and Support URL return HTTP 200; the Support URL is saved in App Store Connect.
 - v1 is now explicitly iPhone-only because no iPad layout or screenshot acceptance has been run.
@@ -26,23 +26,23 @@ This file separates locally proven work from evidence that still requires Apple,
 - A second arm64 Release was built with the real RevenueCat public key injected only through the process environment. It installed and launched, but StoreKit returned no products; RevenueCat logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`, and the paywall stayed unavailable. A 16:01 EDT post-account-action rerun produced the same StoreKit/RevenueCat result. This proves real-key configuration/failure handling, not a successful offering or transaction.
 - RevenueCat was rechecked live on 2026-08-02: the `default` offering is Active with three packages, all three real App Store product identifiers are attached, `Pro` is Active with six total products, and the App Store IAP key still shows `Valid credentials`. There are still no sandbox transactions.
 - Free/Paid Apps Agreement, banking, and W-8BEN were all read back as `Active` on 2026-08-03.
-- iOS 1.0 remains `PREPARE_FOR_SUBMISSION`, now with build 3 attached. Apple returned 204 for the official build-relationship PATCH and an independent GET returned build 3 ID `a458f9ee-7a50-4e32-8a36-fb9760df3413`. Description, keywords, Support URL, privacy, availability outside mainland China, category, age rating, content rights, review contact, notes, and automatic release are saved; no App Review submission exists and App Store screenshots remain at 0.
+- iOS 1.0 remains `PREPARE_FOR_SUBMISSION`, now with build 4 attached. Apple returned 204 for the official build-relationship PATCH and an independent GET returned build 4 ID `a9601f62-78a4-4e52-9336-8934a0c57e85`. Description, keywords, Support URL, privacy, availability outside mainland China, category, age rating, content rights, review contact, notes, and automatic release are saved; no App Review submission exists and App Store screenshots remain at 0.
 - Monthly, annual, and lifetime products retain the expected identifiers, prices, localizations, and RevenueCat bindings. Apple currently returns `MISSING_METADATA` for all three because their required Review Information screenshots are absent.
-- TestFlight build `1.0.0 (3)` is `IN_BETA_TESTING` and `READY_FOR_BETA_SUBMISSION`. Internal group `GearDrop Internal` now contains build 2 and build 3 with 3 testers. Jerry and `5331627@qq.com` had installed build 2 before build 3 was added; the Account Holder remained invited. The group relationship and tester count were independently read back through Apple's API after the build-3 write.
-- Five local 1206x2622 screenshots match App Store Connect's live iPhone 6.3-inch slot, but they predate the image and startup fixes, one homepage capture visibly contains missing-image placeholders, and they have not been uploaded. The final App Store and paywall screenshots must come from build 3 after signed StoreKit purchase and restore pass.
+- TestFlight build `1.0.0 (4)` is `IN_BETA_TESTING` and `READY_FOR_BETA_SUBMISSION`. Internal group `GearDrop Internal` now contains build 2, build 3, and build 4 with 3 testers. The group relationship, tester count, and iOS version relationship were independently read back through Apple's API after the build-4 writes.
+- Five local 1206x2622 screenshots match App Store Connect's live iPhone 6.3-inch slot, but they predate the image, startup, and first-logo fixes; one homepage capture visibly contains missing-image placeholders, and they have not been uploaded. The final App Store and paywall screenshots must come from build 4 after signed StoreKit purchase and restore pass.
 
 ### Submission blockers
 
-1. **Build-3 device smoke:** install or update to build 3 from TestFlight and verify the homepage has no missing-image placeholders and renders the 200-item startup preview before the complete catalog.
-2. **IAP transaction proof:** on build 3 verify localized prices, monthly/annual/lifetime purchase, cancellation, pending purchase, entitlement activation, reinstall/restore, no-purchase restore, and offline recovery using the matrix in `IAP_SETUP.md`.
+1. **Build-4 device smoke:** install or update to build 4 from TestFlight and verify the first logo, homepage image rendering, and 200-item startup preview before the complete catalog.
+2. **IAP transaction proof:** on build 4 verify localized prices, monthly/annual/lifetime purchase, cancellation, pending purchase, entitlement activation, reinstall/restore, no-purchase restore, and offline recovery using the matrix in `IAP_SETUP.md`.
 3. **Final review media:** recapture the App Store screenshots from the signed candidate after the transaction pass, then upload the App Store set and one review screenshot for each of the three IAP products. All three products currently report `MISSING_METADATA`.
 4. **Submission assembly:** attach the three first-release products to iOS 1.0, perform the final export-compliance/review-information readback, and submit the version and products together.
-5. **Dependency audit:** the latest recorded `npm audit --omit=dev` exits 1 with 10 moderate findings rooted in Expo's build-time `@expo/config-plugins -> xcode -> uuid <11.1.1` chain. npm's forced fix would install Expo 46.0.21, a breaking downgrade; do not use it as a release fix.
+5. **Dependency audit:** `npm audit --omit=dev --audit-level=high` exits 0 with 11 moderate findings in Expo's build-time toolchain and no high/critical findings. npm's forced fix would install Expo 46.0.21, a breaking downgrade; do not use it as a release fix.
 6. **Price-alert abuse control:** the branch contains hardened support/price-alert RPCs and direct-table revocations, but the migration still lacks a production receipt/readback smoke.
 
 ### Release boundary
 
-Build 3, Apple upload, processing, TestFlight internal-group assignment, and App Store version attachment are complete. Do not submit for App Review until the build-3 signed transaction matrix and final review screenshots are complete. The exact product and sandbox steps are in `IAP_SETUP.md`.
+Build 4, Apple upload, processing, TestFlight internal-group assignment, and App Store version attachment are complete. Do not submit for App Review until the build-4 signed transaction matrix and final review screenshots are complete. The exact product and sandbox steps are in `IAP_SETUP.md`.
 
 ## Historical Local Gate (2026-07-08)
 
