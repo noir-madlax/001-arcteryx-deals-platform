@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, FlatList, Modal, Platform, Pressable, RefreshControl, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, FlatList, Modal, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BrandLogo } from '../../components/BrandLogo';
@@ -12,7 +12,7 @@ import { useProducts } from '../../contexts/ProductsContext';
 import { usePreferences } from '../../contexts/PreferencesContext';
 import { useRegion } from '../../contexts/RegionContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
-import { productCategory } from '../../lib/catalog';
+import { productCategory, regionFlag } from '../../lib/catalog';
 import { availableDealRegions, DEFAULT_DEAL_FILTERS, filterDeals, productsForRegion, type DealFilters } from '../../lib/deals';
 import { INITIAL_SIGNAL_WINDOW } from '../../lib/productPreview';
 import { colors, typography } from '../../lib/theme';
@@ -206,6 +206,8 @@ function Header({
 
 function RegionSheet({ visible, value, options, onClose, onSelect }: { visible: boolean; value: string; options: string[]; onClose: () => void; onSelect: (region: string) => void }) {
   const { regionLabel, t } = usePreferences();
+  const { height: windowHeight } = useWindowDimensions();
+  const optionListMaxHeight = Math.max(48, windowHeight * 0.9 - 98);
   return (
     <Modal visible={visible} animationType={Platform.OS === 'web' ? 'fade' : 'slide'} transparent onRequestClose={onClose}>
       <View style={styles.sheetBackdrop}>
@@ -216,41 +218,22 @@ function RegionSheet({ visible, value, options, onClose, onSelect }: { visible: 
               <Ionicons name="close" size={20} color={colors.ink} />
             </Pressable>
           </View>
-          {options.map((region) => {
-            const active = value === region;
-            return (
-              <Pressable key={region} style={styles.regionOption} onPress={() => onSelect(region)}>
-                <Text style={styles.regionOptionFlag}>{regionFlag(region)}</Text>
-                <Text style={[styles.regionOptionText, active && styles.regionOptionTextActive]}>{regionLabel(region)}</Text>
-                {active ? <Ionicons name="checkmark" size={18} color={colors.buy} /> : null}
-              </Pressable>
-            );
-          })}
+          <ScrollView style={[styles.regionOptions, { maxHeight: optionListMaxHeight }]} showsVerticalScrollIndicator={options.length > 8}>
+            {options.map((region) => {
+              const active = value === region;
+              return (
+                <Pressable key={region} style={styles.regionOption} onPress={() => onSelect(region)}>
+                  <Text style={styles.regionOptionFlag}>{regionFlag(region)}</Text>
+                  <Text style={[styles.regionOptionText, active && styles.regionOptionTextActive]}>{regionLabel(region)}</Text>
+                  {active ? <Ionicons name="checkmark" size={18} color={colors.buy} /> : null}
+                </Pressable>
+              );
+            })}
+          </ScrollView>
         </View>
       </View>
     </Modal>
   );
-}
-
-function regionFlag(region: string) {
-  const flags: Record<string, string> = {
-    all: '◎',
-    us: '🇺🇸',
-    ca: '🇨🇦',
-    gb: '🇬🇧',
-    de: '🇩🇪',
-    fr: '🇫🇷',
-    nl: '🇳🇱',
-    at: '🇦🇹',
-    be: '🇧🇪',
-    ch: '🇨🇭',
-    dk: '🇩🇰',
-    es: '🇪🇸',
-    it: '🇮🇹',
-    jp: '🇯🇵',
-    se: '🇸🇪',
-  };
-  return flags[region] || region.toUpperCase();
 }
 
 async function toggleSave(watchlist: ReturnType<typeof useWatchlist>, product: Product, t: ReturnType<typeof usePreferences>['t']) {
@@ -363,6 +346,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(8,9,10,.38)',
   },
   regionSheet: {
+    maxHeight: '90%',
+    overflow: 'hidden',
     gap: 4,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -370,7 +355,11 @@ const styles = StyleSheet.create({
     padding: 18,
     paddingBottom: 34,
   },
+  regionOptions: {
+    flexShrink: 1,
+  },
   sheetHead: {
+    flexShrink: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { TopoPlaceholder } from './TopoPlaceholder';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { cleanName, freshnessLabel, productCategory, staleDays } from '../lib/catalog';
+import { cleanName, freshnessLabel, productCategory, regionFlag, staleDays } from '../lib/catalog';
 import { colors, radii, typography } from '../lib/theme';
 import type { DealSignal, Product } from '../lib/types';
 
@@ -92,19 +92,6 @@ export function DealCard({ product, signal, saved = false, hero = false, onPress
       </View>
     </Pressable>
   );
-}
-
-function regionFlag(region: string) {
-  const flags: Record<string, string> = {
-    us: '🇺🇸',
-    ca: '🇨🇦',
-    gb: '🇬🇧',
-    de: '🇩🇪',
-    fr: '🇫🇷',
-    nl: '🇳🇱',
-    jp: '🇯🇵',
-  };
-  return flags[region] || region.toUpperCase();
 }
 
 const numeric = {

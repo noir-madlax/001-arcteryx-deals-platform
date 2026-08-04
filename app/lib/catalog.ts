@@ -24,6 +24,20 @@ export const REGION_LABEL: Record<string, string> = {
   be: 'Belgium',
 };
 
+function isKnownRegion(region: string) {
+  return Object.prototype.hasOwnProperty.call(REGION_LABEL, region);
+}
+
+export function regionFlag(region: string) {
+  const normalized = region.trim().toLowerCase();
+  if (normalized === 'all') return '◎';
+  if (!isKnownRegion(normalized)) return normalized.toUpperCase();
+
+  return String.fromCodePoint(
+    ...[...normalized.toUpperCase()].map((character) => 127397 + character.charCodeAt(0)),
+  );
+}
+
 export const GENDER_LABEL: Record<string, string> = {
   men: 'Men',
   women: 'Women',
@@ -68,7 +82,8 @@ export const CATEGORY_ORDER = [
 ];
 
 export function normalizeRegion(value: string | null | undefined) {
-  return value && REGION_OPTIONS.includes(value) ? value : DEFAULT_REGION;
+  const normalized = value?.trim().toLowerCase();
+  return normalized && (normalized === 'all' || isKnownRegion(normalized)) ? normalized : DEFAULT_REGION;
 }
 
 const GENDER_MARKERS = ["Women's", "Men's", 'Unisex', 'Damen', 'Herren', 'Femme', 'Homme'];

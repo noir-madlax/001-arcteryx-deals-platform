@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { convertAmount, formatCurrencyValue, parseRateRows } from '../lib/currency';
-import { LANGUAGE_OPTIONS, localizedCategory, missingTranslationKeys, resolveLanguage, translate } from '../lib/i18n';
+import { LANGUAGE_OPTIONS, localizedCategory, localizedRegion, missingTranslationKeys, resolveLanguage, translate } from '../lib/i18n';
 
 const snapshot = parseRateRows(
   [
@@ -25,6 +25,11 @@ test('translations interpolate values and localize catalog labels', () => {
   assert.equal(translate('en', 'brand.name'), 'GearDrop');
   assert.equal(translate('de', 'privacy.title'), 'Datenschutz');
   assert.equal(localizedCategory('ja', '裤装'), 'パンツ');
+  assert.equal(localizedRegion('zh-Hans', 'fi'), '芬兰');
+  assert.equal(localizedRegion('de', 'ie'), 'Irland');
+  assert.equal(localizedRegion('fr', 'au'), 'Australie');
+  assert.equal(localizedRegion('ja', 'ch'), 'スイス');
+  assert.equal(localizedRegion('en', 'xx'), 'XX');
 });
 
 test('every shipped language covers the complete UI message catalog', () => {

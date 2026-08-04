@@ -3,7 +3,7 @@ import { getLocales } from 'expo-localization';
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { convertAmount, CurrencyPreference, fetchRateSnapshot, formatCurrencyValue, RateSnapshot } from '../lib/currency';
-import { AppLanguage, LanguageChoice, LANGUAGE_TAGS, localizedCategory, localizedGender, resolveLanguage, translate, TranslationParams } from '../lib/i18n';
+import { AppLanguage, LanguageChoice, LANGUAGE_TAGS, localizedCategory, localizedGender, localizedRegion, resolveLanguage, translate, TranslationParams } from '../lib/i18n';
 
 export const PREFERENCES_STORAGE_KEY = 'geardrop.preferences.v1';
 export const RATES_STORAGE_KEY = 'geardrop.currency-rates.v1';
@@ -123,12 +123,8 @@ export function PreferencesProvider({ children }: PropsWithChildren) {
   const genderLabel = useCallback((gender: string) => localizedGender(language, gender), [language]);
   const regionLabel = useCallback((region: string) => {
     if (region === 'all') return t('deals.allRegions');
-    try {
-      return new Intl.DisplayNames([locale], { type: 'region' }).of(region.toUpperCase()) || region.toUpperCase();
-    } catch {
-      return region.toUpperCase();
-    }
-  }, [locale, t]);
+    return localizedRegion(language, region);
+  }, [language, t]);
   const formatOriginalMoney = useCallback((value: number, sourceCurrency: string, fallbackSymbol = '') => formatCurrencyValue(value, sourceCurrency, locale, fallbackSymbol), [locale]);
   const formatMoney = useCallback((value: number, sourceCurrency: string, fallbackSymbol = '') => {
     const converted = convertAmount(value, sourceCurrency, preferences.currency, snapshot);

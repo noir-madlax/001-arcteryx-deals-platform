@@ -318,6 +318,14 @@ const genders: Record<AppLanguage, Record<string, string>> = {
   ja: { men: 'メンズ', women: 'ウィメンズ', unisex: 'ユニセックス', unknown: 'ユニセックス' },
 };
 
+const regions: Record<AppLanguage, Record<string, string>> = {
+  en: { us: 'United States', ca: 'Canada', gb: 'United Kingdom', de: 'Germany', fr: 'France', nl: 'Netherlands', fi: 'Finland', ie: 'Ireland', au: 'Australia', se: 'Sweden', at: 'Austria', ch: 'Switzerland', jp: 'Japan', it: 'Italy', es: 'Spain', dk: 'Denmark', be: 'Belgium' },
+  'zh-Hans': { us: '美国', ca: '加拿大', gb: '英国', de: '德国', fr: '法国', nl: '荷兰', fi: '芬兰', ie: '爱尔兰', au: '澳大利亚', se: '瑞典', at: '奥地利', ch: '瑞士', jp: '日本', it: '意大利', es: '西班牙', dk: '丹麦', be: '比利时' },
+  de: { us: 'Vereinigte Staaten', ca: 'Kanada', gb: 'Vereinigtes Königreich', de: 'Deutschland', fr: 'Frankreich', nl: 'Niederlande', fi: 'Finnland', ie: 'Irland', au: 'Australien', se: 'Schweden', at: 'Österreich', ch: 'Schweiz', jp: 'Japan', it: 'Italien', es: 'Spanien', dk: 'Dänemark', be: 'Belgien' },
+  fr: { us: 'États-Unis', ca: 'Canada', gb: 'Royaume-Uni', de: 'Allemagne', fr: 'France', nl: 'Pays-Bas', fi: 'Finlande', ie: 'Irlande', au: 'Australie', se: 'Suède', at: 'Autriche', ch: 'Suisse', jp: 'Japon', it: 'Italie', es: 'Espagne', dk: 'Danemark', be: 'Belgique' },
+  ja: { us: 'アメリカ合衆国', ca: 'カナダ', gb: 'イギリス', de: 'ドイツ', fr: 'フランス', nl: 'オランダ', fi: 'フィンランド', ie: 'アイルランド', au: 'オーストラリア', se: 'スウェーデン', at: 'オーストリア', ch: 'スイス', jp: '日本', it: 'イタリア', es: 'スペイン', dk: 'デンマーク', be: 'ベルギー' },
+};
+
 export function resolveLanguage(choice: LanguageChoice, deviceLanguage?: string | null): AppLanguage {
   if (choice !== 'system') return choice;
   const code = (deviceLanguage || '').toLowerCase();
@@ -345,4 +353,9 @@ export function localizedCategory(language: AppLanguage, category: string) {
 
 export function localizedGender(language: AppLanguage, gender: string) {
   return genders[language][gender] || genders.en[gender] || gender;
+}
+
+export function localizedRegion(language: AppLanguage, region: string) {
+  const normalized = region.trim().toLowerCase();
+  return regions[language][normalized] || regions.en[normalized] || normalized.toUpperCase();
 }

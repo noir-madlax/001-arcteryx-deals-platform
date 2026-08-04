@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { cleanName, inferCategory, normalizeRegion, platformKey, productCategory, releaseSeason, visibleProducts } from '../lib/catalog';
+import { cleanName, inferCategory, normalizeRegion, platformKey, productCategory, regionFlag, releaseSeason, visibleProducts } from '../lib/catalog';
 import { product, row } from './helpers';
 
 test('cleanName strips brand prefixes and dashed gender suffixes', () => {
@@ -90,7 +90,17 @@ test('productCategory uses catalog category unless it is generic', () => {
 
 test('normalizeRegion accepts supported regions and falls back to US', () => {
   assert.equal(normalizeRegion('de'), 'de');
+  assert.equal(normalizeRegion('au'), 'au');
+  assert.equal(normalizeRegion('CH'), 'ch');
   assert.equal(normalizeRegion('all'), 'all');
   assert.equal(normalizeRegion('xx'), 'us');
   assert.equal(normalizeRegion(null), 'us');
+});
+
+test('region presentation covers every live catalog country and has a readable fallback', () => {
+  assert.equal(regionFlag('fi'), '🇫🇮');
+  assert.equal(regionFlag('ie'), '🇮🇪');
+  assert.equal(regionFlag('au'), '🇦🇺');
+  assert.equal(regionFlag('all'), '◎');
+  assert.equal(regionFlag('xx'), 'XX');
 });
