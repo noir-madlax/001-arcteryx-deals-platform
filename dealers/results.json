@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-04 01:01:09",
+  "generated_at": "2026-08-04 04:34:27",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6910,7 +6910,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 144,
+      "count": 142,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -8317,19 +8317,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6030-494/arcteryx-mantis-2-waist-pack-unisex",
-          "name": "Arc'teryx Mantis 2 Waist Pack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/493670_source_1745313831.jpg",
-          "color": "24k Black",
-          "sale_price": 60.0,
-          "original_price": 60.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6021-378/arcteryx-mantis-1-waist-pack-unisex",
           "name": "Arc'teryx Mantis 1 Waist Pack - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520640_source_1777397745.jpg",
@@ -8670,8 +8657,8 @@
         {
           "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
           "name": "Arc'teryx Covert Cardigan - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517317_source_1771628157.jpg",
-          "color": "Habitat Heather",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517316_source_1774556219.png",
+          "color": "Dark Stratus Heather/Blac",
           "sale_price": 230.0,
           "original_price": 230.0,
           "discount_pct": 0,
@@ -8707,12 +8694,12 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-536/arcteryx-kragg-cotton-shorts-9in-mens",
-          "name": "Arc'teryx Kragg Cotton Shorts 9in. - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533907_source_1783010151.png",
-          "color": "Canvas",
-          "sale_price": 150.0,
-          "original_price": 150.0,
+          "url": "https://www.mec.ca/en/product/6037-509/arcteryx-sima-5-panel-cap",
+          "name": "Arc'teryx Sima 5 Panel Cap",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/554143_source_1783033538.png",
+          "color": "HABITAT",
+          "sale_price": 130.0,
+          "original_price": 130.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8720,12 +8707,12 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-509/arcteryx-sima-5-panel-cap",
-          "name": "Arc'teryx Sima 5 Panel Cap",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/554143_source_1783033538.png",
-          "color": "HABITAT",
-          "sale_price": 130.0,
-          "original_price": 130.0,
+          "url": "https://www.mec.ca/en/product/6037-536/arcteryx-kragg-cotton-shorts-9in-mens",
+          "name": "Arc'teryx Kragg Cotton Shorts 9in. - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533907_source_1783010151.png",
+          "color": "Canvas",
+          "sale_price": 150.0,
+          "original_price": 150.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8770,22 +8757,9 @@
           "dealer_name": "MEC",
           "region": "CA",
           "price_source_quality": "list_fallback"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6032-523/arcteryx-kragg-superlight-cotton-bird-tile-long-sleeve-mens",
-          "name": "Arc'teryx Kragg Superlight Cotton Bird Tile Long Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504283_source_1765926401.jpg",
-          "color": "Black/Arctic Silk",
-          "sale_price": 100.0,
-          "original_price": 100.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-04 01:01:08"
+      "refreshed_at": "2026-08-04 04:34:27"
     },
     "rei": {
       "name": "REI",
@@ -11074,7 +11048,7 @@
       "refreshed_at": "2026-08-03 05:44:34"
     }
   },
-  "total": 510,
+  "total": 508,
   "rejected_dealers": {},
   "fresh_dealers": [
     "mec"
