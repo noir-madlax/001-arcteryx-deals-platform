@@ -1,7 +1,13 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
+import {
+  parseProductPreviewCache,
+  PRODUCT_PREVIEW_STORAGE_KEY,
+  serializeProductPreview,
+} from '../lib/productPreview';
 import { computeSignal, groupHistoryBySku } from '../lib/signals';
-import { fetchAllProducts, fetchPriceHistoryForSkus } from '../lib/supabase';
+import { fetchAllProducts, fetchInitialProducts, fetchPriceHistoryForSkus } from '../lib/supabase';
 import type { DealSignal, Product } from '../lib/types';
 
 type ProductsContextValue = {
@@ -35,9 +41,30 @@ export function ProductsProvider({ children }: PropsWithChildren) {
     requestedSignals.current.clear();
     setSignals({});
     try {
-      const rows = await fetchAllProducts((page) => {
-        setProducts(page);
-      });
+      if (!hasLoaded.current) {
+        try {
+          const cachedPreview = parseProductPreviewCache(
+            await AsyncStorage.getItem(PRODUCT_PREVIEW_STORAGE_KEY),
+          );
+          if (cachedPreview.length) setProducts(cachedPreview);
+        } catch {
+          // Cache failures must never block the live catalog.
+        }
+
+        try {
+          const freshPreview = await fetchInitialProducts();
+          if (freshPreview.length) {
+            setProducts(freshPreview);
+            void AsyncStorage
+              .setItem(PRODUCT_PREVIEW_STORAGE_KEY, serializeProductPreview(freshPreview))
+              .catch(() => undefined);
+          }
+        } catch {
+          // Preview is an optimization; the authoritative full fetch still runs.
+        }
+      }
+
+      const rows = await fetchAllProducts();
       setProducts(rows);
       hasLoaded.current = true;
     } catch (err) {

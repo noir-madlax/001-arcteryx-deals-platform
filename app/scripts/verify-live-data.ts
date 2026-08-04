@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 
 import { SUPABASE_ANON, SUPABASE_URL, visibleProducts } from '../lib/catalog';
 import { availableDealRegions, DEFAULT_DEAL_FILTERS, filterDeals } from '../lib/deals';
+import { INITIAL_PRODUCT_LIMIT, INITIAL_PRODUCT_REGION } from '../lib/productPreview';
 import { computeSignal, groupHistoryBySku } from '../lib/signals';
 import type { PriceHistoryRow, Product, ProductRow } from '../lib/types';
 
@@ -91,6 +92,13 @@ async function main() {
   });
 
   const products = await loadProducts();
+  const { data: previewRows } = await rest<ProductRow[]>(
+    `products?select=*&region=eq.${INITIAL_PRODUCT_REGION}&order=discount_pct.desc,sku_id.asc&limit=${INITIAL_PRODUCT_LIMIT}`,
+  );
+  const preview = visibleProducts(previewRows || []);
+  assert.ok(preview.length >= 190, `expected at least 190 startup preview products, got ${preview.length}`);
+  assert.ok(preview.every((product) => product.region === INITIAL_PRODUCT_REGION), 'startup preview must stay in the default region');
+  assert.ok(preview.every((product) => product.image_url || product.images.length), 'startup preview must have product images');
   const availableRegions = availableDealRegions(products);
   const regionCounts = Object.fromEntries(availableRegions.slice(1).map((region) => [region, filterDeals(products, region, '', DEFAULT_DEAL_FILTERS).length]));
   const platformRegionCounts = products.reduce<Record<string, number>>((counts, product) => {
@@ -127,6 +135,8 @@ async function main() {
         products_content_range: productsRange,
         price_history_content_range: historyRange,
         paginated_products_loaded: products.length,
+        startup_preview_loaded: preview.length,
+        startup_preview_region: INITIAL_PRODUCT_REGION,
         region_counts: regionCounts,
         platform_region_counts: platformRegionCounts,
         de_euro_beta_sample: {

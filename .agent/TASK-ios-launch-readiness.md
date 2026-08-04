@@ -3,9 +3,14 @@
 ## Why（一句话）
 把当前可运行的 GearDrop / 值de iPhone App 收敛为可提交构建，并把代码内问题与必须在 Apple / App Store Connect 完成的外部步骤明确分开。
 
-## 当前状态：发布代码已与最新 `origin/main` 合并到干净独立分支且完整本地门转绿；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；production iOS build 2 已在 Apple 端验证为 `VALID`、绑定 iOS 1.0 并可开始内部 TestFlight；真实 StoreKit 交易、最终截图和提审仍待完成
+## 当前状态：build 2 早于 2026-08-04 的首页图片与首次加载修复，已停止继续送审；build 3 候选已在干净独立分支完成最小移植和完整本地门，等待 EAS production 构建；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；真实 StoreKit 交易、最终截图和提审仍待完成
 
 ## 已确认事实
+- 2026-08-04 build 2 源提交 `bfc9103` 生成于 2026-08-03，祖先检查明确不含图片数据门提交 `abd642c` 或首次加载提交 `cbf29c`。旧 5 张 1206×2622 模拟器截图中的首页仍有缺图占位，且 README 明确要求从通过交易验收的签名候选重截；因此本轮未上传旧截图、未继续提审。（来源：Git ancestry、截图目视检查、`app/store-assets/iphone-6.3/README.md` 与 ASC Media Manager 实际 DOM）
+- 2026-08-04 从 App Store 提交分支 `45841fb` 创建干净独立分支 `codex/ios-appstore-build3-20260804`。只移植启动预览、24 小时缓存、稳定全量分页和首轮信号窗口优化，保留原分支的 IAP、地区、多语言和发布配置；Expo Doctor 要求的 5 个 SDK 57 包仅升级兼容补丁版本。（来源：Git 工作树、diff 与 Expo Doctor 原始输出）
+- 2026-08-04 build 3 候选完整 `npm run verify` exit 0：39/39 tests、config、release assets、typecheck、Expo Doctor 20/20、实时汇率、live products `5,803`、price history `84,040`、美国区启动预览 `200` 且全部通过图片断言、iOS export 1,494 modules / 5.4 MB，最终原文 `verify_local_ok`。（来源：本轮完整命令原始输出）
+- 2026-08-04 `npm audit --omit=dev --audit-level=high` exit 0；仍有 10 moderate，根链为 Expo build tooling 的 `xcode -> uuid <11.1.1`，npm 的 forced fix 会破坏性降级到 Expo 46.0.21，未执行。（来源：本轮 npm audit 原始输出）
+- 2026-08-04 App Information 的第三方内容权利已按用户确认保存，页面独立读回 `Saved` 与拥有必要权利；App Privacy 仍为 Published。Pricing and Availability 独立读回中国大陆为唯一 Not Available，Apple Silicon Mac 与 Vision Pro availability 已取消并保存，首版保持 iPhone-only。（来源：本轮 ASC 保存后实际 DOM）
 - 2026-08-03 App Store Connect API access 已由 Account Holder 申请并即时获批；团队 API key `GearDrop EAS Build` 已创建为 Active / Admin，一次性 `.p8` 已下载且未读取或输出正文。该 key 的官方 App Store Connect API JWT 实测可读取现有 bundle ID `dev.100app.geardrop`。（来源：本轮 ASC 实际 DOM、文件 `stat` 与官方 API 200 响应）
 - 2026-08-03 EAS production iOS Build `67577ec9-d05c-4085-86d2-f201f7dc707c` 已读回 `FINISHED`：App `1.0.0`、build `2`；Fastlane 原文 `Successfully exported and signed the ipa file`，产物 `GearDrop.ipa` 27.5 MB，全部上传阶段 result=success。（来源：本轮 EAS build JSON 与云端构建日志）
 - 2026-08-04 Apple 官方 API 已独立读回 build 2：App `1.0.0`、`processingState=VALID`、未过期、最低 iOS 16.4；TestFlight beta detail 为 `READY_FOR_BETA_TESTING` / `READY_FOR_BETA_SUBMISSION`。App Store Connect UI 同时显示 `1.0.0 (2)`、`Ready to Submit` 和 90 天有效期。（来源：本轮 App Store Connect API 200 响应与实际 DOM）
@@ -119,9 +124,9 @@
 - post-IAP 完整门已实跑且如实失败于 live `4,970 < 5,000`；单独 iOS export 和 `git diff --check` 通过。依赖审计的 Expo build-tooling moderate advisory 已记录为未解决风险。
 
 ## 下一步
-1. YING WANG 接受 App Store Connect 团队邀请后，将其加入 `GearDrop Internal`；当前两位内部测试员先接受 TestFlight 邀请。
-2. 从 TestFlight 安装签名 candidate，重跑真实 StoreKit offering 探针并按 `app/IAP_SETUP.md` 完成 sandbox 购买、恢复和 entitlement 矩阵。
-3. 从通过交易验收的签名 candidate 重截 App Store 最终图和三项 IAP review screenshot，上传后独立读回。
+1. 提交并推送 `codex/ios-appstore-build3-20260804`，发起 EAS production build 3；完成后从 EAS 与 Apple/TestFlight 独立读回版本、build number 和 processing state。
+2. 从 TestFlight 安装 build 3，验证首页无缺图占位和冷启动预览，并按 `app/IAP_SETUP.md` 完成真实 StoreKit offering、sandbox 购买、恢复和 entitlement 矩阵。
+3. 从通过交易验收的 build 3 重截 App Store 最终图和三项 IAP review screenshot，上传后独立读回。
 4. 把三项 IAP/订阅附加到 iOS 1.0，逐页复核版本、构建、出口合规与审核信息后一起提交审核。
 
 ## 死路

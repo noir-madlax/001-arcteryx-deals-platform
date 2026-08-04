@@ -13,6 +13,7 @@ import { useRegion } from '../../contexts/RegionContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
 import { productCategory } from '../../lib/catalog';
 import { availableDealRegions, DEFAULT_DEAL_FILTERS, filterDeals, productsForRegion, type DealFilters } from '../../lib/deals';
+import { INITIAL_SIGNAL_WINDOW } from '../../lib/productPreview';
 import { colors, typography } from '../../lib/theme';
 import type { Product } from '../../lib/types';
 
@@ -25,7 +26,7 @@ export default function DealsScreen() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [filters, setFilters] = useState<DealFilters>({ ...DEFAULT_DEAL_FILTERS });
   const [visibleLimit, setVisibleLimit] = useState(500);
-  const [signalWindow, setSignalWindow] = useState(120);
+  const [signalWindow, setSignalWindow] = useState(INITIAL_SIGNAL_WINDOW);
 
   const regionProducts = useMemo(() => productsForRegion(products, region), [products, region]);
   const categories = useMemo(() => [...new Set(regionProducts.map(productCategory))], [regionProducts]);
@@ -77,7 +78,7 @@ export default function DealsScreen() {
               setQuery('');
               setSearchOpen(false);
               setVisibleLimit(500);
-              setSignalWindow(120);
+              setSignalWindow(INITIAL_SIGNAL_WINDOW);
               setFilters((current) => ({ ...DEFAULT_DEAL_FILTERS, sort: current.sort }));
               await setRegion(nextRegion);
             }}
@@ -87,7 +88,7 @@ export default function DealsScreen() {
             series={series}
             onFilterChange={(next) => {
               setVisibleLimit(500);
-              setSignalWindow(120);
+              setSignalWindow(INITIAL_SIGNAL_WINDOW);
               setFilters((current) => ({ ...current, ...next }));
             }}
           />
@@ -103,11 +104,17 @@ export default function DealsScreen() {
             />
           </View>
         )}
-        ListEmptyComponent={<ScreenState title={t('deals.noMatches')} body={t('deals.noMatchesBody', { region: regionLabel(region) })} />}
+        ListEmptyComponent={
+          loading ? (
+            <ScreenState title={t('deals.loading')} body={t('deals.loadingBody')} loading />
+          ) : (
+            <ScreenState title={t('deals.noMatches')} body={t('deals.noMatchesBody', { region: regionLabel(region) })} />
+          )
+        }
         onEndReachedThreshold={0.4}
         onEndReached={() => {
           setVisibleLimit((current) => Math.min(current + 300, filtered.length));
-          setSignalWindow((current) => Math.min(current + 160, filtered.length));
+          setSignalWindow((current) => Math.min(current + 40, filtered.length));
         }}
       />
     </SafeAreaView>
