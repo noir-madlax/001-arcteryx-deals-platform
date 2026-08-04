@@ -75,6 +75,36 @@ class DealerFreshnessTests(unittest.TestCase):
                 self.assertEqual(rc, 1)
                 self.assertIn("unresolved_image_template: 1", output.getvalue())
 
+    def test_validate_rejects_active_rows_with_empty_image_fields(self):
+        row = {
+            "sku_id": "evo-missing-image",
+            "dealer": "evo",
+            "status": "active",
+            "sale_price": 100,
+            "original_price": 150,
+            "discount_pct": 33,
+            "currency": "USD",
+            "symbol": "$",
+            "gender": "men",
+            "region": "us",
+            "url": "https://example.com/evo/missing-image",
+            "image_url": None,
+            "images": [],
+            "last_updated": fresh_timestamp(),
+        }
+        output = io.StringIO()
+        with redirect_stdout(output):
+            rc = validate(
+                [row],
+                max_age_hours=36,
+                max_product_age_hours=72,
+                min_rows=1,
+                required_dealers={"evo"},
+                forbidden_regions=None,
+            )
+        self.assertEqual(rc, 1)
+        self.assertIn("missing_product_image: 1", output.getvalue())
+
     def test_new_outlet_regions_have_currency_and_low_water_marks(self):
         for region in ("fi", "ie"):
             self.assertEqual(EXPECTED_CURRENCY[region], ("EUR", "€"))

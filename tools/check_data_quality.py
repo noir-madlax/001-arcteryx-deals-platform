@@ -195,7 +195,12 @@ def product_image_urls(row: dict) -> list[str]:
             images = []
     if isinstance(images, list):
         urls.extend(images)
-    return [str(url) for url in urls if url]
+    cleaned = []
+    for url in urls:
+        value = str(url).strip() if url is not None else ""
+        if value:
+            cleaned.append(value)
+    return cleaned
 
 
 def product_freshness_timestamp(row: dict) -> datetime | None:
@@ -272,15 +277,17 @@ def validate(
             if row.get("currency") != ccy or row.get("symbol") != sym:
                 errors["currency_mismatch"].append({**row, "expected_currency": ccy, "expected_symbol": sym})
 
-        if (row.get("status") or "active") == "active" and any(
-            "__IMAGE_PARAMS__" in url for url in product_image_urls(row)
-        ):
+        status = row.get("status") or "active"
+        image_urls = product_image_urls(row)
+        has_image_contract = any(field in row for field in ("image_url", "image", "images"))
+        if status == "active" and has_image_contract and not image_urls:
+            errors["missing_product_image"].append(row)
+        if status == "active" and any("__IMAGE_PARAMS__" in url for url in image_urls):
             errors["unresolved_image_template"].append(row)
 
         if forbidden_regions and dealer == "arcteryx_outlet" and region in forbidden_regions:
             errors["forbidden_region"].append(row)
 
-        status = row.get("status") or "active"
         missing_runs = int(row.get("missing_runs") or 0)
         if dealer == "arcteryx_outlet" and status == "active" and is_blocked_outlet_url(row.get("url") or ""):
             errors["blocked_outlet_url"].append(row)

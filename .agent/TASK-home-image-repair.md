@@ -1,4 +1,4 @@
-# TASK: GearDrop 首页图片修复（更新：2026-08-04 04:05 EDT）
+# TASK: GearDrop 首页图片修复（更新：2026-08-04 04:55 EDT）
 
 ## Why（一句话）
 让当前 TestFlight Build 2 的首页重新显示真实商品图，并阻止 SSENSE 图片模板占位符再次进入生产数据。
@@ -6,7 +6,7 @@
 ## 当前状态：已完成（SSENSE 模板故障与 EVO 缺图均已修复）
 
 ## 已确认事实
-- 当前工作树基于最新 `origin/main` `08f5b2d175220e75d5a516f051193008af05612e`，分支为 `codex/fix-home-images-20260804`；来源：本轮 `git fetch`、`git rev-parse HEAD`。
+- 当前工作树基于 `origin/main` `976c74b940b5f51d27be217877a4d7761e0f6850`，分支为 `codex/fix-home-images-20260804`；来源：`git rev-parse HEAD`、`git rev-parse origin/main`。
 - App 启动时直接分页读取生产 Supabase `products`，首页默认美国区并按折扣降序；来源：`app/lib/supabase.ts:17-30`、`app/app/(tabs)/index.tsx:23-33,54-77`。
 - 生产只读复现为总行数 5,789、美国区 752；54 条图片 URL 含字面量 `__IMAGE_PARAMS__`，均为 SSENSE，美国区折扣前 10 条有 7 条命中；来源：本轮 Supabase anon REST 200 分页读回与本地确定性统计。
 - 代表性坏 URL `https://res.cloudinary.com/ssenseweb/image/upload/__IMAGE_PARAMS__/261340F110002_1.jpg` 实测 HTTP 404；将占位符替换为 `w_480,q_auto` 后同一资源 HTTP 200 `image/jpeg`。Arc'teryx Imgix、REI、Evo Shopify 代表图也均为 HTTP 200；来源：本轮公网 GET 原始响应。
@@ -29,6 +29,10 @@
 - 生产写前精确读回唯一 SKU `evo:products/236923-arc-teryx-sabre-mittens` 为 `image_url=null`、`images=[]`，完整 before-state 保存于 `/private/tmp/geardrop-evo-image-before.R0gg1U/before.json`。
 - 生产事务只补该 SKU 的 `image_url`/`images`。App 匿名权限写后读回为 1 行、图片数组 1 项、非图片字段规范化哈希不变；美国区折扣前十从 9/10 有图变为 10/10，缺图为 0。
 - EVO browser snapshot 现在支持 `currentSrc`、`src`、`data-src`、`srcset` 和 Shopify product/variant 图片回退；dealer sync 会在临时快照漏图时保留数据库现有图片。定向 36 测试、全量 119 测试和线上 427 行质量门均通过。
+- 第二轮全库匿名审计发现剩余 30 条活跃商品缺图，全部为 EVO；写前完整数据保存在 `/private/tmp/geardrop-evo-30-before.uVqy2F/affected-30.json`。30 个 SKU 与 30 个修复目标一一对应，无额外或遗漏目标。
+- 已逐页从 EVO 官方商品主图区确认 30 个不同的 Shopify CDN 主图 URL；公网 GET 30/30 返回可解码图片，全部为 422×422（29 JPEG、1 PNG，11,318–144,491 bytes）。映射快照为 `/private/tmp/geardrop-evo-30-mapping.json`。
+- 生产事务在写前断言缺图目标数为 30、映射数为 30、集合双向差集为 0，仅更新 `image_url` 与 `images`。写后 SQL 读回 30/30 精确匹配，活跃商品缺图为 0；SKU digest 写前写后均为 `518e9e4e67e50b99a5620e3dd5c3443a`，非图片字段 digest 均为 `7c060dcbc305f146fe9df74a93d8fd20`。
+- App 匿名接口独立读回 5,789 行、受影响 30 行、图片精确匹配 30、全库缺图 0、非图片字段逐行差异 0。质量门新增 `missing_product_image`，会拒绝显式图片字段为空的活跃商品；定向 37 测试、全量 120 测试、线上 427 行 dealer 门和线上 5,789 行全库门均返回 OK。
 
 ## 验收标准
 1. SSENSE parser 单测证明 `__IMAGE_PARAMS__` 被规范化为可用 Cloudinary 变体；普通 URL 保持不变。
@@ -36,6 +40,7 @@
 3. 生产写前精确读回受影响 SKU 为 54 并保存 before-state；写后同一过滤条件为 0，非目标字段不变。
 4. 默认美国区折扣前 10 条不再包含模板占位符；至少一条原坏 URL 新地址实时 GET 返回 200 `image/*`。
 5. 修复提交进入 `origin/main`，以保证后续爬虫不会重新写回坏值。
+6. 全库活跃商品缺图为 0，且质量门会拒绝图片字段为空的活跃行。
 
 ## 下一步
 - 无；本文件随修复提交进入 `origin/main`。
