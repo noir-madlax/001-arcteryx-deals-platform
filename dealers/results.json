@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03 20:41:44",
+  "generated_at": "2026-08-04 01:01:09",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6910,7 +6910,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 145,
+      "count": 144,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -8382,19 +8382,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6040-688/arcteryx-index-10-gear-organizer",
-          "name": "Arc'teryx Index 10 Gear Organizer",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/555821_source_1782759948.png",
-          "color": "24k Black",
-          "sale_price": 60.0,
-          "original_price": 60.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6032-373/arcteryx-gamma-5-panel-cap-unisex",
           "name": "Arc'teryx Gamma 5 Panel Cap - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517188_source_1773265260.jpg",
@@ -8798,7 +8785,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-03 20:41:44"
+      "refreshed_at": "2026-08-04 01:01:08"
     },
     "rei": {
       "name": "REI",
@@ -11087,7 +11074,7 @@
       "refreshed_at": "2026-08-03 05:44:34"
     }
   },
-  "total": 511,
+  "total": 510,
   "rejected_dealers": {},
   "fresh_dealers": [
     "mec"
