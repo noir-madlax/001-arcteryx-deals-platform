@@ -1,21 +1,21 @@
 # GearDrop iOS Release Readiness
 
-Last updated: 2026-08-02 11:07 EDT.
+Last updated: 2026-08-04 EDT.
 
-This file separates locally proven work from evidence that still requires Apple, App Store Connect, deployment, or product decisions. The 2026-08-02 snapshot below is authoritative for local, EAS, RevenueCat, and the read-only App Store Connect audit completed after fresh login.
+This file separates locally proven work from evidence that still requires Apple, App Store Connect, deployment, or product decisions. The 2026-08-04 live Apple readback below supersedes older external-state observations elsewhere in this file.
 
 ## Current Launch Snapshot
 
 ### Proven now
 
-- The preserved iOS release work is now on `codex/ios-appstore-launch-20260802`, based on the 2026-08-02 `origin/main` snapshot. It has not been merged into `main` or deployed.
+- The preserved submission work is on `codex/ios-appstore-submit-20260803` in a clean isolated worktree. It has not been merged into `main` or deployed.
 - `npm run verify` passed end to end on 2026-08-02: 37/37 tests, config, release assets, typecheck, Expo Doctor 20/20, live exchange rates, 5,812 products, 83,934 price-history rows, and an iOS export of 1,492 modules / 5.4 MB. The command ended with `verify_local_ok`.
 - Expo account: `noir-madlax`; EAS project: `@noir-madlax/geardrop` (`ead43b0e-5dbf-44a2-838e-f65db29abb30`).
-- EAS iOS build list returned `[]` again on 2026-08-02; no cloud production build has been created or charged by this continuation pass.
+- EAS production build `67577ec9-d05c-4085-86d2-f201f7dc707c` finished successfully as App `1.0.0`, build `2`. On 2026-08-04 Apple independently returned `processingState=VALID`, and TestFlight returned `READY_FOR_BETA_TESTING` / `READY_FOR_BETA_SUBMISSION`.
 - EAS production config resolves to `credentialsSource=remote`, `distribution=store`, and `autoIncrement=true`; production and preview each contain the Sensitive variable `EXPO_PUBLIC_REVENUECAT_IOS_API_KEY`.
-- Bundle ID `dev.100app.geardrop`, version `1.0.0`, local build number `1`, portrait orientation.
+- Bundle ID `dev.100app.geardrop`, version `1.0.0`, submitted build number `2`, portrait orientation.
 - Physical iPhone 16 Pro Release build, Apple Development signing, wireless install, launch, live Deals, localization, currency switching, persistence, and Chinese “值de” branding have runtime evidence in `.agent/TASK-ios-app-port.md`.
-- Privacy URL and website return HTTP 200 on 2026-07-12.
+- Privacy URL, website, and Support URL return HTTP 200; the Support URL is saved in App Store Connect.
 - v1 is now explicitly iPhone-only because no iPad layout or screenshot acceptance has been run.
 - The 1024×1024 App Store icon has been converted to RGB PNG without alpha; `npm run verify:release-assets` guards dimensions and transparency.
 - Paid v1 was selected. The app now uses `react-native-purchases` with RevenueCat entitlement `Pro`, StoreKit-localized prices, purchase, restore, cancellation, pending-payment, and unavailable-service states. Local AsyncStorage Pro unlocking and the Me-screen Pro switch have been removed.
@@ -25,27 +25,24 @@ This file separates locally proven work from evidence that still requires Apple,
 - That Release app was installed and launched on the iPhone 17 simulator. An intentionally invalid public SDK key produced RevenueCat `Invalid API Key` logs and the paywall's localized unavailable state without a crash or local Pro grant. The Me screen showed Free with no manual Pro toggle.
 - A second arm64 Release was built with the real RevenueCat public key injected only through the process environment. It installed and launched, but StoreKit returned no products; RevenueCat logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`, and the paywall stayed unavailable. A 16:01 EDT post-account-action rerun produced the same StoreKit/RevenueCat result. This proves real-key configuration/failure handling, not a successful offering or transaction.
 - RevenueCat was rechecked live on 2026-08-02: the `default` offering is Active with three packages, all three real App Store product identifiers are attached, `Pro` is Active with six total products, and the App Store IAP key still shows `Valid credentials`. There are still no sandbox transactions.
-- App Store Connect was rechecked live after the account holder submitted W-8BEN on 2026-08-02. W-8BEN is now `Active`, Paid Apps Agreement advanced from `Pending User Info` to `Processing`, the bank account remains `Processing`, and Free Apps Agreement remains `Active`.
-- iOS 1.0 remains `Prepare for Submission` with no build and no App Review submission. The version has 0 screenshots and blank Description, Keywords, Support URL, Copyright, and App Review contact/account fields. App Information still lacks Subtitle, Category, Content Rights, and Age Ratings; App Privacy has no URL and its questionnaire has not started. App price and availability are not set.
-- Monthly, annual, and lifetime products are present with the expected identifiers, all-region availability, prices, and English (U.S.) localization. All three remain `Prepare for Submission`; their required Review Information screenshots are absent. RevenueCat remains correctly bound to those same identifiers.
+- Free/Paid Apps Agreement, banking, and W-8BEN were all read back as `Active` on 2026-08-03.
+- iOS 1.0 remains `PREPARE_FOR_SUBMISSION`, now with build 2 attached. Apple returned 204 for the official build-relationship PATCH and an independent GET returned the exact build ID. Description, keywords, Support URL, privacy, availability outside mainland China, category, age rating, content rights, review contact, notes, and automatic release are saved; no App Review submission exists and App Store screenshots remain at 0.
+- Monthly, annual, and lifetime products retain the expected identifiers, prices, localizations, and RevenueCat bindings. Apple currently returns `MISSING_METADATA` for all three because their required Review Information screenshots are absent.
+- TestFlight build `1.0.0 (2)` is visible as `Ready to Submit` and expires in 90 days. `What to Test` is blank, and there are currently 0 groups and 0 individual testers.
 - Five local 1206x2622 screenshots match App Store Connect's live iPhone 6.3-inch slot, but they are unsigned-Simulator readiness evidence and have not been uploaded. The paywall screenshot is intentionally absent until a signed sandbox/TestFlight purchase and restore pass.
 
 ### Submission blockers
 
-1. **IAP transaction proof:** the three matching App Store products, RevenueCat `Pro` entitlement, default monthly/annual/lifetime offering, EAS public key, and submit `ascAppId` are configured. The real-key Simulator run still returns empty StoreKit products. After Apple commercial/metadata blockers clear, verify localized prices, purchase, cancellation, pending purchase, entitlement activation, reinstall/restore, and no-purchase restore on a signed sandbox/TestFlight build.
-2. **Apple commercial state:** W-8BEN is `Active`, closing the tax-form gap. Paid Apps Agreement and banking are still `Processing`; paid IAP cannot launch until Apple finishes processing and the agreement becomes `Active`.
-3. **App Store metadata:** Subtitle, Category, Content Rights, Age Ratings, App Privacy, app price/availability, Description, Keywords, Support URL, Copyright, review credentials/contact/notes, and final screenshots are incomplete.
-4. **IAP review metadata:** the three products are configured and localized, but each is still `Prepare for Submission` and lacks its Review Information screenshot. The first products must be reviewed with iOS 1.0.
-5. **Distribution credentials/build:** this Mac currently has an Apple Development identity, not an Apple Distribution identity. EAS remote Distribution credentials remain uninspected; EAS and TestFlight both show no iOS builds.
-6. **Public support contact:** `https://001.100app.dev/support.html` returns HTTP 404 on 2026-08-02. This branch contains the page and hardened RPC migration, but neither is deployed; the Support URL cannot be entered as live yet.
-7. **Content rights:** merchant product names, images, and prices require a defensible rights/permission basis for the selected storefronts.
-8. **App Privacy answers:** email, price-alert interaction data, support requests, and RevenueCat purchase history must be declared in App Store Connect and reviewed against all bundled third-party SDKs.
-9. **Dependency audit:** the 2026-08-02 `npm audit --omit=dev` exits 1 with 10 moderate findings rooted in Expo's build-time `@expo/config-plugins -> xcode -> uuid <11.1.1` chain. npm's forced fix would install Expo 46.0.21, a breaking downgrade; do not use it as a release fix.
-10. **Price-alert abuse control:** the branch contains hardened support/price-alert RPCs and direct-table revocations, but the migration is not verified in production. Deployment plus receipt/readback smoke remains required.
+1. **Internal beta access:** create an internal TestFlight group, add an authorized internal tester, and fill `What to Test`. This changes account access and sends an invitation, so it requires action-time confirmation.
+2. **IAP transaction proof:** install build 2 from TestFlight and verify localized prices, monthly/annual/lifetime purchase, cancellation, pending purchase, entitlement activation, reinstall/restore, no-purchase restore, and offline recovery using the matrix in `IAP_SETUP.md`.
+3. **Final review media:** recapture the App Store screenshots from the signed candidate after the transaction pass, then upload the App Store set and one review screenshot for each of the three IAP products. All three products currently report `MISSING_METADATA`.
+4. **Submission assembly:** attach the three first-release products to iOS 1.0, perform the final export-compliance/review-information readback, and submit the version and products together.
+5. **Dependency audit:** the latest recorded `npm audit --omit=dev` exits 1 with 10 moderate findings rooted in Expo's build-time `@expo/config-plugins -> xcode -> uuid <11.1.1` chain. npm's forced fix would install Expo 46.0.21, a breaking downgrade; do not use it as a release fix.
+6. **Price-alert abuse control:** the branch contains hardened support/price-alert RPCs and direct-table revocations, but the migration still lacks a production receipt/readback smoke.
 
 ### Release boundary
 
-Do not run a paid EAS production build, upload TestFlight, publish App Privacy answers, or submit for review until the relevant external action is explicitly authorized. The exact product and sandbox steps are in `IAP_SETUP.md`.
+Build and upload are complete. Do not invite testers without action-time confirmation, and do not submit for App Review until the signed TestFlight transaction matrix and final review screenshots are complete. The exact product and sandbox steps are in `IAP_SETUP.md`.
 
 ## Historical Local Gate (2026-07-08)
 

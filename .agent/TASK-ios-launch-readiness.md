@@ -1,14 +1,16 @@
-# TASK: iOS 上线准备（更新：2026-08-03）
+# TASK: iOS 上线准备（更新：2026-08-04）
 
 ## Why（一句话）
 把当前可运行的 GearDrop / 值de iPhone App 收敛为可提交构建，并把代码内问题与必须在 Apple / App Store Connect 完成的外部步骤明确分开。
 
-## 当前状态：发布代码已与最新 `origin/main` 合并到干净独立分支且完整本地门转绿；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；首个 production iOS 签名构建已成功，App Store Connect 上传任务已排队；真实 StoreKit 交易、最终截图和提审仍待完成
+## 当前状态：发布代码已与最新 `origin/main` 合并到干净独立分支且完整本地门转绿；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；production iOS build 2 已在 Apple 端验证为 `VALID`、绑定 iOS 1.0 并可开始内部 TestFlight；真实 StoreKit 交易、最终截图和提审仍待完成
 
 ## 已确认事实
 - 2026-08-03 App Store Connect API access 已由 Account Holder 申请并即时获批；团队 API key `GearDrop EAS Build` 已创建为 Active / Admin，一次性 `.p8` 已下载且未读取或输出正文。该 key 的官方 App Store Connect API JWT 实测可读取现有 bundle ID `dev.100app.geardrop`。（来源：本轮 ASC 实际 DOM、文件 `stat` 与官方 API 200 响应）
 - 2026-08-03 EAS production iOS Build `67577ec9-d05c-4085-86d2-f201f7dc707c` 已读回 `FINISHED`：App `1.0.0`、build `2`；Fastlane 原文 `Successfully exported and signed the ipa file`，产物 `GearDrop.ipa` 27.5 MB，全部上传阶段 result=success。（来源：本轮 EAS build JSON 与云端构建日志）
-- 2026-08-03 EAS Submit 已绑定 API key 并为 build 2 创建 submission `725f9c4d-18a7-42b6-8a19-75b2886feb3a`；当前服务器状态为 `waiting for an available submitter`，尚未取得 Apple 上传成功或失败回执。（来源：本轮 EAS Submit 原始输出）
+- 2026-08-04 Apple 官方 API 已独立读回 build 2：App `1.0.0`、`processingState=VALID`、未过期、最低 iOS 16.4；TestFlight beta detail 为 `READY_FOR_BETA_TESTING` / `READY_FOR_BETA_SUBMISSION`。App Store Connect UI 同时显示 `1.0.0 (2)`、`Ready to Submit` 和 90 天有效期。（来源：本轮 App Store Connect API 200 响应与实际 DOM）
+- 2026-08-04 iOS 1.0 原先未绑定 build；通过 Apple 官方 App Store Connect API 把 build 2 绑定到版本，PATCH 返回 204，随后独立 relationship GET 返回同一 build resource ID `36ddf4a5-84c4-4a11-b969-330dd98e1b8f`。版本仍为 `PREPARE_FOR_SUBMISSION`，尚无 App Review submission。（来源：本轮 Apple 官方 API 写响应与独立读回）
+- 2026-08-04 当前提交缺口已从 Apple 官方 API 与 TestFlight UI 读回：App Store screenshots 为 0；monthly、annual、lifetime 三项均为 `MISSING_METADATA`，且缺审核截图；TestFlight `What to Test` 为空，Groups 0、Individual Testers 0。（来源：本轮 App Store Connect API 200 响应与实际 DOM）
 - 2026-08-03 从发布提交 `c7277d7` 新建 `codex/ios-appstore-submit-20260803`，合并最新 `origin/main` `5129eed`；冲突仅在 `privacy.html` 的更新时间和 `tests/test_web_memory_guards.py` 的迁移文件名，均保留主线最新值。合并后网站定向单测 37/37 通过，提交为 `7d5a9db`。（来源：本轮 Git、冲突 diff 与 unittest 原始输出）
 - 2026-08-03 完整 `npm run verify` exit 0：37/37 tests、config、release assets、typecheck、Expo Doctor 20/20、实时汇率、live products `5,803`、price history `83,982`、iOS export 1,492 modules / 5.4 MB 均通过，最终原文 `verify_local_ok`。（来源：本轮命令原始输出）
 - 2026-08-03 EAS 只读复核：登录 `noir-madlax`（Owner），项目 `@noir-madlax/geardrop` / `ead43b0e-5dbf-44a2-838e-f65db29abb30`；iOS build list 为 `[]`；production/preview 均存在遮罩后的 Sensitive RevenueCat iOS key。（来源：本轮 EAS CLI 20.5.1 原始输出）
@@ -115,10 +117,10 @@
 - post-IAP 完整门已实跑且如实失败于 live `4,970 < 5,000`；单独 iOS export 和 `git diff --check` 通过。依赖审计的 Expo build-tooling moderate advisory 已记录为未解决风险。
 
 ## 下一步
-1. 等待 EAS Submit 取得 Apple 上传回执，并在 App Store Connect / TestFlight 独立读回 build 2 的处理状态。
-2. 安装签名 candidate，重跑真实 StoreKit offering 探针并按 `app/IAP_SETUP.md` 完成 sandbox 购买、恢复和 entitlement 矩阵。
+1. 经 action-time 确认后创建内部 TestFlight 组、加入内部测试员并填写 `What to Test`。
+2. 从 TestFlight 安装签名 candidate，重跑真实 StoreKit offering 探针并按 `app/IAP_SETUP.md` 完成 sandbox 购买、恢复和 entitlement 矩阵。
 3. 从通过交易验收的签名 candidate 重截 App Store 最终图和三项 IAP review screenshot，上传后独立读回。
-4. 逐页复核版本、构建、IAP、出口合规与审核信息；把 iOS 1.0 与首批 IAP/订阅一起提交审核。
+4. 把三项 IAP/订阅附加到 iOS 1.0，逐页复核版本、构建、出口合规与审核信息后一起提交审核。
 
 ## 死路
 - 2026-08-03 Apple ID 密码登录在清理 Keychain并升级 EAS CLI 后仍连续返回 `Apple 302 detected`，Apple 官方状态无故障；改用 Account Holder 新建的 App Store Connect API key，不再要求用户重复输入密码。
