@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-05 11:11:26",
+  "generated_at": "2026-08-05 12:19:49",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -8629,12 +8629,12 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
-          "name": "Arc'teryx Covert Cardigan - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/482286_source_1753980940.jpg",
-          "color": "Black Heather II",
-          "sale_price": 230.0,
-          "original_price": 230.0,
+          "url": "https://www.mec.ca/en/product/6025-424/arcteryx-bird-word-toque-unisex",
+          "name": "Arc'teryx Bird Word Toque - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/491481_source_1753980934.jpg",
+          "color": "24k Black",
+          "sale_price": 70.0,
+          "original_price": 70.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8642,12 +8642,12 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6001-071/arcteryx-kyanite-hoodie-womens",
-          "name": "Arc'teryx Kyanite Hoodie - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518169_source_1767829000.jpg",
-          "color": "Dk Stratus",
-          "sale_price": 260.0,
-          "original_price": 260.0,
+          "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
+          "name": "Arc'teryx Covert Cardigan - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517313_source_1782759979.png",
+          "color": "Moondrop Heather",
+          "sale_price": 220.0,
+          "original_price": 220.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8683,7 +8683,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-625/arcteryx-gamma-short-9-womens",
           "name": "Arc'teryx Gamma Short 9\" - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533984_source_1775476842.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533934_source_1775476841.jpg",
           "color": "HABITAT",
           "sale_price": 150.0,
           "original_price": 150.0,
@@ -8720,7 +8720,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-05 04:31:47"
+      "refreshed_at": "2026-08-05 12:19:49"
     },
     "rei": {
       "name": "REI",
@@ -11108,8 +11108,6 @@
   "total": 511,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
