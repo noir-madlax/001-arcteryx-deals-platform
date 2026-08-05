@@ -183,7 +183,16 @@ function Header({
       {searchOpen ? (
         <View style={styles.searchWrap}>
           <Ionicons name="search" size={18} color={colors.faint} />
-          <TextInput value={query} onChangeText={onQueryChange} autoCapitalize="none" placeholder={t('deals.search')} style={styles.searchInput} />
+          <TextInput
+            value={query}
+            onChangeText={onQueryChange}
+            autoCapitalize="none"
+            autoComplete="off"
+            autoCorrect={false}
+            spellCheck={false}
+            placeholder={t('deals.search')}
+            style={styles.searchInput}
+          />
         </View>
       ) : null}
       <View style={styles.controlsWrap}>
