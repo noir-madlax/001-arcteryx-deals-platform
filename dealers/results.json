@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-05 00:07:50",
+  "generated_at": "2026-08-05 04:31:47",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6545,7 +6545,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 142,
+      "count": 141,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -8303,19 +8303,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-624/arcteryx-gamma-lightweight-hoodie-womens",
-          "name": "Arc'teryx Gamma Lightweight Hoodie - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533935_source_1774538460.jpg",
-          "color": "Mallow",
-          "sale_price": 340.0,
-          "original_price": 340.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6001-071/arcteryx-kyanite-hoodie-womens",
           "name": "Arc'teryx Kyanite Hoodie - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518169_source_1767829000.jpg",
@@ -8394,7 +8381,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-04 20:46:32"
+      "refreshed_at": "2026-08-05 04:31:47"
     },
     "rei": {
       "name": "REI",
@@ -10877,11 +10864,9 @@
       "refreshed_at": "2026-08-05 00:07:50"
     }
   },
-  "total": 501,
+  "total": 500,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
