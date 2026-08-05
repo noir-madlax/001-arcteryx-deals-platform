@@ -194,6 +194,8 @@ assert.ok(proContextSource.includes("import('react-native-purchases')"), 'Pro pr
 assert.ok(proContextSource.includes('sdk.getOfferings()'), 'Pro provider must load StoreKit-backed offerings');
 assert.ok(proContextSource.includes('sdk.purchasePackage'), 'Pro provider must purchase the selected RevenueCat package');
 assert.ok(proContextSource.includes('sdk.restorePurchases()'), 'Pro provider must expose user-triggered restore purchases');
+assert.ok(proContextSource.includes('sdk.presentCodeRedemptionSheet()'), 'Pro provider must use Apple offer-code redemption');
+assert.ok(proContextSource.includes('sdk.addCustomerInfoUpdateListener(listener)'), 'Pro provider must auto-apply redeemed StoreKit entitlements');
 assert.ok(proContextSource.includes('EXPO_PUBLIC_REVENUECAT_IOS_API_KEY'), 'Pro provider must use the configured public RevenueCat iOS SDK key');
 assert.ok(iapSource.includes("PRO_ENTITLEMENT_ID = 'Pro'"), 'IAP contract must use the configured Pro entitlement');
 for (const productId of ['dev.100app.geardrop.pro.monthly', 'dev.100app.geardrop.pro.annual', 'dev.100app.geardrop.pro.lifetime']) {
@@ -201,6 +203,7 @@ for (const productId of ['dev.100app.geardrop.pro.monthly', 'dev.100app.geardrop
 }
 assert.ok(paywallSource.includes('plan.price'), 'Paywall must render StoreKit-localized prices');
 assert.ok(paywallSource.includes('handleRestore'), 'Paywall must offer restore purchases');
+assert.ok(paywallSource.includes('handleRedeemOfferCode') && paywallSource.includes("t('paywall.redeemCode')"), 'Paywall must expose Apple offer-code redemption');
 assert.ok(paywallSource.includes('TERMS_URL') && paywallSource.includes('PRIVACY_URL'), 'Paywall must link terms and privacy');
 assert.ok(!paywallSource.includes('setPro(true)'), 'Paywall must not grant Pro locally');
 assert.ok(!meSource.includes('onValueChange={setPro}'), 'Me screen must not expose a local Pro toggle');

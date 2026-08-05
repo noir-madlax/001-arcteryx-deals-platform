@@ -6,16 +6,18 @@ import { buildProPlanEntries, hasProEntitlement, ProPlan, ProPlanId } from '../l
 
 type PurchaseState = 'loading' | 'ready' | 'unavailable' | 'error';
 type PurchaseOutcome = 'purchased' | 'restored' | 'cancelled' | 'pending' | 'not_found';
+type OfferCodeOutcome = 'presented' | 'unavailable';
 type PurchasesSdk = typeof import('react-native-purchases').default;
 
 type ProContextValue = {
   isPro: boolean;
   plans: ProPlan[];
   state: PurchaseState;
-  busyPlan: ProPlanId | 'restore' | null;
+  busyPlan: ProPlanId | 'restore' | 'redeem' | null;
   error: string | null;
   purchase: (planId: ProPlanId) => Promise<PurchaseOutcome>;
   restore: () => Promise<PurchaseOutcome>;
+  redeemOfferCode: () => Promise<OfferCodeOutcome>;
   refresh: () => Promise<void>;
 };
 
@@ -26,7 +28,7 @@ export function ProProvider({ children }: PropsWithChildren) {
   const [isPro, setIsPro] = useState(false);
   const [plans, setPlans] = useState<ProPlan[]>([]);
   const [state, setState] = useState<PurchaseState>('loading');
-  const [busyPlan, setBusyPlan] = useState<ProPlanId | 'restore' | null>(null);
+  const [busyPlan, setBusyPlan] = useState<ProPlanId | 'restore' | 'redeem' | null>(null);
   const [error, setError] = useState<string | null>(null);
   const sdkRef = useRef<PurchasesSdk | null>(null);
   const packagesRef = useRef(new Map<ProPlanId, PurchasesPackage>());
@@ -151,9 +153,26 @@ export function ProProvider({ children }: PropsWithChildren) {
     }
   }, [applyCustomerInfo]);
 
+  const redeemOfferCode = useCallback(async (): Promise<OfferCodeOutcome> => {
+    const sdk = sdkRef.current;
+    if (Platform.OS !== 'ios' || !sdk) return 'unavailable';
+
+    setBusyPlan('redeem');
+    setError(null);
+    try {
+      await sdk.presentCodeRedemptionSheet();
+      return 'presented';
+    } catch (nextError) {
+      setError(errorMessage(nextError));
+      return 'unavailable';
+    } finally {
+      setBusyPlan(null);
+    }
+  }, []);
+
   const value = useMemo(
-    () => ({ isPro, plans, state, busyPlan, error, purchase, restore, refresh }),
-    [isPro, plans, state, busyPlan, error, purchase, restore, refresh],
+    () => ({ isPro, plans, state, busyPlan, error, purchase, restore, redeemOfferCode, refresh }),
+    [isPro, plans, state, busyPlan, error, purchase, restore, redeemOfferCode, refresh],
   );
   return <ProContext.Provider value={value}>{children}</ProContext.Provider>;
 }

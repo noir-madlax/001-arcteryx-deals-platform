@@ -18,6 +18,14 @@ Do not rename these identifiers after creating them:
 
 The app expects the RevenueCat current offering to expose the standard monthly, annual, and lifetime packages. StoreKit supplies all displayed prices. A trial is shown only when Apple reports that the current customer is eligible.
 
+## Apple Offer Codes / Pro Invite Codes
+
+GearDrop's invite-code path must remain an Apple IAP path. The paywall opens Apple's system Offer Code redemption sheet through `react-native-purchases`; a valid code creates a StoreKit transaction, and the existing RevenueCat `CustomerInfo` listener activates the `Pro` entitlement. Never add a hardcoded code, client-side code hash, AsyncStorage unlock, or unauthenticated backend endpoint that grants Pro.
+
+For permanent invited access, configure a free Offer Code for the lifetime non-consumable `dev.100app.geardrop.pro.lifetime`. For time-limited access, configure the code against the monthly or annual subscription and explicitly choose its renewal behavior. Prefer Apple-generated one-time-use codes for private invitations. A shared custom code requires an approved string, redemption limit, and optional expiration date before creation.
+
+Current status: the in-app redemption entry is implemented on `codex/ios-pro-offer-code-20260805`, but no App Store Connect Offer Code has been created and build 5 does not contain this UI.
+
 ## 1. App Store Connect
 
 1. Confirm the app record uses bundle ID `dev.100app.geardrop`.
@@ -73,6 +81,10 @@ Run these checks on a signed development, preview, or TestFlight build. Expo Go 
 8. A pending Ask to Buy transaction does not grant Pro before approval.
 9. Offline launch preserves the last RevenueCat entitlement state and recovers when connectivity returns.
 10. Terms of Use and Privacy Policy links open successfully.
+11. The Pro invite-code button opens Apple's system redemption sheet; no code is accepted or stored by GearDrop itself.
+12. An invalid or expired sandbox code leaves the user on Free.
+13. A valid sandbox code activates `Pro` through a RevenueCat `CustomerInfo` update without a local unlock flag.
+14. Relaunch and Restore Purchases preserve access from the redeemed StoreKit transaction.
 
 Record the tester account type, storefront, build ID, product, displayed price, result, and screenshot for each run. Do not use a production Apple ID for sandbox evidence.
 

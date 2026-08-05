@@ -37,7 +37,7 @@ const TERMS_URL = 'https://www.apple.com/legal/internet-services/itunes/dev/stde
 const PRIVACY_URL = 'https://001.100app.dev/privacy.html';
 
 export default function PaywallScreen() {
-  const { isPro, plans, state, busyPlan, purchase, restore, refresh } = usePro();
+  const { isPro, plans, state, busyPlan, purchase, restore, redeemOfferCode, refresh } = usePro();
   const { t } = usePreferences();
   const [selectedId, setSelectedId] = useState<ProPlanId>('annual');
   const [notice, setNotice] = useState<string | null>(null);
@@ -75,6 +75,12 @@ export default function PaywallScreen() {
     } else {
       setNotice(t('paywall.nothingToRestore'));
     }
+  }
+
+  async function handleRedeemOfferCode() {
+    setNotice(null);
+    const outcome = await redeemOfferCode();
+    setNotice(outcome === 'presented' ? t('paywall.redeemPresented') : t('paywall.redeemUnavailable'));
   }
 
   return (
@@ -151,7 +157,7 @@ export default function PaywallScreen() {
           style={[styles.cta, (busyPlan || (!isPro && !selectedPlan)) && styles.ctaDisabled]}
           onPress={() => void handlePurchase()}
         >
-          {busyPlan && busyPlan !== 'restore' ? <ActivityIndicator color={colors.onPill} /> : null}
+          {busyPlan && busyPlan !== 'restore' && busyPlan !== 'redeem' ? <ActivityIndicator color={colors.onPill} /> : null}
           <Text style={styles.ctaText}>{isPro ? t('paywall.proActive') : t('paywall.continue', { plan: selectedLabel })}</Text>
           {!busyPlan ? <Ionicons name="arrow-forward" size={17} color={colors.onPill} /> : null}
         </Pressable>
@@ -160,6 +166,13 @@ export default function PaywallScreen() {
           {busyPlan === 'restore' ? <ActivityIndicator size="small" color={colors.ink} /> : <Ionicons name="refresh" size={16} color={colors.ink} />}
           <Text style={styles.restoreText}>{busyPlan === 'restore' ? t('paywall.restoring') : t('paywall.restore')}</Text>
         </Pressable>
+
+        {!isPro ? (
+          <Pressable accessibilityRole="button" disabled={Boolean(busyPlan)} style={styles.redeem} onPress={() => void handleRedeemOfferCode()}>
+            {busyPlan === 'redeem' ? <ActivityIndicator size="small" color={colors.ink} /> : <Ionicons name="ticket-outline" size={16} color={colors.ink} />}
+            <Text style={styles.redeemText}>{busyPlan === 'redeem' ? t('paywall.redeemingCode') : t('paywall.redeemCode')}</Text>
+          </Pressable>
+        ) : null}
 
         {notice ? <Text accessibilityRole="alert" style={styles.notice}>{notice}</Text> : null}
         <Text style={styles.fine}>{selectedPlan?.id === 'lifetime' ? t('paywall.lifetimeTerms') : t('paywall.renewalTerms')}</Text>
@@ -252,6 +265,8 @@ const styles = StyleSheet.create({
   ctaText: { color: colors.onPill, fontSize: 15, fontWeight: '900' },
   restore: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 },
   restoreText: { color: colors.ink, fontSize: 13, fontWeight: '800' },
+  redeem: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border },
+  redeemText: { color: colors.ink, fontSize: 13, fontWeight: '800' },
   notice: { color: colors.buy, textAlign: 'center', marginTop: 2, fontSize: 12, lineHeight: 17, fontWeight: '800' },
   fine: { color: colors.faint, marginTop: 6, textAlign: 'center', fontSize: 10.5, lineHeight: 15, fontWeight: '600' },
   legalLinks: { minHeight: 34, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
