@@ -2,7 +2,7 @@
 
 The app-side RevenueCat integration, matching App Store products, RevenueCat `Pro` entitlement/default offering, and EAS public iOS SDK key are configured. They were rechecked live on 2026-08-02: the default offering is Active with three real App Store packages, `Pro` is Active, and the IAP key remains `Valid credentials`. Real purchases remain unverified until the sandbox matrix below runs on a signed build.
 
-The last real-key iPhone Simulator probe returned no StoreKit products and logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`; a 2026-07-13 11:38 EDT rerun produced the same result. On 2026-08-04 Paid Apps Agreement, banking, W-8BEN, and DSA were all read back as Active. All three products are still `Prepare for Submission` without Review Information screenshots. TestFlight build `1.0.0 (4)` is now `IN_BETA_TESTING` in `GearDrop Internal`; do not treat the empty Simulator offering as resolved until the signed build-4 sandbox matrix passes.
+The last real-key iPhone Simulator probe returned no StoreKit products and logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`; a 2026-07-13 11:38 EDT rerun produced the same result. On 2026-08-04 Paid Apps Agreement, banking, W-8BEN, and DSA were all read back as Active. On 2026-08-05 Apple independently returned `MISSING_METADATA` for all three products and zero Review Information screenshots. TestFlight build `1.0.0 (5)` is `IN_BETA_TESTING` in `GearDrop Internal`; do not treat the empty Simulator offering as resolved until the signed build-5 sandbox matrix passes.
 
 ## Fixed Contract
 

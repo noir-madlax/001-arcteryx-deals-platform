@@ -91,7 +91,7 @@ assert.equal(expo.locales?.['zh-Hans']?.ios?.CFBundleName, '值de');
 assert.equal(expo.locales?.['zh-Hans']?.android?.app_name, '值de');
 assert.equal(expo.ios?.bundleIdentifier, 'dev.100app.geardrop');
 assert.equal(expo.ios?.supportsTablet, false, 'v1 release must remain iPhone-only until iPad UI and screenshots are verified');
-assert.equal(expo.ios?.buildNumber, '4');
+assert.equal(expo.ios?.buildNumber, '5');
 assert.equal(expo.ios?.config?.usesNonExemptEncryption, false);
 assertNoTrademark(expo.name, 'expo.name');
 assertNoTrademark(expo.slug, 'expo.slug');
@@ -228,6 +228,6 @@ assert.ok(liveDataVerifierSource.includes('PLATFORM_REGION_MIN_ROWS'), 'live dat
 assert.ok(!liveDataVerifierSource.includes('products.length >= 5000'), 'live data verification must not use a volatile aggregate catalog floor');
 
 console.log(
-  'config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=4 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=' +
+  'config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=5 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=' +
     [...pluginNames].join(','),
 );

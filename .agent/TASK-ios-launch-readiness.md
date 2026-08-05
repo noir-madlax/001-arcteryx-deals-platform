@@ -1,11 +1,13 @@
-# TASK: iOS 上线准备（更新：2026-08-04）
+# TASK: iOS 上线准备（更新：2026-08-05）
 
 ## Why（一句话）
 把当前可运行的 GearDrop / 值de iPhone App 收敛为可提交构建，并把代码内问题与必须在 Apple / App Store Connect 完成的外部步骤明确分开。
 
-## 当前状态：含第一版 GearDrop logo 的 build 4 已完成 EAS production 签名构建、Apple 官方校验与直传、处理为 `VALID`、加入 3 人内部 TestFlight 组，并替换 build 3 绑定到 iOS 1.0；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；build 4 真机 StoreKit 交易、最终截图和提审仍待完成
+## 当前状态：含地区选择器和搜索修复的 build 5 已完成 EAS production 签名构建、Apple 官方校验与直传、处理为 `VALID`、加入 3 人内部 TestFlight 组，并替换 build 4 绑定到 iOS 1.0；Apple 协议、银行、税务、商店元数据、隐私和非中国大陆 availability 已完成；build 5 真机 StoreKit 交易、最终截图和提审仍待完成
 
 ## 已确认事实
+- 2026-08-05 EAS production build `e88a4ac2-88f8-4332-9b77-7ee9127cd355` 读回 `FINISHED`：App `1.0.0`、build `5`、源码提交 `392a7e957fd00f06e6210f5f245272c35aeededa`。30,079,040-byte 签名 IPA SHA-256 为 `196a7b09a0e7c830d53c04588be418038b12583f2ac36b5fc67a6b9bbc070a0c`，codesign 与 Info.plist 通过；Apple 返回 `VERIFY SUCCEEDED with no errors`、`UPLOAD SUCCEEDED with no errors`，最终 build resource `c76bab54-1175-4729-a161-981b48b4ebfe` 为 `VALID` / `APP_STORE_ELIGIBLE`。（来源：本轮 EAS、IPA、Content Delivery 原始输出）
+- 2026-08-05 build 5 加入 `GearDrop Internal` 与绑定 iOS 1.0 均返回 HTTP 204；全新进程独立读回组内 build 2/3/4/5、3 testers、iOS 1.0 当前唯一 build 5、`IN_BETA_TESTING` / `READY_FOR_BETA_SUBMISSION`。同次读回 App Store screenshots 0，三项 IAP 均 `MISSING_METADATA` 且 Review Information screenshot 0；未提交 App Review。（来源：本轮 App Store Connect API 写前、写响应与独立写后 GET）
 - 2026-08-04 EAS production build `33fcb413-26c7-4282-9903-1021eeb40909` 读回 `FINISHED`：App `1.0.0`、build `4`、源码提交 `2e73e3b5553dca15c9658393d9ec866dbe1b6aa6`。30,078,471-byte 签名 IPA SHA-256 为 `ebbfcd65a1fedcf0c444b102d0639b526dfb2dc5f68c29921c2fa8175d9df8d5`，codesign、Info.plist、AppIcon、Splash 与运行时 logo/mark 均通过校验。（来源：本轮 EAS JSON、IPA、assetutil、codesign 与 shasum 原始输出）
 - 2026-08-04 EAS Submit `6bb5c579-120f-46a1-a2de-6031479ea7ff` 长时间停在 `Queued / Free Tier Queue` 且无日志；同一 IPA 经 Apple 官方校验返回 `VERIFY SUCCEEDED with no errors` 后取消队列，刷新独立读回 `Canceled`。（来源：本轮 Expo 实际 DOM 与 altool 原始输出）
 - 2026-08-04 Apple delivery / build resource `a9601f62-78a4-4e52-9336-8934a0c57e85` 返回 `UPLOAD SUCCEEDED with no errors`，最终读回 `VALID` / `APP_STORE_ELIGIBLE` / `usesNonExemptEncryption=false` / 最低 iOS 16.4。官方 API 把 build 4 加入 `GearDrop Internal` 及绑定 iOS 1.0 均返回 HTTP 204；关系 GET 与全新进程独立读回内部组 build 2/3/4、3 testers、iOS 1.0 唯一 build 4、`IN_BETA_TESTING` / `READY_FOR_BETA_SUBMISSION`。（来源：本轮 Apple Content Delivery 与 App Store Connect API 原始输出）
@@ -111,6 +113,7 @@
 7. IAP SDK 必须通过单元测试、TypeScript、配置校验、干净 prebuild/CocoaPods 和 iOS Release 原生编译；真实交易必须另以 sandbox/TestFlight 证据验收。
 
 ## 已完成且已验证
+- build 5 已把 build 4 真机暴露的 FI/IE/AU 地区显示/滚动/持久化问题与 iOS 搜索自动纠错问题合并；本轮完整 `npm run verify` 为 40/40 tests、Doctor 20/20、5,719 products、84,072 price-history rows、200 条启动预览、AU 16、iOS 1,497 modules / 5.4 MB，最终 `verify_local_ok`。源码提交已推送并读回，EAS/IPA/Apple/TestFlight/iOS 1.0 build relationship 均逐层验收。（来源：本轮本地、Git、EAS 与 Apple 原始输出）
 - App Store Connect API access/key、Apple Distribution certificate、App Store provisioning profile 与首个 production iOS 签名构建均已完成；EAS build 记录读回 `FINISHED`，build 2 的 27.5 MB `.ipa` 已生成并上传为构建产物。
 - 2026-08-02 上线代码已恢复到最新远端基线的独立分支；完整 App 门、网站 guard 测试与 `git diff --check` 均通过，RevenueCat/EAS 只读状态已刷新。
 - 2026-07-12 已完成 EAS 登录、项目绑定、EAS iOS build 列表、Apple 本机签名身份、线上 URL、图标尺寸/alpha 和 Apple 当前规则的只读审计；结果见“已确认事实”。
@@ -131,8 +134,8 @@
 - post-IAP 完整门已实跑且如实失败于 live `4,970 < 5,000`；单独 iOS export 和 `git diff --check` 通过。依赖审计的 Expo build-tooling moderate advisory 已记录为未解决风险。
 
 ## 下一步
-1. 从 TestFlight 安装或升级到 build 4，验证第一版 logo、首页无缺图占位和冷启动预览，并按 `app/IAP_SETUP.md` 完成真实 StoreKit offering、sandbox 购买、恢复和 entitlement 矩阵。
-2. 从通过交易验收的 build 4 重截 App Store 最终图和三项 IAP review screenshot，上传后独立读回。
+1. 从 TestFlight 安装或升级到 build 5，验证 FI/IE/AU 地区显示、滚动与持久化，美国区 `sabre` 搜索、第一版 logo、首页无缺图占位和冷启动预览，并按 `app/IAP_SETUP.md` 完成真实 StoreKit offering、sandbox 购买、恢复和 entitlement 矩阵。
+2. 从通过交易验收的 build 5 重截 App Store 最终图和三项 IAP review screenshot，上传后独立读回。
 3. 把三项 IAP/订阅附加到 iOS 1.0，逐页复核版本、构建、出口合规与审核信息后一起提交审核。
 
 ## 死路
