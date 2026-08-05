@@ -24,7 +24,9 @@ GearDrop's invite-code path must remain an Apple IAP path. The paywall opens App
 
 For permanent invited access, configure a free Offer Code for the lifetime non-consumable `dev.100app.geardrop.pro.lifetime`. For time-limited access, configure the code against the monthly or annual subscription and explicitly choose its renewal behavior. Prefer Apple-generated one-time-use codes for private invitations. A shared custom code requires an approved string, redemption limit, and optional expiration date before creation.
 
-Current status: the in-app redemption entry is implemented on `codex/ios-pro-offer-code-20260805`, but no App Store Connect Offer Code has been created and build 5 does not contain this UI.
+Current status: the in-app redemption entry is implemented on `codex/ios-pro-offer-code-20260805`, and App Store Connect now has an active free lifetime offer named `PRO_INVITE_LIFETIME_20260805`. The current App Store Connect API accepts 10 or 100-step sandbox batch sizes, so a 100-code SANDBOX batch was created and locally split into 99 deliverable test codes plus one isolated reserve; it expires on 2027-02-01. These codes are test-only. Build 5 does not contain the redemption UI, and no production code exists.
+
+Apple requires production one-time-use batches to contain at least 500 codes. Production codes also require the app to be Ready for Distribution and the associated IAP to be Approved; GearDrop is not yet at those states. Do not generate or distribute production codes until the signed sandbox matrix passes.
 
 ## 1. App Store Connect
 
@@ -87,6 +89,8 @@ Run these checks on a signed development, preview, or TestFlight build. Expo Go 
 14. Relaunch and Restore Purchases preserve access from the redeemed StoreKit transaction.
 
 Record the tester account type, storefront, build ID, product, displayed price, result, and screenshot for each run. Do not use a production Apple ID for sandbox evidence.
+
+The current sandbox delivery artifact is `/Users/J/Downloads/GearDrop-Pro-Sandbox-Codes-99-20260805-5da1ed3e.csv`. It contains 99 Apple-generated codes with file mode `0600`. The separate one-code reserve must not be distributed. Never commit either file or paste the code values into logs, issues, review notes, or source control.
 
 ## 5. Release Commands
 
