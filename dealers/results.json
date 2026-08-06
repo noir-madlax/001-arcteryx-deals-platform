@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-06 11:09:02",
+  "generated_at": "2026-08-06 12:25:51",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6550,7 +6550,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 141,
+      "count": 139,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -6835,7 +6835,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-633/arcteryx-olera-zip-neck-womens",
           "name": "Arc'teryx Olera Zip Neck - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/530666_source_1784610628.png",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/530651_source_1784610627.png",
           "color": "Solitude",
           "sale_price": 161.0,
           "original_price": 230.0,
@@ -8182,13 +8182,25 @@
           "url": "https://www.mec.ca/en/product/6032-375/arcteryx-sinsolo-bucket-hat-unisex",
           "name": "Arc'teryx Sinsolo Bucket Hat - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/512792_source_1744881682.jpg",
-          "color": "Black",
+          "color": "Black, Verve",
           "sale_price": 100.0,
           "original_price": 100.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
-          "region": "CA"
+          "region": "CA",
+          "sizes": [
+            "Large/X-Large",
+            "Small/Medium"
+          ],
+          "size_stock": {
+            "Small/Medium": "in_stock",
+            "Large/X-Large": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Verve"
+          ]
         },
         {
           "url": "https://www.mec.ca/en/product/6037-637/arcteryx-sunna-crew-long-sleeve-womens",
@@ -8256,12 +8268,27 @@
           "name": "Arc'teryx Rho LT Base Layer Bottoms - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509526_source_1761584555.jpg",
           "color": "Black",
-          "sale_price": 130.0,
+          "sale_price": 59.94,
           "original_price": 130.0,
-          "discount_pct": 0,
+          "discount_pct": 54,
           "dealer": "mec",
           "dealer_name": "MEC",
-          "region": "CA"
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large"
+          ],
+          "size_stock": {
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ]
         },
         {
           "url": "https://www.mec.ca/en/product/6040-621/arcteryx-venta-gtx-glove-unisex",
@@ -9730,31 +9757,6 @@
           ]
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-544/arcteryx-skyline-long-sleeve-shirt-mens",
-          "name": "Arc'teryx Skyline Long Sleeve Shirt - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533711_source_1774267280.jpg",
-          "color": "",
-          "sale_price": 180.0,
-          "original_price": 180.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large"
-          ],
-          "size_stock": {
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock"
-          },
-          "colors": []
-        },
-        {
           "url": "https://www.mec.ca/en/product/6020-667/arcteryx-emblem-fleece-crew-womens",
           "name": "Arc'teryx Emblem Fleece Crew - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/512815_source_1772539301.jpg",
@@ -10040,7 +10042,7 @@
           "url": "https://www.mec.ca/en/product/6040-469/arcteryx-kragg-sl-cotton-jug-short-sleeve-mens",
           "name": "Arc'teryx Kragg SL Cotton Jug Short Sleeve - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560698_source_1784846165.jpg",
-          "color": "Black/Violectric",
+          "color": "Black/Violectric, Sea Salt/Vitality",
           "sale_price": 90.0,
           "original_price": 90.0,
           "discount_pct": 0,
@@ -10060,7 +10062,8 @@
             "X-Large": "in_stock"
           },
           "colors": [
-            "Black/Violectric"
+            "Black/Violectric",
+            "Sea Salt/Vitality"
           ]
         },
         {
@@ -10767,7 +10770,7 @@
           "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
           "name": "Arc'teryx Covert Cardigan - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517313_source_1782759979.png",
-          "color": "Black Heather II, Cloud Heather/Void, Moondrop Heather",
+          "color": "Black Heather II, Moondrop Heather",
           "sale_price": 49.93,
           "original_price": 230.0,
           "discount_pct": 78,
@@ -10790,7 +10793,6 @@
           },
           "colors": [
             "Black Heather II",
-            "Cloud Heather/Void",
             "Moondrop Heather"
           ]
         },
@@ -10905,36 +10907,9 @@
           "colors": [
             "Pineberry"
           ]
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6034-788/arcteryx-kragg-cotton-lithographica-short-sleeve-mens",
-          "name": "Arc'teryx Kragg Cotton Lithographica Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533903_source_1764718602.jpg",
-          "color": "",
-          "sale_price": 60.0,
-          "original_price": 100.0,
-          "discount_pct": 40,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large"
-          ],
-          "size_stock": {
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": []
         }
       ],
-      "refreshed_at": "2026-08-06 04:04:59"
+      "refreshed_at": "2026-08-06 12:25:50"
     },
     "rei": {
       "name": "REI",
@@ -13198,11 +13173,9 @@
       "refreshed_at": "2026-08-06 11:09:02"
     }
   },
-  "total": 490,
+  "total": 488,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
