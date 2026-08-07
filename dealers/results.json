@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-07 15:03:01",
+  "generated_at": "2026-08-07 17:11:05",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6586,7 +6586,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 140,
+      "count": 139,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -8123,19 +8123,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6025-424/arcteryx-bird-word-toque-unisex",
-          "name": "Arc'teryx Bird Word Toque - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/491481_source_1753980934.jpg",
-          "color": "24k Black",
-          "sale_price": 70.0,
-          "original_price": 70.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6032-525/arcteryx-kragg-superlight-cotton-short-sleeve-mens",
           "name": "Arc'teryx Kragg Superlight Cotton Short Sleeve - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517314_source_1778799969.jpg",
@@ -8409,7 +8396,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-07 13:02:36"
+      "refreshed_at": "2026-08-07 17:11:05"
     },
     "rei": {
       "name": "REI",
@@ -10600,11 +10587,9 @@
       "refreshed_at": "2026-08-07 15:03:01"
     }
   },
-  "total": 490,
+  "total": 489,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
