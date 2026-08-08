@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-08 20:21:22",
+  "generated_at": "2026-08-08 22:50:39",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6704,19 +6704,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-626/arcteryx-gamma-sl-pant-womens",
-          "name": "Arc'teryx Gamma SL Pant - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519541_source_1773730232.jpg",
-          "color": "Black",
-          "sale_price": 200.0,
-          "original_price": 200.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6030-116/arcteryx-kragg-heavyweight-cotton-bird-crew-long-sleeve-womens",
           "name": "Arc'teryx Kragg Heavyweight Cotton Bird Crew Long Sleeve - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518182_source_1767829000.jpg",
@@ -6756,19 +6743,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-622/arcteryx-delta-jacket-womens",
-          "name": "Arc'teryx Delta Jacket - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560763_source_1784846220.jpg",
-          "color": "Lt Renegade",
-          "sale_price": 260.0,
-          "original_price": 260.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6032-520/arcteryx-gamma-pant-mens",
           "name": "Arc'teryx Gamma Pant - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504566_source_1780401665.jpg",
@@ -6786,6 +6760,19 @@
           "name": "Arc'teryx Atom Vest - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529305_source_1757627410.jpg",
           "color": "Black Sapphire",
+          "sale_price": 260.0,
+          "original_price": 260.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6037-622/arcteryx-delta-jacket-womens",
+          "name": "Arc'teryx Delta Jacket - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529277_source_1756911280.jpg",
+          "color": "Black",
           "sale_price": 260.0,
           "original_price": 260.0,
           "discount_pct": 0,
@@ -8212,6 +8199,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6032-948/arcteryx-sylan-gore-tex-running-shoes-mens",
+          "name": "Arc'teryx Sylan Gore-Tex Running Shoes - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/484766_source_1732790357.jpg",
+          "color": "Black/Black",
+          "sale_price": 280.0,
+          "original_price": 280.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-785/arcteryx-rho-base-layer-bottoms-womens",
           "name": "Arc'teryx Rho Base Layer Bottoms - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509242_source_1783425700.png",
@@ -8238,7 +8238,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-08 16:54:57"
+      "refreshed_at": "2026-08-08 22:50:38"
     },
     "rei": {
       "name": "REI",
@@ -10392,6 +10392,6 @@
   "total": 479,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "rei"
+    "mec"
   ]
 }
