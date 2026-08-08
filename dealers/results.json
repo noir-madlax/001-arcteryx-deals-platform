@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-08 09:21:03",
+  "generated_at": "2026-08-08 10:54:10",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6608,7 +6608,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 137,
+      "count": 136,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -8015,19 +8015,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6030-494/arcteryx-mantis-2-waist-pack-unisex",
-          "name": "Arc'teryx Mantis 2 Waist Pack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/493670_source_1745313831.jpg",
-          "color": "24k Black",
-          "sale_price": 60.0,
-          "original_price": 60.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6030-142/arcteryx-rho-toque-unisex",
           "name": "Arc'teryx Rho Toque - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560755_source_1784846220.jpg",
@@ -8329,10 +8316,10 @@
         {
           "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
           "name": "Arc'teryx Covert Cardigan - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517313_source_1782759979.png",
-          "color": "Moondrop Heather",
-          "sale_price": 220.0,
-          "original_price": 220.0,
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/482249_source_1753980936.jpg",
+          "color": "Black Heather II",
+          "sale_price": 230.0,
+          "original_price": 230.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8392,7 +8379,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-08 03:02:48"
+      "refreshed_at": "2026-08-08 10:54:10"
     },
     "rei": {
       "name": "REI",
@@ -10808,11 +10795,9 @@
       "refreshed_at": "2026-08-08 09:21:03"
     }
   },
-  "total": 488,
+  "total": 487,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
