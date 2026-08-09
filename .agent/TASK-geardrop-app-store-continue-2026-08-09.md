@@ -33,12 +33,15 @@
 - 内部组 UI 读回 3 testers / 6 builds；一台其他测试设备已安装 build 7，目标 `Jenova` 对应的 iPhone 16 Pro 仍记录为 build 6。iPhone TestFlight 设置里的当前账号与该 build 6 测试员记录精确一致，排除“登录错账号”；但 GearDrop 在列表内搜索仍为无结果。（来源：本轮 TestFlight 组 live DOM 与 iPhone 镜像）
 - 对目标 tester + App 发送 `betaTesterInvitations` 前已断言精确 App、bundle、内部组与 build 7；Apple 返回 HTTP 409 / `STATE_ERROR.TESTER_INVITE.ALREADY_ACCEPTED`，证明邀请已接受而不是待接受。随后只把该 tester 从目标组关系移出并立即加回，DELETE/POST 均为 204；写后 GET 读回组关系存在、目标 tester 唯一、状态仍为 `INSTALLED`、组内仍为 3 testers。（来源：本轮 Apple 官方 API 写前、写响应与写后读回）
 - iPhone Spotlight 中残留的一条旧 TestFlight invitation 深链打开后显示已撤销或无效，不能用于恢复；TestFlight 强制关闭、重启、下拉刷新和 App 内搜索后仍不显示 GearDrop。（来源：本轮 iPhone 镜像）
+- 当前测试账号邮箱于 2026-08-09 21:43（Asia/Taipei）收到 Apple 官方、DKIM/SPF/DMARC 均通过的 build 7 可测试通知；邮件的官方 app 深链为 GearDrop App `6790165332`，证明新通知已送达正确账号。（来源：本轮 Gmail 精确搜索与单封邮件读取）
+- iPhone Safari 已成功把该官方深链交给 TestFlight，但 TestFlight 连续返回 `App 不可用 / 此 App 不可用于你的 Apple 账户`。TestFlight 设置实时显示的账号与邀请收件账号精确一致；App Store Connect 同时读回目标 tester 为 `Installed 1.0.0 (6)`、17 sessions、设备 iPhone 16 Pro / iOS 26.5.2，build 7 在 `GearDrop Internal` 且另一 tester 已安装 build 7，因此当前是目标 tester 的 Apple 账户资格/绑定不一致，不是 URL、build 分组或登录邮箱错误。（来源：本轮 iPhone Safari/TestFlight 与 App Store Connect live DOM）
+- 经用户明确同意，已在 iPhone `Apple 账户 > 媒体与购买项目` 退出并用同一 Apple 账户自动重新登录；写后再次打开菜单出现 `退出登录`，证明购买账号会话已恢复。强制关闭 TestFlight 后重新打开同一官方邀请，仍返回完全相同的 `App 不可用`，排除客户端 TestFlight 缓存和媒体购买会话。（来源：本轮 iPhone 镜像写前、确认提示、写后菜单与邀请重试）
 - IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
 
 ## 假设
 
 - 若 build 7 真机验收暴露代码缺陷，将在本隔离分支做最小修复并生成新 build；否则不无谓重建。
-- 如果重新加入内部组后没有收到新邀请，优先由用户在 TestFlight 退出后重新登录当前同一账号；删除并重建 tester 会损失测试指标历史，只有用户明确同意后才执行。
+- 删除并重建目标 tester 会损失当前 17 sessions 等测试指标历史；关系重建、有效新邮件、TestFlight 强制重启以及同一 Apple 账户的媒体购买会话重登均已失败，因此只有用户明确同意该历史损失后才执行 tester 级重建。
 
 ## 验收标准
 
@@ -57,11 +60,11 @@
 - 已完成 build 7 的 Apple 上传处理、内部组关系和 `What to Test`；三个外部写入都已在全新进程独立读回。（来源：本轮 EAS/Apple API）
 - 已完成当前 App Store 版本、元数据、availability、三项 IAP 和审核截图关系的 live 只读盘点；未绑定最终 build、未附加 IAP、未提交审核。（来源：本轮 Apple API）
 - 已完成 App Privacy 当前发布状态、App Store 1.0 页面、TestFlight tester/device/build、三项 IAP localization/price/review screenshot 的登录 UI 复核。（来源：本轮 App Store Connect live DOM）
-- 已确认 iPhone TestFlight 账号与目标 tester 一致，并完成一次精确、可逆的 tester-group 关系重建及写后读回；当前仍受 TestFlight 端 App 列表不同步阻塞。（来源：本轮 Apple API 与 iPhone 镜像）
+- 已确认 iPhone TestFlight 账号与目标 tester 一致，完成 tester-group 关系重建、官方新邮件/深链验证、TestFlight 强制重启及同一 Apple 账户的媒体购买会话退出/重登；当前仍受目标 tester 的 Apple 账户资格绑定异常阻塞。（来源：本轮 Apple API、Gmail、App Store Connect live DOM 与 iPhone 镜像）
 
 ## 下一步
 
-1. 用户从当前 TestFlight 账号对应邮箱打开新收到的 GearDrop 邀请深链；若未收到则在 TestFlight 退出并重新登录同一账号。GearDrop 出现后安装 build 7，完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
+1. 仅在用户明确接受丢失目标 tester 的 17 sessions 等历史后，删除并以同一账号重建该 beta tester、加入 `GearDrop Internal`、发送全新邀请并独立读回；随后在 iPhone 打开新邀请、安装 build 7，完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
 2. 从通过真机验收的 build 7 截取最终 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
 3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 7、附加三项 IAP，做最终 readback 后提交审核。
 
@@ -69,6 +72,7 @@
 
 - 重发已接受的邀请会被 Apple 以 `STATE_ERROR.TESTER_INVITE.ALREADY_ACCEPTED` 拒绝；移出并立即加回同一内部组虽成功读回，但 tester 状态仍为 `INSTALLED`，TestFlight 本机列表仍未恢复。
 - iPhone 上残留的旧 TestFlight invitation 页面已经撤销或失效，不能代替新的邀请深链。
+- 新收到的 Apple 官方 build 7 邮件及其 app 深链本身有效，但目标账号打开后稳定返回 `此 App 不可用于你的 Apple 账户`；退出并重新登录同一 `媒体与购买项目` 账号以及强制重启 TestFlight 均不能修复。
 - 首次 `eas submit` 带 `--json` 时 CLI 21.7.0 以 `Nonexistent flag: --json` 在本地退出 1，未创建外部提交；去掉该 flag 后才成功调度 submission。
 - EAS `submit:status` 起初因本机时间比 Apple `Date` 头快约 29 秒而返回 401；本轮只对该进程注入 -60 秒 `Date` shim 后读回成功，未改系统时钟。
 - `@expo/apple-utils` 的旧 `dataUsagePublishState` 和 `availableTerritories` 关系已被 Apple 移除；availability 已改用 Apple 官方 `appAvailabilityV2` + v2 territory endpoint，App Privacy publish state 已改由登录 UI 实时复核并确认已发布。
