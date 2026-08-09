@@ -35,6 +35,7 @@ export default function DealsScreen() {
   const series = useMemo(() => [...new Set(regionProducts.map((product) => product._series))], [regionProducts]);
   const regionOptions = useMemo(() => availableDealRegions(products), [products]);
   const filtered = useMemo(() => filterDeals(products, region, query, filters), [filters, products, query, region]);
+  const listRevision = `${region}\u001f${searchOpen ? 'open' : 'closed'}\u001f${query}\u001f${filters.platform}\u001f${filters.category}\u001f${filters.gender}\u001f${filters.series}\u001f${filters.sort}`;
 
   useEffect(() => {
     if (!loading && products.length && region !== 'all' && !regionOptions.includes(region)) {
@@ -60,6 +61,7 @@ export default function DealsScreen() {
     <SafeAreaView style={styles.safe} edges={['top']}>
       <FlatList
         data={data}
+        extraData={listRevision}
         keyExtractor={(item) => item.sku_id}
         numColumns={2}
         columnWrapperStyle={styles.columns}

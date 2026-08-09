@@ -5,7 +5,7 @@
 
 ## 当前状态：进行中
 
-已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；三个同 SDK 补丁升级后的 production build 7 已完成 EAS 签名构建、本地产物核验、Apple 上传处理和内部 TestFlight 分发，并补齐 build 7 的 en-US `What to Test`。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot。目标 TestFlight tester 已按用户授权完成 GearDrop 单应用关系重置、同邮箱重建、重新入组和新邀请送达；但 iPhone 用新邀请兑换时，Apple 明确提示当前显示邮箱虽与收件邮箱一致，底层邀请却关联到另一个“原始 Apple 账户”（界面仅给出脱敏 QQ 邮箱提示）。用户报告已切换后再次实时核验，`媒体与购买项目 > 查看账户` 仍要求此前 Gmail Apple 账户的密码，证明切换尚未生效；当前仍阻塞于 Apple 账户身份映射，尚未完成 build 7 真机矩阵、绑定或 App Review 提交。
+已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；三个同 SDK 补丁升级后的 production build 7 已完成 EAS 签名构建、本地产物核验、Apple 上传处理和内部 TestFlight 分发，并补齐 build 7 的 en-US `What to Test`。原始 QQ Apple 账户现已在 iPhone `媒体与购买项目` 与 TestFlight 两处生效，新邀请兑换成功，build 7 已安装并启动。FI/IE/AU 切换、AU 图片与冷启动持久化通过，但美国区精确搜索 `sabre` 暴露 `FlatList` 在搜索框展开时保留空状态的真机缺陷；最小 `extraData` 修复已通过完整本地发布门，下一步生成 build 8 真机复测。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot，尚未绑定或提交 App Review。
 
 ## 已确认事实
 
@@ -46,6 +46,11 @@
 - 已彻底划掉并冷启动 TestFlight，再次兑换同一新邀请仍得到完全相同的原始 Apple 账户关联错误。终态全新 JWT 进程读回 tester 仍唯一、`INVITED`、GearDrop/精确组关系完整、组内 3 testers、build 7 `VALID`，证明失败未破坏服务端恢复状态。（来源：本轮 iPhone 镜像与 Apple 官方 API 终态读回）
 - 用户报告已完成账户切换后，本轮从 iPhone `Apple 账户 > 媒体与购买项目 > 查看账户` 做只读核验；系统仍进入此前 Gmail Apple 账户的密码验证页。未输入密码、未退出任何账户、未再次兑换邀请，因此这次账户切换实际未生效。（来源：2026-08-10 iPhone 镜像实时读回）
 - 用户随后要求把当前 Gmail 再加入内部测试组；App Store Connect 实时读回该 Gmail 对应 tester 已在 `GearDrop Internal`，状态为 2026-08-10 新发的 `Invited`，并保留 17 sessions。`Add Testers` 弹窗同时显示组内已包含全部 3 个可用内部 tester、0 selected，`Add` 按钮禁用；本轮已取消弹窗，没有提交重复写入。再次添加同一地址不能创建新的 Apple tester 身份，也不能绕过原始 QQ Apple 账户映射。（来源：2026-08-10 App Store Connect live DOM）
+- 用户完成登录后，iPhone Apple 账户页只读显示主 iCloud 仍为此前 Gmail，但 `媒体与购买项目` 已切换为 Apple 错误提示中的原始 QQ 账户；TestFlight 设置页随后也读回同一 QQ 账户。全程未读取或输入密码、验证码。（来源：2026-08-10 iPhone 镜像实时读回）
+- 已从认证 Apple 邀请邮件只读恢复当前私密邀请，在不展示或保存链接/兑换码的前提下兑换；TestFlight 主列表短暂显示旧的“已移除测试人员”，但 GearDrop 详情立即读回 `1.0.0 (7)`、90 天与 `更新`，完成下载后变为 `打开`。build 7 首次启动两页 TestFlight 提示后成功进入真实 Deals 首页。（来源：2026-08-10 Gmail 只读、Apple 邀请页与 iPhone TestFlight）
+- build 7 真机首页读回 5,726 个商品，Logo、双列卡片与图片正常；FI、IE、AU 均可从地区面板选择，FI/IE 使用欧元，AU 精确显示 16 个商品与澳元。AU 首次切换的图片占位在再次进入与冷启动后全部加载，Mac 对前四个实际 Shopify 图片资源也均读回 HTTP 200；冷停 App 后重新打开仍保持 AU，证明地区持久化通过。（来源：2026-08-10 iPhone 真机与只读图片资源探测）
+- 美国区精确输入 `sabre` 时顶部读回 `显示 30`，默认品牌/品类/性别筛选均为“全部”，但搜索框展开时卡片区错误保留“没有匹配的折扣”；收起搜索框后同一查询立即显示 30 个 Sabre 卡片。实时数据独立读回这 30 条全部有唯一 SKU 和图片，排除数据或筛选缺失，定位为 React Native `FlatList` 的刷新状态缺口。（来源：2026-08-10 iPhone 真机、Supabase 只读数据与 `app/app/(tabs)/index.tsx`）
+- 已在 Deals `FlatList` 增加由地区、搜索展开状态、查询词、全部筛选和排序组成的稳定 `extraData` revision，强制虚拟列表与头部状态同步刷新。定向验证为 40/40 tests、TypeScript exit 0；完整 `npm run verify` exit 0：Doctor 20/20、5,726 products、84,362 price-history rows、200 条启动预览、AU 16、iOS 1,497 modules / 5.4 MB，最终原文 `verify_local_ok`。（来源：2026-08-10 源码 diff 与本轮命令原始输出）
 - IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
 
 ## 假设
@@ -76,9 +81,9 @@
 
 ## 下一步
 
-1. 用户需在 iPhone `Apple 账户 > 媒体与购买项目` 先退出此前 Gmail Apple 账户，再亲自登录错误提示中的“原始 Apple 账户”，或明确提供一个未绑定到该原始身份的新测试邮箱；登录凭据与 2FA 不由任务代填。切换后先用 `查看账户` 验证已不再进入此前 Gmail 账户，再兑换当前新邀请并安装 build 7，完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
-2. 从通过真机验收的 build 7 截取最终 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
-3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 7、附加三项 IAP，做最终 readback 后提交审核。
+1. 提交并推送最小搜索刷新修复，生成 production build 8，完成签名/IPA/Apple/TestFlight 分发读回；在同一物理 iPhone 上复测搜索框展开时 `sabre` 30 个卡片可见，并继续 StoreKit、恢复、pending、离线与 Offer Code 矩阵。
+2. 从通过真机验收的最终 build 截取 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
+3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到最终通过验收的 build、附加三项 IAP，做最终 readback 后提交审核。
 
 ## 死路
 
