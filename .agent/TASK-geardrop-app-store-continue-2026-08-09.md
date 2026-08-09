@@ -5,7 +5,7 @@
 
 ## 当前状态：进行中
 
-已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；原始 QQ Apple 账户已在 iPhone `媒体与购买项目` 与 TestFlight 两处生效，新邀请兑换与账户映射问题已经关闭。production build 8 已完成 EAS 签名成品核验、Apple 上传处理、精确内部组分发和 Test Details 独立读回，并已在物理 iPhone 安装。build 8 真机已证明：美国区精确 `sabre` 搜索在搜索框保持展开时显示 30 条且卡片可见，恢复购买成功，冷启动后 US 地区、完整数据和 Pro 权益保留。当前设备已有 Pro 权益，因此购买方案价格和 Offer Code 入口按产品逻辑隐藏；仍需在无 Pro 的干净 StoreKit 上下文完成月付／年付／终身价格、购买、取消、pending、无购买恢复、Offer Code 与离线矩阵。App Store 1.0 实时仍绑定旧 build 5，截图为 0，三项首发 IAP 均缺 Review Information screenshot，尚未绑定或提交 App Review。
+已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；原始 QQ Apple 账户已在 iPhone `媒体与购买项目` 与 TestFlight 两处生效，新邀请兑换与账户映射问题已经关闭。production build 8 已完成 EAS 签名成品核验、Apple 上传处理、精确内部组分发和 Test Details 独立读回，并已在物理 iPhone 安装；美国区精确 `sabre` 搜索在搜索框保持展开时显示 30 条且卡片可见。RevenueCat 项目当前把 Sandbox testing access 设为 `Nobody`，恢复购买后设备已回到 Free，冷启动仍保持 Free。paywall 可见三项美元价格，但 Apple TestFlight 确认页显示日元价格；RevenueCat 官方文档说明 TestFlight／平台沙盒可能返回跨地区不准确的价格元数据，因此该差异目前只能按沙盒元数据不一致记录，不能当作生产价格证明。当前 StoreKit 账户已有月付沙盒订阅历史；annual、lifetime 均在苹果确认页取消，Offer Code 系统页只打开未输入，未发生新购买。设备 `开发者 > 沙盒 Apple 账户` 仍显示“登录”，App Store Connect Sandbox tester 列表为空，现已停在需要用户亲自创建并登录专用 Sandbox tester 的凭据门槛。App Store 1.0 实时仍绑定旧 build 5，截图为 0，三项首发 IAP 均缺 Review Information screenshot，尚未绑定或提交 App Review。
 
 ## 已确认事实
 
@@ -64,11 +64,20 @@
 - 强制关闭 GearDrop 进程并从 TestFlight 冷启动后，US 地区保留；启动预览先为 200，随后完整恢复 5,726 个商品并显示 US 758，My 页再次读回 Pro 已启用。该轮只验证在线冷启动持久化，没有改变系统网络、VPN 或代理，因此不能冒充离线恢复证据。（来源：2026-08-10 iPhone 镜像）
 - App Store Connect 独立读回 build 8 页面仍为 1 个内部组、3 testers，393 字符 Test Details 保持原文；内部组实时为 3 testers / 7 builds，其中两名已安装 `1.0.0 (8)`、一名仍为 Invited，目标 iPhone 16 Pro 记录也已从 build 7 更新到 build 8。（来源：2026-08-10 App Store Connect live DOM）
 - App Store 1.0 再次实时读回 `Prepare for Submission`、0/10 iPhone screenshots、绑定 build 5、自动发布；`Add for Review` 可见但本轮未点击。（来源：2026-08-10 App Store Connect live DOM）
+- RevenueCat `Project Settings > Sandbox testing access` 已由 `Anybody` 改为 `Nobody`；写后页面和后续独立 Chrome 会话均读回 `Nobody` checked。页面同时明确：沙盒购买仍会记录，但不会再授予 entitlement，既有沙盒 entitlement 会被移除。（来源：2026-08-10 RevenueCat live DOM）
+- 在 build 8 paywall 触发 `Restore Purchases` 后，原有 Pro entitlement 被 RevenueCat 的 `Nobody` 策略移除；强制关闭并冷启动 GearDrop 后，My 页仍为“免费模式”，三项方案和 Offer Code 入口恢复可见。（来源：2026-08-10 iPhone 镜像与 RevenueCat 设置读回）
+- build 8 paywall 从 RevenueCat／StoreKit 产品对象显示 monthly `US$3.99`、annual `US$23.99`、lifetime `US$49.99`；苹果 TestFlight 系统确认页分别显示既有 monthly `¥600`、annual `¥4,000`、lifetime `¥8,000`。冷启动后差异仍存在；源码没有硬编码这些价格，展示值直接来自 `purchasePackage.product.priceString`。（来源：2026-08-10 iPhone 镜像、`app/lib/iap.ts` 与 `app/contexts/ProContext.tsx`）
+- annual 与 lifetime 只打开 TestFlight 确认页并点 X 取消，均回到 Free；monthly 路径由 Apple 明确提示该账户已订阅并显示续订信息，只点 `OK`，未进入 Manage。三条路径都没有点最终 `Subscribe`／`Buy`，本轮没有真实或沙盒新扣款。（来源：2026-08-10 iPhone 镜像）
+- Offer Code 入口成功打开 Apple `兑换优惠` 系统页，标题为 GearDrop，code 为空、Continue 禁用；随后只点 X 关闭，没有输入、兑换或生成邀请码。（来源：2026-08-10 iPhone 镜像）
+- 当前账户存在月付 StoreKit 沙盒订阅历史，因此这次“恢复后为 Free”只能证明 RevenueCat `Nobody` 屏蔽 entitlement，不能冒充“无购买恢复”场景；无购买恢复仍未验证。（来源：2026-08-10 iPhone 镜像与 RevenueCat 设置语义）
+- 设备 `设置 > 开发者 > 沙盒 Apple 账户` 已实时滚动读回为“登录”，证明没有专用 Sandbox Apple Account 登录。App Store Connect `Users and Access > Sandbox > Test Accounts` 同时没有任何 tester 行，只显示 `Add Test Account`；New Tester 表单要求 First Name、Last Name、唯一 Email、Password／Confirm Password 和 Country or Region，Create 在未填写时禁用。本轮未填、未创建、未传输凭据。（来源：2026-08-10 iPhone 镜像与 App Store Connect live DOM）
+- RevenueCat 官方 Sandbox Testing 文档明确列出平台沙盒限制：包括 TestFlight 在内的 Store API 可能无法跨地区返回准确价格，并建议用平台沙盒验证购买流程而非依赖元数据。Apple 官方文档同时确认 TestFlight 交易永远使用 Sandbox、不会产生真实扣款，并提供 `Developer > Sandbox Apple Account` 的专用测试入口。（来源：2026-08-10 RevenueCat 与 Apple 官方文档）
 
 ## 假设
 
-- 当前 Pro 权益来自 RevenueCat/StoreKit 的既有客户状态，但本轮没有独立证明它对应哪一笔历史 sandbox 交易；只能把已观察到的 entitlement、恢复成功与冷启动保留分别记为事实。
-- 要完成尚缺的价格、购买、取消、pending、无购买恢复和 Offer Code 验收，需要一个不会自动读回 Pro 的干净 StoreKit 上下文（例如另一台设备或由用户明确选择的测试账户）。不得通过删除 RevenueCat 客户、退出 Apple 账户或清除现有购买状态来猜测性制造环境。
+- 美元 paywall 与日元确认页的差异更符合 RevenueCat 所列的平台沙盒跨地区元数据限制，但 production storefront 尚未发布、不能实时购买，因此不能把该推断当作生产价格已验证。
+- 现有 QQ StoreKit 上下文已有 monthly 沙盒订阅，不适合继续证明无购买恢复、首购或 pending。完整矩阵需要一个专用且无历史购买的 Sandbox tester，并在受控 storefront 下重新加载 offerings。
+- 创建 Sandbox tester 涉及唯一邮箱、密码和国家/地区；登录前还可能需要按 Apple 官方流程退出当前 `媒体与购买项目`，会影响现有 TestFlight 会话。不得替用户猜测这些身份／凭据字段，也不得在未取得动作时授权前退出当前 QQ 账户。
 - 离线恢复需要改变设备网络条件；在用户未明确授权前不关闭 Shadowrocket、全局代理或系统网络，只保留为未验证项。
 
 ## 验收标准
@@ -95,9 +104,10 @@
 
 ## 下一步
 
-1. 在无 Pro 的干净 StoreKit 测试上下文验证月付／年付／终身本地化价格、购买、取消、pending、无购买恢复与 Offer Code；离线恢复只在用户明确授权网络改动后执行。
-2. 从通过完整真机验收的 build 8 截取 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
-3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 8、附加三项 IAP，做最终 readback 后提交审核。
+1. 用户在当前已打开的 App Store Connect `New Tester` 表单中亲自填写并创建专用 Sandbox tester；随后由用户选择在该 iPhone 暂时退出 QQ `媒体与购买项目` 并登录 sandbox tester，或改用另一台专用测试设备。密码不得发到聊天中。
+2. 将 RevenueCat Sandbox testing access 从 `Nobody` 临时恢复到经用户确认的测试范围，再在 build 8 的干净 storefront 上验证月付／年付／终身本地化价格、首购、取消、pending、无购买恢复与 Offer Code；完成后恢复限制并独立读回。离线恢复只在用户明确授权网络改动后执行。
+3. 从通过完整真机验收的 build 8 截取 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
+4. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 8、附加三项 IAP，做最终 readback 后提交审核。
 
 ## 死路
 
@@ -106,6 +116,8 @@
 - 新收到的 Apple 官方 build 7 邮件及其 app 深链本身有效，但目标账号打开后稳定返回 `此 App 不可用于你的 Apple 账户`；退出并重新登录同一 `媒体与购买项目` 账号以及强制重启 TestFlight 均不能修复。
 - 完整 app-specific reset、同邮箱 tester 重建、两封全新认证邮件和新兑换路径也不能修复；Apple 最终明确指出邀请属于另一个原始 Apple 账户。继续重发同一邮箱邀请或重启 TestFlight 不会改变底层账户映射。
 - 当前 Gmail 已是组内唯一对应 tester，且 2026-08-10 已重建并重新邀请；`Add Testers` 不再提供可添加项。再次选择或重建同一 Gmail 不会生成独立身份，必须改用错误提示中的原始 QQ Apple 账户，或由用户明确提供一个此前未绑定的新 Apple 账户邮箱。
+- 把 RevenueCat Sandbox testing access 设为 `Nobody` 可以移除 entitlement、让 Free paywall 可见，但不会清除 Apple StoreKit 的历史订阅；因此它不能制造真正的“从未购买”测试上下文。
+- 当前 QQ StoreKit monthly 已订阅，重复点 monthly 只会出现已订阅提示；继续重试同一账户不会验证首购或无购买恢复。需要新的 Sandbox tester。
 - 首次 `eas submit` 带 `--json` 时 CLI 21.7.0 以 `Nonexistent flag: --json` 在本地退出 1，未创建外部提交；去掉该 flag 后才成功调度 submission。
 - build 8 首次 `eas submit` 带 `--what-to-test` 时以 `Changelog submission is currently available for Enterprise plan only` 在调度前退出，未创建 submission；测试说明已改由 App Store Connect 精确页面写入并独立读回。
 - EAS `submit:status` 起初因本机时间比 Apple `Date` 头快约 29 秒而返回 401；本轮只对该进程注入 -60 秒 `Date` shim 后读回成功，未改系统时钟。
