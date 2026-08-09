@@ -169,6 +169,9 @@ async function main() {
     console.log(`[names] unique=${report.uniqueStandardNames} multi_url_groups=${report.canonicalGroupsWithMultipleUrls}`);
     console.log(`[names] blank=${report.blankNames} unknown_family=${report.unknownFamilies} lost_tokens=${report.lostDiscriminators} gender_mismatch=${report.genderMismatches}`);
     if (report.rejected) console.log(`[names] source_rejections=${JSON.stringify(report.samples.rejected)}`);
+    if (report.unknownFamilies) console.log(`[names] unknown_families=${JSON.stringify(report.samples.unknownFamilies)}`);
+    if (report.lostDiscriminators) console.log(`[names] lost_discriminators=${JSON.stringify(report.samples.lostDiscriminators)}`);
+    if (report.genderMismatches) console.log(`[names] gender_mismatches=${JSON.stringify(report.samples.genderMismatches)}`);
     console.log(report.violations ? '[names] FAIL' : '[names] OK');
   }
   process.exitCode = report.violations ? 1 : 0;

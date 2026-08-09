@@ -18,7 +18,7 @@
     // audit instead of being truncated by a generic heuristic.
     const MODEL_FAMILIES = Object.freeze([
         'Acrux', 'Aerios', 'Aestas', 'Align', 'Alpine', 'Alpha', 'Altus', 'Andessa',
-        "Arc'Word", 'AR-395a', 'Arris', 'Arro', 'Asset', 'Atom', 'Belfry', 'Beta',
+        "Arc'Word", 'AR-385a', 'AR-395a', 'Arris', 'Arro', 'Asset', 'Atom', 'Belfry', 'Beta',
         'Bird', 'Blade', 'Bora', 'Brize', 'Calidum', 'Carrier', 'Centroid', 'Cerium',
         'Clarkia', 'Coelle', 'Color', 'Conduit', 'Conic', 'Conveyor', 'Corbel', 'Cormac',
         'Covert', 'Cranbrook', 'Creston', 'Cronin', 'Decca', 'Delta', 'Demlo', 'Dias',
