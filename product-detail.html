@@ -611,8 +611,10 @@ const cleanName = (raw) => {
         const i = s.indexOf(m);
         if (i > 0) return s.slice(0, i + m.length).trim();
     }
-    const m = s.match(/^(.+?[a-z])([A-Z].{12,})$/);
-    return m ? m[1].trim() : s;
+    // Canonical dealer names can contain intentional mixed-case tokens such as
+    // LiTRIC, SuperLight, StormHood, and DownWord. Treating every lowercase →
+    // uppercase transition as a glued description truncates those product names.
+    return s;
 };
 
 // Extract description that was glued onto the name
@@ -623,8 +625,7 @@ const extractGluedDesc = (raw) => {
         const i = s.indexOf(m);
         if (i > 0) return s.slice(i + m.length).trim();
     }
-    const m = s.match(/^(.+?[a-z])([A-Z].{12,})$/);
-    return m ? m[2].trim() : '';
+    return '';
 };
 
 // Resolve usable description: prefer glued tail; fall back to description
@@ -835,9 +836,9 @@ function metaBlock(p, extra = {}) {
     </div>`;
 }
 
-function ctaBlock(url, klass = '') {
+function ctaBlock(url, klass = '', platformLabel = "Arc'teryx Outlet") {
     return `<a class="cta ${klass}" href="${esc(url)}" target="_blank" rel="noopener">
-        前往 Outlet 购买
+        前往 ${esc(platformLabel)} 购买
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3h7v7M13 3L6 10M3 6v7h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>`;
 }
@@ -986,7 +987,7 @@ function stickyCTA(p) {
             <span class="price-sale">${esc(p.symbol)}${fmt(p.sale_price)}</span>
             <span class="price-cny">≈ ¥${fmt(cny)}</span>
         </div>
-        ${ctaBlock(p.url)}
+        ${ctaBlock(p.url, '', inferPlatform(p).label)}
     </div>`;
 }
 
@@ -994,6 +995,7 @@ function renderSKU(current, all, outletUrl) {
     const name = cleanName(current.full_name || current.model);
     const images = (current.images && current.images.length ? current.images : [current.image_url]).filter(Boolean);
     const ctaUrl = outletUrl || current.url;   // respect original region URL
+    const platformLabel = inferPlatform(current).label;
     const colors = all.map(s => ({
         name: s.color,
         sku_id: s.sku_id,
@@ -1047,7 +1049,7 @@ function renderSKU(current, all, outletUrl) {
                     }).join('')}
                 </div>
             </div>` : ''}
-            ${ctaBlock(ctaUrl, 'cta-inline')}
+            ${ctaBlock(ctaUrl, 'cta-inline', platformLabel)}
             ${metaBlock(current, { sku: current.sku_id })}
             ${priceHistoryBlock(current.sku_id)}
         </div>
@@ -1057,7 +1059,7 @@ function renderSKU(current, all, outletUrl) {
             <span class="price-sale">${esc(current.symbol)}${fmt(current.sale_price)}</span>
             <span class="price-cny">≈ ¥${fmt(toCNY(current.sale_price, current.symbol))}</span>
         </div>
-        ${ctaBlock(ctaUrl)}
+        ${ctaBlock(ctaUrl, '', platformLabel)}
     </div>`;
 
     document.getElementById('main').innerHTML = html;
@@ -1107,7 +1109,7 @@ function renderBase(p) {
                     }).join('')}
                 </div>
             </div>` : ''}
-            ${ctaBlock(p.url, 'cta-inline')}
+            ${ctaBlock(p.url, 'cta-inline', inferPlatform(p).label)}
             ${metaBlock(p)}
             ${priceHistoryBlock(p.sku_id)}
         </div>

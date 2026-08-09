@@ -11,6 +11,14 @@ test('cleanName strips brand prefixes and dashed gender suffixes', () => {
   assert.equal(cleanName('veilanceSpere LT Jacket'), 'Veilance Spere LT Jacket');
 });
 
+test('cleanName preserves intentional mixed-case product tokens', () => {
+  assert.equal(cleanName("Arc'teryx Micon LiTRIC 32L Airbag Pack"), 'Micon LiTRIC 32L Airbag Pack');
+  assert.equal(cleanName("Arc'teryx Micon LiTRIC 42L Airbag Pack"), 'Micon LiTRIC 42L Airbag Pack');
+  assert.equal(cleanName("Arc'teryx Kragg SuperLight Cotton T-Shirt - Men's"), 'Kragg SuperLight Cotton T-Shirt');
+  assert.equal(cleanName("Arc'teryx Beta AR - StormHood Jacket - Men's"), 'Beta AR - StormHood Jacket');
+  assert.equal(cleanName("Arc'teryx Norvan DownWord Logo Shirt - Men's"), 'Norvan DownWord Logo Shirt');
+});
+
 test('inferCategory covers key outdoor catalog categories', () => {
   assert.equal(inferCategory('Kopec Mid GTX Boot'), '鞋类');
   assert.equal(inferCategory('Mantis 26 Backpack'), '背包');
