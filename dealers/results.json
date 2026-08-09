@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-09 11:34:13",
+  "generated_at": "2026-08-09 14:14:26",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -8260,7 +8260,7 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 63,
+      "count": 62,
       "items": [
         {
           "url": "https://www.rei.com/product/235146/arcteryx-gamma-mx-hoody-mens",
@@ -8486,11 +8486,11 @@
           "name": "Beta Jacket - Men's",
           "image": "https://www.rei.com/media/6dccec76-daed-4a70-9058-352b9f5cf7f9.jpg",
           "original_price": 400.0,
-          "sale_price": 249.83,
+          "sale_price": 400.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 38,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -8516,8 +8516,7 @@
           "colors": [
             "Black",
             "Black Sapphire",
-            "Sea Salt",
-            "Spotlight"
+            "Sea Salt"
           ],
           "color": "Black Sapphire"
         },
@@ -8558,36 +8557,6 @@
           "color": "Cosmic Bloom"
         },
         {
-          "url": "https://www.rei.com/product/235148/arcteryx-covert-cardigan-mens",
-          "name": "Covert Cardigan - Men's",
-          "image": "https://www.rei.com/media/f456f59a-6bf3-47a3-91aa-694a2e7675f4.jpg",
-          "original_price": 180.0,
-          "sale_price": 126.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 29,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black Heather Ii",
-            "Habitat Heather",
-            "Dk Stratus Htr/Black Sapphire",
-            "Cloud Heather/Void"
-          ],
-          "color": "Black Heather Ii"
-        },
-        {
           "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
           "name": "Cerium Down Hoody - Men's",
           "image": "https://www.rei.com/media/855de972-fc1f-4ae7-81a1-8f588976e3e3.jpg",
@@ -8624,6 +8593,36 @@
             "Black Sapphire"
           ],
           "color": "Black"
+        },
+        {
+          "url": "https://www.rei.com/product/235148/arcteryx-covert-cardigan-mens",
+          "name": "Covert Cardigan - Men's",
+          "image": "https://www.rei.com/media/f456f59a-6bf3-47a3-91aa-694a2e7675f4.jpg",
+          "original_price": 180.0,
+          "sale_price": 126.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 29,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black Heather Ii",
+            "Habitat Heather",
+            "Dk Stratus Htr/Black Sapphire",
+            "Cloud Heather/Void"
+          ],
+          "color": "Black Heather Ii"
         },
         {
           "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
@@ -8735,10 +8734,10 @@
           },
           "colors": [
             "Void",
-            "Braken",
             "Black",
-            "Canvas",
+            "Braken",
             "Cloud",
+            "Canvas",
             "Habitat"
           ],
           "color": "Void"
@@ -8911,6 +8910,46 @@
           "color": "Black Sapphire"
         },
         {
+          "url": "https://www.rei.com/product/243257/arcteryx-atom-sl-hoody-mens",
+          "name": "Atom SL Hoody - Men's",
+          "image": "https://www.rei.com/media/dc0d835e-4beb-4b43-b7bd-0bcc59ad6000.jpg",
+          "original_price": 280.0,
+          "sale_price": 169.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 39,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Cloud",
+            "Black",
+            "Forage",
+            "Sea Salt",
+            "Dark Jade",
+            "Shincha"
+          ],
+          "color": "Cloud"
+        },
+        {
           "url": "https://www.rei.com/product/785251/arcteryx-bird-head-toque-beanie",
           "name": "Bird Head Toque Beanie",
           "image": "https://www.rei.com/media/3c5c3384-999d-45ad-9051-2932a7e82f8d.jpg",
@@ -8947,27 +8986,11 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Dark Stratus",
-            "Habitat"
-          ],
-          "color": "Habitat"
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/250404/arcteryx-kragg-cotton-lithographica-t-shirt-mens",
@@ -8979,41 +9002,6 @@
           "in_stock": true,
           "gender": "men",
           "discount_pct": 25,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Light Moondrop",
-            "Black",
-            "White Light"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/243257/arcteryx-atom-sl-hoody-mens",
-          "name": "Atom SL Hoody - Men's",
-          "image": "https://www.rei.com/media/dc0d835e-4beb-4b43-b7bd-0bcc59ad6000.jpg",
-          "original_price": 280.0,
-          "sale_price": 169.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 39,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -9119,6 +9107,25 @@
           "color": ""
         },
         {
+          "url": "https://www.rei.com/product/242856/arcteryx-gamma-pants-womens",
+          "name": "Gamma Pants - Women's",
+          "image": "https://www.rei.com/media/2a2f2faf-202c-42a3-9984-5b0383618cc0.jpg",
+          "original_price": 200.0,
+          "sale_price": 200.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
           "url": "https://www.rei.com/product/242918/arcteryx-kragg-cotton-pants-mens",
           "name": "Kragg Cotton Pants - Men's",
           "image": "https://www.rei.com/media/4c67cad6-7113-40ee-8f01-99d1d3608193.jpg",
@@ -9128,6 +9135,44 @@
           "in_stock": true,
           "gender": "men",
           "discount_pct": 30,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/243258/arcteryx-beta-pants-mens",
+          "name": "Beta Pants - Men's",
+          "image": "https://www.rei.com/media/9bbd1928-31dd-4a74-8aea-c25f074fc003.jpg",
+          "original_price": 300.0,
+          "sale_price": 300.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/249482/arcteryx-atom-sv-insulated-jacket-womens",
+          "name": "Atom SV Insulated Jacket - Women's",
+          "image": "https://www.rei.com/media/a3b3a6d2-9a36-4fde-a134-b939b7dd742a.jpg",
+          "original_price": 300.0,
+          "sale_price": 300.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -9176,14 +9221,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/249482/arcteryx-atom-sv-insulated-jacket-womens",
-          "name": "Atom SV Insulated Jacket - Women's",
-          "image": "https://www.rei.com/media/a3b3a6d2-9a36-4fde-a134-b939b7dd742a.jpg",
-          "original_price": 300.0,
-          "sale_price": 300.0,
+          "url": "https://www.rei.com/product/235369/arcteryx-kopec-gtx-hiking-shoes-mens",
+          "name": "Kopec GTX Hiking Shoes - Men's",
+          "image": "https://www.rei.com/media/aeb2763f-415f-4778-aa02-7dadea0c6107.jpg",
+          "original_price": 125.93,
+          "sale_price": 125.93,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
+          "gender": "men",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -9195,14 +9240,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/242856/arcteryx-gamma-pants-womens",
-          "name": "Gamma Pants - Women's",
-          "image": "https://www.rei.com/media/2a2f2faf-202c-42a3-9984-5b0383618cc0.jpg",
+          "url": "https://www.rei.com/product/236237/arcteryx-delta-jacket-mens",
+          "name": "Delta Jacket - Men's",
+          "image": "https://www.rei.com/media/d401d650-9674-4f4d-a4c9-f2bf068dd1e0.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
+          "gender": "men",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -9233,102 +9278,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/236237/arcteryx-delta-jacket-mens",
-          "name": "Delta Jacket - Men's",
-          "image": "https://www.rei.com/media/d401d650-9674-4f4d-a4c9-f2bf068dd1e0.jpg",
+          "url": "https://www.rei.com/product/235614/arcteryx-kyanite-hoody-womens",
+          "name": "Kyanite Hoody - Women's",
+          "image": "https://www.rei.com/media/ae28528d-fe79-47bb-933f-b815736a692f.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black Sapphire",
-            "Black",
-            "Habitat",
-            "Bracken/Mongoose",
-            "Tatsu/Mantis",
-            "Stratus",
-            "Nucleus/Larch"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/243258/arcteryx-beta-pants-mens",
-          "name": "Beta Pants - Men's",
-          "image": "https://www.rei.com/media/9bbd1928-31dd-4a74-8aea-c25f074fc003.jpg",
-          "original_price": 300.0,
-          "sale_price": 300.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [
-            "XS",
-            "S Short",
-            "S",
-            "M Short",
-            "M",
-            "M Tall",
-            "L Short",
-            "L",
-            "L Tall",
-            "XL",
-            "XL Tall",
-            "XXL Tall"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S Short": "in_stock",
-            "S": "in_stock",
-            "M Short": "in_stock",
-            "M": "in_stock",
-            "M Tall": "in_stock",
-            "L Short": "in_stock",
-            "L": "in_stock",
-            "L Tall": "in_stock",
-            "XL": "in_stock",
-            "XL Tall": "in_stock",
-            "XXL Tall": "in_stock"
-          },
-          "colors": [
-            "Black"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/235369/arcteryx-kopec-gtx-hiking-shoes-mens",
-          "name": "Kopec GTX Hiking Shoes - Men's",
-          "image": "https://www.rei.com/media/aeb2763f-415f-4778-aa02-7dadea0c6107.jpg",
-          "original_price": 125.93,
-          "sale_price": 125.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
+          "gender": "women",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -9359,33 +9316,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/235614/arcteryx-kyanite-hoody-womens",
-          "name": "Kyanite Hoody - Women's",
-          "image": "https://www.rei.com/media/ae28528d-fe79-47bb-933f-b815736a692f.jpg",
+          "url": "https://www.rei.com/product/236875/arcteryx-clarkia-cotton-wide-leg-pants-womens",
+          "name": "Clarkia Cotton Wide-Leg Pants - Women's",
+          "image": "https://www.rei.com/media/d492e9b7-2aab-4e01-8eb6-6f410f34f17d.jpg",
           "original_price": 200.0,
           "sale_price": 200.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/228431/arcteryx-mantis-16-pack",
-          "name": "Mantis 16 Pack",
-          "image": "https://www.rei.com/media/21165d0b-8163-476f-9fbf-e76e72bc537b.jpg",
-          "original_price": 130.0,
-          "sale_price": 130.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -9416,30 +9354,11 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/236875/arcteryx-clarkia-cotton-wide-leg-pants-womens",
-          "name": "Clarkia Cotton Wide-Leg Pants - Women's",
-          "image": "https://www.rei.com/media/d492e9b7-2aab-4e01-8eb6-6f410f34f17d.jpg",
-          "original_price": 200.0,
-          "sale_price": 200.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/242921/arcteryx-atom-insulated-vest-mens",
-          "name": "Atom Insulated Vest - Men's",
-          "image": "https://www.rei.com/media/51e3ef48-d78e-43b8-a59a-41c26589cb17.jpg",
-          "original_price": 200.0,
-          "sale_price": 200.0,
+          "url": "https://www.rei.com/product/235314/arcteryx-kyanite-jacket-mens",
+          "name": "Kyanite Jacket - Men's",
+          "image": "https://www.rei.com/media/786877a6-8bf2-4658-92ef-ca26e37c7339.jpg",
+          "original_price": 180.0,
+          "sale_price": 180.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
@@ -9473,15 +9392,15 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/235314/arcteryx-kyanite-jacket-mens",
-          "name": "Kyanite Jacket - Men's",
-          "image": "https://www.rei.com/media/786877a6-8bf2-4658-92ef-ca26e37c7339.jpg",
-          "original_price": 180.0,
-          "sale_price": 180.0,
+          "url": "https://www.rei.com/product/242827/arcteryx-norvan-ld-4-trail-running-shoes-mens",
+          "name": "Norvan LD 4 Trail-Running Shoes - Men's",
+          "image": "https://www.rei.com/media/162c647c-eb16-41fc-8677-ea05885c5829.jpg",
+          "original_price": 170.0,
+          "sale_price": 101.83,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 0,
+          "discount_pct": 40,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -9492,11 +9411,11 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/235366/arcteryx-kopec-mid-gtx-hiking-boots-mens",
-          "name": "Kopec Mid GTX Hiking Boots - Men's",
-          "image": "https://www.rei.com/media/e02909fa-e52f-45aa-bab4-89553f459cb2.jpg",
-          "original_price": 139.93,
-          "sale_price": 139.93,
+          "url": "https://www.rei.com/product/242921/arcteryx-atom-insulated-vest-mens",
+          "name": "Atom Insulated Vest - Men's",
+          "image": "https://www.rei.com/media/51e3ef48-d78e-43b8-a59a-41c26589cb17.jpg",
+          "original_price": 200.0,
+          "sale_price": 200.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
@@ -9530,33 +9449,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/242827/arcteryx-norvan-ld-4-trail-running-shoes-mens",
-          "name": "Norvan LD 4 Trail-Running Shoes - Men's",
-          "image": "https://www.rei.com/media/162c647c-eb16-41fc-8677-ea05885c5829.jpg",
-          "original_price": 170.0,
-          "sale_price": 101.83,
+          "url": "https://www.rei.com/product/235366/arcteryx-kopec-mid-gtx-hiking-boots-mens",
+          "name": "Kopec Mid GTX Hiking Boots - Men's",
+          "image": "https://www.rei.com/media/e02909fa-e52f-45aa-bab4-89553f459cb2.jpg",
+          "original_price": 139.93,
+          "sale_price": 139.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 40,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/249382/arcteryx-gamma-mx-hoody-womens",
-          "name": "Gamma MX Hoody - Women's",
-          "image": "https://www.rei.com/media/72318ab4-2d7f-4a0e-a0f9-0e6d0ce5d6f8.jpg",
-          "original_price": 400.0,
-          "sale_price": 400.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -9568,14 +9468,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/250401/arcteryx-konseal-crew-pullover-mens",
-          "name": "Konseal Crew Pullover - Men's",
-          "image": "https://www.rei.com/media/a3b2f6af-0c97-42d9-9fd9-9412e696d726.jpg",
-          "original_price": 180.0,
-          "sale_price": 180.0,
+          "url": "https://www.rei.com/product/228431/arcteryx-mantis-16-pack",
+          "name": "Mantis 16 Pack",
+          "image": "https://www.rei.com/media/21165d0b-8163-476f-9fbf-e76e72bc537b.jpg",
+          "original_price": 130.0,
+          "sale_price": 130.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "men",
+          "gender": "unisex",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -9606,6 +9506,25 @@
           "color": ""
         },
         {
+          "url": "https://www.rei.com/product/250401/arcteryx-konseal-crew-pullover-mens",
+          "name": "Konseal Crew Pullover - Men's",
+          "image": "https://www.rei.com/media/a3b2f6af-0c97-42d9-9fd9-9412e696d726.jpg",
+          "original_price": 180.0,
+          "sale_price": 180.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
           "url": "https://www.rei.com/product/249770/arcteryx-konseal-approach-shoes-mens",
           "name": "Konseal Approach Shoes - Men's",
           "image": "https://www.rei.com/media/d9f69ac5-3ca8-43d9-99c7-907565f40dde.jpg",
@@ -9614,6 +9533,25 @@
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
+          "discount_pct": 30,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/249771/arcteryx-konseal-approach-shoes-womens",
+          "name": "Konseal Approach Shoes - Women's",
+          "image": "https://www.rei.com/media/d6ddf12f-ed40-4ec5-a3a1-b43faf0519f1.jpg",
+          "original_price": 190.0,
+          "sale_price": 132.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
           "discount_pct": 30,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -9663,25 +9601,6 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/249771/arcteryx-konseal-approach-shoes-womens",
-          "name": "Konseal Approach Shoes - Women's",
-          "image": "https://www.rei.com/media/d6ddf12f-ed40-4ec5-a3a1-b43faf0519f1.jpg",
-          "original_price": 190.0,
-          "sale_price": 132.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 30,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
           "url": "https://www.rei.com/product/242814/arcteryx-norvan-ld-4-gtx-trail-running-shoes-womens",
           "name": "Norvan LD 4 GTX Trail-Running Shoes - Women's",
           "image": "https://www.rei.com/media/3c9917d2-625a-434b-8f6d-cc59e0a11717.jpg",
@@ -9701,14 +9620,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/229268/arcteryx-incendo-pants-mens",
-          "name": "Incendo Pants - Men's",
-          "image": "https://www.rei.com/media/644ff120-bfee-48f0-bbb2-3f389bf2e93a.jpg",
-          "original_price": 130.0,
-          "sale_price": 130.0,
+          "url": "https://www.rei.com/product/249382/arcteryx-gamma-mx-hoody-womens",
+          "name": "Gamma MX Hoody - Women's",
+          "image": "https://www.rei.com/media/72318ab4-2d7f-4a0e-a0f9-0e6d0ce5d6f8.jpg",
+          "original_price": 400.0,
+          "sale_price": 400.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "men",
+          "gender": "women",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -9720,11 +9639,11 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/251484/arcteryx-sabre-insulated-jacket-mens",
-          "name": "Sabre Insulated Jacket - Men's",
-          "image": "https://www.rei.com/media/fd90b709-09dd-4866-97ae-ed91849ec53b.jpg",
-          "original_price": 900.0,
-          "sale_price": 900.0,
+          "url": "https://www.rei.com/product/229268/arcteryx-incendo-pants-mens",
+          "name": "Incendo Pants - Men's",
+          "image": "https://www.rei.com/media/644ff120-bfee-48f0-bbb2-3f389bf2e93a.jpg",
+          "original_price": 130.0,
+          "sale_price": 130.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
@@ -9777,33 +9696,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/255607/arcteryx-essent-high-rise-utility-26-leggings-womens",
-          "name": "Essent High-Rise Utility 26&quot; Leggings - Women's",
-          "image": "https://www.rei.com/media/2f99d49c-4b42-41af-80d0-3cf7d583285f.jpg",
-          "original_price": 100.73,
-          "sale_price": 100.73,
+          "url": "https://www.rei.com/product/251484/arcteryx-sabre-insulated-jacket-mens",
+          "name": "Sabre Insulated Jacket - Men's",
+          "image": "https://www.rei.com/media/fd90b709-09dd-4866-97ae-ed91849ec53b.jpg",
+          "original_price": 900.0,
+          "sale_price": 900.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/249386/arcteryx-patera-down-parka-womens",
-          "name": "Patera Down Parka - Women's",
-          "image": "https://www.rei.com/media/49f778ee-ecb9-4740-a2c0-4ac57eff6c17.jpg",
-          "original_price": 640.93,
-          "sale_price": 640.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
+          "gender": "men",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -9853,11 +9753,30 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/243366/arcteryx-essent-hirise-utility-6-shorts-womens",
-          "name": "Essent HiRise Utility 6&quot; Shorts - Women's",
-          "image": "https://www.rei.com/media/2beb9467-2b84-4c92-94f8-c2d90b311dec.jpg",
-          "original_price": 62.93,
-          "sale_price": 62.93,
+          "url": "https://www.rei.com/product/249386/arcteryx-patera-down-parka-womens",
+          "name": "Patera Down Parka - Women's",
+          "image": "https://www.rei.com/media/49f778ee-ecb9-4740-a2c0-4ac57eff6c17.jpg",
+          "original_price": 640.93,
+          "sale_price": 640.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/255607/arcteryx-essent-high-rise-utility-26-leggings-womens",
+          "name": "Essent High-Rise Utility 26&quot; Leggings - Women's",
+          "image": "https://www.rei.com/media/2f99d49c-4b42-41af-80d0-3cf7d583285f.jpg",
+          "original_price": 100.73,
+          "sale_price": 100.73,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
@@ -9872,7 +9791,7 @@
           "color": ""
         }
       ],
-      "refreshed_at": "2026-08-09 11:30:01"
+      "refreshed_at": "2026-08-09 14:09:53"
     },
     "ssense": {
       "name": "SSENSE",
@@ -10540,13 +10459,14 @@
           "region": "US"
         }
       ],
-      "refreshed_at": "2026-08-09 11:34:12"
+      "refreshed_at": "2026-08-09 14:14:26"
     }
   },
-  "total": 481,
-  "rejected_dealers": {},
+  "total": 480,
+  "rejected_dealers": {
+    "evo": "incomplete"
+  },
   "fresh_dealers": [
-    "evo",
     "rei",
     "ssense"
   ]
