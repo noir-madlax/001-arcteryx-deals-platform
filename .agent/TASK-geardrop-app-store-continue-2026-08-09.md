@@ -5,7 +5,7 @@
 
 ## 当前状态：进行中
 
-已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；三个同 SDK 补丁升级后的 production build 7 已完成 EAS 签名构建、本地产物核验、Apple 上传处理和内部 TestFlight 分发，并补齐 build 7 的 en-US `What to Test`。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot；物理 iPhone 当前离线且 Mac 锁定，尚未完成真机交易矩阵、绑定 build 7 或提交 App Review。
+已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；三个同 SDK 补丁升级后的 production build 7 已完成 EAS 签名构建、本地产物核验、Apple 上传处理和内部 TestFlight 分发，并补齐 build 7 的 en-US `What to Test`。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot；Mac 与 iPhone 镜像现已连通，但目标 TestFlight 账号虽与 Apple 的 build 6 安装记录精确一致，GearDrop 仍未出现在该机 TestFlight 列表，尚未完成 build 7 真机矩阵、绑定或 App Review 提交。
 
 ## 已确认事实
 
@@ -13,8 +13,8 @@
 - 隔离工作树为 `/private/tmp/geardrop-appstore-continue-20260809.dKiFOt/worktree`，分支 `codex/ios-appstore-continue-20260809`，起点 `41decd3`。（来源：2026-08-09 `git worktree add` 输出）
 - 起点任务档案记录 build 6 已签名上传并进入内部 TestFlight，但 iOS 1.0 历史上仍绑定 build 5；真机交易／邀请码矩阵和最终审核截图未完成。该记录只是历史线索，本轮必须实时核验。（来源：`.agent/TASK-geardrop-pro-offer-code-2026-08-05.md`）
 - 本轮开工时 EAS 账户读取成功；当时 `eas build:list` 返回最新完成的 iOS production 构建为 `1.0.0 (6)`，build ID `c6082010-7861-4a02-a496-6d69aa629b9f`，状态 `FINISHED`，源码提交 `edc6877`。该读回随后已被本轮 build 7 状态取代。（来源：本轮开工 EAS CLI JSON）
-- 物理 iPhone `Jenova` 被 CoreDevice 识别但当前为 `unavailable` / offline；iPhone 镜像先显示“iPhone 使用中”，后因未锁屏而超时，Mac 随后锁定，尚不能执行真机矩阵。（来源：本轮 `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun devicectl list devices`、`xctrace list devices` 与 iPhone 镜像读回）
-- App Store Connect 的内置浏览器和 Chrome 均进入 Apple 登录页；Chrome 已发起 Passkey 验证但仍等待用户本人确认。Apple API key 已允许独立读回 build/version/IAP/screenshots；浏览器登录仍是当前 App Privacy UI 复核与人工上传素材的入口。（来源：本轮页面 URL、DOM 与 Apple API 读回）
+- 物理 iPhone `Jenova` 开工时被 CoreDevice 识别为 `unavailable` / offline，且 iPhone 镜像先因“iPhone 使用中”超时；用户随后完成 Mac 解锁与 iPhone 授权，iPhone 镜像已成功进入手机 UI。`devicectl` 仍显示 `unavailable`，所以当前真机操作证据来自 iPhone 镜像而不是有线 CoreDevice 通道。（来源：本轮 `devicectl` 与 iPhone 镜像实时读回）
+- App Store Connect 的 Chrome 登录已由用户完成；当前 UI 可实时读取 TestFlight、版本、App Privacy 与 IAP 页面。内置浏览器旧登录失败记录不再是当前阻塞项。（来源：本轮 Chrome App Store Connect live DOM）
 - 首次本轮 `npm run verify` 在 40/40 tests、配置、资源与 TypeScript 通过后，因 Expo Doctor 新要求 `expo ~57.0.11`、`expo-router ~57.0.11`、`expo-notifications ~57.0.9` 而退出 1；`npx expo install --check` 独立返回同一组三项漂移。（来源：本轮命令原始输出）
 - 已只升级上述三个 SDK 57 补丁版本；`npx expo install --check` 随后返回 `Dependencies are up to date`，未执行 Expo/React Native 破坏性降级。（来源：`app/package.json`、`app/package-lock.json` 与本轮命令输出）
 - 补丁升级后完整 `npm run verify` exit 0：40/40 tests、配置、1024×1024 无 alpha 图标、TypeScript、Expo Doctor 20/20、实时汇率、5,730 products、84,354 price-history rows、200 条启动预览、AU 16、iOS 1,497 modules / 5.4 MB，最终原文 `verify_local_ok`。（来源：本轮完整命令输出）
@@ -28,11 +28,17 @@
 - App Store 1.0 实时读回为 `PREPARE_FOR_SUBMISSION`、`AFTER_APPROVAL`，仍绑定 build 5；en-US description、keywords、Support URL 和完整审核联系人均存在，App Store screenshot set 为空、总数 0，且没有 ready/in-progress review submission。（来源：本轮 Apple API）
 - App Information 实时读回为 `PREPARE_FOR_SUBMISSION`，主分类 `SHOPPING`，en-US name/subtitle/Privacy Policy URL、年龄分级和 `USES_THIRD_PARTY_CONTENT` 声明存在；免费价格表以 USA 为基准。Apple 新 availability v2 API 返回 175 个地区中 174 个可用，中国大陆为不可用，`availableInNewTerritories=false`。（来源：本轮 Apple 官方 API 200 响应）
 - 三项预期商品均存在；正式 v2 IAP/subscription 资源把 monthly、annual、lifetime 全部读回为 `MISSING_METADATA`。monthly/annual 的 Review Information screenshot 关系返回 200/null，lifetime 返回 404 not found，三者均证明截图不存在；Apple 当前 API key 路径不再支持旧 App Privacy publish-state 关系，当前发布状态仍需登录 UI 复核。（来源：本轮 Apple 官方 API）
+- App Store Connect UI 已实时复核 App Privacy 为已发布状态，页面显示约 6 天前发布，并列出 Customer Support、Email Address、Purchase History、Product Interaction 四类数据；此前“仍需 UI 复核”的假设已关闭。（来源：本轮 App Privacy live DOM）
+- App Store 1.0 UI 与 API 一致：仍为 Prepare for Submission、0/10 iPhone screenshots、绑定 build 5、自动发布已选，`Add for Review` 可见但未点击。（来源：本轮版本页 live DOM）
+- 内部组 UI 读回 3 testers / 6 builds；一台其他测试设备已安装 build 7，目标 `Jenova` 对应的 iPhone 16 Pro 仍记录为 build 6。iPhone TestFlight 设置里的当前账号与该 build 6 测试员记录精确一致，排除“登录错账号”；但 GearDrop 在列表内搜索仍为无结果。（来源：本轮 TestFlight 组 live DOM 与 iPhone 镜像）
+- 对目标 tester + App 发送 `betaTesterInvitations` 前已断言精确 App、bundle、内部组与 build 7；Apple 返回 HTTP 409 / `STATE_ERROR.TESTER_INVITE.ALREADY_ACCEPTED`，证明邀请已接受而不是待接受。随后只把该 tester 从目标组关系移出并立即加回，DELETE/POST 均为 204；写后 GET 读回组关系存在、目标 tester 唯一、状态仍为 `INSTALLED`、组内仍为 3 testers。（来源：本轮 Apple 官方 API 写前、写响应与写后读回）
+- iPhone Spotlight 中残留的一条旧 TestFlight invitation 深链打开后显示已撤销或无效，不能用于恢复；TestFlight 强制关闭、重启、下拉刷新和 App 内搜索后仍不显示 GearDrop。（来源：本轮 iPhone 镜像）
+- IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
 
 ## 假设
 
 - 若 build 7 真机验收暴露代码缺陷，将在本隔离分支做最小修复并生成新 build；否则不无谓重建。
-- App Privacy 的历史已发布记录仍只是线索；因为当前 API 关系已失效，必须在恢复 App Store Connect 登录后从 UI 重新确认。
+- 如果重新加入内部组后没有收到新邀请，优先由用户在 TestFlight 退出后重新登录当前同一账号；删除并重建 tester 会损失测试指标历史，只有用户明确同意后才执行。
 
 ## 验收标准
 
@@ -50,17 +56,19 @@
 - 已把 EAS 自动递增的 build 7 同步到发布配置契约，并在该最终本地状态重新通过完整 `npm run verify`。（来源：本轮最终完整命令）
 - 已完成 build 7 的 Apple 上传处理、内部组关系和 `What to Test`；三个外部写入都已在全新进程独立读回。（来源：本轮 EAS/Apple API）
 - 已完成当前 App Store 版本、元数据、availability、三项 IAP 和审核截图关系的 live 只读盘点；未绑定最终 build、未附加 IAP、未提交审核。（来源：本轮 Apple API）
+- 已完成 App Privacy 当前发布状态、App Store 1.0 页面、TestFlight tester/device/build、三项 IAP localization/price/review screenshot 的登录 UI 复核。（来源：本轮 App Store Connect live DOM）
+- 已确认 iPhone TestFlight 账号与目标 tester 一致，并完成一次精确、可逆的 tester-group 关系重建及写后读回；当前仍受 TestFlight 端 App 列表不同步阻塞。（来源：本轮 Apple API 与 iPhone 镜像）
 
 ## 下一步
 
-1. 用户解锁 Mac、锁屏并保持 iPhone 在线后，通过 iPhone Mirroring 从 TestFlight 安装 build 7，完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
+1. 用户从当前 TestFlight 账号对应邮箱打开新收到的 GearDrop 邀请深链；若未收到则在 TestFlight 退出并重新登录同一账号。GearDrop 出现后安装 build 7，完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
 2. 从通过真机验收的 build 7 截取最终 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
-3. 在登录 UI 中复核 App Privacy 发布状态；全部硬门通过后才把 iOS 1.0 从 build 5 切到 build 7、附加三项 IAP，做最终 readback 后提交审核。
+3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 7、附加三项 IAP，做最终 readback 后提交审核。
 
 ## 死路
 
-- 内置浏览器与 Chrome 的 App Store Connect 会话均未自动恢复；Chrome 已停在 Passkey 验证，必须由用户本人确认，不能用旧页面状态代替 live 读回。
-- iPhone 镜像因真机处于使用中而超时；在用户锁屏前无法通过工具模拟真机交易或截图。
+- 重发已接受的邀请会被 Apple 以 `STATE_ERROR.TESTER_INVITE.ALREADY_ACCEPTED` 拒绝；移出并立即加回同一内部组虽成功读回，但 tester 状态仍为 `INSTALLED`，TestFlight 本机列表仍未恢复。
+- iPhone 上残留的旧 TestFlight invitation 页面已经撤销或失效，不能代替新的邀请深链。
 - 首次 `eas submit` 带 `--json` 时 CLI 21.7.0 以 `Nonexistent flag: --json` 在本地退出 1，未创建外部提交；去掉该 flag 后才成功调度 submission。
 - EAS `submit:status` 起初因本机时间比 Apple `Date` 头快约 29 秒而返回 401；本轮只对该进程注入 -60 秒 `Date` shim 后读回成功，未改系统时钟。
-- `@expo/apple-utils` 的旧 `dataUsagePublishState` 和 `availableTerritories` 关系已被 Apple 移除；availability 已改用 Apple 官方 `appAvailabilityV2` + v2 territory endpoint，App Privacy publish state 仍需 UI 登录复核。
+- `@expo/apple-utils` 的旧 `dataUsagePublishState` 和 `availableTerritories` 关系已被 Apple 移除；availability 已改用 Apple 官方 `appAvailabilityV2` + v2 territory endpoint，App Privacy publish state 已改由登录 UI 实时复核并确认已发布。
