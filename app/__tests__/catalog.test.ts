@@ -1,22 +1,46 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { cleanName, inferCategory, platformKey, productCategory, releaseSeason, visibleProducts } from '../lib/catalog';
+import { cleanName, extractSeries, inferCategory, platformKey, productCategory, productName, releaseSeason, visibleProducts } from '../lib/catalog';
 import { product, row } from './helpers';
 
-test('cleanName strips brand prefixes and dashed gender suffixes', () => {
-  assert.equal(cleanName("Arc'teryx Beta AR Jacket - Men's"), 'Beta AR Jacket');
-  assert.equal(cleanName("Arc'teryx Sentinel Jacket - Women's"), 'Sentinel Jacket');
-  assert.equal(cleanName("Der Alpha Pant Women's"), "Alpha Pant Women's");
+test('cleanName standardizes brand and gender without damaging model families', () => {
+  assert.equal(cleanName("Arc'teryx Beta AR Jacket - Men's"), "Beta AR Jacket Men's");
+  assert.equal(cleanName("Arc'teryx Sentinel Jacket - Women's"), "Sentinel Jacket Women's");
+  assert.equal(cleanName("Diene Shirt LS Women's"), "Diene Shirt LS Women's");
   assert.equal(cleanName('veilanceSpere LT Jacket'), 'Veilance Spere LT Jacket');
 });
 
 test('cleanName preserves intentional mixed-case product tokens', () => {
   assert.equal(cleanName("Arc'teryx Micon LiTRIC 32L Airbag Pack"), 'Micon LiTRIC 32L Airbag Pack');
   assert.equal(cleanName("Arc'teryx Micon LiTRIC 42L Airbag Pack"), 'Micon LiTRIC 42L Airbag Pack');
-  assert.equal(cleanName("Arc'teryx Kragg SuperLight Cotton T-Shirt - Men's"), 'Kragg SuperLight Cotton T-Shirt');
-  assert.equal(cleanName("Arc'teryx Beta AR - StormHood Jacket - Men's"), 'Beta AR - StormHood Jacket');
-  assert.equal(cleanName("Arc'teryx Norvan DownWord Logo Shirt - Men's"), 'Norvan DownWord Logo Shirt');
+  assert.equal(cleanName("Arc'teryx Kragg SuperLight Cotton T-Shirt - Men's"), "Kragg SuperLight Cotton T-Shirt Men's");
+  assert.equal(cleanName("Arc'teryx Beta AR - StormHood Jacket - Men's"), "Beta AR - StormHood Jacket Men's");
+  assert.equal(cleanName("Arc'teryx Norvan DownWord Logo Shirt - Men's"), "Norvan DownWord Logo Shirt Men's");
+});
+
+test('productName removes verified SSENSE color prefixes and uses metadata gender', () => {
+  assert.equal(productName(row({
+    dealer: 'ssense',
+    full_name: 'Green & Black Beta Jacket',
+    model: 'Green & Black Beta Jacket',
+    gender: 'men',
+    url: 'https://www.ssense.com/en-us/men/product/arcteryx/green-and-black-beta-jacket/1',
+  })), "Beta Jacket Men's");
+  assert.equal(productName(row({
+    dealer: 'ssense',
+    full_name: 'Teal FutureModel Jacket',
+    model: 'Teal FutureModel Jacket',
+    gender: 'women',
+    url: 'https://www.ssense.com/en-us/women/product/arcteryx/teal-future-model-jacket/2',
+  })), "Teal FutureModel Jacket Women's");
+});
+
+test('model registry covers current additions and canonical aliases', () => {
+  assert.equal(cleanName("Arc'teryx Arcword Short-Sleeve T-Shirt - Women's"), "Arc'Word Short-Sleeve T-Shirt Women's");
+  assert.equal(extractSeries("Arc'Word Short-Sleeve T-Shirt Women's"), "Arc'Word");
+  assert.equal(extractSeries("Micon LiTRIC 42L Airbag Pack Unisex"), 'Micon');
+  assert.equal(extractSeries("Diene Shirt LS Women's"), 'Diene');
 });
 
 test('inferCategory covers key outdoor catalog categories', () => {
@@ -49,6 +73,12 @@ test('visibleProducts normalizes rows and filters known unavailable outlet produ
       sku_id: 'sold-out_Black_us',
       size_stock: { M: 'out_of_stock' },
       sizes: ['M'],
+    }),
+    row({
+      id: 4,
+      sku_id: 'not-arcteryx',
+      dealer: 'ssense',
+      url: 'https://www.ssense.com/en-us/women/product/marc-jacobs/bag/1',
     }),
   ]);
 

@@ -179,6 +179,17 @@ def preserve_previous_images(row: dict, previous: dict | None) -> None:
         row["images"] = previous_images or [previous_url]
 
 
+def is_expected_dealer_item(item: dict, dealer: str) -> bool:
+    """Validate brand-bearing URL scopes before any production upsert."""
+    if dealer != "ssense":
+        return True
+    return bool(re.search(
+        r"^https://(?:www\.)?ssense\.com/(?:[a-z]{2}-[a-z]{2}/)?(?:men|women)/product/arcteryx/",
+        str(item.get("url") or ""),
+        re.IGNORECASE,
+    ))
+
+
 def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
     name = it.get("name") or ""
     url = it.get("url","")
@@ -238,6 +249,9 @@ def main():
             print(f"\n[sync:{dkey}] kept snapshot — not refreshed in this run; skipping")
             continue
         items = info.get("items", []) or []
+        invalid_items = [it for it in items if not is_expected_dealer_item(it, dkey)]
+        if invalid_items:
+            sys.exit(f"[sync:{dkey}] refusing {len(invalid_items)} item(s) outside the Arc'teryx source contract")
         rows = [item_to_row(it, dkey, generated_at) for it in items]
         rows = [r for r in rows if r["sku_id"] and r["url"]]
         print(f"\n[sync:{dkey}] {len(rows)} rows to upsert")

@@ -10,6 +10,7 @@ from pathlib import Path
 from dealers import merge_partial
 from dealers.supabase_sync import (
     fresh_dealer_keys,
+    is_expected_dealer_item,
     next_dealer_lifecycle,
     preserve_previous_images,
     recovered_url_health,
@@ -27,7 +28,23 @@ def fresh_timestamp():
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
 
+def dealer_url(dealer: str, item: object, region: str = "us") -> str:
+    if dealer == "ssense":
+        return f"https://www.ssense.com/en-us/men/product/arcteryx/test-product/{item}"
+    return f"https://example.com/{dealer}/{region}/{item}"
+
+
 class DealerFreshnessTests(unittest.TestCase):
+    def test_sync_preflight_rejects_non_arcteryx_ssense_items(self):
+        self.assertTrue(is_expected_dealer_item(
+            {"url": "https://www.ssense.com/en-us/men/product/arcteryx/beta-jacket/1"},
+            "ssense",
+        ))
+        self.assertFalse(is_expected_dealer_item(
+            {"url": "https://www.ssense.com/en-us/women/product/marc-jacobs/bag/1"},
+            "ssense",
+        ))
+
     def test_preserve_previous_images_only_fills_missing_snapshot_data(self):
         existing_url = "https://cdn.example/existing.jpg"
         missing = {"image_url": None, "images": []}
@@ -58,7 +75,7 @@ class DealerFreshnessTests(unittest.TestCase):
                     "symbol": "$",
                     "gender": "men",
                     "region": "us",
-                    "url": f"https://example.com/ssense/{field}",
+                    "url": dealer_url("ssense", field),
                     field: value,
                     "last_updated": fresh_timestamp(),
                 }
@@ -104,6 +121,34 @@ class DealerFreshnessTests(unittest.TestCase):
             )
         self.assertEqual(rc, 1)
         self.assertIn("missing_product_image: 1", output.getvalue())
+
+    def test_validate_rejects_non_arcteryx_ssense_rows(self):
+        row = {
+            "sku_id": "ssense-marc-jacobs",
+            "dealer": "ssense",
+            "status": "active",
+            "sale_price": 100,
+            "original_price": 150,
+            "discount_pct": 33,
+            "currency": "USD",
+            "symbol": "$",
+            "gender": "women",
+            "region": "us",
+            "url": "https://www.ssense.com/en-us/women/product/marc-jacobs/bag/1",
+            "last_updated": fresh_timestamp(),
+        }
+        output = io.StringIO()
+        with redirect_stdout(output):
+            rc = validate(
+                [row],
+                max_age_hours=36,
+                max_product_age_hours=72,
+                min_rows=1,
+                required_dealers={"ssense"},
+                forbidden_regions=None,
+            )
+        self.assertEqual(rc, 1)
+        self.assertIn("non_arcteryx_product: 1", output.getvalue())
 
     def test_new_outlet_regions_have_currency_and_low_water_marks(self):
         for region in ("fi", "ie"):
@@ -190,7 +235,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 "symbol": "$",
                 "gender": "men",
                 "region": "us",
-                "url": f"https://example.com/ssense/{i}",
+                "url": dealer_url("ssense", i),
                 "last_updated": fresh_timestamp(),
             }
             for i in range(46)
@@ -234,7 +279,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 "symbol": "$",
                 "gender": "men",
                 "region": "us",
-                "url": f"https://example.com/ssense/{i}",
+                "url": dealer_url("ssense", i),
                 "last_updated": fresh_timestamp(),
             }
             for i in range(46)
@@ -262,7 +307,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 "symbol": "$",
                 "gender": "men",
                 "region": "us",
-                "url": f"https://example.com/ssense/{i}",
+                "url": dealer_url("ssense", i),
                 "last_updated": fresh_timestamp(),
             }
             for i in range(39)
@@ -293,7 +338,7 @@ class DealerFreshnessTests(unittest.TestCase):
                     "symbol": symbol,
                     "gender": "men",
                     "region": region,
-                    "url": f"https://example.com/{dealer}/{i}",
+                    "url": dealer_url(dealer, i, region),
                     "last_seen_at": fresh_timestamp(),
                     "last_updated": fresh_timestamp(),
                 })
@@ -323,7 +368,7 @@ class DealerFreshnessTests(unittest.TestCase):
                     "symbol": symbol,
                     "gender": "men",
                     "region": region,
-                    "url": f"https://example.com/{dealer}/{region}/{i}",
+                    "url": dealer_url(dealer, i, region),
                     "last_seen_at": fresh_timestamp(),
                     "last_updated": fresh_timestamp(),
                 })
@@ -350,7 +395,7 @@ class DealerFreshnessTests(unittest.TestCase):
                     "sku_id": f"{dealer}-{region}-{i}", "dealer": dealer, "status": "active",
                     "sale_price": 100, "original_price": 150, "discount_pct": 33,
                     "currency": currency, "symbol": symbol, "gender": "men",
-                    "region": region, "url": f"https://example.com/{dealer}/{region}/{i}",
+                    "region": region, "url": dealer_url(dealer, i, region),
                     "last_seen_at": fresh_timestamp(),
                     "last_updated": fresh_timestamp(),
                 })

@@ -167,6 +167,15 @@ def is_blocked_outlet_url(url: str) -> bool:
     )
 
 
+def is_expected_arcteryx_product(row: dict) -> bool:
+    """Fail closed for sources whose URL contains an explicit brand segment."""
+    dealer = row.get("dealer") or "arcteryx_outlet"
+    if dealer != "ssense":
+        return True
+    url = str(row.get("url") or "").lower()
+    return bool(re.search(r"^https://(?:www\.)?ssense\.com/(?:[a-z]{2}-[a-z]{2}/)?(?:men|women)/product/arcteryx/", url))
+
+
 def name_gender(name: str) -> str | None:
     if re.search(r"Women'?s|\bDamen\b|\bFemme\b", name or "", re.IGNORECASE):
         return "women"
@@ -284,6 +293,8 @@ def validate(
             errors["missing_product_image"].append(row)
         if status == "active" and any("__IMAGE_PARAMS__" in url for url in image_urls):
             errors["unresolved_image_template"].append(row)
+        if status == "active" and not is_expected_arcteryx_product(row):
+            errors["non_arcteryx_product"].append(row)
 
         if forbidden_regions and dealer == "arcteryx_outlet" and region in forbidden_regions:
             errors["forbidden_region"].append(row)

@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="arcteryx-names.js"></script>
     <style>
         :root {
             --bg: #fafaf8;
@@ -602,25 +603,12 @@ const cleanColor = (raw) => {
 };
 
 const GENDER_MARKERS = ["Women's", "Men's", "Unisex", 'Damen', 'Herren', 'Femme', 'Homme'];
-const NAME_PREFIX_STRIP = /^(?:Der|Die|Das|Veste à capuche|Veste|system_a)\s*/i;
-const cleanName = (raw) => {
-    if (!raw) return '';
-    let s = raw.trim().replace(NAME_PREFIX_STRIP, '');
-    s = s.replace(/^veilance([A-Z])/, 'Veilance $1');
-    for (const m of GENDER_MARKERS) {
-        const i = s.indexOf(m);
-        if (i > 0) return s.slice(0, i + m.length).trim();
-    }
-    // Canonical dealer names can contain intentional mixed-case tokens such as
-    // LiTRIC, SuperLight, StormHood, and DownWord. Treating every lowercase →
-    // uppercase transition as a glued description truncates those product names.
-    return s;
-};
+const productName = p => window.ArcTeryxNames.standardProductName(p.full_name || p.model, p);
 
 // Extract description that was glued onto the name
 const extractGluedDesc = (raw) => {
     if (!raw) return '';
-    let s = raw.trim().replace(NAME_PREFIX_STRIP, '').replace(/^veilance([A-Z])/, 'Veilance $1');
+    let s = raw.trim().replace(/^veilance([A-Z])/, 'Veilance $1');
     for (const m of GENDER_MARKERS) {
         const i = s.indexOf(m);
         if (i > 0) return s.slice(i + m.length).trim();
@@ -660,6 +648,7 @@ const allKnownSizesOutOfStock = (p) => {
 };
 
 const isBlockedProduct = (p) => {
+    if (!window.ArcTeryxNames.isArcTeryxProduct(p)) return true;
     const dealer = p.dealer || '';
     const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
     return (!dealer || dealer === 'arcteryx_outlet') &&
@@ -967,7 +956,7 @@ function alertBlock(p) {
     // 内嵌商品信息到按钮 data-* 属性, modal 打开后读取
     return `<button class="alert-btn" onclick="openAlertModal()"
             data-sku="${esc(p.sku_id || '')}"
-            data-name="${esc(cleanName(p.full_name || p.model || ''))}"
+            data-name="${esc(productName(p))}"
             data-symbol="${esc(p.symbol || '$')}"
             data-currency="${esc(p.currency || 'USD')}"
             data-sale="${p.sale_price || ''}"
@@ -992,7 +981,7 @@ function stickyCTA(p) {
 }
 
 function renderSKU(current, all, outletUrl) {
-    const name = cleanName(current.full_name || current.model);
+    const name = productName(current);
     const images = (current.images && current.images.length ? current.images : [current.image_url]).filter(Boolean);
     const ctaUrl = outletUrl || current.url;   // respect original region URL
     const platformLabel = inferPlatform(current).label;
@@ -1068,7 +1057,7 @@ function renderSKU(current, all, outletUrl) {
 }
 
 function renderBase(p) {
-    const name = cleanName(p.full_name || p.model);
+    const name = productName(p);
     const html = `
     <div class="product">
         <div class="gallery">

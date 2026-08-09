@@ -80,6 +80,10 @@ jobs:
           python-version: "3.12"
           cache: pip
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -91,6 +95,11 @@ jobs:
         run: |
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_KEY"
+
+      - name: Verify product-name source contract
+        run: |
+          python tools/sync_arcteryx_names.py --check
+          node --test tests/test_product_names.js
 
       - name: Refresh dealer scrape and sync
         run: |
@@ -115,6 +124,7 @@ jobs:
           fi
           # 真正的守门员：每个 dealer 必须存在且最新数据 <=36h（REI 失败 >36h 才让 build 红）。
           python tools/check_data_quality.py --online --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
+          node tools/audit_product_names.mjs --online --strict-source
 
       - name: Optional price alerts
         run: python check_price_alerts.py || echo "price alerts check failed"
@@ -135,6 +145,7 @@ jobs:
       - name: Verify production freshness
         run: |
           python tools/check_data_quality.py --online --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
+          node tools/audit_product_names.mjs --online --strict-source
           curl -fsS https://001.100app.dev/dealers/results.json | python -c 'import json,sys; data=json.load(sys.stdin); print("generated_at", data.get("generated_at")); print({k:v.get("count") for k,v in data.get("dealers",{}).items()})'
 
       - name: Release Dealers lease

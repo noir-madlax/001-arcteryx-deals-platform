@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { cleanName, formatPrice } from '../lib/catalog';
+import { formatPrice, productName } from '../lib/catalog';
 import { colors, radii } from '../lib/theme';
 import type { Product } from '../lib/types';
 
@@ -47,7 +47,7 @@ export function AlertModal({ visible, product, onClose, onSubmit }: Props) {
       <View style={styles.backdrop}>
         <View style={styles.card}>
           <Text style={styles.title}>Price alert</Text>
-          <Text style={styles.sub}>{cleanName(product.full_name || product.model)}</Text>
+          <Text style={styles.sub}>{productName(product)}</Text>
           <Text style={styles.current}>Current {formatPrice(product.sale_price, product.symbol)} · suggested target {formatPrice(suggested, product.symbol)}</Text>
           <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="you@example.com" autoCapitalize="none" keyboardType="email-address" />
           <View style={styles.priceInputRow}>

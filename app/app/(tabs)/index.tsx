@@ -9,7 +9,7 @@ import { FilterChips } from '../../components/FilterChips';
 import { ScreenState } from '../../components/ScreenState';
 import { useProducts } from '../../contexts/ProductsContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
-import { cleanName, productCategory } from '../../lib/catalog';
+import { productCategory, productName } from '../../lib/catalog';
 import { INITIAL_SIGNAL_WINDOW } from '../../lib/productPreview';
 import { colors } from '../../lib/theme';
 import type { Product } from '../../lib/types';
@@ -227,7 +227,7 @@ function Header({
         <View style={styles.heroSection}>
           <Text style={styles.heroLabel}>{heroSignal?.kind === 'all_time_low' ? 'New all-time low' : heroSignal?.kind === 'ninety_day_low' ? '90-day low' : 'Best signal now'}</Text>
           <DealCard product={hero} signal={heroSignal} hero saved={heroSaved} onPress={onHeroPress} onToggleSave={onHeroSave} />
-          <Text style={styles.heroHint} numberOfLines={1}>{cleanName(hero.full_name || hero.model)}</Text>
+          <Text style={styles.heroHint} numberOfLines={1}>{productName(hero)}</Text>
         </View>
       ) : null}
       <Text style={styles.sectionTitle}>Discount stream</Text>

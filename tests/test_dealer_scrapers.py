@@ -177,6 +177,18 @@ class DealerScraperTests(unittest.TestCase):
         )
         self.assertEqual(items[0]["price_source_quality"], "list_fallback")
 
+    def test_ssense_rejects_brand_substring_false_positive(self):
+        product = {
+            "@type": "Product",
+            "brand": {"name": "Marc Jacobs"},
+            "name": "Pink 'The Glam Mirror Satchel' Bag",
+            "url": "/women/product/marc-jacobs/pink-the-glam-mirror-satchel-bag/18163921",
+            "offers": {"price": "340", "priceCurrency": "USD"},
+        }
+        body = f'<script type="application/ld+json">{json.dumps(product, separators=(",", ":"))}</script>'
+        items = SsenseScraper().parse_list(body, "https://www.ssense.com/en-us/women/designers/arcteryx")
+        self.assertEqual(items, [])
+
     def test_ssense_image_normalizer_preserves_regular_urls(self):
         self.assertEqual(
             normalize_image_url("https://img.example/konseal.jpg"),

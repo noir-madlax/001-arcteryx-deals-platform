@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { cleanName, formatPrice, freshnessLabel, productCategory, REGION_LABEL, staleDays } from '../lib/catalog';
+import { formatPrice, freshnessLabel, productCategory, productName, REGION_LABEL, staleDays } from '../lib/catalog';
 import { colors, radii, shadow } from '../lib/theme';
 import type { DealSignal, Product } from '../lib/types';
 
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export function DealCard({ product, signal, saved = false, hero = false, onPress, onToggleSave }: Props) {
-  const name = cleanName(product.full_name || product.model);
+  const name = productName(product);
   const imageUri = product.image_url || product.images[0];
   const [imageFailed, setImageFailed] = useState(false);
   const stale = staleDays(product.last_updated) > 3;

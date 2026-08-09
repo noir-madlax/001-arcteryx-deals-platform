@@ -7,7 +7,7 @@ import { DealCard } from '../../components/DealCard';
 import { ScreenState } from '../../components/ScreenState';
 import { useProducts } from '../../contexts/ProductsContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
-import { cleanName, formatPrice } from '../../lib/catalog';
+import { formatPrice, productName } from '../../lib/catalog';
 import { colors, radii } from '../../lib/theme';
 import type { Product, WatchEntry } from '../../lib/types';
 
@@ -62,7 +62,7 @@ function WatchStatus({ entry, product }: { entry: WatchEntry; product: Product }
         Current {formatPrice(product.sale_price, product.symbol)} · saved {formatPrice(entry.savedPrice, entry.symbol)}
       </Text>
       {entry.alertTarget ? <Text style={styles.alert}>Alert at {formatPrice(entry.alertTarget, product.symbol)}</Text> : null}
-      <Text style={styles.name} numberOfLines={1}>{cleanName(product.full_name || product.model)}</Text>
+      <Text style={styles.name} numberOfLines={1}>{productName(product)}</Text>
     </View>
   );
 }

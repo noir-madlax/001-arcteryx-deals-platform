@@ -34,6 +34,16 @@ class Scraper(DealerScraper):
         self.crawl_complete = False
 
     @staticmethod
+    def is_arcteryx_brand(value: object) -> bool:
+        """Match the exact brand; substring checks also match `Marc Jacobs`."""
+        normalized = re.sub(r"[^a-z0-9]", "", str(value or "").lower())
+        return normalized == "arcteryx"
+
+    @staticmethod
+    def is_arcteryx_product_url(value: object) -> bool:
+        return bool(re.search(r"/(?:[a-z]{2}-[a-z]{2}/)?(?:men|women)/product/arcteryx/", str(value or ""), re.I))
+
+    @staticmethod
     def _env_int(name: str, default: int, minimum: int = 1) -> int:
         try:
             value = int(os.environ.get(name, default))
@@ -50,7 +60,7 @@ class Scraper(DealerScraper):
     def _merge_page_items(self, items: list[dict], seen: set[str], page_items: list[dict]) -> int:
         added = 0
         for it in page_items:
-            if not it.get("url") or it["url"] in seen:
+            if not self.is_arcteryx_product_url(it.get("url")) or it["url"] in seen:
                 continue
             seen.add(it["url"])
             it["dealer"] = self.KEY
@@ -291,7 +301,7 @@ class Scraper(DealerScraper):
                 continue
             # 只要 Arc'teryx
             brand = (d.get("brand") or {}).get("name", "") if isinstance(d.get("brand"), dict) else d.get("brand", "")
-            if "arc" not in brand.lower().replace("'", "").replace("`", ""):
+            if not self.is_arcteryx_brand(brand):
                 continue
             offer = d.get("offers") or {}
             sale = float(offer.get("price")) if offer.get("price") else None
@@ -304,6 +314,8 @@ class Scraper(DealerScraper):
             # 否则 PDP 返回 404 (但仍 ~400KB fallback) 导致 variants[] 抓不到
             if "/en-us/" not in url:
                 url = url.replace("/men/product/", "/en-us/men/product/").replace("/women/product/", "/en-us/women/product/")
+            if not self.is_arcteryx_product_url(url):
+                continue
             raw_image = (d.get("image") or [None])[0] if isinstance(d.get("image"), list) else d.get("image")
             items.append({
                 "url": url,

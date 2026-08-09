@@ -11,6 +11,8 @@ class WebMemoryGuardTests(unittest.TestCase):
         cls.index = (ROOT / "index.html").read_text(encoding="utf-8")
         cls.detail = (ROOT / "product-detail.html").read_text(encoding="utf-8")
         cls.catalog = (ROOT / "app/lib/catalog.ts").read_text(encoding="utf-8")
+        cls.names = (ROOT / "arcteryx-names.js").read_text(encoding="utf-8")
+        cls.app_names = (ROOT / "app/lib/arcteryx-names.js").read_text(encoding="utf-8")
         cls.support = (ROOT / "support.html").read_text(encoding="utf-8")
         cls.submission_migration = (
             ROOT
@@ -64,8 +66,16 @@ class WebMemoryGuardTests(unittest.TestCase):
         self.assertNotIn(unsafe_boundary, self.index)
         self.assertNotIn(unsafe_boundary, self.detail)
         self.assertNotIn(unsafe_boundary, self.catalog)
+        for token in ("LiTRIC", "SuperLight", "StormHood", "DownWord"):
+            self.assertIn(token, self.names)
+
+    def test_web_and_app_use_the_same_model_name_runtime(self):
+        self.assertIn('<script src="arcteryx-names.js"></script>', self.index)
+        self.assertIn('<script src="arcteryx-names.js"></script>', self.detail)
+        self.assertIn("from './arcteryx-names'", self.catalog)
+        self.assertEqual(self.names, self.app_names)
         for source in (self.index, self.detail, self.catalog):
-            self.assertIn("LiTRIC, SuperLight, StormHood, and DownWord", source)
+            self.assertNotIn("NAME_PREFIX_STRIP", source)
 
     def test_detail_purchase_cta_names_the_actual_platform(self):
         self.assertIn(

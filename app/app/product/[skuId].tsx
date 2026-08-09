@@ -11,7 +11,7 @@ import { ScreenState } from '../../components/ScreenState';
 import { useProducts } from '../../contexts/ProductsContext';
 import { usePro } from '../../contexts/ProContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
-import { cleanName, formatPrice, GENDER_LABEL, productCategory, REGION_LABEL, releaseSeason } from '../../lib/catalog';
+import { formatPrice, GENDER_LABEL, productCategory, productName, REGION_LABEL, releaseSeason } from '../../lib/catalog';
 import { openBuyUrl, scheduleTestPriceNotification, softImpact, uuid4 } from '../../lib/actions';
 import { buildPriceAlertPayload } from '../../lib/priceAlerts';
 import { computeSignal, historyToPoints, recentPoints } from '../../lib/signals';
@@ -64,7 +64,7 @@ export default function ProductDetailScreen() {
   }
 
   const currentProduct = product;
-  const name = cleanName(currentProduct.full_name || currentProduct.model);
+  const name = productName(currentProduct);
   const images = (currentProduct.images.length ? currentProduct.images : [currentProduct.image_url]).filter(Boolean) as string[];
   const season = releaseSeason(currentProduct);
 

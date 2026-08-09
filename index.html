@@ -62,6 +62,7 @@
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="arcteryx-names.js"></script>
     <style>
         :root {
             --bg: #fafaf8;
@@ -1054,6 +1055,7 @@ function allKnownSizesOutOfStock(p) {
 }
 
 function isBlockedProduct(p) {
+    if (!window.ArcTeryxNames.isArcTeryxProduct(p)) return true;
     const dealer = p.dealer || platformKey(p);
     if (dealer !== 'arcteryx_outlet') return false;
     const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
@@ -1084,63 +1086,12 @@ function relTime(ts) {
     return ts.slice(5, 10);
 }
 
-// ── Clean product name (drop trailing description blob) ──
-const GENDER_MARKERS = ["Women's", "Men's", "Unisex", 'Damen', 'Herren', 'Femme', 'Homme'];
-const cleanName = (raw) => {
-    if (!raw) return '';
-    let s = raw.trim();
-    // Strip garbage prefixes ("Der ", "system_a", "Veste à capuche", ...)
-    s = s.replace(NAME_PREFIX_STRIP, '');
-    // Some entries have brand line "veilance" glued: "veilanceSpere..." → "Veilance Spere..."
-    s = s.replace(/^veilance([A-Z])/, 'Veilance $1');
-    // 1) split on gender marker (English + German + French)
-    for (const m of GENDER_MARKERS) {
-        const i = s.indexOf(m);
-        if (i > 0) return s.slice(0, i + m.length).trim();
-    }
-    // Canonical dealer names can contain intentional mixed-case tokens such as
-    // LiTRIC, SuperLight, StormHood, and DownWord. Treating every lowercase →
-    // uppercase transition as a glued description truncates those product names.
-    return s;
-};
+// ── Arc'teryx model-aware product names ──
+const productName = p => window.ArcTeryxNames.standardProductName(p.full_name || p.model, p);
 
 // ── State (URL-synced) ──
-// Known Arc'teryx series (first word of cleaned name)
-const KNOWN_SERIES = new Set([
-    // 经典壳/羽绒/抓绒系列
-    'Alpha', 'Beta', 'Gamma', 'Delta', 'Zeta', 'Theta', 'Sigma', 'Kappa',
-    'Atom', 'Cerium', 'Proton', 'Nuclei', 'Thorium',
-    'Rho', 'Phasic', 'Motus', 'Rhomb',
-    // 滑雪/登山
-    'Sabre', 'Rush', 'Sentinel', 'Fissile', 'Orsin', 'Hadron',
-    // 越野跑 / 鞋
-    'Norvan', 'Sylan', 'Cormac', 'Aerios', 'Konseal', 'Vertex', 'Bora', 'Acrux',
-    'Kragg', 'Kopec',
-    // 都市/通勤
-    'Covert', 'Incendia', 'Incendo', 'Patera', 'Liatris', 'Emaris', 'Sonii', 'Psiphon', 'Emblem',
-    'Palisade', 'Kyanite', 'Squamish', 'Essent', 'Taema', 'Aestas',
-    // 高端 Veilance / 经典户外
-    'Veilance', 'Macai', 'Cronin', 'Serratus', 'Satoro',
-    // 背包 / 包袋
-    'Mantis', 'Arro', 'Brize', 'Khard', 'Granville', 'Index', 'Kraft',
-    // 配饰
-    'Spere', 'Blade', 'Soria', 'Silene', 'Ralle', 'Lana', 'Bird',
-    'Mallow', 'Sinsola', 'Sinsolo', 'Calidum', 'Saydi', 'Sima', 'Rula', 'Nia',
-    // 2024-2026 年新增系列（之前漏入"其他"，共 462 件）
-    'Monitor', 'Andessa', 'Decca', 'Entasis', 'Ifora', 'Align',
-    'Focal', 'Therme', 'Demlo', 'Altus', 'Sorin', 'Frame',
-    'Indisce', 'Asset', 'Eave', 'Levon', 'Voronoi', 'Diode',
-    'Ogee', 'Conic', 'Creston', 'Clarkia', 'Corbel', 'Field',
-    "Arc'Word",
-]);
-
-// German/French prefix garbage to strip from product names
-const NAME_PREFIX_STRIP = /^(?:Der|Die|Das|Veste à capuche|Veste|system_a)\s*/i;
-
 const extractSeries = (cleanedName) => {
-    if (!cleanedName) return '其他';
-    const first = cleanedName.split(/[\s\-]/)[0];
-    return KNOWN_SERIES.has(first) ? first : '其他';
+    return window.ArcTeryxNames.extractModelFamily(cleanedName) || '其他';
 };
 
 const state = {
@@ -1191,12 +1142,12 @@ const filterProducts = () => {
         if (state.gender !== 'all' && p.gender !== state.gender) return false;
         if (state.category !== 'all') {
             const cat = (p.category && p.category !== '其他')
-                ? p.category : inferCategory(cleanName(p.full_name || p.model), p.url);
+                ? p.category : inferCategory(productName(p), p.url);
             if (cat !== state.category) return false;
         }
         if (state.series !== 'all' && p._series !== state.series) return false;
         if (q) {
-            const hay = ((p.full_name || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
+            const hay = (productName(p) + ' ' + (p.full_name || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
             if (!hay.includes(q)) return false;
         }
         return true;
@@ -1279,7 +1230,7 @@ const thumbnailUrl = (src, width = 480, height = 600) => {
 };
 
 const buildCard = (p) => {
-    const name = cleanName(p.full_name || p.model);
+    const name = productName(p);
     const cny = toCNY(p.sale_price, p.symbol, p.currency);
     const encodedUrl = encodeURIComponent(p.url || '');
     const flag = REGION_FLAG[p.region] || '';
@@ -1395,12 +1346,12 @@ const filterExcept = (exclude) => {
         if (exclude !== 'gender'   && state.gender   !== 'all' && p.gender !== state.gender) return false;
         if (exclude !== 'category' && state.category !== 'all') {
             const cat = (p.category && p.category !== '其他')
-                ? p.category : inferCategory(cleanName(p.full_name || p.model), p.url);
+                ? p.category : inferCategory(productName(p), p.url);
             if (cat !== state.category) return false;
         }
         if (exclude !== 'series'   && state.series   !== 'all' && p._series !== state.series) return false;
         if (exclude !== 'search'   && q) {
-            const hay = ((p.full_name || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
+            const hay = (productName(p) + ' ' + (p.full_name || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
             if (!hay.includes(q)) return false;
         }
         return true;
@@ -1487,7 +1438,7 @@ const initFilters = () => {
     const catPool = filterExcept('category');
     const catCounts = countIn(catPool, p =>
         (p.category && p.category !== '其他')
-            ? p.category : inferCategory(cleanName(p.full_name || p.model), p.url)
+            ? p.category : inferCategory(productName(p), p.url)
     );
     if (state.category !== 'all' && !catCounts[state.category]) catCounts[state.category] = 0;
     const catOrder = ['冲锋衣','保暖羽绒','卫衣/抓绒','裤装','鞋类','背包','上衣','内衣','手套','帽子','Veilance','其他'];
@@ -1647,7 +1598,7 @@ async function init() {
         last_updated: normTs(p.last_updated),
         sizes:      Array.isArray(p.sizes)      ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
         size_stock: typeof p.size_stock === 'object' ? p.size_stock : (p.size_stock ? JSON.parse(p.size_stock) : {}),
-        _series:    extractSeries(cleanName(p.full_name || p.model)),
+        _series:    extractSeries(productName(p)),
         _platform:  platformKey(p),
     });
 
@@ -1734,7 +1685,7 @@ function maybeShowNewArrivals() {
         : `${REGION_FLAG[regionFilter] || ''} ${REGION_LABEL[regionFilter] || regionFilter.toUpperCase()}`.trim();
     document.getElementById('na-date').textContent = `${today} · ${regionLabel}`;
     grid.innerHTML = top.map(p => {
-        const name = cleanName(p.full_name || p.model);
+        const name = productName(p);
         const sym = p.symbol || '$';
         const sale = fmt(p.sale_price);
         const orig = (p.original_price && p.original_price > p.sale_price)
