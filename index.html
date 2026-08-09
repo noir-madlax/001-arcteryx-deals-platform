@@ -1109,9 +1109,10 @@ const cleanName = (raw) => {
         const i = s.indexOf(m);
         if (i > 0) return s.slice(0, i + m.length).trim();
     }
-    // 2) fallback: find last lowercase→uppercase transition with a 12+ char tail
-    const m = s.match(/^(.+?[a-z])([A-Z].{12,})$/);
-    return m ? m[1].trim() : s;
+    // Canonical dealer names can contain intentional mixed-case tokens such as
+    // LiTRIC, SuperLight, StormHood, and DownWord. Treating every lowercase →
+    // uppercase transition as a glued description truncates those product names.
+    return s;
 };
 
 // ── State (URL-synced) ──

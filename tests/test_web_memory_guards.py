@@ -59,6 +59,23 @@ class WebMemoryGuardTests(unittest.TestCase):
         self.assertIn(".select(DETAIL_COLUMNS).ilike('url', `%/${slug}%`).limit(50)", self.detail)
         self.assertNotIn("db.from('products').select('*')", self.detail)
 
+    def test_mixed_case_product_names_are_not_treated_as_glued_descriptions(self):
+        unsafe_boundary = "match(/^(.+?[a-z])([A-Z].{12,})$/)"
+        self.assertNotIn(unsafe_boundary, self.index)
+        self.assertNotIn(unsafe_boundary, self.detail)
+        self.assertNotIn(unsafe_boundary, self.catalog)
+        for source in (self.index, self.detail, self.catalog):
+            self.assertIn("LiTRIC, SuperLight, StormHood, and DownWord", source)
+
+    def test_detail_purchase_cta_names_the_actual_platform(self):
+        self.assertIn(
+            'function ctaBlock(url, klass = \'\', platformLabel = "Arc\'teryx Outlet")',
+            self.detail,
+        )
+        self.assertIn("前往 ${esc(platformLabel)} 购买", self.detail)
+        self.assertIn("const platformLabel = inferPlatform(current).label;", self.detail)
+        self.assertIn("ctaBlock(ctaUrl, 'cta-inline', platformLabel)", self.detail)
+
     def test_public_submission_surfaces_use_hardened_rpcs(self):
         self.assertIn("/rest/v1/rpc/register_price_alert", self.detail)
         self.assertNotIn("/rest/v1/price_alerts", self.detail)

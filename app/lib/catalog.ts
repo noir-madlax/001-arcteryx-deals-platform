@@ -204,8 +204,10 @@ export function cleanName(raw?: string | null) {
     const index = value.indexOf(marker);
     if (index > 0) return value.slice(0, index + marker.length).trim();
   }
-  const match = value.match(/^(.+?[a-z])([A-Z].{12,})$/);
-  return match?.[1] ? match[1].trim() : value;
+  // Canonical dealer names can contain intentional mixed-case tokens such as
+  // LiTRIC, SuperLight, StormHood, and DownWord. Treating every lowercase →
+  // uppercase transition as a glued description truncates those product names.
+  return value;
 }
 
 export function inferCategory(name?: string | null, url?: string | null) {
