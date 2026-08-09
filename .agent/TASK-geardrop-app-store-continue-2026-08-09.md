@@ -5,7 +5,7 @@
 
 ## 当前状态：进行中
 
-已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；三个同 SDK 补丁升级后的 production build 7 已完成 EAS 签名构建、本地产物核验、Apple 上传处理和内部 TestFlight 分发，并补齐 build 7 的 en-US `What to Test`。原始 QQ Apple 账户现已在 iPhone `媒体与购买项目` 与 TestFlight 两处生效，新邀请兑换成功，build 7 已安装并启动。FI/IE/AU 切换、AU 图片与冷启动持久化通过，但美国区精确搜索 `sabre` 暴露 `FlatList` 在搜索框展开时保留空状态的真机缺陷；最小 `extraData` 修复已通过完整本地发布门，下一步生成 build 8 真机复测。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot，尚未绑定或提交 App Review。
+已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；原始 QQ Apple 账户已在 iPhone `媒体与购买项目` 与 TestFlight 两处生效，新邀请兑换成功，build 7 已安装并完成首轮真机验证。FI/IE/AU 切换、AU 图片与冷启动持久化通过，但美国区精确搜索 `sabre` 暴露 `FlatList` 在搜索框展开时保留空状态的真机缺陷。最小 `extraData` 修复已生成 production build 8，完成 EAS 签名成品核验、Apple 上传处理、精确内部组分发和 393 字符 Test Details 独立读回；当前只等 iPhone 锁屏后更新到 build 8，复测搜索与继续 StoreKit 矩阵。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot，尚未绑定或提交 App Review。
 
 ## 已确认事实
 
@@ -48,10 +48,15 @@
 - 用户随后要求把当前 Gmail 再加入内部测试组；App Store Connect 实时读回该 Gmail 对应 tester 已在 `GearDrop Internal`，状态为 2026-08-10 新发的 `Invited`，并保留 17 sessions。`Add Testers` 弹窗同时显示组内已包含全部 3 个可用内部 tester、0 selected，`Add` 按钮禁用；本轮已取消弹窗，没有提交重复写入。再次添加同一地址不能创建新的 Apple tester 身份，也不能绕过原始 QQ Apple 账户映射。（来源：2026-08-10 App Store Connect live DOM）
 - 用户完成登录后，iPhone Apple 账户页只读显示主 iCloud 仍为此前 Gmail，但 `媒体与购买项目` 已切换为 Apple 错误提示中的原始 QQ 账户；TestFlight 设置页随后也读回同一 QQ 账户。全程未读取或输入密码、验证码。（来源：2026-08-10 iPhone 镜像实时读回）
 - 已从认证 Apple 邀请邮件只读恢复当前私密邀请，在不展示或保存链接/兑换码的前提下兑换；TestFlight 主列表短暂显示旧的“已移除测试人员”，但 GearDrop 详情立即读回 `1.0.0 (7)`、90 天与 `更新`，完成下载后变为 `打开`。build 7 首次启动两页 TestFlight 提示后成功进入真实 Deals 首页。（来源：2026-08-10 Gmail 只读、Apple 邀请页与 iPhone TestFlight）
+- 兑换并安装后的 App Store Connect 独立 UI 读回为内部组仍 3 testers / 6 builds；当前 Gmail 对应 tester 已从 `Invited` 变为 `Installed 1.0.0 (7)`，原始 QQ tester 也保持 `Installed 1.0.0 (7)`。这关闭了账户映射阻塞，并证明设备侧安装已写回 Apple 服务端。（来源：2026-08-10 App Store Connect live DOM）
 - build 7 真机首页读回 5,726 个商品，Logo、双列卡片与图片正常；FI、IE、AU 均可从地区面板选择，FI/IE 使用欧元，AU 精确显示 16 个商品与澳元。AU 首次切换的图片占位在再次进入与冷启动后全部加载，Mac 对前四个实际 Shopify 图片资源也均读回 HTTP 200；冷停 App 后重新打开仍保持 AU，证明地区持久化通过。（来源：2026-08-10 iPhone 真机与只读图片资源探测）
 - 美国区精确输入 `sabre` 时顶部读回 `显示 30`，默认品牌/品类/性别筛选均为“全部”，但搜索框展开时卡片区错误保留“没有匹配的折扣”；收起搜索框后同一查询立即显示 30 个 Sabre 卡片。实时数据独立读回这 30 条全部有唯一 SKU 和图片，排除数据或筛选缺失，定位为 React Native `FlatList` 的刷新状态缺口。（来源：2026-08-10 iPhone 真机、Supabase 只读数据与 `app/app/(tabs)/index.tsx`）
 - 已在 Deals `FlatList` 增加由地区、搜索展开状态、查询词、全部筛选和排序组成的稳定 `extraData` revision，强制虚拟列表与头部状态同步刷新。定向验证为 40/40 tests、TypeScript exit 0；完整 `npm run verify` exit 0：Doctor 20/20、5,726 products、84,362 price-history rows、200 条启动预览、AU 16、iOS 1,497 modules / 5.4 MB，最终原文 `verify_local_ok`。（来源：2026-08-10 源码 diff 与本轮命令原始输出）
 - 搜索修复提交 `92ad38235082484ca6a93d7f489cea2c22f3a5ff` 已推送且远端 SHA 一致；production EAS build `fd126904-6926-4469-bed6-7a66db94236d` 已创建，实时读回 `IN_PROGRESS`、App `1.0.0`、build `8`、Store distribution、SDK 57、源码 SHA 与该提交一致。EAS 自动把本地 build number 从 7 增至 8，已同步 `verify-config.ts` 契约，并在 build 8 配置上再次完整通过 `npm run verify`，最终原文仍为 `verify_local_ok`。（来源：2026-08-10 Git、EAS build:view 与本轮完整验证）
+- EAS build 8 最终读回 `FINISHED`、artifact ready、App `1.0.0 (8)`、源码仍精确为搜索修复提交。下载的同一 IPA 为 30,081,403 bytes，SHA-256 `abaf3e584c1d6c8c22e43d744f99f9865e8d75cadb71ce7fc3183584248f64dc`；`codesign --verify --deep --strict` 通过，Info.plist 为 `dev.100app.geardrop` / `1.0.0` / `8` / minimum iOS 16.4 / iPhone-only `[1]` / `ITSAppUsesNonExemptEncryption=false`，Distribution Team 为 `46H3U4N2U3`。（来源：2026-08-10 EAS、本地 IPA、codesign 与 plutil）
+- 首次 EAS Submit 带 `--what-to-test` 时在调度前被套餐门拒绝为 Enterprise-only changelog，明确没有创建 submission；去掉该参数后，同一 build 8 成功创建 submission `d336424c-d9e7-45fd-b9f1-d6531c2ae7f9`，随后读回 `finished`、build 8、源码与 fingerprint 一致。（来源：2026-08-10 EAS Submit 原始输出与 submit:view）
+- EAS `submit:status` 从凭据服务选中了无权读取 GearDrop 的另一把 ASC key，不能作为 Apple readback；已改用当前登录且能精确读取 App `6790165332` 的 App Store Connect。Apple Build Uploads 先读回 build 8 `Processing`，随后为 `Complete`；正式 builds 表读回资源 `aebe740c-32e7-45aa-8013-002cc1d5c2c6`、`Ready to Submit`、90 天。（来源：2026-08-10 EAS submit:status 错误与 App Store Connect live DOM）
+- EAS `--groups` 再次没有实际建立 build 8 关系；写前 build 8 行只有 `Add Group`。本轮只选择精确内部组 `GearDrop Internal`，页面重载并折叠 Uploads 后独立读回 build 8 行包含该组、Invites 2。build 8 en-US `What to Test` 写前为空；保存 393 字符验收说明后显示 `Saved`，整页重载再读回 exact text=true、保存按钮禁用。（来源：2026-08-10 App Store Connect 写前、写后与独立重载 readback）
 - IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
 
 ## 假设
@@ -82,7 +87,7 @@
 
 ## 下一步
 
-1. 等待 production build 8 完成，核验签名 IPA 后上传 Apple、加入精确内部组并独立读回；在同一物理 iPhone 上复测搜索框展开时 `sabre` 30 个卡片可见，并继续 StoreKit、恢复、pending、离线与 Offer Code 矩阵。
+1. iPhone 锁屏并恢复镜像后，从 TestFlight 更新到 build 8；在同一物理 iPhone 上复测搜索框展开时 `sabre` 30 个卡片可见，并继续 StoreKit、恢复、pending、离线与 Offer Code 矩阵。
 2. 从通过真机验收的最终 build 截取 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
 3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到最终通过验收的 build、附加三项 IAP，做最终 readback 后提交审核。
 
@@ -94,5 +99,6 @@
 - 完整 app-specific reset、同邮箱 tester 重建、两封全新认证邮件和新兑换路径也不能修复；Apple 最终明确指出邀请属于另一个原始 Apple 账户。继续重发同一邮箱邀请或重启 TestFlight 不会改变底层账户映射。
 - 当前 Gmail 已是组内唯一对应 tester，且 2026-08-10 已重建并重新邀请；`Add Testers` 不再提供可添加项。再次选择或重建同一 Gmail 不会生成独立身份，必须改用错误提示中的原始 QQ Apple 账户，或由用户明确提供一个此前未绑定的新 Apple 账户邮箱。
 - 首次 `eas submit` 带 `--json` 时 CLI 21.7.0 以 `Nonexistent flag: --json` 在本地退出 1，未创建外部提交；去掉该 flag 后才成功调度 submission。
+- build 8 首次 `eas submit` 带 `--what-to-test` 时以 `Changelog submission is currently available for Enterprise plan only` 在调度前退出，未创建 submission；测试说明已改由 App Store Connect 精确页面写入并独立读回。
 - EAS `submit:status` 起初因本机时间比 Apple `Date` 头快约 29 秒而返回 401；本轮只对该进程注入 -60 秒 `Date` shim 后读回成功，未改系统时钟。
 - `@expo/apple-utils` 的旧 `dataUsagePublishState` 和 `availableTerritories` 关系已被 Apple 移除；availability 已改用 Apple 官方 `appAvailabilityV2` + v2 territory endpoint，App Privacy publish state 已改由登录 UI 实时复核并确认已发布。
