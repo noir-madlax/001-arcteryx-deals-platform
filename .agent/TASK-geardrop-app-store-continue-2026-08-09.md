@@ -72,12 +72,15 @@
 - 当前账户存在月付 StoreKit 沙盒订阅历史，因此这次“恢复后为 Free”只能证明 RevenueCat `Nobody` 屏蔽 entitlement，不能冒充“无购买恢复”场景；无购买恢复仍未验证。（来源：2026-08-10 iPhone 镜像与 RevenueCat 设置语义）
 - 设备 `设置 > 开发者 > 沙盒 Apple 账户` 已实时滚动读回为“登录”，证明没有专用 Sandbox Apple Account 登录。App Store Connect `Users and Access > Sandbox > Test Accounts` 同时没有任何 tester 行，只显示 `Add Test Account`；New Tester 表单要求 First Name、Last Name、唯一 Email、Password／Confirm Password 和 Country or Region，Create 在未填写时禁用。本轮未填、未创建、未传输凭据。（来源：2026-08-10 iPhone 镜像与 App Store Connect live DOM）
 - RevenueCat 官方 Sandbox Testing 文档明确列出平台沙盒限制：包括 TestFlight 在内的 Store API 可能无法跨地区返回准确价格，并建议用平台沙盒验证购买流程而非依赖元数据。Apple 官方文档同时确认 TestFlight 交易永远使用 Sandbox、不会产生真实扣款，并提供 `Developer > Sandbox Apple Account` 的专用测试入口。（来源：2026-08-10 RevenueCat 与 Apple 官方文档）
+- Apple 当前 `Create a Sandbox Apple Account` 文档明确：测试 IAP 时无需退出设备级个人 Apple Account，应从 Settings 的 Sandbox 登录入口登录；Sandbox 邮箱不得已注册为 Apple Account，创建后 name/email/password 不可编辑，但 storefront country/region 可编辑。（来源：2026-08-10 Apple Developer Help live）
+- 经用户要求由 Codex 代填，本轮在 App Store Connect 创建了两个纯测试、United States storefront 的 Sandbox tester；页面独立刷新后读回 `Viewing 2 of 2 items`，第二个 tester 名称可见。具体邮箱和密码没有写入仓库、任务档案或长期记忆。（来源：2026-08-10 App Store Connect live DOM）
+- 第一个新 Sandbox tester 在 iPhone `开发者 > 沙盒 Apple 账户` 连续两次返回 `验证失败 / 你的 Apple 账户或密码不正确`；第二个 tester 已开始登录，但提交后 iPhone 被拿起使用，iPhone 镜像按系统规则结束，尚未取得是否登录成功的最终读回。（来源：2026-08-10 iPhone 镜像）
 
 ## 假设
 
 - 美元 paywall 与日元确认页的差异更符合 RevenueCat 所列的平台沙盒跨地区元数据限制，但 production storefront 尚未发布、不能实时购买，因此不能把该推断当作生产价格已验证。
 - 现有 QQ StoreKit 上下文已有 monthly 沙盒订阅，不适合继续证明无购买恢复、首购或 pending。完整矩阵需要一个专用且无历史购买的 Sandbox tester，并在受控 storefront 下重新加载 offerings。
-- 创建 Sandbox tester 涉及唯一邮箱、密码和国家/地区；登录前还可能需要按 Apple 官方流程退出当前 `媒体与购买项目`，会影响现有 TestFlight 会话。不得替用户猜测这些身份／凭据字段，也不得在未取得动作时授权前退出当前 QQ 账户。
+- Sandbox tester 已按用户要求使用纯测试身份创建；Apple 当前文档明确 IAP sandbox 不需要退出设备级个人 Apple Account，因此不再把退出 QQ `媒体与购买项目` 当作前置条件。仍不得把 tester 凭据写入代码、Git 或长期记忆。
 - 离线恢复需要改变设备网络条件；在用户未明确授权前不关闭 Shadowrocket、全局代理或系统网络，只保留为未验证项。
 
 ## 验收标准
@@ -104,7 +107,7 @@
 
 ## 下一步
 
-1. 用户在当前已打开的 App Store Connect `New Tester` 表单中亲自填写并创建专用 Sandbox tester；随后由用户选择在该 iPhone 暂时退出 QQ `媒体与购买项目` 并登录 sandbox tester，或改用另一台专用测试设备。密码不得发到聊天中。
+1. 用户锁定并放下 iPhone，使 iPhone 镜像恢复；优先只读确认第二个 United States Sandbox tester 是否已经登录。若未登录，保留现有两个 tester，不继续批量创建账号，先定位登录失败原因。
 2. 将 RevenueCat Sandbox testing access 从 `Nobody` 临时恢复到经用户确认的测试范围，再在 build 8 的干净 storefront 上验证月付／年付／终身本地化价格、首购、取消、pending、无购买恢复与 Offer Code；完成后恢复限制并独立读回。离线恢复只在用户明确授权网络改动后执行。
 3. 从通过完整真机验收的 build 8 截取 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
 4. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 8、附加三项 IAP，做最终 readback 后提交审核。
