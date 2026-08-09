@@ -36,12 +36,13 @@
 - 当前测试账号邮箱于 2026-08-09 21:43（Asia/Taipei）收到 Apple 官方、DKIM/SPF/DMARC 均通过的 build 7 可测试通知；邮件的官方 app 深链为 GearDrop App `6790165332`，证明新通知已送达正确账号。（来源：本轮 Gmail 精确搜索与单封邮件读取）
 - iPhone Safari 已成功把该官方深链交给 TestFlight，但 TestFlight 连续返回 `App 不可用 / 此 App 不可用于你的 Apple 账户`。TestFlight 设置实时显示的账号与邀请收件账号精确一致；App Store Connect 同时读回目标 tester 为 `Installed 1.0.0 (6)`、17 sessions、设备 iPhone 16 Pro / iOS 26.5.2，build 7 在 `GearDrop Internal` 且另一 tester 已安装 build 7，因此当前是目标 tester 的 Apple 账户资格/绑定不一致，不是 URL、build 分组或登录邮箱错误。（来源：本轮 iPhone Safari/TestFlight 与 App Store Connect live DOM）
 - 经用户明确同意，已在 iPhone `Apple 账户 > 媒体与购买项目` 退出并用同一 Apple 账户自动重新登录；写后再次打开菜单出现 `退出登录`，证明购买账号会话已恢复。强制关闭 TestFlight 后重新打开同一官方邀请，仍返回完全相同的 `App 不可用`，排除客户端 TestFlight 缓存和媒体购买会话。（来源：本轮 iPhone 镜像写前、确认提示、写后菜单与邀请重试）
+- Apple 官方当前 API 把两种移除明确区分：`DELETE /v1/betaTesters/{id}` 会移除该 tester 测试所有 App 的能力；`DELETE /v1/apps/{appId}/relationships/betaTesters` 只移除指定 App 的全部组/build 访问。因此若继续服务端重置，必须优先使用 GearDrop app-specific relationship reset，禁止直接全局删除 tester。（来源：2026-08-09 Apple Developer Documentation live）
 - IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
 
 ## 假设
 
 - 若 build 7 真机验收暴露代码缺陷，将在本隔离分支做最小修复并生成新 build；否则不无谓重建。
-- 删除并重建目标 tester 会损失当前 17 sessions 等测试指标历史；关系重建、有效新邮件、TestFlight 强制重启以及同一 Apple 账户的媒体购买会话重登均已失败，因此只有用户明确同意该历史损失后才执行 tester 级重建。
+- GearDrop app-specific tester access reset 可能使该 App 当前 17 sessions、设备/build 关联或可见性丢失，但不会像全局删除 tester 那样撤销其他 App 的测试能力；关系重建、有效新邮件、TestFlight 强制重启以及同一 Apple 账户的媒体购买会话重登均已失败，因此只有用户明确接受该 GearDrop 历史风险后才执行。
 
 ## 验收标准
 
@@ -64,7 +65,7 @@
 
 ## 下一步
 
-1. 仅在用户明确接受丢失目标 tester 的 17 sessions 等历史后，删除并以同一账号重建该 beta tester、加入 `GearDrop Internal`、发送全新邀请并独立读回；随后在 iPhone 打开新邀请、安装 build 7，完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
+1. 仅在用户明确接受 GearDrop 当前 17 sessions、设备/build 关联或可见性可能丢失后，用 Apple 官方 app-specific relationship endpoint 撤销目标 tester 对 GearDrop 的全部访问，再把现有 tester 加回 `GearDrop Internal`、发送全新邀请并独立读回；不得调用全局 tester 删除 endpoint。随后在 iPhone 打开新邀请、安装 build 7，完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
 2. 从通过真机验收的 build 7 截取最终 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
 3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 7、附加三项 IAP，做最终 readback 后提交审核。
 
