@@ -1,11 +1,11 @@
-# TASK: GearDrop App Store 上线继续（更新：2026-08-09 Asia/Taipei）
+# TASK: GearDrop App Store 上线继续（更新：2026-08-10 Asia/Taipei）
 
 ## Why（一句话）
 把当前最新签名候选从 TestFlight 真机验收推进到 App Store 1.0 可提交／已提交状态，并用 Apple 实时读回证明每个外部步骤。
 
 ## 当前状态：进行中
 
-已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；三个同 SDK 补丁升级后的 production build 7 已完成 EAS 签名构建、本地产物核验、Apple 上传处理和内部 TestFlight 分发，并补齐 build 7 的 en-US `What to Test`。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot；Mac 与 iPhone 镜像现已连通，但目标 TestFlight 账号虽与 Apple 的 build 6 安装记录精确一致，GearDrop 仍未出现在该机 TestFlight 列表，尚未完成 build 7 真机矩阵、绑定或 App Review 提交。
+已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；三个同 SDK 补丁升级后的 production build 7 已完成 EAS 签名构建、本地产物核验、Apple 上传处理和内部 TestFlight 分发，并补齐 build 7 的 en-US `What to Test`。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot。目标 TestFlight tester 已按用户授权完成 GearDrop 单应用关系重置、同邮箱重建、重新入组和新邀请送达；但 iPhone 用新邀请兑换时，Apple 明确提示当前显示邮箱虽与收件邮箱一致，底层邀请却关联到另一个“原始 Apple 账户”（界面仅给出脱敏 QQ 邮箱提示）。冷启动 TestFlight 后复现相同错误，因此当前阻塞已收敛为 Apple 账户身份映射，尚未完成 build 7 真机矩阵、绑定或 App Review 提交。
 
 ## 已确认事实
 
@@ -37,12 +37,19 @@
 - iPhone Safari 已成功把该官方深链交给 TestFlight，但 TestFlight 连续返回 `App 不可用 / 此 App 不可用于你的 Apple 账户`。TestFlight 设置实时显示的账号与邀请收件账号精确一致；App Store Connect 同时读回目标 tester 为 `Installed 1.0.0 (6)`、17 sessions、设备 iPhone 16 Pro / iOS 26.5.2，build 7 在 `GearDrop Internal` 且另一 tester 已安装 build 7，因此当前是目标 tester 的 Apple 账户资格/绑定不一致，不是 URL、build 分组或登录邮箱错误。（来源：本轮 iPhone Safari/TestFlight 与 App Store Connect live DOM）
 - 经用户明确同意，已在 iPhone `Apple 账户 > 媒体与购买项目` 退出并用同一 Apple 账户自动重新登录；写后再次打开菜单出现 `退出登录`，证明购买账号会话已恢复。强制关闭 TestFlight 后重新打开同一官方邀请，仍返回完全相同的 `App 不可用`，排除客户端 TestFlight 缓存和媒体购买会话。（来源：本轮 iPhone 镜像写前、确认提示、写后菜单与邀请重试）
 - Apple 官方当前 API 把两种移除明确区分：`DELETE /v1/betaTesters/{id}` 会移除该 tester 测试所有 App 的能力；`DELETE /v1/apps/{appId}/relationships/betaTesters` 只移除指定 App 的全部组/build 访问。因此若继续服务端重置，必须优先使用 GearDrop app-specific relationship reset，禁止直接全局删除 tester。（来源：2026-08-09 Apple Developer Documentation live）
+- 用户于 2026-08-10 明确接受 GearDrop 当前 17 sessions、设备/build 关联或可见性可能丢失，并授权执行 app-specific reset、把同一邮箱 tester 加回 `GearDrop Internal`、发送新邀请和独立读回；全程未调用全局 `DELETE /v1/betaTesters/{id}`。（来源：本轮用户授权与 API 调用路径）
+- 写前全新 JWT 进程断言精确 App `6790165332` / `dev.100app.geardrop`、精确内部组、build 7 `VALID`、组内 3 testers，以及近一年指标中唯一 17 sessions 的目标 tester；该 tester 当时为 `INSTALLED`、只属于这一个 GearDrop 组，且没有其他 App 关系。（来源：本轮 Apple 官方 API 写前读回）
+- app-specific `DELETE /v1/apps/{appId}/relationships/betaTesters` 返回 `202 Accepted`，不是此前预期的 204；异步完成后目标从 GearDrop 组消失。由于写前其他 App 关系为 0，旧 tester 资源也变为不可读，但没有调用全局删除 endpoint。（来源：本轮 Apple 官方 API 写响应与异步读回）
+- 只读 Gmail 从已认证的 Apple build 7 邮件解析出精确收件账号后，`POST /v1/betaTesters` 以同一邮箱和精确 `GearDrop Internal` 关系返回 201；`POST /v1/betaTesterInvitations` 再返回 201。写后连续 10 秒以及全新 JWT 进程均读回：同邮箱 tester 唯一、`INVITED`、只关联 GearDrop 和该组、组内恢复为 3 testers、build 7 仍为 `VALID`。（来源：本轮 Gmail 只读与 Apple 官方 API 写入/独立读回）
+- tester 重建与显式邀请各触发一封全新 Apple 邮件；两封均送达精确账号、包含 GearDrop App ID，且 DKIM/SPF/DMARC 全部通过。两封邮件指向同一个邀请，不存在“误用已被重发作废的旧码”。（来源：本轮 Gmail 精确搜索与两封邮件读取）
+- Mac Safari 打开全新邀请后读回标题为 `GearDrop: Outdoor Deals 1.0.0 (7)`，并提供 TestFlight 内兑换路径。iPhone TestFlight 用该新邀请兑换时，Apple 明确返回当前 Apple 账户与邀请关联账户不符，并提示应使用另一个脱敏的原始 QQ 邮箱 Apple 账户；当前 TestFlight 显示邮箱仍与邀请收件邮箱精确一致。（来源：本轮 Mac Safari 与 iPhone 镜像）
+- 已彻底划掉并冷启动 TestFlight，再次兑换同一新邀请仍得到完全相同的原始 Apple 账户关联错误。终态全新 JWT 进程读回 tester 仍唯一、`INVITED`、GearDrop/精确组关系完整、组内 3 testers、build 7 `VALID`，证明失败未破坏服务端恢复状态。（来源：本轮 iPhone 镜像与 Apple 官方 API 终态读回）
 - IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
 
 ## 假设
 
 - 若 build 7 真机验收暴露代码缺陷，将在本隔离分支做最小修复并生成新 build；否则不无谓重建。
-- GearDrop app-specific tester access reset 可能使该 App 当前 17 sessions、设备/build 关联或可见性丢失，但不会像全局删除 tester 那样撤销其他 App 的测试能力；关系重建、有效新邮件、TestFlight 强制重启以及同一 Apple 账户的媒体购买会话重登均已失败，因此只有用户明确接受该 GearDrop 历史风险后才执行。
+- GearDrop app-specific tester access reset 已按用户授权执行；旧 tester 资源变为不可读，新 tester 当前为 `INVITED`。旧 17 sessions 与设备/build 历史后续是否会重新聚合尚未验证。Apple 给出的原始账户提示表明，相同可见邮箱可能分别存在于不同 Apple 账户身份上；具体应切换到哪个账户或改用哪个新邮箱属于身份/登录选择，不能由任务自行推断。
 
 ## 验收标准
 
@@ -62,10 +69,12 @@
 - 已完成当前 App Store 版本、元数据、availability、三项 IAP 和审核截图关系的 live 只读盘点；未绑定最终 build、未附加 IAP、未提交审核。（来源：本轮 Apple API）
 - 已完成 App Privacy 当前发布状态、App Store 1.0 页面、TestFlight tester/device/build、三项 IAP localization/price/review screenshot 的登录 UI 复核。（来源：本轮 App Store Connect live DOM）
 - 已确认 iPhone TestFlight 账号与目标 tester 一致，完成 tester-group 关系重建、官方新邮件/深链验证、TestFlight 强制重启及同一 Apple 账户的媒体购买会话退出/重登；当前仍受目标 tester 的 Apple 账户资格绑定异常阻塞。（来源：本轮 Apple API、Gmail、App Store Connect live DOM 与 iPhone 镜像）
+- 已按用户授权完成 GearDrop app-specific tester access reset；处理 Apple 异步 202 后，以同一邮箱重建 tester、恢复精确组、发送新邀请，并在连续稳定读回与全新进程终态读回中确认服务端状态完整。（来源：本轮 Apple 官方 API 与 Gmail）
+- 已在物理 iPhone 上用新邀请兑换并在 TestFlight 冷启动后复测；两次均由 Apple 明确判定当前 Apple 账户不是邀请关联的原始账户，排除了旧 tester ID、旧邮件、旧码和旧 App 进程缓存。（来源：本轮 Mac Safari 与 iPhone 镜像）
 
 ## 下一步
 
-1. 仅在用户明确接受 GearDrop 当前 17 sessions、设备/build 关联或可见性可能丢失后，用 Apple 官方 app-specific relationship endpoint 撤销目标 tester 对 GearDrop 的全部访问，再把现有 tester 加回 `GearDrop Internal`、发送全新邀请并独立读回；不得调用全局 tester 删除 endpoint。随后在 iPhone 打开新邀请、安装 build 7，完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
+1. 用户需在 iPhone 上亲自切换到 Apple 错误提示中的“原始 Apple 账户”，或明确提供一个未绑定到该原始身份的新测试邮箱；登录凭据与 2FA 不由任务代填。切换完成后重新兑换当前新邀请并安装 build 7，再完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
 2. 从通过真机验收的 build 7 截取最终 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
 3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 7、附加三项 IAP，做最终 readback 后提交审核。
 
@@ -74,6 +83,7 @@
 - 重发已接受的邀请会被 Apple 以 `STATE_ERROR.TESTER_INVITE.ALREADY_ACCEPTED` 拒绝；移出并立即加回同一内部组虽成功读回，但 tester 状态仍为 `INSTALLED`，TestFlight 本机列表仍未恢复。
 - iPhone 上残留的旧 TestFlight invitation 页面已经撤销或失效，不能代替新的邀请深链。
 - 新收到的 Apple 官方 build 7 邮件及其 app 深链本身有效，但目标账号打开后稳定返回 `此 App 不可用于你的 Apple 账户`；退出并重新登录同一 `媒体与购买项目` 账号以及强制重启 TestFlight 均不能修复。
+- 完整 app-specific reset、同邮箱 tester 重建、两封全新认证邮件和新兑换路径也不能修复；Apple 最终明确指出邀请属于另一个原始 Apple 账户。继续重发同一邮箱邀请或重启 TestFlight 不会改变底层账户映射。
 - 首次 `eas submit` 带 `--json` 时 CLI 21.7.0 以 `Nonexistent flag: --json` 在本地退出 1，未创建外部提交；去掉该 flag 后才成功调度 submission。
 - EAS `submit:status` 起初因本机时间比 Apple `Date` 头快约 29 秒而返回 401；本轮只对该进程注入 -60 秒 `Date` shim 后读回成功，未改系统时钟。
 - `@expo/apple-utils` 的旧 `dataUsagePublishState` 和 `availableTerritories` 关系已被 Apple 移除；availability 已改用 Apple 官方 `appAvailabilityV2` + v2 territory endpoint，App Privacy publish state 已改由登录 UI 实时复核并确认已发布。
