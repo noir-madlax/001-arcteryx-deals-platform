@@ -5,7 +5,7 @@
 
 ## 当前状态：进行中
 
-已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；三个同 SDK 补丁升级后的 production build 7 已完成 EAS 签名构建、本地产物核验、Apple 上传处理和内部 TestFlight 分发，并补齐 build 7 的 en-US `What to Test`。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot。目标 TestFlight tester 已按用户授权完成 GearDrop 单应用关系重置、同邮箱重建、重新入组和新邀请送达；但 iPhone 用新邀请兑换时，Apple 明确提示当前显示邮箱虽与收件邮箱一致，底层邀请却关联到另一个“原始 Apple 账户”（界面仅给出脱敏 QQ 邮箱提示）。冷启动 TestFlight 后复现相同错误，因此当前阻塞已收敛为 Apple 账户身份映射，尚未完成 build 7 真机矩阵、绑定或 App Review 提交。
+已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；三个同 SDK 补丁升级后的 production build 7 已完成 EAS 签名构建、本地产物核验、Apple 上传处理和内部 TestFlight 分发，并补齐 build 7 的 en-US `What to Test`。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot。目标 TestFlight tester 已按用户授权完成 GearDrop 单应用关系重置、同邮箱重建、重新入组和新邀请送达；但 iPhone 用新邀请兑换时，Apple 明确提示当前显示邮箱虽与收件邮箱一致，底层邀请却关联到另一个“原始 Apple 账户”（界面仅给出脱敏 QQ 邮箱提示）。用户报告已切换后再次实时核验，`媒体与购买项目 > 查看账户` 仍要求此前 Gmail Apple 账户的密码，证明切换尚未生效；当前仍阻塞于 Apple 账户身份映射，尚未完成 build 7 真机矩阵、绑定或 App Review 提交。
 
 ## 已确认事实
 
@@ -44,6 +44,7 @@
 - tester 重建与显式邀请各触发一封全新 Apple 邮件；两封均送达精确账号、包含 GearDrop App ID，且 DKIM/SPF/DMARC 全部通过。两封邮件指向同一个邀请，不存在“误用已被重发作废的旧码”。（来源：本轮 Gmail 精确搜索与两封邮件读取）
 - Mac Safari 打开全新邀请后读回标题为 `GearDrop: Outdoor Deals 1.0.0 (7)`，并提供 TestFlight 内兑换路径。iPhone TestFlight 用该新邀请兑换时，Apple 明确返回当前 Apple 账户与邀请关联账户不符，并提示应使用另一个脱敏的原始 QQ 邮箱 Apple 账户；当前 TestFlight 显示邮箱仍与邀请收件邮箱精确一致。（来源：本轮 Mac Safari 与 iPhone 镜像）
 - 已彻底划掉并冷启动 TestFlight，再次兑换同一新邀请仍得到完全相同的原始 Apple 账户关联错误。终态全新 JWT 进程读回 tester 仍唯一、`INVITED`、GearDrop/精确组关系完整、组内 3 testers、build 7 `VALID`，证明失败未破坏服务端恢复状态。（来源：本轮 iPhone 镜像与 Apple 官方 API 终态读回）
+- 用户报告已完成账户切换后，本轮从 iPhone `Apple 账户 > 媒体与购买项目 > 查看账户` 做只读核验；系统仍进入此前 Gmail Apple 账户的密码验证页。未输入密码、未退出任何账户、未再次兑换邀请，因此这次账户切换实际未生效。（来源：2026-08-10 iPhone 镜像实时读回）
 - IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
 
 ## 假设
@@ -74,7 +75,7 @@
 
 ## 下一步
 
-1. 用户需在 iPhone 上亲自切换到 Apple 错误提示中的“原始 Apple 账户”，或明确提供一个未绑定到该原始身份的新测试邮箱；登录凭据与 2FA 不由任务代填。切换完成后重新兑换当前新邀请并安装 build 7，再完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
+1. 用户需在 iPhone `Apple 账户 > 媒体与购买项目` 先退出此前 Gmail Apple 账户，再亲自登录错误提示中的“原始 Apple 账户”，或明确提供一个未绑定到该原始身份的新测试邮箱；登录凭据与 2FA 不由任务代填。切换后先用 `查看账户` 验证已不再进入此前 Gmail 账户，再兑换当前新邀请并安装 build 7，完成 UI、StoreKit、恢复、pending、离线与 Offer Code 矩阵。
 2. 从通过真机验收的 build 7 截取最终 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
 3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 7、附加三项 IAP，做最终 readback 后提交审核。
 
