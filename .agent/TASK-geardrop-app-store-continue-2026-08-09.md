@@ -51,6 +51,7 @@
 - build 7 真机首页读回 5,726 个商品，Logo、双列卡片与图片正常；FI、IE、AU 均可从地区面板选择，FI/IE 使用欧元，AU 精确显示 16 个商品与澳元。AU 首次切换的图片占位在再次进入与冷启动后全部加载，Mac 对前四个实际 Shopify 图片资源也均读回 HTTP 200；冷停 App 后重新打开仍保持 AU，证明地区持久化通过。（来源：2026-08-10 iPhone 真机与只读图片资源探测）
 - 美国区精确输入 `sabre` 时顶部读回 `显示 30`，默认品牌/品类/性别筛选均为“全部”，但搜索框展开时卡片区错误保留“没有匹配的折扣”；收起搜索框后同一查询立即显示 30 个 Sabre 卡片。实时数据独立读回这 30 条全部有唯一 SKU 和图片，排除数据或筛选缺失，定位为 React Native `FlatList` 的刷新状态缺口。（来源：2026-08-10 iPhone 真机、Supabase 只读数据与 `app/app/(tabs)/index.tsx`）
 - 已在 Deals `FlatList` 增加由地区、搜索展开状态、查询词、全部筛选和排序组成的稳定 `extraData` revision，强制虚拟列表与头部状态同步刷新。定向验证为 40/40 tests、TypeScript exit 0；完整 `npm run verify` exit 0：Doctor 20/20、5,726 products、84,362 price-history rows、200 条启动预览、AU 16、iOS 1,497 modules / 5.4 MB，最终原文 `verify_local_ok`。（来源：2026-08-10 源码 diff 与本轮命令原始输出）
+- 搜索修复提交 `92ad38235082484ca6a93d7f489cea2c22f3a5ff` 已推送且远端 SHA 一致；production EAS build `fd126904-6926-4469-bed6-7a66db94236d` 已创建，实时读回 `IN_PROGRESS`、App `1.0.0`、build `8`、Store distribution、SDK 57、源码 SHA 与该提交一致。EAS 自动把本地 build number 从 7 增至 8，已同步 `verify-config.ts` 契约，并在 build 8 配置上再次完整通过 `npm run verify`，最终原文仍为 `verify_local_ok`。（来源：2026-08-10 Git、EAS build:view 与本轮完整验证）
 - IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
 
 ## 假设
@@ -81,7 +82,7 @@
 
 ## 下一步
 
-1. 提交并推送最小搜索刷新修复，生成 production build 8，完成签名/IPA/Apple/TestFlight 分发读回；在同一物理 iPhone 上复测搜索框展开时 `sabre` 30 个卡片可见，并继续 StoreKit、恢复、pending、离线与 Offer Code 矩阵。
+1. 等待 production build 8 完成，核验签名 IPA 后上传 Apple、加入精确内部组并独立读回；在同一物理 iPhone 上复测搜索框展开时 `sabre` 30 个卡片可见，并继续 StoreKit、恢复、pending、离线与 Offer Code 矩阵。
 2. 从通过真机验收的最终 build 截取 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
 3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到最终通过验收的 build、附加三项 IAP，做最终 readback 后提交审核。
 
