@@ -45,6 +45,7 @@
 - Mac Safari 打开全新邀请后读回标题为 `GearDrop: Outdoor Deals 1.0.0 (7)`，并提供 TestFlight 内兑换路径。iPhone TestFlight 用该新邀请兑换时，Apple 明确返回当前 Apple 账户与邀请关联账户不符，并提示应使用另一个脱敏的原始 QQ 邮箱 Apple 账户；当前 TestFlight 显示邮箱仍与邀请收件邮箱精确一致。（来源：本轮 Mac Safari 与 iPhone 镜像）
 - 已彻底划掉并冷启动 TestFlight，再次兑换同一新邀请仍得到完全相同的原始 Apple 账户关联错误。终态全新 JWT 进程读回 tester 仍唯一、`INVITED`、GearDrop/精确组关系完整、组内 3 testers、build 7 `VALID`，证明失败未破坏服务端恢复状态。（来源：本轮 iPhone 镜像与 Apple 官方 API 终态读回）
 - 用户报告已完成账户切换后，本轮从 iPhone `Apple 账户 > 媒体与购买项目 > 查看账户` 做只读核验；系统仍进入此前 Gmail Apple 账户的密码验证页。未输入密码、未退出任何账户、未再次兑换邀请，因此这次账户切换实际未生效。（来源：2026-08-10 iPhone 镜像实时读回）
+- 用户随后要求把当前 Gmail 再加入内部测试组；App Store Connect 实时读回该 Gmail 对应 tester 已在 `GearDrop Internal`，状态为 2026-08-10 新发的 `Invited`，并保留 17 sessions。`Add Testers` 弹窗同时显示组内已包含全部 3 个可用内部 tester、0 selected，`Add` 按钮禁用；本轮已取消弹窗，没有提交重复写入。再次添加同一地址不能创建新的 Apple tester 身份，也不能绕过原始 QQ Apple 账户映射。（来源：2026-08-10 App Store Connect live DOM）
 - IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
 
 ## 假设
@@ -85,6 +86,7 @@
 - iPhone 上残留的旧 TestFlight invitation 页面已经撤销或失效，不能代替新的邀请深链。
 - 新收到的 Apple 官方 build 7 邮件及其 app 深链本身有效，但目标账号打开后稳定返回 `此 App 不可用于你的 Apple 账户`；退出并重新登录同一 `媒体与购买项目` 账号以及强制重启 TestFlight 均不能修复。
 - 完整 app-specific reset、同邮箱 tester 重建、两封全新认证邮件和新兑换路径也不能修复；Apple 最终明确指出邀请属于另一个原始 Apple 账户。继续重发同一邮箱邀请或重启 TestFlight 不会改变底层账户映射。
+- 当前 Gmail 已是组内唯一对应 tester，且 2026-08-10 已重建并重新邀请；`Add Testers` 不再提供可添加项。再次选择或重建同一 Gmail 不会生成独立身份，必须改用错误提示中的原始 QQ Apple 账户，或由用户明确提供一个此前未绑定的新 Apple 账户邮箱。
 - 首次 `eas submit` 带 `--json` 时 CLI 21.7.0 以 `Nonexistent flag: --json` 在本地退出 1，未创建外部提交；去掉该 flag 后才成功调度 submission。
 - EAS `submit:status` 起初因本机时间比 Apple `Date` 头快约 29 秒而返回 401；本轮只对该进程注入 -60 秒 `Date` shim 后读回成功，未改系统时钟。
 - `@expo/apple-utils` 的旧 `dataUsagePublishState` 和 `availableTerritories` 关系已被 Apple 移除；availability 已改用 Apple 官方 `appAvailabilityV2` + v2 territory endpoint，App Privacy publish state 已改由登录 UI 实时复核并确认已发布。
