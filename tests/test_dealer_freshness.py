@@ -206,6 +206,24 @@ class DealerFreshnessTests(unittest.TestCase):
         self.assertEqual(lifecycle["status"], "inactive")
         self.assertEqual(lifecycle["missing_runs"], 2)
 
+    def test_source_contract_violation_bypasses_recent_pdp_grace(self):
+        lifecycle = next_dealer_lifecycle(
+            {
+                "status": "active",
+                "missing_runs": 0,
+                "last_seen_at": "2026-08-01T10:00:00+00:00",
+                "url_http_status": 200,
+                "url_checked_at": "2026-08-02T09:00:00+00:00",
+            },
+            present=False,
+            observed_at="2026-08-02T10:00:00+00:00",
+            source_contract_valid=False,
+        )
+
+        self.assertEqual(lifecycle["status"], "inactive")
+        self.assertEqual(lifecycle["missing_runs"], 2)
+        self.assertEqual(lifecycle["last_seen_at"], "2026-08-01T10:00:00+00:00")
+
     def test_validate_requires_min_rows_for_each_requested_dealer(self):
         rows = [
             {

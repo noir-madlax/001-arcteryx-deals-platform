@@ -66,9 +66,24 @@ def has_recent_pdp_confirmation(existing: dict | None, observed_at: str) -> bool
     return 0 <= age_seconds <= PDP_REVALIDATION_GRACE_HOURS * 3600
 
 
-def next_dealer_lifecycle(existing: dict | None, *, present: bool, observed_at: str) -> dict:
+def next_dealer_lifecycle(
+    existing: dict | None,
+    *,
+    present: bool,
+    observed_at: str,
+    source_contract_valid: bool = True,
+) -> dict:
     """Return the lifecycle transition for one trusted, complete dealer snapshot."""
     existing = existing or {}
+    current_missing = int(existing.get("missing_runs") or 0)
+    if not source_contract_valid:
+        # A URL proven to belong to another brand is not a transient list miss.
+        # Quarantine it immediately even when a recent PDP check returned 200.
+        return {
+            "status": "inactive",
+            "missing_runs": max(INACTIVE_AFTER_MISSING_RUNS, current_missing + 1),
+            "last_seen_at": existing.get("last_seen_at") or existing.get("last_updated"),
+        }
     if present:
         return {"status": "active", "missing_runs": 0, "last_seen_at": observed_at}
     if has_recent_pdp_confirmation(existing, observed_at):
@@ -81,7 +96,7 @@ def next_dealer_lifecycle(existing: dict | None, *, present: bool, observed_at: 
                 or existing.get("last_updated")
             ),
         }
-    missing_runs = int(existing.get("missing_runs") or 0) + 1
+    missing_runs = current_missing + 1
     return {
         "status": "inactive" if missing_runs >= INACTIVE_AFTER_MISSING_RUNS else "missing",
         "missing_runs": missing_runs,
@@ -268,7 +283,7 @@ def main():
             while True:
                 res = client.table("products").select(
                     "sku_id,first_seen,sizes,size_stock,color,original_price,sale_price,discount_pct,"
-                    "status,last_seen_at,missing_runs,url_http_status,url_checked_at,last_updated,image_url,images"
+                    "status,last_seen_at,missing_runs,url_http_status,url_checked_at,last_updated,url,image_url,images"
                 ).eq("dealer", dkey).range(page*1000, page*1000+999).execute()
                 data = res.data or []
                 for r in data:
@@ -371,10 +386,19 @@ def main():
         try:
             synced_ids = {r["sku_id"] for r in rows}
             lifecycle_updates: dict[tuple[str, int], list[str]] = {}
+            source_contract_quarantined = 0
             for sid, old in existing_map.items():
                 if sid in synced_ids:
                     continue
-                lifecycle = next_dealer_lifecycle(old, present=False, observed_at=now_iso)
+                source_contract_valid = is_expected_dealer_item(old, dkey)
+                if not source_contract_valid:
+                    source_contract_quarantined += 1
+                lifecycle = next_dealer_lifecycle(
+                    old,
+                    present=False,
+                    observed_at=now_iso,
+                    source_contract_valid=source_contract_valid,
+                )
                 key = (lifecycle["status"], lifecycle["missing_runs"])
                 lifecycle_updates.setdefault(key, []).append(sid)
             for (status, missing_runs), ids in lifecycle_updates.items():
@@ -384,7 +408,11 @@ def main():
                         "missing_runs": missing_runs,
                     }).in_("sku_id", ids[i:i+100]).execute()
             transitioned = sum(len(ids) for ids in lifecycle_updates.values())
-            print(f"[sync:{dkey}] existing={len(existing_map)} absent_transitioned={transitioned}")
+            print(
+                f"[sync:{dkey}] existing={len(existing_map)} "
+                f"absent_transitioned={transitioned} "
+                f"source_contract_quarantined={source_contract_quarantined}"
+            )
         except Exception as e:
             print(f"[sync:{dkey}] lifecycle reconciliation err: {str(e)[:200]}", file=sys.stderr)
 
