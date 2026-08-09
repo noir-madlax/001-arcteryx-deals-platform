@@ -5,7 +5,7 @@
 
 ## 当前状态：进行中
 
-已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；原始 QQ Apple 账户已在 iPhone `媒体与购买项目` 与 TestFlight 两处生效，新邀请兑换成功，build 7 已安装并完成首轮真机验证。FI/IE/AU 切换、AU 图片与冷启动持久化通过，但美国区精确搜索 `sabre` 暴露 `FlatList` 在搜索框展开时保留空状态的真机缺陷。最小 `extraData` 修复已生成 production build 8，完成 EAS 签名成品核验、Apple 上传处理、精确内部组分发和 393 字符 Test Details 独立读回；当前只等 iPhone 锁屏后更新到 build 8，复测搜索与继续 StoreKit 矩阵。App Store 1.0 仍绑定旧 build 5，App Store 截图为 0，三项首发 IAP 均缺 Review Information screenshot，尚未绑定或提交 App Review。
+已从 `codex/ios-pro-offer-code-20260805` 的提交 `41decd3` 创建隔离分支 `codex/ios-appstore-continue-20260809`；原始 QQ Apple 账户已在 iPhone `媒体与购买项目` 与 TestFlight 两处生效，新邀请兑换与账户映射问题已经关闭。production build 8 已完成 EAS 签名成品核验、Apple 上传处理、精确内部组分发和 Test Details 独立读回，并已在物理 iPhone 安装。build 8 真机已证明：美国区精确 `sabre` 搜索在搜索框保持展开时显示 30 条且卡片可见，恢复购买成功，冷启动后 US 地区、完整数据和 Pro 权益保留。当前设备已有 Pro 权益，因此购买方案价格和 Offer Code 入口按产品逻辑隐藏；仍需在无 Pro 的干净 StoreKit 上下文完成月付／年付／终身价格、购买、取消、pending、无购买恢复、Offer Code 与离线矩阵。App Store 1.0 实时仍绑定旧 build 5，截图为 0，三项首发 IAP 均缺 Review Information screenshot，尚未绑定或提交 App Review。
 
 ## 已确认事实
 
@@ -58,16 +58,23 @@
 - EAS `submit:status` 从凭据服务选中了无权读取 GearDrop 的另一把 ASC key，不能作为 Apple readback；已改用当前登录且能精确读取 App `6790165332` 的 App Store Connect。Apple Build Uploads 先读回 build 8 `Processing`，随后为 `Complete`；正式 builds 表读回资源 `aebe740c-32e7-45aa-8013-002cc1d5c2c6`、`Ready to Submit`、90 天。（来源：2026-08-10 EAS submit:status 错误与 App Store Connect live DOM）
 - EAS `--groups` 再次没有实际建立 build 8 关系；写前 build 8 行只有 `Add Group`。本轮只选择精确内部组 `GearDrop Internal`，页面重载并折叠 Uploads 后独立读回 build 8 行包含该组、Invites 2。build 8 en-US `What to Test` 写前为空；保存 393 字符验收说明后显示 `Saved`，整页重载再读回 exact text=true、保存按钮禁用。（来源：2026-08-10 App Store Connect 写前、写后与独立重载 readback）
 - IAP UI 与 API 一致：monthly、annual、lifetime 均为 Prepare for Submission、175 个地区可用、en-US localization 与 review notes 已存在，US 价格分别为 `$3.99`、`$23.99`、`$49.99`；三项 Review Information 都只显示 `Choose File`，截图为空。Lifetime Offer 仍为 production 0 / sandbox 100；本轮未购买、未生成新码、未添加审核项。（来源：本轮 App Store Connect IAP/subscription live DOM）
+- iPhone 锁屏后 iPhone 镜像恢复连接；TestFlight 设置只读确认仍是原始 QQ 测试账户。GearDrop 列表精确显示 `1.0.0 (8)`，更新完成后按钮由 `更新` 变为 `打开`，首次启动的开发者测试说明也明确为 build 8。（来源：2026-08-10 iPhone 镜像 TestFlight 实时读回）
+- build 8 在物理 iPhone 切到 US 后，搜索框保持展开并逐字符输入精确 `sabre`；顶部实时显示 30，双列 Sabre 商品卡片立即可见。该结果与 build 7 的同路径空列表形成直接对照，证明 `FlatList extraData` 修复在签名成品真机生效。（来源：2026-08-10 iPhone 镜像 GearDrop build 8 实时读回）
+- 当前设备启动 build 8 时 RevenueCat 读回 Pro 已启用；进入 paywall 后主动触发恢复购买，返回 `Pro 购买已恢复。`。本轮未触发购买或扣款。因为组件在 `isPro=true` 时隐藏 plans 与 Offer Code 行，当前设备无法作为月付／年付／终身本地化价格或兑换入口的无 Pro 验收上下文。（来源：2026-08-10 iPhone 真机与 `app/app/paywall.tsx` 条件渲染）
+- 强制关闭 GearDrop 进程并从 TestFlight 冷启动后，US 地区保留；启动预览先为 200，随后完整恢复 5,726 个商品并显示 US 758，My 页再次读回 Pro 已启用。该轮只验证在线冷启动持久化，没有改变系统网络、VPN 或代理，因此不能冒充离线恢复证据。（来源：2026-08-10 iPhone 镜像）
+- App Store Connect 独立读回 build 8 页面仍为 1 个内部组、3 testers，393 字符 Test Details 保持原文；内部组实时为 3 testers / 7 builds，其中两名已安装 `1.0.0 (8)`、一名仍为 Invited，目标 iPhone 16 Pro 记录也已从 build 7 更新到 build 8。（来源：2026-08-10 App Store Connect live DOM）
+- App Store 1.0 再次实时读回 `Prepare for Submission`、0/10 iPhone screenshots、绑定 build 5、自动发布；`Add for Review` 可见但本轮未点击。（来源：2026-08-10 App Store Connect live DOM）
 
 ## 假设
 
-- 若 build 7 真机验收暴露代码缺陷，将在本隔离分支做最小修复并生成新 build；否则不无谓重建。
-- GearDrop app-specific tester access reset 已按用户授权执行；旧 tester 资源变为不可读，新 tester 当前为 `INVITED`。旧 17 sessions 与设备/build 历史后续是否会重新聚合尚未验证。Apple 给出的原始账户提示表明，相同可见邮箱可能分别存在于不同 Apple 账户身份上；具体应切换到哪个账户或改用哪个新邮箱属于身份/登录选择，不能由任务自行推断。
+- 当前 Pro 权益来自 RevenueCat/StoreKit 的既有客户状态，但本轮没有独立证明它对应哪一笔历史 sandbox 交易；只能把已观察到的 entitlement、恢复成功与冷启动保留分别记为事实。
+- 要完成尚缺的价格、购买、取消、pending、无购买恢复和 Offer Code 验收，需要一个不会自动读回 Pro 的干净 StoreKit 上下文（例如另一台设备或由用户明确选择的测试账户）。不得通过删除 RevenueCat 客户、退出 Apple 账户或清除现有购买状态来猜测性制造环境。
+- 离线恢复需要改变设备网络条件；在用户未明确授权前不关闭 Shadowrocket、全局代理或系统网络，只保留为未验证项。
 
 ## 验收标准
 
 1. 独立读回当前 Git/EAS/Apple build、版本、TestFlight 分组、IAP 与截图状态。
-2. 在物理 iPhone 上验证 build 7 的地区、搜索、首屏／图片／Logo，以及 IAP 购买、取消、pending、恢复、离线和 Offer Code 权益链路；每项保留可复核证据。
+2. 在物理 iPhone 上验证最终签名候选（当前 build 8）的地区、搜索、首屏／图片／Logo，以及 IAP 购买、取消、pending、恢复、离线和 Offer Code 权益链路；每项保留可复核证据。
 3. 只从通过真机验收的签名候选生成并上传 App Store 截图和三项 IAP Review Information screenshot；上传后独立读回数量与商品状态。
 4. 将最终 build 与三项首发 IAP 绑定 iOS 1.0，复核出口合规、审核信息、availability 和 release mode；只有所有硬门通过才提交 App Review。
 5. 外部写入均记录写前状态、精确目标、响应与全新进程写后读回；不得把 HTTP 204 或队列状态单独当作成功。
@@ -81,15 +88,16 @@
 - 已完成 build 7 的 Apple 上传处理、内部组关系和 `What to Test`；三个外部写入都已在全新进程独立读回。（来源：本轮 EAS/Apple API）
 - 已完成当前 App Store 版本、元数据、availability、三项 IAP 和审核截图关系的 live 只读盘点；未绑定最终 build、未附加 IAP、未提交审核。（来源：本轮 Apple API）
 - 已完成 App Privacy 当前发布状态、App Store 1.0 页面、TestFlight tester/device/build、三项 IAP localization/price/review screenshot 的登录 UI 复核。（来源：本轮 App Store Connect live DOM）
-- 已确认 iPhone TestFlight 账号与目标 tester 一致，完成 tester-group 关系重建、官方新邮件/深链验证、TestFlight 强制重启及同一 Apple 账户的媒体购买会话退出/重登；当前仍受目标 tester 的 Apple 账户资格绑定异常阻塞。（来源：本轮 Apple API、Gmail、App Store Connect live DOM 与 iPhone 镜像）
+- 已确认 iPhone TestFlight 账号与目标 tester 一致，完成 tester-group 关系重建、官方新邮件/深链验证、TestFlight 强制重启及正确 Apple 账户切换；邀请兑换与安装阻塞已经关闭。（来源：本轮 Apple API、Gmail、App Store Connect live DOM 与 iPhone 镜像）
 - 已按用户授权完成 GearDrop app-specific tester access reset；处理 Apple 异步 202 后，以同一邮箱重建 tester、恢复精确组、发送新邀请，并在连续稳定读回与全新进程终态读回中确认服务端状态完整。（来源：本轮 Apple 官方 API 与 Gmail）
 - 已在物理 iPhone 上用新邀请兑换并在 TestFlight 冷启动后复测；两次均由 Apple 明确判定当前 Apple 账户不是邀请关联的原始账户，排除了旧 tester ID、旧邮件、旧码和旧 App 进程缓存。（来源：本轮 Mac Safari 与 iPhone 镜像）
+- 已在物理 iPhone 安装并启动 build 8，验证搜索框展开时 `sabre` 30 条卡片可见；恢复购买成功，在线冷启动后的 US 地区、完整数据与 Pro 权益持久化通过。Apple 服务端独立读回两名 tester 已安装 build 8。（来源：2026-08-10 iPhone 镜像与 App Store Connect live DOM）
 
 ## 下一步
 
-1. iPhone 锁屏并恢复镜像后，从 TestFlight 更新到 build 8；在同一物理 iPhone 上复测搜索框展开时 `sabre` 30 个卡片可见，并继续 StoreKit、恢复、pending、离线与 Offer Code 矩阵。
-2. 从通过真机验收的最终 build 截取 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
-3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到最终通过验收的 build、附加三项 IAP，做最终 readback 后提交审核。
+1. 在无 Pro 的干净 StoreKit 测试上下文验证月付／年付／终身本地化价格、购买、取消、pending、无购买恢复与 Offer Code；离线恢复只在用户明确授权网络改动后执行。
+2. 从通过完整真机验收的 build 8 截取 App Store 图和 paywall 图，上传 App Store screenshot set 与三项 IAP Review Information screenshot，并独立读回数量和商品状态。
+3. 全部真机与截图硬门通过后才把 iOS 1.0 从 build 5 切到 build 8、附加三项 IAP，做最终 readback 后提交审核。
 
 ## 死路
 
