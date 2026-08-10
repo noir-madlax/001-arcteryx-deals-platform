@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-10 09:59:57",
+  "generated_at": "2026-08-10 11:29:43",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -8296,7 +8296,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-10 05:46:36"
+      "refreshed_at": "2026-08-10 11:29:43"
     },
     "rei": {
       "name": "REI",
@@ -10491,8 +10491,6 @@
   "total": 480,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
