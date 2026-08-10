@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-10 03:52:28",
+  "generated_at": "2026-08-10 05:46:36",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6541,7 +6541,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 136,
+      "count": 135,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -8273,19 +8273,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6034-690/arcteryx-patera-parka-womens",
-          "name": "Arc'teryx Patera Parka - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534637_source_1763591778.jpg",
-          "color": "Nightscape",
-          "sale_price": 950.0,
-          "original_price": 950.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6034-785/arcteryx-rho-base-layer-bottoms-womens",
           "name": "Arc'teryx Rho Base Layer Bottoms - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509242_source_1783425700.png",
@@ -8312,7 +8299,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-10 01:02:30"
+      "refreshed_at": "2026-08-10 05:46:36"
     },
     "rei": {
       "name": "REI",
@@ -10502,11 +10489,9 @@
       "refreshed_at": "2026-08-10 03:52:28"
     }
   },
-  "total": 481,
+  "total": 480,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
