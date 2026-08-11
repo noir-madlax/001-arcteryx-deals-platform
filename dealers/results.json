@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-11 18:03:51",
+  "generated_at": "2026-08-11 20:08:36",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -6886,7 +6886,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 136,
+      "count": 135,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -8332,6 +8332,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-525/arcteryx-cormac-crew-short-sleeve-mens",
+          "name": "Arc'teryx Cormac Crew Short Sleeve - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560878_source_1784846226.jpg",
+          "color": "Arctic Silk",
+          "sale_price": 90.0,
+          "original_price": 90.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-755/arcteryx-color-block-toque-unisex",
           "name": "Arc'teryx Color Block Toque - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/526400_source_1760059554.jpg",
@@ -8488,19 +8501,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-525/arcteryx-cormac-crew-short-sleeve-mens",
-          "name": "Arc'teryx Cormac Crew Short Sleeve - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560878_source_1784846226.jpg",
-          "color": "Arctic Silk",
-          "sale_price": 90.0,
-          "original_price": 90.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6037-805/arcteryx-ion-sl-chalk-bag",
           "name": "Arc'teryx Ion SL Chalk Bag",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/546626_source_1771628134.jpg",
@@ -8546,19 +8546,6 @@
           "color": "Black",
           "sale_price": 50.0,
           "original_price": 50.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6037-662/arcteryx-ossa-jacket-mens",
-          "name": "Arc'teryx Ossa Jacket - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518947_source_1782142568.png",
-          "color": "Dark Stratus",
-          "sale_price": 300.0,
-          "original_price": 300.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -8657,7 +8644,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-11 14:34:14"
+      "refreshed_at": "2026-08-11 20:08:36"
     },
     "rei": {
       "name": "REI",
@@ -10813,11 +10800,9 @@
       "refreshed_at": "2026-08-11 18:03:50"
     }
   },
-  "total": 495,
+  "total": 494,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
