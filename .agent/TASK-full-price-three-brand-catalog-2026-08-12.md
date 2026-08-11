@@ -6,7 +6,7 @@
 
 ## 当前状态
 
-实现与三站只读验收已完成；待全仓回归、合并本轮并行数据更新并提交隔离分支。
+本地实现、三站只读验收、最新数据基线合并和最终回归均已完成；未执行任何生产写入。
 
 ## 边界
 
@@ -35,6 +35,7 @@
 - 联合探针命令：`python3 -m catalog.official_catalog --dry-run --delay 0.25 --timeout 30`；关键原文：`observed=1353 by_brand={'arcteryx': 370, 'burton': 495, 'patagonia': 488} categorized=1343 ... authoritative=true` 与 `dry-run: no files or remote tables changed`。
 - 最终回归：`uv run --with-requirements requirements.txt python -m unittest discover -s tests -p 'test_*.py' -v` 为 `Ran 156 tests ... OK`；`node --test tests/test_product_names.js` 为 7/7；App `npm test` 为 35/35，`npm run typecheck`、`verify:config`、`verify:live-data` 和 iOS export 均退出 0；Ruff 为 `All checks passed!`。
 - `npm run verify` 唯一中断点是既有 Expo Doctor 依赖漂移：`react-native-screens` 4.25.2 与 expo-router 内 4.27.0 重复（SDK 期望 ~4.26.0），另有 `react-dom`/`react-native` patch 偏差。本任务未改 `package.json`/lock，后续 live-data 与 iOS export 已单独通过；不在本任务扩大升级范围。
+- 功能提交为 `b3bd153 feat: add three-brand official yearbook catalog`；随后无冲突合并 `origin/main` 的两个纯数据刷新提交。合并后复跑结果仍为 Python 156/156、Node 7/7、App 35/35 与 TypeScript 通过。
 
 ## 假设（待验证）
 
@@ -43,6 +44,6 @@
 
 ## 下一步
 
-1. 合并开发期间 `origin/main` 新增的两个纯数据刷新提交，保留最新爬取基线。
-2. 提交当前功能，再合并两个不重叠的纯数据刷新提交，复跑关键回归。
-3. 生产 migration、Supabase 同步、部署、push 与 PR 留待单独授权。
+1. 生产 migration、Supabase 同步、部署、push 与 PR 留待单独授权。
+2. 若获授权上线，先应用独立 catalog migration，再跑同一三品牌完整快照、执行显式 `--sync-supabase`，随后读回三品牌数量与随机样本；不得用 HTTP 200 代替业务验收。
+3. Expo Doctor 的既有依赖漂移另开范围处理，不与正价目录发布绑在一起。
