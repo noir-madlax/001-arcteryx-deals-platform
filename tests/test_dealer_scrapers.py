@@ -79,6 +79,31 @@ class DealerScraperTests(unittest.TestCase):
             "https://www.evo.com/cdn/shop/files/product-image-1043638.jpg",
         )
 
+    def test_evo_rendered_snapshot_isolates_burton_and_patagonia_vendors(self):
+        snapshot = {
+            "products": [
+                {"id": 1, "vendor": "Burton", "type": "Snowboards", "handle": "burton-custom", "variants": [{"price": 69995, "public_title": "158"}]},
+                {"id": 2, "vendor": "Patagonia", "type": "Jackets", "handle": "patagonia-nano", "variants": [{"price": 17900, "public_title": "Black / M"}]},
+            ],
+            "inventory": {
+                "1": {"inventory": 2, "lowestVariantPrice": 69995},
+                "2": {"inventory": 3, "lowestVariantPrice": 17900},
+            },
+            "cards": [
+                {"url": "https://www.evo.com/products/burton-custom", "name": "Burton Custom Camber Snowboard", "current_price": "$699.95", "original_price": "$699.95", "colors": []},
+                {"url": "https://www.evo.com/products/patagonia-nano", "name": "Patagonia Nano Puff Jacket - Women's", "current_price": "$179.00", "original_price": "$239.00", "colors": ["Black"]},
+            ],
+        }
+
+        burton = EvoScraper().parse_browser_snapshot(snapshot, "auto", "burton")
+        patagonia = EvoScraper().parse_browser_snapshot(snapshot, "auto", "patagonia")
+
+        self.assertEqual([item["brand"] for item in burton], ["burton"])
+        self.assertEqual(burton[0]["gender"], "unisex")
+        self.assertEqual([item["brand"] for item in patagonia], ["patagonia"])
+        self.assertEqual(patagonia[0]["gender"], "women")
+        self.assertEqual(patagonia[0]["discount_pct"], 25)
+
     def test_evo_browser_page_retry_recovers_from_single_timeout(self):
         scraper = EvoScraper()
 
@@ -125,17 +150,18 @@ class DealerScraperTests(unittest.TestCase):
                 return page
 
         browser = FakeBrowser()
-        scraper._browser_snapshot = lambda _page: {"products": [], "inventory": {}, "cards": []}
-        scraper.parse_browser_snapshot = lambda _snapshot, _gender: [{"url": "https://www.evo.com/products/test"}] * 40
+        scraper._browser_snapshot = lambda _page, _brand: {"products": [], "inventory": {}, "cards": []}
+        scraper.parse_browser_snapshot = lambda _snapshot, _gender, _brand: [{"url": "https://www.evo.com/products/test"}] * 40
 
-        items, discovered_max_page = scraper._fetch_browser_page(
-            browser=browser,
-            base_url="https://www.evo.com/collections/arcteryx",
-            slug="arcteryx",
-            gender="auto",
-            page_number=1,
-            max_page=1,
-        )
+        with patch.dict("os.environ", {"EVO_BROWSER_RETRY_DELAY_MS": "0"}):
+            items, discovered_max_page = scraper._fetch_browser_page(
+                browser=browser,
+                base_url="https://www.evo.com/collections/arcteryx",
+                slug="arcteryx",
+                gender="auto",
+                page_number=1,
+                max_page=1,
+            )
 
         self.assertEqual(len(items), 40)
         self.assertEqual(discovered_max_page, 3)

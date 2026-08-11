@@ -13,6 +13,8 @@ class WebMemoryGuardTests(unittest.TestCase):
         cls.catalog = (ROOT / "app/lib/catalog.ts").read_text(encoding="utf-8")
         cls.names = (ROOT / "arcteryx-names.js").read_text(encoding="utf-8")
         cls.app_names = (ROOT / "app/lib/arcteryx-names.js").read_text(encoding="utf-8")
+        cls.brands = (ROOT / "gear-brands.js").read_text(encoding="utf-8")
+        cls.app_brands = (ROOT / "app/lib/gear-brands.js").read_text(encoding="utf-8")
         cls.support = (ROOT / "support.html").read_text(encoding="utf-8")
         cls.submission_migration = (
             ROOT
@@ -77,9 +79,19 @@ class WebMemoryGuardTests(unittest.TestCase):
         for source in (self.index, self.detail, self.catalog):
             self.assertNotIn("NAME_PREFIX_STRIP", source)
 
+    def test_web_and_app_share_brand_runtime_and_brand_filter(self):
+        self.assertEqual(self.brands, self.app_brands)
+        for source in (self.index, self.detail):
+            self.assertIn('<script src="gear-brands.js"></script>', source)
+            self.assertIn("'brand'", source)
+            self.assertIn("window.GearBrands", source)
+        self.assertIn('id="brand-select"', self.index)
+        self.assertIn("from './gear-brands'", self.catalog)
+        self.assertIn("_brand: brand", self.catalog)
+
     def test_detail_purchase_cta_names_the_actual_platform(self):
         self.assertIn(
-            'function ctaBlock(url, klass = \'\', platformLabel = "Arc\'teryx Outlet")',
+            "function ctaBlock(url, klass = '', platformLabel = '销售平台')",
             self.detail,
         )
         self.assertIn("前往 ${esc(platformLabel)} 购买", self.detail)

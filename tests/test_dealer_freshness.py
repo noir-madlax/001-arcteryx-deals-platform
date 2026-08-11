@@ -11,6 +11,7 @@ from dealers import merge_partial
 from dealers.supabase_sync import (
     fresh_dealer_keys,
     is_expected_dealer_item,
+    item_to_row,
     next_dealer_lifecycle,
     preserve_previous_images,
     recovered_url_health,
@@ -18,6 +19,7 @@ from dealers.supabase_sync import (
 from tools.check_mec_partial import validate_partial
 from tools.check_data_quality import (
     EXPECTED_CURRENCY,
+    PLATFORM_BRAND_MIN_ROWS,
     PLATFORM_REGION_MIN_ROWS,
     product_freshness_timestamp,
     validate,
@@ -34,6 +36,16 @@ def dealer_url(dealer: str, item: object, region: str = "us") -> str:
     return f"https://example.com/{dealer}/{region}/{item}"
 
 
+def quality_brand(dealer: str, index: int) -> str:
+    if dealer != "evo":
+        return "arcteryx"
+    if index < PLATFORM_BRAND_MIN_ROWS[("evo", "arcteryx")]:
+        return "arcteryx"
+    if index < PLATFORM_BRAND_MIN_ROWS[("evo", "arcteryx")] + PLATFORM_BRAND_MIN_ROWS[("evo", "burton")]:
+        return "burton"
+    return "patagonia"
+
+
 class DealerFreshnessTests(unittest.TestCase):
     def test_sync_preflight_rejects_non_arcteryx_ssense_items(self):
         self.assertTrue(is_expected_dealer_item(
@@ -43,6 +55,22 @@ class DealerFreshnessTests(unittest.TestCase):
         self.assertFalse(is_expected_dealer_item(
             {"url": "https://www.ssense.com/en-us/women/product/marc-jacobs/bag/1"},
             "ssense",
+        ))
+
+    def test_sync_preflight_accepts_supported_evo_brands_and_rejects_unknown(self):
+        for brand in ("burton", "patagonia"):
+            with self.subTest(brand=brand):
+                item = {"brand": brand, "url": f"https://www.evo.com/products/{brand}-item"}
+                self.assertTrue(is_expected_dealer_item(item, "evo"))
+                row = item_to_row({**item, "name": f"{brand.title()} Item", "sale_price": 100, "original_price": 150}, "evo", "2026-08-12 00:00:00")
+                self.assertEqual(row["brand"], brand)
+        self.assertFalse(is_expected_dealer_item(
+            {"brand": "marc-jacobs", "url": "https://www.evo.com/products/other-item"},
+            "evo",
+        ))
+        self.assertFalse(is_expected_dealer_item(
+            {"brand": "burton", "name": "Patagonia Nano Puff Jacket", "url": "https://www.evo.com/products/mislabeled-item"},
+            "evo",
         ))
 
     def test_preserve_previous_images_only_fills_missing_snapshot_data(self):
@@ -148,7 +176,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 forbidden_regions=None,
             )
         self.assertEqual(rc, 1)
-        self.assertIn("non_arcteryx_product: 1", output.getvalue())
+        self.assertIn("unsupported_brand_product: 1", output.getvalue())
 
     def test_new_outlet_regions_have_currency_and_low_water_marks(self):
         for region in ("fi", "ie"):
@@ -340,6 +368,34 @@ class DealerFreshnessTests(unittest.TestCase):
         )
         self.assertEqual(rc, 1)
 
+    def test_validate_evo_enforces_each_supported_brand_floor(self):
+        rows = []
+        for (dealer, brand), count in PLATFORM_BRAND_MIN_ROWS.items():
+            for index in range(count):
+                rows.append({
+                    "sku_id": f"{dealer}-{brand}-{index}",
+                    "dealer": dealer,
+                    "brand": brand,
+                    "status": "active",
+                    "sale_price": 100,
+                    "original_price": 150,
+                    "discount_pct": 33,
+                    "currency": "USD",
+                    "symbol": "$",
+                    "gender": "unisex",
+                    "region": "us",
+                    "url": f"https://www.evo.com/products/{brand}-{index}",
+                    "last_updated": fresh_timestamp(),
+                })
+        self.assertEqual(validate(rows, 36, 72, 1, {"evo"}, None), 0)
+
+        collapsed = [row for row in rows if row["sku_id"] != "evo-burton-0"]
+        output = io.StringIO()
+        with redirect_stdout(output):
+            rc = validate(collapsed, 36, 72, 1, {"evo"}, None)
+        self.assertEqual(rc, 1)
+        self.assertIn("platform_brand_below_min_rows: 1", output.getvalue())
+
     def test_validate_full_gate_enforces_aggregate_floor(self):
         rows = []
         for (dealer, region), count in PLATFORM_REGION_MIN_ROWS.items():
@@ -348,6 +404,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 rows.append({
                     "sku_id": f"{dealer}-{region}-{i}",
                     "dealer": dealer,
+                    "brand": quality_brand(dealer, i),
                     "status": "active",
                     "sale_price": 100,
                     "original_price": 150,
@@ -378,6 +435,7 @@ class DealerFreshnessTests(unittest.TestCase):
                 rows.append({
                     "sku_id": f"{dealer}-{region}-{i}",
                     "dealer": dealer,
+                    "brand": quality_brand(dealer, i),
                     "status": "active",
                     "sale_price": 100,
                     "original_price": 150,
@@ -410,7 +468,7 @@ class DealerFreshnessTests(unittest.TestCase):
             currency, symbol = EXPECTED_CURRENCY[region]
             for i in range(count):
                 rows.append({
-                    "sku_id": f"{dealer}-{region}-{i}", "dealer": dealer, "status": "active",
+                    "sku_id": f"{dealer}-{region}-{i}", "dealer": dealer, "brand": quality_brand(dealer, i), "status": "active",
                     "sale_price": 100, "original_price": 150, "discount_pct": 33,
                     "currency": currency, "symbol": symbol, "gender": "men",
                     "region": region, "url": dealer_url(dealer, i, region),

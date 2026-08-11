@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Audit the full catalog against the shared Arc'teryx naming contract. */
+/** Audit Arc'teryx rows while enforcing the shared GearDrop brand contract. */
 import fs from 'node:fs';
 import process from 'node:process';
 import { createRequire } from 'node:module';
@@ -13,6 +13,10 @@ const {
   isArcTeryxProduct,
   standardProductName,
 } = require(path.join(ROOT, 'arcteryx-names.js'));
+const {
+  isSupportedBrandProduct,
+  productBrand,
+} = require(path.join(ROOT, 'gear-brands.js'));
 
 const DISCRIMINATOR = /\b(?:[A-Za-z]*\d+[A-Za-z]*|LiTRIC|SuperLight|StormHood|DownWord|GTX|SV|AR|LT|SL|FL|MX|LD|SS|LS)\b/gi;
 
@@ -33,8 +37,10 @@ function unique(values) {
 
 export function auditRows(inputRows, options = {}) {
   const activeRows = inputRows.filter((row) => (row.status || 'active') === 'active');
-  const rejectedRows = activeRows.filter((row) => !isArcTeryxProduct(row));
-  const acceptedRows = activeRows.filter(isArcTeryxProduct);
+  const rejectedRows = activeRows.filter((row) => !isSupportedBrandProduct(row));
+  const supportedRows = activeRows.filter(isSupportedBrandProduct);
+  const acceptedRows = supportedRows.filter((row) => productBrand(row) === 'arcteryx' && isArcTeryxProduct(row));
+  const supportedNonArcRows = supportedRows.filter((row) => productBrand(row) !== 'arcteryx');
   const blankNames = [];
   const unknownFamilies = [];
   const lostDiscriminators = [];
@@ -75,6 +81,7 @@ export function auditRows(inputRows, options = {}) {
   return {
     active: activeRows.length,
     accepted: acceptedRows.length,
+    supportedNonArc: supportedNonArcRows.length,
     rejected: rejectedRows.length,
     uniqueStandardNames: unique(canonicalRows.map((item) => item.standard)).length,
     canonicalGroupsWithMultipleUrls,
@@ -114,7 +121,7 @@ function publicCatalogConfig() {
 async function fetchOnlineRows() {
   const { url, anon } = publicCatalogConfig();
   const rows = [];
-  const select = 'sku_id,dealer,model,full_name,url,gender,status';
+  const select = 'sku_id,dealer,brand,model,full_name,url,gender,status';
   for (let from = 0; ; from += 1000) {
     const query = new URLSearchParams({ select, status: 'eq.active', order: 'sku_id.asc' });
     const response = await fetch(`${url}/rest/v1/products?${query}`, {
@@ -146,6 +153,7 @@ async function main() {
   const report = {
     active: result.active,
     accepted: result.accepted,
+    supportedNonArc: result.supportedNonArc,
     rejected: result.rejected,
     uniqueStandardNames: result.uniqueStandardNames,
     canonicalGroupsWithMultipleUrls: result.canonicalGroupsWithMultipleUrls,
@@ -165,7 +173,7 @@ async function main() {
 
   if (args.json) console.log(JSON.stringify(report, null, 2));
   else {
-    console.log(`[names] active=${report.active} accepted=${report.accepted} rejected=${report.rejected}`);
+    console.log(`[names] active=${report.active} arc_audited=${report.accepted} supported_non_arc=${report.supportedNonArc} rejected=${report.rejected}`);
     console.log(`[names] unique=${report.uniqueStandardNames} multi_url_groups=${report.canonicalGroupsWithMultipleUrls}`);
     console.log(`[names] blank=${report.blankNames} unknown_family=${report.unknownFamilies} lost_tokens=${report.lostDiscriminators} gender_mismatch=${report.genderMismatches}`);
     if (report.rejected) console.log(`[names] source_rejections=${JSON.stringify(report.samples.rejected)}`);

@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#fafaf8">
-    <title>Arc'teryx Deals Tracker · 始祖鸟全球折扣实时追踪</title>
+    <title>GearDrop · Arc'teryx、Burton、Patagonia 折扣追踪</title>
 
     <!-- SEO: 描述与关键词（Google / Baidu 通用） -->
-    <meta name="description" content="Arc'teryx Deals Tracker：聚合 Arc'teryx Outlet 官方奥莱与 SSENSE、MEC、EVO、REI 等经销商的始祖鸟实时折扣，跨美国、加拿大、英国、欧盟、日本等 15 个区域，每日更新原价、折扣价、库存与折扣率。">
-    <meta name="keywords" content="Arc'teryx,始祖鸟,Arc'teryx Outlet,始祖鸟奥莱,始祖鸟折扣,始祖鸟打折,Beta AR,Atom Hoody,Cerium,Alpha SV,Arc'teryx Sale,户外品牌折扣,arcteryx deals,arcteryx tracker">
-    <meta name="author" content="Arc'teryx Deals Tracker">
+    <meta name="description" content="GearDrop 聚合 Arc'teryx、Burton 与 Patagonia 的官方奥莱及授权经销商折扣，每日更新原价、折扣价、库存与折扣率。">
+    <meta name="keywords" content="Arc'teryx,始祖鸟,Burton,Patagonia,户外品牌折扣,snowboard deals,outdoor deals,GearDrop">
+    <meta name="author" content="GearDrop">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="googlebot" content="index,follow">
     <meta name="baiduspider" content="index,follow">
@@ -19,17 +19,17 @@
 
     <!-- Open Graph (Facebook / Telegram / 微信内置浏览器) -->
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Arc'teryx Deals Tracker">
-    <meta property="og:title" content="Arc'teryx Deals Tracker · 始祖鸟全球折扣实时追踪">
-    <meta property="og:description" content="聚合 Arc'teryx Outlet、SSENSE、MEC、EVO、REI 等始祖鸟全球折扣，每日更新。">
+    <meta property="og:site_name" content="GearDrop">
+    <meta property="og:title" content="GearDrop · 多品牌户外折扣追踪">
+    <meta property="og:description" content="聚合 Arc'teryx、Burton、Patagonia 与多家经销商折扣，每日更新。">
     <meta property="og:url" content="https://001.100app.dev/">
     <meta property="og:locale" content="zh_CN">
     <meta property="og:image" content="https://images.arcteryx.com/F25-OG-arcteryx-deals-tracker.jpg">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Arc'teryx Deals Tracker · 始祖鸟全球折扣实时追踪">
-    <meta name="twitter:description" content="Arc'teryx 全球经销商折扣聚合，每日更新。">
+    <meta name="twitter:title" content="GearDrop · 多品牌户外折扣追踪">
+    <meta name="twitter:description" content="Arc'teryx、Burton、Patagonia 全球经销商折扣聚合，每日更新。">
 
     <!-- Schema.org JSON-LD：网站 + 检索 + ItemList（结构化数据，对 Google 富结果有用） -->
     <script type="application/ld+json">
@@ -40,8 +40,8 @@
                 "@type": "WebSite",
                 "@id": "https://001.100app.dev/#website",
                 "url": "https://001.100app.dev/",
-                "name": "Arc'teryx Deals Tracker",
-                "description": "Arc'teryx 全球经销商实时折扣追踪",
+                "name": "GearDrop",
+                "description": "Arc'teryx、Burton、Patagonia 全球经销商实时折扣追踪",
                 "inLanguage": "zh-CN",
                 "potentialAction": {
                     "@type": "SearchAction",
@@ -52,7 +52,7 @@
             {
                 "@type": "Organization",
                 "@id": "https://001.100app.dev/#org",
-                "name": "Arc'teryx Deals Tracker",
+                "name": "GearDrop",
                 "url": "https://001.100app.dev/"
             }
         ]
@@ -63,6 +63,7 @@
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="arcteryx-names.js"></script>
+    <script src="gear-brands.js"></script>
     <style>
         :root {
             --bg: #fafaf8;
@@ -308,9 +309,10 @@
         }
         @media (max-width: 720px) {
             .filter-top { padding: 8px 16px 8px; gap: 8px; }
-            .filter-dropdowns { padding: 0 16px 10px; gap: 6px; }
+            .filter-dropdowns { padding: 0 16px 10px; gap: 6px; flex-wrap: wrap; }
             .search { flex: 1 1 auto; max-width: none; }
-            .filter-select { font-size: 11.5px; padding-left: 7px; }
+            .filter-select { flex: 1 1 calc(33.333% - 6px); min-width: 96px; font-size: 11.5px; padding-left: 7px; }
+            .sort-pill { flex: 1 1 calc(33.333% - 6px); }
         }
 
         /* ─── Grid ─── */
@@ -818,8 +820,8 @@
 <header class="site-header">
     <div class="header-inner">
         <div class="brand">
-            <span class="brand-mark">ARC'TERYX</span>
-            <span class="brand-sub">Deals Tracker</span>
+            <span class="brand-mark">GEARDROP</span>
+            <span class="brand-sub">Multi-brand Deals</span>
         </div>
         <div class="header-stats">
             <span><strong id="stat-total">—</strong> 件</span>
@@ -838,7 +840,7 @@
                     <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
             </span>
-            <input id="q" type="search" placeholder="搜索型号或描述…" autocomplete="off">
+            <input id="q" type="search" placeholder="搜索品牌、型号或描述…" autocomplete="off">
             <button class="search-clear" id="q-clear" aria-label="清除">
                 <svg width="9" height="9" viewBox="0 0 10 10"><path d="M1 1l8 8M9 1l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </button>
@@ -850,6 +852,7 @@
         </div>
     </div>
     <div class="filter-dropdowns">
+        <select class="filter-select" id="brand-select"></select>
         <select class="filter-select" id="platform-select"></select>
         <select class="filter-select" id="region-select"></select>
         <select class="filter-select" id="gender-select"></select>
@@ -884,13 +887,15 @@
         <a href="https://outlet.arcteryx.com" target="_blank" rel="noopener">Arc'teryx Outlet</a> 及
         <a href="https://www.ssense.com/en-us/men/designers/arcteryx" target="_blank" rel="noopener">SSENSE</a>、
         <a href="https://www.mec.ca/en/products?brand=Arc%27teryx" target="_blank" rel="noopener">MEC</a>、
-        <a href="https://www.evo.com/shop/arcteryx" target="_blank" rel="noopener">EVO</a>、
+        <a href="https://www.evo.com/collections/arcteryx" target="_blank" rel="noopener">EVO Arc'teryx</a>、
+        <a href="https://www.evo.com/collections/burton" target="_blank" rel="noopener">EVO Burton</a>、
+        <a href="https://www.evo.com/collections/patagonia" target="_blank" rel="noopener">EVO Patagonia</a>、
         <a href="https://www.rei.com/search?q=arcteryx" target="_blank" rel="noopener">REI</a>
         等经销商 · 价格汇率仅供参考，以各平台实际为准。</p>
     <p style="margin-top:6px">
         <a href="/support.html">GearDrop Support</a> ·
         <a href="/privacy.html">Privacy Policy</a> ·
-        © Arc'teryx Outlet Tracker · Non-affiliated
+        © GearDrop · Non-affiliated
     </p>
 </footer>
 
@@ -1006,6 +1011,7 @@ function initialRegion() {
     return detectRegion();
 }
 const GENDER_LABEL = { men: '男装', women: '女装', unknown: '其他' };
+const BRAND = window.GearBrands.BRANDS;
 
 // 销售平台映射（dealer key → 显示名 + 颜色）
 const PLATFORM = {
@@ -1055,7 +1061,7 @@ function allKnownSizesOutOfStock(p) {
 }
 
 function isBlockedProduct(p) {
-    if (!window.ArcTeryxNames.isArcTeryxProduct(p)) return true;
+    if (!window.GearBrands.isSupportedBrandProduct(p)) return true;
     const dealer = p.dealer || platformKey(p);
     if (dealer !== 'arcteryx_outlet') return false;
     const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
@@ -1086,16 +1092,19 @@ function relTime(ts) {
     return ts.slice(5, 10);
 }
 
-// ── Arc'teryx model-aware product names ──
-const productName = p => window.ArcTeryxNames.standardProductName(p.full_name || p.model, p);
+// ── Brand-aware product names ──
+const productName = p => window.GearBrands.standardProductName(p.full_name || p.model, p);
+const brandKey = p => window.GearBrands.productBrand(p);
+const brandLabel = p => window.GearBrands.brandLabel(brandKey(p)) || '—';
 
 // ── State (URL-synced) ──
-const extractSeries = (cleanedName) => {
-    return window.ArcTeryxNames.extractModelFamily(cleanedName) || '其他';
+const extractSeries = (cleanedName, product) => {
+    return window.GearBrands.productSeries(cleanedName, product) || '其他';
 };
 
 const state = {
     q: '',
+    brand: 'all',
     platform: 'all',
     region: initialRegion(),   // 默认按 IP/时区自动；不支持地区→us
     gender: 'all',
@@ -1137,6 +1146,7 @@ let currentPage = 1;
 const filterProducts = () => {
     const q = state.q.trim().toLowerCase();
     return products.filter(p => {
+        if (state.brand !== 'all' && p._brand !== state.brand) return false;
         if (state.platform !== 'all' && p._platform !== state.platform) return false;
         if (state.region !== 'all' && p.region !== state.region) return false;
         if (state.gender !== 'all' && p.gender !== state.gender) return false;
@@ -1147,7 +1157,7 @@ const filterProducts = () => {
         }
         if (state.series !== 'all' && p._series !== state.series) return false;
         if (q) {
-            const hay = (productName(p) + ' ' + (p.full_name || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
+            const hay = (brandLabel(p) + ' ' + productName(p) + ' ' + (p.full_name || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
             if (!hay.includes(q)) return false;
         }
         return true;
@@ -1171,6 +1181,8 @@ const sortProducts = (arr) => {
 const inferCategory = (name, url) => {
     const n = (name || '').toLowerCase();
     const u = (url || '').toLowerCase();
+    if (/snowboard|splitboard|powder board/.test(n) || /snowboards?/.test(u)) return '滑雪板';
+    if (/binding/.test(n) || /bindings?/.test(u)) return '固定器';
     if (/veilance/.test(n) || /veilance/.test(u)) return 'Veilance';
     if (/shoe|boot|sandal|kragg|konseal|aerios|bora|acrux|vertex|kopec|norvan\s*sl|sylan/.test(n)) return '鞋类';
     if (/\bpack\b|backpack|bag|mantis|arro|brize|khard|\bindex\b/.test(n)) return '背包';
@@ -1298,7 +1310,7 @@ const buildCard = (p) => {
         </div>
         <div class="card-body">
             <div class="card-cat-row">
-                <div class="card-cat">${cat}</div>
+                <div class="card-cat">${brandLabel(p)} · ${cat}</div>
                 <span class="card-platform" style="background:${platform.color}">${platform.label}</span>
             </div>
             <div class="card-name">${name}</div>
@@ -1341,6 +1353,7 @@ const buildSelect = (selectId, options, key) => {
 const filterExcept = (exclude) => {
     const q = state.q.trim().toLowerCase();
     return products.filter(p => {
+        if (exclude !== 'brand'    && state.brand    !== 'all' && p._brand !== state.brand) return false;
         if (exclude !== 'platform' && state.platform !== 'all' && p._platform !== state.platform) return false;
         if (exclude !== 'region'   && state.region   !== 'all' && p.region !== state.region) return false;
         if (exclude !== 'gender'   && state.gender   !== 'all' && p.gender !== state.gender) return false;
@@ -1351,7 +1364,7 @@ const filterExcept = (exclude) => {
         }
         if (exclude !== 'series'   && state.series   !== 'all' && p._series !== state.series) return false;
         if (exclude !== 'search'   && q) {
-            const hay = (productName(p) + ' ' + (p.full_name || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
+            const hay = (brandLabel(p) + ' ' + productName(p) + ' ' + (p.full_name || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
             if (!hay.includes(q)) return false;
         }
         return true;
@@ -1388,6 +1401,20 @@ const initFilters = () => {
         for (const p of arr) { const k = fn(p); if (k == null) continue; m[k] = (m[k] || 0) + 1; }
         return m;
     };
+
+    // Brand
+    const brandPool = filterExcept('brand');
+    const brandCounts = countIn(brandPool, p => p._brand);
+    if (state.brand !== 'all' && !brandCounts[state.brand]) brandCounts[state.brand] = 0;
+    const brandOrder = ['arcteryx', 'burton', 'patagonia'];
+    buildSelect('brand-select', [
+        { value: 'all', label: '全部品牌', count: brandPool.length },
+        ...brandOrder.filter(k => brandCounts[k] || state.brand === k).map(k => ({
+            value: k,
+            label: BRAND[k]?.label || k,
+            count: brandCounts[k] || 0,
+        })),
+    ], 'brand');
 
     // Platform (销售平台)
     const platformPool = filterExcept('platform');
@@ -1441,7 +1468,7 @@ const initFilters = () => {
             ? p.category : inferCategory(productName(p), p.url)
     );
     if (state.category !== 'all' && !catCounts[state.category]) catCounts[state.category] = 0;
-    const catOrder = ['冲锋衣','保暖羽绒','卫衣/抓绒','裤装','鞋类','背包','上衣','内衣','手套','帽子','Veilance','其他'];
+    const catOrder = ['冲锋衣','保暖羽绒','卫衣/抓绒','裤装','鞋类','滑雪板','固定器','背包','上衣','内衣','手套','帽子','Veilance','其他'];
     const cats = Object.entries(catCounts).sort((a, b) => {
         const ai = catOrder.indexOf(a[0]), bi = catOrder.indexOf(b[0]);
         if (ai !== -1 && bi !== -1) return ai - bi;
@@ -1502,7 +1529,7 @@ const render = () => {
     filteredProducts = sortProducts(filterProducts());
     renderPage();
     // Sync filter select values + active styling
-    [['platform-select','platform'],['region-select','region'],['gender-select','gender'],['category-select','category'],['series-select','series']]
+    [['brand-select','brand'],['platform-select','platform'],['region-select','region'],['gender-select','gender'],['category-select','category'],['series-select','series']]
         .forEach(([id, key]) => {
             const el = document.getElementById(id);
             if (el) { el.value = state[key]; el.classList.toggle('active', state[key] !== 'all'); }
@@ -1563,7 +1590,7 @@ const initReset = () => {
         e.preventDefault();
         // 重置时清掉本地保存的 region，回到自动检测的默认
         try { localStorage.removeItem('region'); } catch (_) {}
-        Object.assign(state, { q: '', platform: 'all', region: detectRegion(), gender: 'all', category: 'all', series: 'all', sort: 'discount_desc' });
+        Object.assign(state, { q: '', brand: 'all', platform: 'all', region: detectRegion(), gender: 'all', category: 'all', series: 'all', sort: 'discount_desc' });
         document.getElementById('q').value = '';
         document.getElementById('search-wrap').classList.remove('has-value');
         document.getElementById('sort').value = 'discount_desc';
@@ -1588,7 +1615,7 @@ async function init() {
     // 新版只保留必要字段并依赖 Supabase/CDN 缓存；顺手清理旧缓存。
     try { localStorage.removeItem('products_cache_v1'); } catch (_) {}
     const LIST_COLUMNS = [
-        'sku_id', 'model', 'full_name', 'description', 'category', 'color',
+        'sku_id', 'brand', 'model', 'full_name', 'description', 'category', 'color',
         'original_price', 'sale_price', 'discount_pct', 'currency', 'symbol',
         'gender', 'image_url', 'region', 'url', 'dealer', 'last_updated',
         'first_seen', 'status', 'last_seen_at', 'url_http_status', 'sizes', 'size_stock',
@@ -1598,7 +1625,8 @@ async function init() {
         last_updated: normTs(p.last_updated),
         sizes:      Array.isArray(p.sizes)      ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
         size_stock: typeof p.size_stock === 'object' ? p.size_stock : (p.size_stock ? JSON.parse(p.size_stock) : {}),
-        _series:    extractSeries(productName(p)),
+        _brand:     brandKey(p),
+        _series:    extractSeries(productName(p), p),
         _platform:  platformKey(p),
     });
 

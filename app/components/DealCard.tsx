@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { formatPrice, freshnessLabel, productCategory, productName, REGION_LABEL, staleDays } from '../lib/catalog';
+import { BRAND, formatPrice, freshnessLabel, productCategory, productName, REGION_LABEL, staleDays } from '../lib/catalog';
 import { colors, radii, shadow } from '../lib/theme';
 import type { DealSignal, Product } from '../lib/types';
 
@@ -42,7 +42,7 @@ export function DealCard({ product, signal, saved = false, hero = false, onPress
       </View>
       <View style={styles.body}>
         <View style={styles.metaRow}>
-          <Text style={styles.category} numberOfLines={1}>{productCategory(product)}</Text>
+          <Text style={styles.category} numberOfLines={1}>{BRAND[product._brand]?.label} · {productCategory(product)}</Text>
           <Text style={styles.region} numberOfLines={1}>{REGION_LABEL[product.region] || product.region.toUpperCase()}</Text>
         </View>
         <Text style={[styles.name, hero && styles.heroName]} numberOfLines={hero ? 2 : 2}>{name}</Text>

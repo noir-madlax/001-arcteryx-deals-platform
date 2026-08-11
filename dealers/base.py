@@ -7,6 +7,7 @@
 输出统一 schema:
     {
       "dealer": "evo",                    # 经销商 key
+      "brand": "arcteryx",                # arcteryx | burton | patagonia
       "url": "https://...",               # 商品详情页
       "name": "Beta AR Jacket Men's",
       "image": "https://...",

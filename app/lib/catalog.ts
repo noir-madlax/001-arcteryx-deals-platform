@@ -1,9 +1,14 @@
 import type { Product, ProductRow } from './types';
 import {
   extractModelFamily,
-  isArcTeryxProduct,
-  standardProductName,
 } from './arcteryx-names';
+import {
+  BRANDS,
+  isSupportedBrandProduct,
+  productBrand,
+  productSeries,
+  standardProductName,
+} from './gear-brands';
 
 export const SUPABASE_URL = 'https://bupqagkrcvrezjkdbald.supabase.co';
 export const SUPABASE_ANON =
@@ -36,6 +41,8 @@ export const GENDER_LABEL: Record<string, string> = {
   unknown: 'Unisex',
 };
 
+export const BRAND = BRANDS;
+
 export const PLATFORM: Record<string, { label: string; color: string }> = {
   arcteryx_outlet: { label: "Arc'teryx Outlet", color: '#151513' },
   ssense: { label: 'SSENSE', color: '#151513' },
@@ -53,6 +60,7 @@ export const PLATFORM: Record<string, { label: string; color: string }> = {
 };
 
 export const REGION_OPTIONS = ['all', 'us', 'ca', 'gb', 'de', 'fr', 'nl', 'fi', 'ie', 'jp'];
+export const BRAND_OPTIONS = ['all', 'arcteryx', 'burton', 'patagonia'];
 export const GENDER_OPTIONS = ['all', 'women', 'men', 'unisex'];
 export const SORT_OPTIONS = ['discount_desc', 'price_asc', 'price_desc', 'recent'];
 export const CATEGORY_ORDER = [
@@ -61,6 +69,8 @@ export const CATEGORY_ORDER = [
   '卫衣/抓绒',
   '裤装',
   '鞋类',
+  '滑雪板',
+  '固定器',
   '背包',
   '上衣',
   '内衣',
@@ -76,13 +86,15 @@ export function cleanName(raw?: string | null) {
   return standardProductName(raw);
 }
 
-export function productName(product: Pick<ProductRow, 'dealer' | 'full_name' | 'gender' | 'model' | 'url'>) {
+export function productName(product: Pick<ProductRow, 'brand' | 'dealer' | 'full_name' | 'gender' | 'model' | 'url'>) {
   return standardProductName(product.full_name || product.model, product);
 }
 
 export function inferCategory(name?: string | null, url?: string | null) {
   const n = (name || '').toLowerCase();
   const u = (url || '').toLowerCase();
+  if (/snowboard|splitboard|powder board/.test(n) || /snowboards?/.test(u)) return '滑雪板';
+  if (/binding/.test(n) || /bindings?/.test(u)) return '固定器';
   if (/veilance/.test(n) || /veilance/.test(u)) return 'Veilance';
   if (/shoe|boot|sandal|kragg|konseal|aerios|bora|acrux|vertex|kopec|norvan\s*sl|sylan/.test(n)) return '鞋类';
   if (/\bpack\b|backpack|bag|mantis|arro|brize|khard|\bindex\b/.test(n)) return '背包';
@@ -151,7 +163,7 @@ function allKnownSizesOutOfStock(product: ProductRow) {
 }
 
 export function isBlockedProduct(product: ProductRow) {
-  if (!isArcTeryxProduct(product)) return true;
+  if (!isSupportedBrandProduct(product)) return true;
   const dealer = product.dealer || platformKey(product);
   if (dealer !== 'arcteryx_outlet') return false;
   const url = (String(product.url || '').split('?')[0] || '').replace(/\/$/, '').toLowerCase();
@@ -164,6 +176,8 @@ export function normalizeProduct(row: ProductRow): Product | null {
   const sizeStock = parseMaybeJson<Record<string, string>>(row.size_stock, {});
   const images = parseMaybeJson<string[]>(row.images, []);
   const name = productName(row);
+  const brand = productBrand(row);
+  if (!brand) return null;
   return {
     ...row,
     sku_id: row.sku_id,
@@ -176,8 +190,10 @@ export function normalizeProduct(row: ProductRow): Product | null {
     symbol: row.symbol || '$',
     currency: row.currency || 'USD',
     region: row.region || 'us',
+    brand,
     last_updated: normalizeTimestamp(row.last_updated),
-    _series: extractSeries(name),
+    _brand: brand,
+    _series: productSeries(name, row) || '其他',
     _platform: platformKey(row),
   };
 }

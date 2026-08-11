@@ -11,7 +11,7 @@ import { ScreenState } from '../../components/ScreenState';
 import { useProducts } from '../../contexts/ProductsContext';
 import { usePro } from '../../contexts/ProContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
-import { formatPrice, GENDER_LABEL, productCategory, productName, REGION_LABEL, releaseSeason } from '../../lib/catalog';
+import { BRAND, formatPrice, GENDER_LABEL, productCategory, productName, REGION_LABEL, releaseSeason } from '../../lib/catalog';
 import { openBuyUrl, scheduleTestPriceNotification, softImpact, uuid4 } from '../../lib/actions';
 import { buildPriceAlertPayload } from '../../lib/priceAlerts';
 import { computeSignal, historyToPoints, recentPoints } from '../../lib/signals';
@@ -103,7 +103,7 @@ export default function ProductDetailScreen() {
         </ScrollView>
 
         <View style={styles.block}>
-          <Text style={styles.category}>{productCategory(currentProduct)}</Text>
+          <Text style={styles.category}>{BRAND[currentProduct._brand]?.label} · {productCategory(currentProduct)}</Text>
           <Text style={styles.title}>{name}</Text>
           <Text style={styles.meta}>{[currentProduct.color, GENDER_LABEL[currentProduct.gender || ''] || currentProduct.gender, REGION_LABEL[currentProduct.region] || currentProduct.region.toUpperCase(), season].filter(Boolean).join(' · ')}</Text>
         </View>

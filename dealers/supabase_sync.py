@@ -1,5 +1,5 @@
 """把 dealers/results.json 同步到 Supabase products 表。
-要求: 先在 Supabase Studio 执行 dealers/supabase_migration.sql 一次。
+要求: 先执行 dealer 与 brand 两个迁移文件。
 
 使用 service_role key（bypass RLS）。每个 dealer 单独 upsert，
 stale-row 检测限定 dealer 范围（不会删掉 outlet 行，反之亦然）。
@@ -8,6 +8,8 @@ from __future__ import annotations
 import os, json, re, sys, hashlib
 from pathlib import Path
 from datetime import datetime, timezone
+
+from dealers.brands import canonical_brand, source_contract_valid
 
 ROOT = Path(__file__).resolve().parent.parent
 RESULTS_FILE = ROOT / "dealers" / "results.json"
@@ -195,14 +197,8 @@ def preserve_previous_images(row: dict, previous: dict | None) -> None:
 
 
 def is_expected_dealer_item(item: dict, dealer: str) -> bool:
-    """Validate brand-bearing URL scopes before any production upsert."""
-    if dealer != "ssense":
-        return True
-    return bool(re.search(
-        r"^https://(?:www\.)?ssense\.com/(?:[a-z]{2}-[a-z]{2}/)?(?:men|women)/product/arcteryx/",
-        str(item.get("url") or ""),
-        re.IGNORECASE,
-    ))
+    """Validate supported brands and dealer-specific URL scopes before upsert."""
+    return source_contract_valid(item, dealer)
 
 
 def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
@@ -215,6 +211,7 @@ def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
     return {
         "sku_id":         sku_id,
         "dealer":         dealer,
+        "brand":          canonical_brand(it),
         "model":          name,
         "full_name":      name,
         "color":          it.get("color") or "",
@@ -266,7 +263,7 @@ def main():
         items = info.get("items", []) or []
         invalid_items = [it for it in items if not is_expected_dealer_item(it, dkey)]
         if invalid_items:
-            sys.exit(f"[sync:{dkey}] refusing {len(invalid_items)} item(s) outside the Arc'teryx source contract")
+            sys.exit(f"[sync:{dkey}] refusing {len(invalid_items)} item(s) outside the supported-brand source contract")
         rows = [item_to_row(it, dkey, generated_at) for it in items]
         rows = [r for r in rows if r["sku_id"] and r["url"]]
         print(f"\n[sync:{dkey}] {len(rows)} rows to upsert")
@@ -283,7 +280,7 @@ def main():
             while True:
                 res = client.table("products").select(
                     "sku_id,first_seen,sizes,size_stock,color,original_price,sale_price,discount_pct,"
-                    "status,last_seen_at,missing_runs,url_http_status,url_checked_at,last_updated,url,image_url,images"
+                    "status,last_seen_at,missing_runs,url_http_status,url_checked_at,last_updated,url,image_url,images,brand"
                 ).eq("dealer", dkey).range(page*1000, page*1000+999).execute()
                 data = res.data or []
                 for r in data:

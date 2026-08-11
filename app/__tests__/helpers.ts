@@ -4,6 +4,7 @@ export function product(overrides: Partial<Product> = {}): Product {
   return {
     id: 1,
     sku_id: 'beta-jacket_Black_us',
+    brand: 'arcteryx',
     model: "Arc'teryx Beta Jacket - Men's",
     full_name: "Arc'teryx Beta Jacket - Men's",
     color: 'Black',
@@ -26,6 +27,7 @@ export function product(overrides: Partial<Product> = {}): Product {
     created_at: null,
     dealer: 'arcteryx_outlet',
     first_seen: null,
+    _brand: 'arcteryx',
     _series: 'Beta',
     _platform: 'arcteryx_outlet',
     ...overrides,
@@ -36,6 +38,7 @@ export function row(overrides: Partial<ProductRow> = {}): ProductRow {
   return {
     id: 1,
     sku_id: 'beta-jacket_Black_us',
+    brand: 'arcteryx',
     model: "Arc'teryx Beta Jacket - Men's",
     full_name: "Arc'teryx Beta Jacket - Men's",
     color: 'Black',

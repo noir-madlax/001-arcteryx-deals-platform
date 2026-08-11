@@ -36,6 +36,23 @@ test('productName removes verified SSENSE color prefixes and uses metadata gende
   })), "Teal FutureModel Jacket Women's");
 });
 
+test('productName and normalization preserve supported non-Arc brands', () => {
+  const [burton, patagonia] = visibleProducts([
+    row({ id: 10, sku_id: 'evo:burton-custom', brand: 'burton', dealer: 'evo', full_name: "Burton Custom Camber Snowboard - Men's", model: "Burton Custom Camber Snowboard - Men's", url: 'https://www.evo.com/products/burton-custom' }),
+    row({ id: 11, sku_id: 'evo:patagonia-nano', brand: 'patagonia', dealer: 'evo', full_name: "Patagonia Nano Puff Jacket - Women's", model: "Patagonia Nano Puff Jacket - Women's", url: 'https://www.evo.com/products/patagonia-nano-puff' }),
+  ]);
+
+  assert.equal(productName(burton!), "Custom Camber Snowboard Men's");
+  assert.equal(burton?._brand, 'burton');
+  assert.equal(productCategory(burton!), '滑雪板');
+  assert.equal(productName(patagonia!), "Nano Puff Jacket Women's");
+  assert.equal(patagonia?._brand, 'patagonia');
+});
+
+test('visibleProducts fails closed for explicitly unsupported brands', () => {
+  assert.deepEqual(visibleProducts([row({ brand: 'marc-jacobs', dealer: 'evo' })]), []);
+});
+
 test('model registry covers current additions and canonical aliases', () => {
   assert.equal(cleanName("Arc'teryx Arcword Short-Sleeve T-Shirt - Women's"), "Arc'Word Short-Sleeve T-Shirt Women's");
   assert.equal(extractSeries("Arc'Word Short-Sleeve T-Shirt Women's"), "Arc'Word");

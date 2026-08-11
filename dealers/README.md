@@ -1,6 +1,6 @@
-# 经销商数据抓取（Scrapling）
+# GearDrop 经销商数据抓取
 
-基于 [Scrapling 0.4.7](https://github.com/D4Vinci/Scrapling)，对 Arc'teryx 经销商做品牌过滤抓取。
+抓取结果统一写入 `dealers/results.json`，目前支持 Arc'teryx、Burton 与 Patagonia。所有新商品必须携带 `brand` canonical key：`arcteryx`、`burton` 或 `patagonia`。
 
 ## 当前状态
 
@@ -8,7 +8,7 @@
 |---|---|---|---:|---|
 | 1 | **SSENSE** (US) | ✅ 可用 | 26 | StealthySession + solve_cloudflare（Camoufox 单飞过不了 CF）；列表 + 详情页颜色都有，sizes 待补 |
 | 2 | **MEC** (CA) | ✅ 可用 | 127 | StealthyFetcher + JSON-LD `productGroupId/hasVariant` 拿到完整 sizes/colors |
-| 3 | **EVO** (US) | ✅ 可用 | 77 | StealthySession 暖首页 → 详情页 `data-product-size` / `data-product-color` 解析 |
+| 3 | **EVO** (US) | ✅ 三品牌入口 | 动态 | Shopify JSON 优先；被 Cloudflare 阻断时，用 Camoufox 逐页渲染 `/collections/arcteryx`、`/collections/burton`、`/collections/patagonia`。每个品牌独立做最低数量与完整分页门禁 |
 | 4 | Backcountry | ⚠️ 已停售 | 0 | Camoufox 进得去并且看到 1240 件 mens-jackets，但 `?ftxt=arcteryx` 返回 2 件 Outdoor Research 替代品（"找不到 → 推荐"）。**Arc'teryx 已撤出 Backcountry** |
 | 5 | Steep & Cheap | ⚠️ 已停售 | 0 | Backcountry 同公司同情况 |
 | 6 | Moosejaw | ❌ 已收购 | — | 重定向到 Public Lands，后者维护页 403 |
@@ -20,16 +20,17 @@
 | 12 | Zalando Lounge | ❌ 需登录 | — | 闪购站，所有品牌页要会员登录 |
 | 13 | 好日子 (CN) | ❌ SSL/不存在 | — | TLS connect error；域名疑似失效 |
 
-**当前总量：240 件 (4/13 站点)** — SSENSE 26 + MEC 127 + EVO 77 + REI 10
-含 detail-enriched 尺码/颜色：EVO/MEC/REI = 100% 双填充；SSENSE = 颜色 100%、尺码 0%（详情页 size markup 后续待解）
+表内历史数量仅作旧调查记录；当前数量必须以本次 `dealers/results.json`、Supabase readback 和质量门禁输出为准。
 
 ## 文件结构
 
 - `base.py` — DealerScraper 基类（统一 fetch、parse、价格归一化、字典输出）
+- `brands.py` — 三品牌 canonical key、旧数据兼容与来源一致性校验
 - `recon.py` / `recon_stealthy.py` / `recon_v3.py` — 三轮侦察脚本
 - `ssense.py` — SSENSE 抓取器（Fetcher tier）
 - `mec.py` — MEC 抓取器（Stealthy tier）
 - `run_all.py` — 并行运行所有 scraper，输出 `results.json`
+- `supabase_migration_brand.sql` — `products.brand` 回填、约束与索引迁移
 
 ## 使用
 
@@ -44,11 +45,21 @@ python3 -m dealers.run_all
 # 单站调试
 python3 -m dealers.ssense
 python3 -m dealers.mec
+python3 -m dealers.evo
 ```
+
+## Burton / Patagonia 发布顺序
+
+1. 先在 Supabase 执行 `dealers/supabase_migration_brand.sql`，确认三品牌分组查询成功。
+2. 再部署读取 `brand` 的 Web/App 与同步代码。
+3. 跑 EVO 抓取和 `merge_partial`；只有 `crawl_complete=true` 且 Arc'teryx ≥100、Burton ≥20、Patagonia ≥20 才允许进入同步。
+4. 同步后运行 `tools/check_data_quality.py`；门禁按 `dealer/brand` 复核，不能只看 EVO 总量。
+
+本仓库改动本身不会执行生产迁移或写入。Patagonia 官方站当前在自动化出口返回 Akamai 故障/拦截页面，因此首版数据入口采用 EVO 的 Patagonia 官方品牌集合；不要把故障页解析成商品。
 
 ## 后续要做
 
-- [ ] EVO：尝试 [Camoufox](https://github.com/daijro/camoufox) 或 FlareSolverr 代理服务
+- [x] EVO：Shopify JSON + Camoufox 渲染回退，并按品牌隔离与分页完整性检查
 - [ ] Backcountry/S&C：找他们的真实 brand URL 模式（可能藏在 sitemap.xml）
 - [ ] REI Outlet：调用其 Algolia 搜索 API（需要 appId/apiKey）
 - [ ] Sierra：海外 IP 测试（VPN 到美国）

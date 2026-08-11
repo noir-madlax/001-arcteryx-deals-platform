@@ -53,6 +53,8 @@ def infer_category(name: str, url: str) -> str:
     u = (url or "").lower()
     n = (name or "").lower()
     hay = u + " " + n
+    if any(x in hay for x in ["snowboard", "splitboard", "powder-board"]): return "滑雪板"
+    if "binding" in hay: return "固定器"
     if "veilance" in hay: return "Veilance商务系列"
     if any(x in hay for x in ["shell-jacket", "hardshell", "softshell"]): return "硬壳冲锋衣"
     if any(x in hay for x in ["insulated", "down-jacket", "down-coat", "atom", "cerium", "proton", "nuclei", "thorium", "macai", "andessa", "decca", "therme", "sorin"]): return "保暖夹克"
@@ -164,6 +166,7 @@ def sku_to_row(sku: dict) -> dict:
     return {
         "sku_id":         sku.get("sku_id", ""),
         "dealer":         "arcteryx_outlet",   # 区分 outlet vs 各经销商
+        "brand":          "arcteryx",
         "model":          sku.get("model"),
         "full_name":      sku.get("full_name"),
         "color":          sku.get("color"),

@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#fafaf8">
-    <title>商品详情 · Arc'teryx Outlet</title>
+    <title>商品详情 · GearDrop</title>
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="arcteryx-names.js"></script>
+    <script src="gear-brands.js"></script>
     <style>
         :root {
             --bg: #fafaf8;
@@ -523,8 +524,8 @@
 <header class="site-header">
     <div class="header-inner">
         <div class="brand">
-            <a href="index.html" class="brand-mark">ARC'TERYX</a>
-            <span class="brand-sub">Outlet Deals Tracker</span>
+            <a href="index.html" class="brand-mark">GEARDROP</a>
+            <span class="brand-sub">Multi-brand Deals</span>
         </div>
         <a href="index.html" class="back" id="back-link">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -603,7 +604,9 @@ const cleanColor = (raw) => {
 };
 
 const GENDER_MARKERS = ["Women's", "Men's", "Unisex", 'Damen', 'Herren', 'Femme', 'Homme'];
-const productName = p => window.ArcTeryxNames.standardProductName(p.full_name || p.model, p);
+const productName = p => window.GearBrands.standardProductName(p.full_name || p.model, p);
+const brandKey = p => window.GearBrands.productBrand(p);
+const brandLabel = p => window.GearBrands.brandLabel(brandKey(p)) || '—';
 
 // Extract description that was glued onto the name
 const extractGluedDesc = (raw) => {
@@ -648,7 +651,7 @@ const allKnownSizesOutOfStock = (p) => {
 };
 
 const isBlockedProduct = (p) => {
-    if (!window.ArcTeryxNames.isArcTeryxProduct(p)) return true;
+    if (!window.GearBrands.isSupportedBrandProduct(p)) return true;
     const dealer = p.dealer || '';
     const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
     return (!dealer || dealer === 'arcteryx_outlet') &&
@@ -657,7 +660,7 @@ const isBlockedProduct = (p) => {
 };
 
 const DETAIL_COLUMNS = [
-    'sku_id', 'model', 'full_name', 'description', 'category', 'color',
+    'sku_id', 'brand', 'model', 'full_name', 'description', 'category', 'color',
     'original_price', 'sale_price', 'discount_pct', 'currency', 'symbol',
     'gender', 'image_url', 'images', 'region', 'url', 'dealer', 'last_updated',
     'first_seen', 'status', 'last_seen_at', 'url_http_status', 'sizes', 'size_stock',
@@ -671,6 +674,7 @@ const normalizeProducts = (rows) => (rows || [])
         sizes:      parseMaybeJson(p.sizes, []),
         size_stock: parseMaybeJson(p.size_stock, {}),
         images:     parseMaybeJson(p.images, []),
+        _brand:     brandKey(p),
     }));
 
 const loadStaticProducts = async () => {
@@ -809,6 +813,7 @@ function releaseSeason(p) {
 function metaBlock(p, extra = {}) {
     const platform = inferPlatform(p);
     const items = [
+        ['品牌', brandLabel(p)],
         ['销售平台', platform.label],
         ['地区', `${REGION_FLAG[p.region] || ''} ${REGION_LABEL[p.region] || p.region || '—'}`],
         ['品类', p.category || '—'],
@@ -825,7 +830,7 @@ function metaBlock(p, extra = {}) {
     </div>`;
 }
 
-function ctaBlock(url, klass = '', platformLabel = "Arc'teryx Outlet") {
+function ctaBlock(url, klass = '', platformLabel = '销售平台') {
     return `<a class="cta ${klass}" href="${esc(url)}" target="_blank" rel="noopener">
         前往 ${esc(platformLabel)} 购买
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3h7v7M13 3L6 10M3 6v7h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1008,6 +1013,8 @@ function renderSKU(current, all, outletUrl) {
         </div>
         <div class="info">
             <div class="crumb">
+                <span>${esc(brandLabel(current))}</span>
+                <span class="dot"></span>
                 <span>${REGION_FLAG[current.region] || ''} ${REGION_LABEL[current.region] || current.region}</span>
                 <span class="dot"></span>
                 <span>${esc(current.category || '其他')}</span>
@@ -1068,6 +1075,8 @@ function renderBase(p) {
         </div>
         <div class="info">
             <div class="crumb">
+                <span>${esc(brandLabel(p))}</span>
+                <span class="dot"></span>
                 <span>${REGION_FLAG[p.region] || ''} ${REGION_LABEL[p.region] || p.region}</span>
                 <span class="dot"></span>
                 <span>${esc(p.category || '其他')}</span>

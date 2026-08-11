@@ -1,6 +1,7 @@
 export type ProductRow = {
   id: number;
   sku_id: string | null;
+  brand: string | null;
   model: string | null;
   full_name: string | null;
   color: string | null;
@@ -25,7 +26,10 @@ export type ProductRow = {
   first_seen: string | null;
 };
 
-export type Product = Omit<ProductRow, 'sku_id' | 'sizes' | 'size_stock' | 'images' | 'original_price' | 'sale_price' | 'discount_pct' | 'symbol' | 'currency' | 'region'> & {
+export type GearBrand = 'arcteryx' | 'burton' | 'patagonia';
+
+export type Product = Omit<ProductRow, 'brand' | 'sku_id' | 'sizes' | 'size_stock' | 'images' | 'original_price' | 'sale_price' | 'discount_pct' | 'symbol' | 'currency' | 'region'> & {
+  brand: GearBrand;
   sku_id: string;
   sizes: string[];
   size_stock: Record<string, string>;
@@ -36,6 +40,7 @@ export type Product = Omit<ProductRow, 'sku_id' | 'sizes' | 'size_stock' | 'imag
   symbol: string;
   currency: string;
   region: string;
+  _brand: GearBrand;
   _series: string;
   _platform: string;
 };

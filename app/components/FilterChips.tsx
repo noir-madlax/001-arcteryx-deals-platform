@@ -1,9 +1,10 @@
 import { ScrollView, StyleSheet, Text, Pressable, View } from 'react-native';
 
-import { CATEGORY_ORDER, GENDER_LABEL, PLATFORM, REGION_LABEL, REGION_OPTIONS, SORT_OPTIONS, GENDER_OPTIONS } from '../lib/catalog';
+import { BRAND, BRAND_OPTIONS, CATEGORY_ORDER, GENDER_LABEL, PLATFORM, REGION_LABEL, REGION_OPTIONS, SORT_OPTIONS, GENDER_OPTIONS } from '../lib/catalog';
 import { colors, radii } from '../lib/theme';
 
 type FilterState = {
+  brand: string;
   platform: string;
   region: string;
   category: string;
@@ -14,6 +15,7 @@ type FilterState = {
 
 type Props = {
   value: FilterState;
+  brands: string[];
   platforms: string[];
   categories: string[];
   series: string[];
@@ -27,7 +29,9 @@ const SORT_LABEL: Record<string, string> = {
   recent: 'Fresh',
 };
 
-export function FilterChips({ value, platforms, categories, series, onChange }: Props) {
+export function FilterChips({ value, brands, platforms, categories, series, onChange }: Props) {
+  const availableBrands = new Set(brands);
+  const normalizedBrands = BRAND_OPTIONS.filter((brand) => brand === 'all' || availableBrands.has(brand));
   const normalizedPlatforms = ['all', ...platforms.slice().sort((a, b) => (PLATFORM[a]?.label || a).localeCompare(PLATFORM[b]?.label || b))];
   const normalizedCategories = [
     'all',
@@ -47,6 +51,13 @@ export function FilterChips({ value, platforms, categories, series, onChange }: 
 
   return (
     <View style={styles.wrap}>
+      <ChipRow
+        label="Brand"
+        options={normalizedBrands}
+        value={value.brand}
+        getLabel={(option) => (option === 'all' ? 'All' : BRAND[option as keyof typeof BRAND]?.label || option)}
+        onSelect={(brand) => onChange({ brand })}
+      />
       <ChipRow
         label="Source"
         options={normalizedPlatforms}

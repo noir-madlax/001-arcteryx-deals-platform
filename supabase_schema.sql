@@ -1,5 +1,5 @@
 -- ============================================================
---  Arc'teryx Deals Platform — Supabase Schema
+--  GearDrop — Supabase Schema
 --  Run this in Supabase SQL Editor (once)
 -- ============================================================
 
@@ -7,6 +7,7 @@
 CREATE TABLE IF NOT EXISTS products (
   id             BIGSERIAL PRIMARY KEY,
   sku_id         TEXT        NOT NULL UNIQUE,
+  brand          TEXT        NOT NULL DEFAULT 'arcteryx' CHECK (brand IN ('arcteryx', 'burton', 'patagonia')),
   model          TEXT,
   full_name      TEXT,
   color          TEXT,
@@ -36,6 +37,7 @@ CREATE TABLE IF NOT EXISTS products (
 
 -- 2. Index for common filter queries
 CREATE INDEX IF NOT EXISTS idx_products_region    ON products (region);
+CREATE INDEX IF NOT EXISTS idx_products_brand     ON products (brand);
 CREATE INDEX IF NOT EXISTS idx_products_gender    ON products (gender);
 CREATE INDEX IF NOT EXISTS idx_products_category  ON products (category);
 CREATE INDEX IF NOT EXISTS idx_products_sale_price ON products (sale_price);

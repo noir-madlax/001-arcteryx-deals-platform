@@ -1,8 +1,9 @@
 """EVO (evo.com) Shopify scraper with a Camoufox rendered-page fallback."""
 from __future__ import annotations
 from .base import normalize_price, discount_pct
-import json, urllib.request, ssl, os, re
-from collections import defaultdict
+from .brands import BRAND_LABELS, vendor_matches_brand
+import json, urllib.request, ssl, os, re, time
+from collections import Counter, defaultdict
 
 try:
     from curl_cffi import requests as curl_requests
@@ -23,19 +24,23 @@ class Scraper:
     REGION = "US"
 
     COLLECTIONS = [
-        ("men",   "mens-arcteryx-clothing"),
-        ("men",   "mens-arcteryx-footwear"),
-        ("men",   "mens-arcteryx-accessories"),
-        ("women", "womens-arcteryx-clothing"),
-        ("women", "womens-arcteryx-footwear"),
-        ("women", "womens-arcteryx-accessories"),
+        ("arcteryx", "men",   "mens-arcteryx-clothing"),
+        ("arcteryx", "men",   "mens-arcteryx-footwear"),
+        ("arcteryx", "men",   "mens-arcteryx-accessories"),
+        ("arcteryx", "women", "womens-arcteryx-clothing"),
+        ("arcteryx", "women", "womens-arcteryx-footwear"),
+        ("arcteryx", "women", "womens-arcteryx-accessories"),
+        ("burton", "auto", "burton"),
+        ("patagonia", "auto", "patagonia"),
     ]
-    BROWSER_COLLECTIONS = [("auto", "arcteryx")]
-    # The legacy category JSON endpoints can return a syntactically complete
-    # but severely truncated assortment on some egresses. The rendered
-    # Arc'teryx collection is the formal fallback and currently spans well
-    # above the production evo/us floor.
-    MIN_DIRECT_ITEMS = 100
+    BROWSER_COLLECTIONS = [
+        ("arcteryx", "auto", "arcteryx"),
+        ("burton", "auto", "burton"),
+        ("patagonia", "auto", "patagonia"),
+    ]
+    # A syntactically complete endpoint can still collapse one brand scope, so
+    # completeness is enforced per brand before the snapshot is publishable.
+    MIN_ITEMS_BY_BRAND = {"arcteryx": 100, "burton": 20, "patagonia": 20}
 
     def __init__(self):
         self.crawl_complete = False
@@ -101,8 +106,25 @@ class Scraper:
     def _money_values(label: str | None) -> list[float]:
         return [float(value.replace(",", "")) for value in _MONEY_RE.findall(label or "")]
 
-    def parse_browser_snapshot(self, snapshot: dict, gender: str) -> list[dict]:
+    @staticmethod
+    def _resolved_gender(gender: str, name: str) -> str:
+        if gender != "auto":
+            return gender
+        lowered_name = name.lower()
+        if "women's" in lowered_name or "womens" in lowered_name:
+            return "women"
+        if "men's" in lowered_name or "mens" in lowered_name:
+            return "men"
+        return "unisex"
+
+    def parse_browser_snapshot(
+        self,
+        snapshot: dict,
+        gender: str,
+        brand: str = "arcteryx",
+    ) -> list[dict]:
         """Normalize the rendered Shopify metadata and product-card fields."""
+        expected_label = BRAND_LABELS[brand]
         cards = {}
         for card in snapshot.get("cards") or []:
             handle = (card.get("url") or "").split("/products/")[-1].split("?", 1)[0]
@@ -116,7 +138,7 @@ class Scraper:
             if handle not in known_handles:
                 products.append({
                     "id": None,
-                    "vendor": "Arc'teryx",
+                    "vendor": expected_label,
                     "type": "",
                     "handle": handle,
                     "variants": [],
@@ -124,7 +146,7 @@ class Scraper:
                 })
         out = []
         for product in products:
-            if "arc" not in (product.get("vendor") or "").lower().replace("'", ""):
+            if not vendor_matches_brand(product.get("vendor"), brand):
                 continue
             handle = product.get("handle")
             variants = product.get("variants") or []
@@ -160,15 +182,7 @@ class Scraper:
                         sizes.add(size)
             sizes = sorted(sizes, key=lambda value: (len(value), value))
             in_stock = bool(card) if not product_inventory else int(product_inventory.get("inventory") or 0) > 0
-            resolved_gender = gender
-            if gender == "auto":
-                lowered_name = name.lower()
-                if "women's" in lowered_name or "womens" in lowered_name:
-                    resolved_gender = "women"
-                elif "men's" in lowered_name or "mens" in lowered_name:
-                    resolved_gender = "men"
-                else:
-                    resolved_gender = "unisex"
+            resolved_gender = self._resolved_gender(gender, name)
             out.append({
                 "url": f"{HOST}/products/{handle}",
                 "name": name,
@@ -185,6 +199,7 @@ class Scraper:
                 "discount_pct": discount_pct(orig, sale),
                 "dealer": self.KEY,
                 "dealer_name": self.NAME,
+                "brand": brand,
                 "region": self.REGION,
                 "category": product.get("type") or "",
                 "price_source_quality": "list_fallback",
@@ -192,13 +207,14 @@ class Scraper:
         return out
 
     @staticmethod
-    def _browser_snapshot(page) -> dict:
-        return page.evaluate(r"""() => {
+    def _browser_snapshot(page, expected_label: str = "Arc'teryx") -> dict:
+        return page.evaluate(r"""(expectedBrand) => {
           const products = window.ShopifyAnalytics?.meta?.products || [];
           const inventory = window.igProductData || {};
           const seen = new Set();
+          const normalizedBrand = String(expectedBrand || '').trim().toLowerCase();
           const cards = [...document.querySelectorAll('a[href*="/products/"]')]
-            .filter(a => (a.innerText || '').trim().toLowerCase().startsWith("arc'teryx"))
+            .filter(a => (a.innerText || '').trim().toLowerCase().startsWith(normalizedBrand))
             .map(a => {
               const url = a.href.split('?')[0];
               if (seen.has(url)) return null;
@@ -228,7 +244,22 @@ class Scraper:
               };
             }).filter(Boolean);
           return {products, inventory, cards};
-        }""")
+        }""", expected_label)
+
+    def _brand_counts(self, items: list[dict]) -> Counter:
+        return Counter(item.get("brand") for item in items)
+
+    def _meets_brand_minimums(self, items: list[dict]) -> bool:
+        counts = self._brand_counts(items)
+        missing = {
+            brand: {"count": counts.get(brand, 0), "minimum": minimum}
+            for brand, minimum in self.MIN_ITEMS_BY_BRAND.items()
+            if counts.get(brand, 0) < minimum
+        }
+        if missing:
+            print(f"[evo] brand floors not met: {missing}", flush=True)
+            return False
+        return True
 
     def _scrape_browser(self) -> tuple[list[dict], bool]:
         from camoufox.sync_api import Camoufox
@@ -237,9 +268,10 @@ class Scraper:
         seen = set()
         successful_pages = 0
         expected_pages = 0
+        inter_page_delay = max(0, int(os.environ.get("EVO_BROWSER_INTER_PAGE_DELAY_MS", "5000"))) / 1000
         print("[evo] Shopify JSON blocked; using Camoufox collection fallback", flush=True)
         with Camoufox(headless=True, humanize=True, geoip=True) as browser:
-            for gender, slug in self.BROWSER_COLLECTIONS:
+            for brand, gender, slug in self.BROWSER_COLLECTIONS:
                 base_url = f"{HOST}/collections/{slug}"
                 page_number = 1
                 max_page = 1
@@ -251,6 +283,7 @@ class Scraper:
                             base_url=base_url,
                             slug=slug,
                             gender=gender,
+                            brand=brand,
                             page_number=page_number,
                             max_page=max_page,
                         )
@@ -274,7 +307,10 @@ class Scraper:
                         added += 1
                     print(f"[evo] browser {slug} page {page_number}/{max_page}: +{added} ({len(scope_items)} parsed)", flush=True)
                     page_number += 1
-        return out, expected_pages > 0 and successful_pages == expected_pages
+                    if inter_page_delay:
+                        time.sleep(inter_page_delay)
+        complete = expected_pages > 0 and successful_pages == expected_pages
+        return out, complete and self._meets_brand_minimums(out)
 
     @staticmethod
     def _close_page(page) -> None:
@@ -291,6 +327,7 @@ class Scraper:
         gender: str,
         page_number: int,
         max_page: int,
+        brand: str = "arcteryx",
     ) -> tuple[list[dict], int]:
         attempts = max(1, int(os.environ.get("EVO_BROWSER_PAGE_RETRIES", "3")))
         url = base_url if page_number == 1 else f"{base_url}?numResults=40&page={page_number}"
@@ -303,8 +340,8 @@ class Scraper:
                 page.wait_for_timeout(3500)
                 if not response or response.status != 200:
                     raise RuntimeError(f"HTTP {response.status if response else 'unknown'}")
-                snapshot = self._browser_snapshot(page)
-                scope_items = self.parse_browser_snapshot(snapshot, gender)
+                snapshot = self._browser_snapshot(page, BRAND_LABELS[brand])
+                scope_items = self.parse_browser_snapshot(snapshot, gender, brand)
                 discovered_max_page = max_page
                 if page_number == 1:
                     pagination_urls = page.locator(
@@ -319,16 +356,19 @@ class Scraper:
                 minimum_items = 40 if page_number < discovered_max_page else 1
                 if len(scope_items) < minimum_items:
                     raise RuntimeError(
-                        f"rendered page contained only {len(scope_items)} Arc'teryx products; expected at least {minimum_items}"
+                        f"rendered page contained only {len(scope_items)} {BRAND_LABELS[brand]} products; expected at least {minimum_items}"
                     )
                 return scope_items, discovered_max_page
             except Exception as exc:
                 last_error = exc
                 if attempt < attempts:
+                    retry_delay = max(0, int(os.environ.get("EVO_BROWSER_RETRY_DELAY_MS", "10000"))) * attempt / 1000
                     print(
-                        f"[evo] browser page retry {slug}/{page_number} attempt {attempt}/{attempts}: {str(exc)[:160]}",
+                        f"[evo] browser page retry {slug}/{page_number} attempt {attempt}/{attempts} "
+                        f"after {retry_delay:.0f}s: {str(exc)[:160]}",
                         flush=True,
                     )
+                    time.sleep(retry_delay)
             finally:
                 self._close_page(page)
         raise last_error
@@ -337,7 +377,7 @@ class Scraper:
         out = []
         seen = set()
         successful_scopes = 0
-        for gender, slug in self.COLLECTIONS:
+        for brand, gender, slug in self.COLLECTIONS:
             scope_complete = False
             for page in range(1, 6):  # max 5 pages = 1250 items per collection
                 url = f"{HOST}/collections/{slug}/products.json?limit=250&page={page}"
@@ -353,6 +393,8 @@ class Scraper:
                     break
                 print(f"[evo] {gender}/{slug} page {page}: {len(products)} products", flush=True)
                 for p in products:
+                    if not vendor_matches_brand(p.get("vendor"), brand):
+                        continue
                     handle = p.get("handle")
                     if not handle or handle in seen:
                         continue
@@ -399,8 +441,8 @@ class Scraper:
                         "original_price": orig,
                         "sale_price":     sale,
                         "currency":       "USD",
-                        "in_stock":       any(by_size.values()),
-                        "gender":         gender,
+                        "in_stock":       True,
+                        "gender":         self._resolved_gender(gender, p.get("title") or ""),
                         "sizes":          sizes,
                         "size_stock":     size_stock,
                         "color":          ", ".join(sorted(colors)[:3]),
@@ -408,6 +450,7 @@ class Scraper:
                         "discount_pct":   discount_pct(orig, sale),
                         "dealer":         self.KEY,
                         "dealer_name":    self.NAME,
+                        "brand":          brand,
                         "region":         self.REGION,
                         "category":       p.get("product_type") or "",
                         "price_source_quality": "api",
@@ -421,13 +464,13 @@ class Scraper:
 
     def scrape(self) -> list[dict]:
         items, complete = self._scrape_http()
-        if complete and len(items) >= self.MIN_DIRECT_ITEMS:
+        if complete and self._meets_brand_minimums(items):
             self.crawl_complete = True
             return items
         if complete and items:
             print(
-                f"[evo] direct snapshot only returned {len(items)} items; "
-                f"expected at least {self.MIN_DIRECT_ITEMS}, using browser fallback",
+                f"[evo] direct snapshot returned {len(items)} items but missed a brand floor; "
+                "using browser fallback",
                 flush=True,
             )
         items, complete = self._scrape_browser()

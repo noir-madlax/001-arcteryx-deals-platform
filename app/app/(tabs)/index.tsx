@@ -15,6 +15,7 @@ import { colors } from '../../lib/theme';
 import type { Product } from '../../lib/types';
 
 type FilterState = {
+  brand: string;
   platform: string;
   region: string;
   category: string;
@@ -29,6 +30,7 @@ export default function DealsScreen() {
   const [query, setQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
+    brand: 'all',
     platform: 'all',
     region: 'us',
     category: 'all',
@@ -40,12 +42,14 @@ export default function DealsScreen() {
   const [signalWindow, setSignalWindow] = useState(INITIAL_SIGNAL_WINDOW);
 
   const categories = useMemo(() => [...new Set(products.map(productCategory))], [products]);
+  const brands = useMemo(() => [...new Set(products.map((product) => product._brand))], [products]);
   const platforms = useMemo(() => [...new Set(products.map((product) => product._platform))], [products]);
   const series = useMemo(() => [...new Set(products.map((product) => product._series))], [products]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     const rows = products.filter((product) => {
+      if (filters.brand !== 'all' && product._brand !== filters.brand) return false;
       if (filters.region !== 'all' && product.region !== filters.region) return false;
       if (filters.platform !== 'all' && product._platform !== filters.platform) return false;
       if (filters.gender !== 'all') {
@@ -55,7 +59,7 @@ export default function DealsScreen() {
       if (filters.category !== 'all' && productCategory(product) !== filters.category) return false;
       if (filters.series !== 'all' && product._series !== filters.series) return false;
       if (q) {
-        const haystack = `${product.full_name || ''} ${product.model || ''} ${product.description || ''} ${product.category || ''}`.toLowerCase();
+        const haystack = `${product._brand} ${product.full_name || ''} ${product.model || ''} ${product.description || ''} ${product.category || ''}`.toLowerCase();
         if (!haystack.includes(q)) return false;
       }
       return true;
@@ -118,6 +122,7 @@ export default function DealsScreen() {
             onToggleSearch={() => setSearchOpen((next) => !next)}
             onQueryChange={setQuery}
             filters={filters}
+            brands={brands}
             categories={categories}
             platforms={platforms}
             series={series}
@@ -178,6 +183,7 @@ function Header({
   onToggleSearch,
   onQueryChange,
   filters,
+  brands,
   categories,
   platforms,
   series,
@@ -195,6 +201,7 @@ function Header({
   onToggleSearch: () => void;
   onQueryChange: (value: string) => void;
   filters: FilterState;
+  brands: string[];
   categories: string[];
   platforms: string[];
   series: string[];
@@ -219,10 +226,10 @@ function Header({
       {searchOpen ? (
         <View style={styles.searchWrap}>
           <Ionicons name="search" size={18} color={colors.faint} />
-          <TextInput value={query} onChangeText={onQueryChange} autoCapitalize="none" placeholder="Search beta, atom, jacket..." style={styles.searchInput} />
+          <TextInput value={query} onChangeText={onQueryChange} autoCapitalize="none" placeholder="Search brand, model, category..." style={styles.searchInput} />
         </View>
       ) : null}
-      <FilterChips value={filters} platforms={platforms} categories={categories} series={series} onChange={onFilterChange} />
+      <FilterChips value={filters} brands={brands} platforms={platforms} categories={categories} series={series} onChange={onFilterChange} />
       {hero ? (
         <View style={styles.heroSection}>
           <Text style={styles.heroLabel}>{heroSignal?.kind === 'all_time_low' ? 'New all-time low' : heroSignal?.kind === 'ninety_day_low' ? '90-day low' : 'Best signal now'}</Text>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Arc'teryx deal data before treating a sync as healthy.
+"""Validate GearDrop multi-brand deal data before treating a sync as healthy.
 
 Examples:
     python3 tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36
@@ -18,9 +18,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 INDEX_FILE = ROOT / "index.html"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from dealers.brands import canonical_brand, source_contract_valid
 
 SELECT = (
-    "sku_id,dealer,full_name,model,original_price,sale_price,discount_pct,"
+    "sku_id,dealer,brand,full_name,model,original_price,sale_price,discount_pct,"
     "currency,symbol,gender,region,url,status,last_seen_at,missing_runs,"
     "url_http_status,url_checked_at,last_updated,image_url,images"
 )
@@ -60,10 +64,18 @@ PLATFORM_REGION_MIN_ROWS = {
     ("arcteryx_outlet", "ca"): 100,
     ("arcteryx_outlet", "au"): 10,
     **{("arcteryx_outlet", region): 250 for region in ("at", "be", "ch", "de", "dk", "es", "fi", "fr", "gb", "ie", "it", "nl", "se")},
-    ("evo", "us"): 100,
+    ("evo", "us"): 140,
     ("mec", "ca"): 75,
     ("rei", "us"): 40,
     ("ssense", "us"): 30,
+}
+
+# A dealer total can stay healthy while one brand silently disappears. These
+# floors keep EVO's three independently crawled brand scopes fail-closed.
+PLATFORM_BRAND_MIN_ROWS = {
+    ("evo", "arcteryx"): 100,
+    ("evo", "burton"): 20,
+    ("evo", "patagonia"): 20,
 }
 
 
@@ -167,13 +179,9 @@ def is_blocked_outlet_url(url: str) -> bool:
     )
 
 
-def is_expected_arcteryx_product(row: dict) -> bool:
-    """Fail closed for sources whose URL contains an explicit brand segment."""
-    dealer = row.get("dealer") or "arcteryx_outlet"
-    if dealer != "ssense":
-        return True
-    url = str(row.get("url") or "").lower()
-    return bool(re.search(r"^https://(?:www\.)?ssense\.com/(?:[a-z]{2}-[a-z]{2}/)?(?:men|women)/product/arcteryx/", url))
+def is_expected_supported_product(row: dict) -> bool:
+    """Fail closed for unknown brands and dealer-specific URL mismatches."""
+    return source_contract_valid(row, row.get("dealer") or "arcteryx_outlet")
 
 
 def name_gender(name: str) -> str | None:
@@ -293,8 +301,8 @@ def validate(
             errors["missing_product_image"].append(row)
         if status == "active" and any("__IMAGE_PARAMS__" in url for url in image_urls):
             errors["unresolved_image_template"].append(row)
-        if status == "active" and not is_expected_arcteryx_product(row):
-            errors["non_arcteryx_product"].append(row)
+        if status == "active" and not is_expected_supported_product(row):
+            errors["unsupported_brand_product"].append(row)
 
         if forbidden_regions and dealer == "arcteryx_outlet" and region in forbidden_regions:
             errors["forbidden_region"].append(row)
@@ -343,6 +351,11 @@ def validate(
         ((row.get("dealer") or "arcteryx_outlet"), (row.get("region") or "").lower())
         for row in active_rows
     )
+    by_platform_brand = Counter(
+        ((row.get("dealer") or "arcteryx_outlet"), canonical_brand(row))
+        for row in active_rows
+        if canonical_brand(row)
+    )
     if required_dealers:
         for dealer in sorted(required_dealers):
             effective_min_rows = min(min_rows, DEALER_MIN_ROWS_OVERRIDE.get(dealer, min_rows))
@@ -362,6 +375,17 @@ def validate(
                 errors["platform_region_below_min_rows"].append({
                     "dealer": dealer,
                     "region": region,
+                    "row_count": count,
+                    "min_rows": minimum,
+                })
+
+    if required_dealers is None or "evo" in required_dealers:
+        for (dealer, brand), minimum in sorted(PLATFORM_BRAND_MIN_ROWS.items()):
+            count = by_platform_brand.get((dealer, brand), 0)
+            if count < minimum:
+                errors["platform_brand_below_min_rows"].append({
+                    "dealer": dealer,
+                    "brand": brand,
                     "row_count": count,
                     "min_rows": minimum,
                 })
@@ -412,6 +436,10 @@ def validate(
     if timestamps:
         print(f"[quality] last_updated={min(timestamps).isoformat()} .. {max(timestamps).isoformat()}")
     print("[quality] dealers=" + ", ".join(f"{k}:{v}" for k, v in sorted(by_dealer.items())))
+    print("[quality] brands=" + ", ".join(
+        f"{dealer}/{brand}:{count}"
+        for (dealer, brand), count in sorted(by_platform_brand.items())
+    ))
     if not required_dealers:
         print("[quality] platform_regions=" + ", ".join(
             f"{dealer}/{region}:{count}"
@@ -430,7 +458,7 @@ def validate(
             fields = {
                 k: row.get(k)
                 for k in (
-                    "sku_id", "dealer", "region", "currency", "symbol", "gender",
+                    "sku_id", "dealer", "brand", "region", "currency", "symbol", "gender",
                     "expected_gender", "expected_currency", "expected_symbol",
                     "full_name", "original_price", "sale_price", "discount_pct",
                     "expected_discount", "latest_last_updated", "age_hours",
