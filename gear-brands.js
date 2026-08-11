@@ -117,6 +117,12 @@
         const fromSsense = dealer === 'ssense' || /(^|\.)ssense\.com(?=\/|$)/i.test(url.replace(/^https?:\/\//i, ''));
         if (fromSsense) return brand === 'arcteryx' && Boolean(arcNames && arcNames.isArcTeryxProduct(item));
         if (dealer === 'arcteryx_outlet') return brand === 'arcteryx';
+        if (dealer === 'burton') {
+            return brand === 'burton' && /^https:\/\/(?:www\.)?burton\.com\/en-us\/products\/[a-z0-9-]+(?:[?#].*)?$/i.test(url);
+        }
+        if (dealer === 'backcountry') {
+            return brand === 'burton' && /^https:\/\/(?:www\.)?backcountry\.com\/burton-[^?#]+(?:[?#].*)?$/i.test(url);
+        }
         return true;
     }
 

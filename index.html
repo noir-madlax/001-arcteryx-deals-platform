@@ -889,6 +889,8 @@
         <a href="https://www.mec.ca/en/products?brand=Arc%27teryx" target="_blank" rel="noopener">MEC</a>、
         <a href="https://www.evo.com/collections/arcteryx" target="_blank" rel="noopener">EVO Arc'teryx</a>、
         <a href="https://www.evo.com/collections/burton" target="_blank" rel="noopener">EVO Burton</a>、
+        <a href="https://www.burton.com/en-us/collections/outlet" target="_blank" rel="noopener">Burton Outlet</a>、
+        <a href="https://www.backcountry.com/rc/burton-on-sale" target="_blank" rel="noopener">Backcountry Burton</a>、
         <a href="https://www.evo.com/collections/patagonia" target="_blank" rel="noopener">EVO Patagonia</a>、
         <a href="https://www.rei.com/search?q=arcteryx" target="_blank" rel="noopener">REI</a>
         等经销商 · 价格汇率仅供参考，以各平台实际为准。</p>
@@ -1019,6 +1021,7 @@ const PLATFORM = {
     ssense:          { label: 'SSENSE',           color: '#000' },
     mec:             { label: 'MEC',              color: '#c8102e' },
     evo:             { label: 'EVO',              color: '#1a1a1a' },
+    burton:          { label: 'Burton',           color: '#111' },
     rei:             { label: 'REI',              color: '#067a46' },
     backcountry:     { label: 'Backcountry',      color: '#003a70' },
     steepandcheap:   { label: 'Steep&Cheap',      color: '#d22730' },
@@ -1037,6 +1040,7 @@ function platformKey(p) {
     if (u.includes('ssense.com'))     return 'ssense';
     if (u.includes('mec.ca'))         return 'mec';
     if (u.includes('evo.com'))        return 'evo';
+    if (u.includes('burton.com'))     return 'burton';
     if (u.includes('rei.com'))        return 'rei';
     if (u.includes('backcountry'))    return 'backcountry';
     if (u.includes('steepandcheap'))  return 'steepandcheap';
@@ -1420,7 +1424,7 @@ const initFilters = () => {
     const platformPool = filterExcept('platform');
     const platformCounts = countIn(platformPool, p => p._platform);
     if (state.platform !== 'all' && !platformCounts[state.platform]) platformCounts[state.platform] = 0;
-    const platformOrder = ['arcteryx_outlet','ssense','mec','evo','rei'];
+    const platformOrder = ['arcteryx_outlet','burton','backcountry','ssense','mec','evo','rei'];
     const platformKeys = [...new Set([...platformOrder, ...Object.keys(platformCounts)])]
         .filter(k => platformCounts[k] !== undefined && (platformCounts[k] > 0 || k === state.platform));
     buildSelect('platform-select', [
@@ -1658,7 +1662,7 @@ async function init() {
             .map(decorate);
     }
 
-    // dealer 数据 (SSENSE/MEC/EVO/REI) 现已并入 Supabase products 表 (dealer 列区分)
+    // dealer 数据 (Burton/Backcountry/SSENSE/MEC/EVO/REI) 现已并入 Supabase products 表 (dealer 列区分)
     // 不再 fetch dealers/results.json — 单一数据源 = Supabase
 
     computeStats();

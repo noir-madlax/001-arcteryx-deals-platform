@@ -84,4 +84,16 @@ def source_contract_valid(item: dict, dealer: str) -> bool:
         ))
     if dealer == "arcteryx_outlet":
         return brand == "arcteryx"
+    if dealer == "burton":
+        return brand == "burton" and bool(re.search(
+            r"^https://(?:www\.)?burton\.com/en-us/products/[a-z0-9-]+(?:[?#].*)?$",
+            url,
+            re.IGNORECASE,
+        ))
+    if dealer == "backcountry":
+        return brand == "burton" and bool(re.search(
+            r"^https://(?:www\.)?backcountry\.com/burton-[^?#]+(?:[?#].*)?$",
+            url,
+            re.IGNORECASE,
+        ))
     return True

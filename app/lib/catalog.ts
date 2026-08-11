@@ -48,6 +48,7 @@ export const PLATFORM: Record<string, { label: string; color: string }> = {
   ssense: { label: 'SSENSE', color: '#151513' },
   mec: { label: 'MEC', color: '#c8102e' },
   evo: { label: 'EVO', color: '#1a1a1a' },
+  burton: { label: 'Burton', color: '#111111' },
   rei: { label: 'REI', color: '#067a46' },
   backcountry: { label: 'Backcountry', color: '#003a70' },
   steepandcheap: { label: 'Steep&Cheap', color: '#d22730' },
@@ -130,6 +131,7 @@ export function platformKey(product: Pick<ProductRow, 'dealer' | 'url'>) {
   if (url.includes('ssense.com')) return 'ssense';
   if (url.includes('mec.ca')) return 'mec';
   if (url.includes('evo.com')) return 'evo';
+  if (url.includes('burton.com')) return 'burton';
   if (url.includes('rei.com')) return 'rei';
   if (url.includes('backcountry')) return 'backcountry';
   if (url.includes('steepandcheap')) return 'steepandcheap';

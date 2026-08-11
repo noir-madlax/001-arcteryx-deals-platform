@@ -3,6 +3,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+from dealers.backcountry import Scraper as BackcountryScraper
+from dealers.burton import Scraper as BurtonScraper
 from dealers.evo import Scraper as EvoScraper
 from dealers.mec import Scraper as MecScraper
 from dealers.rei import Scraper as ReiScraper
@@ -13,6 +15,138 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 class DealerScraperTests(unittest.TestCase):
+    def test_burton_rendered_parser_pairs_live_card_prices_with_catalog_identity(self):
+        products = {
+            "9100998246657": {
+            "id": 9100998246657,
+            "vendor": "Burton",
+            "title": "Men's Burton Custom Camber Snowboard",
+            "handle": "mens-burton-custom-camber-snowboard-106881",
+            "product_type": "Snowboards",
+            "options": [
+                {"name": "Color", "position": 1},
+                {"name": "Size", "position": 2},
+            ],
+            "images": [{"id": 90, "src": "//www.burton.com/cdn/shop/files/custom.jpg"}],
+            "variants": [
+                {"available": True, "price": "699.95", "compare_at_price": None, "option1": "Black", "option2": "158"},
+                {"available": True, "price": "659.95", "compare_at_price": "659.95", "option1": "Graphic", "option2": "156", "image_id": 90},
+                {"available": False, "price": "199.95", "compare_at_price": "699.95", "option1": "Archive", "option2": "154"},
+            ],
+        }, "22": {
+            "id": 22,
+            "vendor": "Anon",
+            "title": "Anon M6 Goggles",
+            "handle": "anon-m6-goggles",
+            "variants": [{"available": True, "price": "200", "compare_at_price": "300"}],
+        }, "33": {
+            "id": 33,
+            "vendor": "Burton",
+            "title": "Burton Recycled VT Beanie",
+            "handle": "burton-recycled-vt-beanie-243101",
+            "variants": [{"available": True, "price": "29.95", "compare_at_price": "29.95"}],
+        }}
+        cards = [{
+            "source_id": "9100998246657",
+            "url": "/en-us/products/mens-burton-custom-camber-snowboard-106881",
+            "name": "Men's Burton Custom Camber Snowboard",
+            "image": "//www.burton.com/cdn/shop/files/custom.jpg",
+            "sale_text": "$461.97",
+            "original_text": "$659.95",
+            "colors": ["Graphic"],
+        }, {
+            "source_id": "22",
+            "url": "/en-us/products/anon-m6-goggles",
+            "name": "Anon M6 Goggles",
+            "image": "",
+            "sale_text": "$200.00",
+            "original_text": "$300.00",
+            "colors": [],
+        }, {
+            "source_id": "33",
+            "url": "/en-us/products/burton-recycled-vt-beanie-243101",
+            "name": "Burton Recycled VT Beanie",
+            "image": "",
+            "sale_text": "$29.95",
+            "original_text": "$29.95",
+            "colors": [],
+        }]
+
+        items = BurtonScraper().parse_rendered_cards(cards, products)
+
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]["source_id"], "9100998246657")
+        self.assertEqual(items[0]["brand"], "burton")
+        self.assertEqual(items[0]["sale_price"], 461.97)
+        self.assertEqual(items[0]["original_price"], 659.95)
+        self.assertEqual(items[0]["sizes"], ["156", "158"])
+        self.assertEqual(items[0]["colors"], ["Graphic"])
+        self.assertEqual(items[0]["gender"], "men")
+        self.assertEqual(items[0]["image"], "https://www.burton.com/cdn/shop/files/custom.jpg")
+
+    def test_backcountry_graphql_parser_uses_conservative_price_pair(self):
+        payload = {
+            "data": {"collection": {
+                "collection": {"id": "burton-on-sale"},
+                "totalCount": 159,
+                "pageInfo": {"hasNextPage": True},
+                "edges": [{"node": {
+                    "id": "BURZ9R1",
+                    "name": "Step On Re:Flex Snowboard Binding - 2027 - Women's",
+                    "url": "/burton-step-on-reflex-snowboard-binding-2027-womens",
+                    "stockStatus": "IN_STOCK",
+                    "brand": {"name": "Burton"},
+                    "aggregates": {
+                        "minSalePrice": 160.0,
+                        "minListPrice": 279.95,
+                        "maxListPrice": 319.95,
+                        "maxDiscount": 50,
+                    },
+                    "colors": [{
+                        "name": "Black",
+                        "pliImage": "/images/items/large/BUR/BURZ9R1/BLK.jpg",
+                    }],
+                }}],
+            }},
+        }
+
+        items, metadata = BackcountryScraper().parse_graphql_response(payload)
+
+        self.assertEqual(metadata, {
+            "edge_count": 1,
+            "has_next_page": True,
+            "total_count": 159,
+            "total_pages": 4,
+        })
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]["source_id"], "BURZ9R1")
+        self.assertEqual(items[0]["sale_price"], 160.0)
+        self.assertEqual(items[0]["original_price"], 279.95)
+        self.assertEqual(items[0]["discount_pct"], 43)
+        self.assertEqual(items[0]["gender"], "women")
+        self.assertEqual(items[0]["image"], "https://content.backcountry.com/images/items/large/BUR/BURZ9R1/BLK.jpg")
+
+    def test_backcountry_graphql_parser_rejects_cross_brand_contamination(self):
+        payload = {
+            "data": {"collection": {
+                "collection": {"id": "burton-on-sale"},
+                "totalCount": 1,
+                "pageInfo": {"hasNextPage": False},
+                "edges": [{"node": {
+                    "id": "PAT1",
+                    "name": "Nano Puff Jacket",
+                    "url": "/patagonia-nano-puff-jacket",
+                    "stockStatus": "IN_STOCK",
+                    "brand": {"name": "Patagonia"},
+                    "aggregates": {"minSalePrice": 100, "minListPrice": 200},
+                    "colors": [],
+                }}],
+            }},
+        }
+
+        with self.assertRaisesRegex(ValueError, "unexpected Backcountry brand"):
+            BackcountryScraper().parse_graphql_response(payload)
+
     def test_evo_rendered_shopify_snapshot_normalizes_product(self):
         snapshot = {
             "products": [{

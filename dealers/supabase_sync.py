@@ -18,6 +18,8 @@ SYM = {"USD":"$", "CAD":"C$", "EUR":"€", "GBP":"£", "SEK":"kr", "CHF":"CHF"}
 DEFAULT_CURRENCY_BY_DEALER = {
     "mec": "CAD",
     "evo": "USD",
+    "burton": "USD",
+    "backcountry": "USD",
     "rei": "USD",
     "ssense": "USD",
 }
@@ -117,7 +119,11 @@ def recovered_url_health(existing: dict | None) -> dict:
     }
 
 # ── derive sku_id from dealer + URL (stable across runs) ──
-def make_sku_id(dealer: str, url: str) -> str:
+def make_sku_id(dealer: str, url: str, source_id: object = None) -> str:
+    if dealer in {"burton", "backcountry"} and source_id is not None:
+        normalized_source_id = re.sub(r"[^a-zA-Z0-9_-]+", "", str(source_id))
+        if normalized_source_id:
+            return f"{dealer}:{normalized_source_id.lower()}"
     if dealer == "ssense":
         m = re.search(r'/(\d{6,})$', url or "")
         if m: return f"ssense:{m.group(1)}"
@@ -204,7 +210,7 @@ def is_expected_dealer_item(item: dict, dealer: str) -> bool:
 def item_to_row(it: dict, dealer: str, generated_at: str) -> dict:
     name = it.get("name") or ""
     url = it.get("url","")
-    sku_id = make_sku_id(dealer, url)
+    sku_id = make_sku_id(dealer, url, it.get("source_id"))
     currency = _currency_for_item(it, dealer)
     original_price = it.get("original_price")
     sale_price = it.get("sale_price")

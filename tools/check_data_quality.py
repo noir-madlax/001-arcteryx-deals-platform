@@ -65,17 +65,21 @@ PLATFORM_REGION_MIN_ROWS = {
     ("arcteryx_outlet", "au"): 10,
     **{("arcteryx_outlet", region): 250 for region in ("at", "be", "ch", "de", "dk", "es", "fi", "fr", "gb", "ie", "it", "nl", "se")},
     ("evo", "us"): 140,
+    ("burton", "us"): 100,
+    ("backcountry", "us"): 40,
     ("mec", "ca"): 75,
     ("rei", "us"): 40,
     ("ssense", "us"): 30,
 }
 
 # A dealer total can stay healthy while one brand silently disappears. These
-# floors keep EVO's three independently crawled brand scopes fail-closed.
+# floors keep every independently crawled brand scope fail-closed.
 PLATFORM_BRAND_MIN_ROWS = {
     ("evo", "arcteryx"): 100,
     ("evo", "burton"): 20,
     ("evo", "patagonia"): 20,
+    ("burton", "burton"): 100,
+    ("backcountry", "burton"): 40,
 }
 
 
@@ -197,7 +201,7 @@ def expected_currency(row: dict) -> tuple[str, str] | None:
     region = (row.get("region") or "").lower()
     if dealer == "mec" and region == "ca":
         return "CAD", "C$"
-    if dealer in {"evo", "rei", "ssense"}:
+    if dealer in {"evo", "burton", "backcountry", "rei", "ssense"}:
         return "USD", "$"
     return EXPECTED_CURRENCY.get(region)
 
@@ -379,16 +383,17 @@ def validate(
                     "min_rows": minimum,
                 })
 
-    if required_dealers is None or "evo" in required_dealers:
-        for (dealer, brand), minimum in sorted(PLATFORM_BRAND_MIN_ROWS.items()):
-            count = by_platform_brand.get((dealer, brand), 0)
-            if count < minimum:
-                errors["platform_brand_below_min_rows"].append({
-                    "dealer": dealer,
-                    "brand": brand,
-                    "row_count": count,
-                    "min_rows": minimum,
-                })
+    for (dealer, brand), minimum in sorted(PLATFORM_BRAND_MIN_ROWS.items()):
+        if required_dealers is not None and dealer not in required_dealers:
+            continue
+        count = by_platform_brand.get((dealer, brand), 0)
+        if count < minimum:
+            errors["platform_brand_below_min_rows"].append({
+                "dealer": dealer,
+                "brand": brand,
+                "row_count": count,
+                "min_rows": minimum,
+            })
 
     if max_age_hours is not None and timestamps:
         latest = max(timestamps)

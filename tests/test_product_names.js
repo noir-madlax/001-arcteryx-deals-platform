@@ -63,6 +63,9 @@ test('shared brand runtime normalizes Burton and Patagonia without Arc naming ru
   assert.equal(standardGearProductName("Patagonia Nano Puff Jacket - Women's", patagonia), "Nano Puff Jacket Women's");
   assert.equal(isSupportedBrandProduct({ ...burton, brand: 'unknown' }), false);
   assert.equal(isSupportedBrandProduct({ ...burton, full_name: 'Patagonia Nano Puff Jacket' }), false);
+  assert.equal(isSupportedBrandProduct({ brand: 'burton', dealer: 'burton', url: 'https://www.burton.com/en-us/products/custom-camber' }), true);
+  assert.equal(isSupportedBrandProduct({ brand: 'burton', dealer: 'backcountry', url: 'https://www.backcountry.com/burton-custom-camber' }), true);
+  assert.equal(isSupportedBrandProduct({ brand: 'patagonia', dealer: 'backcountry', url: 'https://www.backcountry.com/burton-custom-camber' }), false);
 });
 
 test('Arc name audit skips supported non-Arc rows without treating them as contamination', async () => {

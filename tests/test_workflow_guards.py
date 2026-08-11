@@ -34,6 +34,13 @@ class WorkflowGuardTests(unittest.TestCase):
             workflow.index("python tools/check_mec_browser_runtime.py"),
         )
 
+    def test_burton_sources_are_in_primary_and_fallback_dealer_runs(self):
+        workflow = (ROOT / ".github/workflows/refresh-dealers.yml").read_text(encoding="utf-8")
+        primary_runner = (ROOT / "server_run_dealers.sh").read_text(encoding="utf-8")
+        for source in (workflow, primary_runner):
+            self.assertIn("burton backcountry evo rei ssense", source)
+            self.assertIn("--dealer burton --dealer backcountry", source)
+
 
 if __name__ == "__main__":
     unittest.main()

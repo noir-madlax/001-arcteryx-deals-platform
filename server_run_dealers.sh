@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # ============================================================
-#  Dealer scraper — SSENSE / EVO / REI，每 3 小时一次。
+#  Dealer scraper — Burton / Backcountry / EVO / REI / SSENSE，每 3 小时一次。
 #  MEC 由 OCI 独立执行，避免 Lightsail 出口的 Cloudflare 403。
-#  三个模块串行，避免 Lightsail 1.6GB RAM OOM。
+#  五个模块串行，避免 Lightsail 1.6GB RAM OOM。
 # ============================================================
 set -euo pipefail
 
@@ -69,10 +69,10 @@ if [ "$lease_result" != "true" ]; then
 fi
 LEASE_ACQUIRED=true
 
-# 3 个 dealer 串行跑（EC2 1.6GB RAM 不够并行 + Camoufox/Chromium 开销大）
+# 5 个 dealer 串行跑（EC2 1.6GB RAM 不够并行 + Camoufox/Chromium 开销大）
 mkdir -p dealers/_partial
 rm -f dealers/_partial/*.json
-for d in evo rei ssense; do
+for d in burton backcountry evo rei ssense; do
     log "→ dealers.$d"
     if timeout 1800 $PYTHON -m dealers.$d >> "$LOG" 2>&1; then
         log "  ✓ $d done"
@@ -91,7 +91,7 @@ $PYTHON -m dealers.supabase_sync 2>&1 | tee -a "$LOG" || log "supabase sync 失�
 
 # 硬性质量闸门：避免 stale partial / 币种错误 / 折扣不一致继续被当作健康数据
 log "data quality check"
-$PYTHON tools/check_data_quality.py --online --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50 2>&1 | tee -a "$LOG"
+$PYTHON tools/check_data_quality.py --online --dealer burton --dealer backcountry --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50 2>&1 | tee -a "$LOG"
 
 # 检查降价提醒
 log "price alerts check"

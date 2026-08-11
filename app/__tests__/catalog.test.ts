@@ -110,6 +110,8 @@ test('platformKey prefers dealer and falls back to URL domains', () => {
   assert.equal(platformKey(row({ dealer: 'mec', url: 'https://example.com' })), 'mec');
   assert.equal(platformKey(row({ dealer: null, url: 'https://www.rei.com/product/123' })), 'rei');
   assert.equal(platformKey(row({ dealer: null, url: 'https://www.ssense.com/en-us/men/product' })), 'ssense');
+  assert.equal(platformKey(row({ dealer: 'burton', url: 'https://www.burton.com/en-us/products/custom' })), 'burton');
+  assert.equal(platformKey(row({ dealer: null, url: 'https://www.backcountry.com/burton-custom' })), 'backcountry');
 });
 
 test('productCategory uses catalog category unless it is generic', () => {

@@ -4,7 +4,14 @@ from pathlib import Path
 
 PARTIAL_DIR = "dealers/_partial"
 OUT = "dealers/results.json"
-KEY_BY_NAME = {"SSENSE":"ssense","MEC":"mec","EVO":"evo","REI":"rei"}
+KEY_BY_NAME = {
+    "SSENSE": "ssense",
+    "MEC": "mec",
+    "EVO": "evo",
+    "REI": "rei",
+    "Burton": "burton",
+    "Backcountry": "backcountry",
+}
 MIN_SNAPSHOT_RATIO = 0.70
 
 

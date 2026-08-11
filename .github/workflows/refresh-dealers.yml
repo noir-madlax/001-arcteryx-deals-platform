@@ -107,7 +107,7 @@ jobs:
           mkdir -p dealers/_partial
           rm -f dealers/_partial/*.json
           failed_dealers=""
-          for dealer in evo rei ssense; do
+          for dealer in burton backcountry evo rei ssense; do
             echo "[dealers] $dealer"
             if ! timeout 1800 python -u -m "dealers.$dealer"; then
               echo "[dealers] $dealer FAILED"
@@ -123,7 +123,7 @@ jobs:
             echo "::warning::dealer scrape failed for:$failed_dealers — 已发布其余 dealer；下面的每 dealer 新鲜度门决定 build 状态"
           fi
           # 真正的守门员：每个 dealer 必须存在且最新数据 <=36h（REI 失败 >36h 才让 build 红）。
-          python tools/check_data_quality.py --online --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
+          python tools/check_data_quality.py --online --dealer burton --dealer backcountry --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
           node tools/audit_product_names.mjs --online --strict-source
 
       - name: Optional price alerts
@@ -144,7 +144,7 @@ jobs:
 
       - name: Verify production freshness
         run: |
-          python tools/check_data_quality.py --online --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
+          python tools/check_data_quality.py --online --dealer burton --dealer backcountry --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
           node tools/audit_product_names.mjs --online --strict-source
           curl -fsS https://001.100app.dev/dealers/results.json | python -c 'import json,sys; data=json.load(sys.stdin); print("generated_at", data.get("generated_at")); print({k:v.get("count") for k,v in data.get("dealers",{}).items()})'
 

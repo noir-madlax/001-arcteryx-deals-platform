@@ -12,6 +12,7 @@ from dealers.supabase_sync import (
     fresh_dealer_keys,
     is_expected_dealer_item,
     item_to_row,
+    make_sku_id,
     next_dealer_lifecycle,
     preserve_previous_images,
     recovered_url_health,
@@ -33,10 +34,16 @@ def fresh_timestamp():
 def dealer_url(dealer: str, item: object, region: str = "us") -> str:
     if dealer == "ssense":
         return f"https://www.ssense.com/en-us/men/product/arcteryx/test-product/{item}"
+    if dealer == "burton":
+        return f"https://www.burton.com/en-us/products/test-product-{item}"
+    if dealer == "backcountry":
+        return f"https://www.backcountry.com/burton-test-product-{item}"
     return f"https://example.com/{dealer}/{region}/{item}"
 
 
 def quality_brand(dealer: str, index: int) -> str:
+    if dealer in {"burton", "backcountry"}:
+        return "burton"
     if dealer != "evo":
         return "arcteryx"
     if index < PLATFORM_BRAND_MIN_ROWS[("evo", "arcteryx")]:
@@ -73,6 +80,23 @@ class DealerFreshnessTests(unittest.TestCase):
             "evo",
         ))
 
+    def test_sync_preflight_scopes_burton_sources_and_uses_source_ids(self):
+        official = {
+            "brand": "burton",
+            "source_id": "9100998246657",
+            "url": "https://www.burton.com/en-us/products/mens-burton-custom-106881",
+        }
+        retailer = {
+            "brand": "burton",
+            "source_id": "BURZ9R1",
+            "url": "https://www.backcountry.com/burton-step-on-reflex-binding",
+        }
+        self.assertTrue(is_expected_dealer_item(official, "burton"))
+        self.assertTrue(is_expected_dealer_item(retailer, "backcountry"))
+        self.assertFalse(is_expected_dealer_item({**official, "brand": "patagonia"}, "burton"))
+        self.assertFalse(is_expected_dealer_item({**retailer, "url": "https://example.com/burton-item"}, "backcountry"))
+        self.assertEqual(make_sku_id("burton", official["url"], official["source_id"]), "burton:9100998246657")
+        self.assertEqual(make_sku_id("backcountry", retailer["url"], retailer["source_id"]), "backcountry:burz9r1")
     def test_preserve_previous_images_only_fills_missing_snapshot_data(self):
         existing_url = "https://cdn.example/existing.jpg"
         missing = {"image_url": None, "images": []}
@@ -371,6 +395,8 @@ class DealerFreshnessTests(unittest.TestCase):
     def test_validate_evo_enforces_each_supported_brand_floor(self):
         rows = []
         for (dealer, brand), count in PLATFORM_BRAND_MIN_ROWS.items():
+            if dealer != "evo":
+                continue
             for index in range(count):
                 rows.append({
                     "sku_id": f"{dealer}-{brand}-{index}",
@@ -395,6 +421,32 @@ class DealerFreshnessTests(unittest.TestCase):
             rc = validate(collapsed, 36, 72, 1, {"evo"}, None)
         self.assertEqual(rc, 1)
         self.assertIn("platform_brand_below_min_rows: 1", output.getvalue())
+
+    def test_validate_enforces_burton_source_floors_independently(self):
+        for dealer in ("burton", "backcountry"):
+            with self.subTest(dealer=dealer):
+                minimum = PLATFORM_BRAND_MIN_ROWS[(dealer, "burton")]
+                rows = [{
+                    "sku_id": f"{dealer}-{index}",
+                    "dealer": dealer,
+                    "brand": "burton",
+                    "status": "active",
+                    "sale_price": 100,
+                    "original_price": 150,
+                    "discount_pct": 33,
+                    "currency": "USD",
+                    "symbol": "$",
+                    "gender": "unisex",
+                    "region": "us",
+                    "url": dealer_url(dealer, index),
+                    "last_updated": fresh_timestamp(),
+                } for index in range(minimum)]
+                self.assertEqual(validate(rows, 36, 72, 1, {dealer}, None), 0)
+                output = io.StringIO()
+                with redirect_stdout(output):
+                    rc = validate(rows[:-1], 36, 72, 1, {dealer}, None)
+                self.assertEqual(rc, 1)
+                self.assertIn("platform_brand_below_min_rows: 1", output.getvalue())
 
     def test_validate_full_gate_enforces_aggregate_floor(self):
         rows = []

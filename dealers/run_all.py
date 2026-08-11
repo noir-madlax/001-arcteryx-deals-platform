@@ -4,11 +4,13 @@ import importlib, json, time, traceback
 from pathlib import Path
 
 DEALER_KEYS = [
+    "burton",
+    "backcountry",
     "ssense",
     "mec",
     "evo",
     "rei",
-    # backcountry / steepandcheap 已确认停售 Arc'teryx（搜索返回 Outdoor Research 替代品）
+    # Steep & Cheap 已确认停售 Arc'teryx；Backcountry 这里只抓 Burton sale 集合。
 ]
 
 def main():
@@ -20,6 +22,8 @@ def main():
             mod = importlib.import_module(f"dealers.{k}")
             scraper = mod.Scraper()
             items = scraper.scrape()
+            if not items or getattr(scraper, "crawl_complete", True) is False:
+                raise RuntimeError(f"{k} returned an empty or incomplete snapshot")
             out["dealers"][k] = {
                 "name": scraper.NAME,
                 "region": scraper.REGION,

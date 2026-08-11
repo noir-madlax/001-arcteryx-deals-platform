@@ -89,6 +89,13 @@ class WebMemoryGuardTests(unittest.TestCase):
         self.assertIn("from './gear-brands'", self.catalog)
         self.assertIn("_brand: brand", self.catalog)
 
+    def test_burton_sources_have_platform_labels_on_every_surface(self):
+        for source in (self.index, self.detail, self.catalog):
+            self.assertIn("burton", source)
+            self.assertIn("backcountry", source.lower())
+        self.assertIn("Burton Outlet", self.index)
+        self.assertIn("Backcountry Burton", self.index)
+
     def test_detail_purchase_cta_names_the_actual_platform(self):
         self.assertIn(
             "function ctaBlock(url, klass = '', platformLabel = '销售平台')",
