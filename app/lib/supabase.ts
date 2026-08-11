@@ -5,7 +5,8 @@ import { createClient } from '@supabase/supabase-js';
 import { SUPABASE_ANON, SUPABASE_URL, visibleProducts } from './catalog';
 import { postPriceAlert } from './priceAlerts';
 import { INITIAL_PRODUCT_LIMIT, INITIAL_PRODUCT_REGION } from './productPreview';
-import type { PriceAlertPayload, PriceHistoryRow, Product, ProductRow } from './types';
+import type { CatalogProduct, CatalogProductRow, PriceAlertPayload, PriceHistoryRow, Product, ProductRow } from './types';
+import { normalizeCatalogProduct } from './yearbook';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: {
@@ -86,4 +87,54 @@ export async function fetchPriceHistory(skuId: string, sinceIso?: string) {
 
 export async function insertPriceAlert(payload: PriceAlertPayload) {
   await postPriceAlert(SUPABASE_URL, SUPABASE_ANON, payload);
+}
+
+const YEARBOOK_COLUMNS = [
+  'catalog_product_id',
+  'brand_key',
+  'official_product_id',
+  'brand',
+  'catalog_scope',
+  'market',
+  'country',
+  'language',
+  'name',
+  'gender',
+  'collection',
+  'categories',
+  'category_sources',
+  'list_price',
+  'list_price_max',
+  'currency',
+  'color_names',
+  'primary_colors',
+  'season_codes',
+  'source_name',
+  'source_url',
+  'source_hash',
+  'status',
+  'first_seen_at',
+  'last_seen_at',
+  'last_changed_at',
+].join(',');
+
+export async function fetchYearbookProducts() {
+  const pageSize = 1000;
+  const rows: CatalogProductRow[] = [];
+  for (let offset = 0; offset <= 10000; offset += pageSize) {
+    const { data, error } = await supabase
+      .from('catalog_products')
+      .select(YEARBOOK_COLUMNS)
+      .eq('status', 'active')
+      .order('brand_key', { ascending: true })
+      .order('official_product_id', { ascending: true })
+      .range(offset, offset + pageSize - 1);
+    if (error) throw error;
+    const page = (data || []) as unknown as CatalogProductRow[];
+    rows.push(...page);
+    if (page.length < pageSize) break;
+  }
+  return rows
+    .map(normalizeCatalogProduct)
+    .filter((product): product is CatalogProduct => product !== null);
 }

@@ -90,3 +90,64 @@ export type PriceAlertPayload = {
   image_url: string;
   unsubscribe_token: string;
 };
+
+export type CatalogBrandKey = GearBrand;
+export type CatalogGender = 'men' | 'women' | 'kids' | 'unisex';
+
+export type CatalogProductRow = {
+  catalog_product_id: string | null;
+  brand_key: string | null;
+  official_product_id: string | null;
+  brand: string | null;
+  catalog_scope: string | null;
+  market: string | null;
+  country: string | null;
+  language: string | null;
+  name: string | null;
+  gender: string | null;
+  collection: string | null;
+  categories: string[] | string | null;
+  category_sources: Record<string, string> | string | null;
+  list_price: number | string | null;
+  list_price_max: number | string | null;
+  currency: string | null;
+  color_names: string[] | string | null;
+  primary_colors: string[] | string | null;
+  season_codes: string[] | string | null;
+  source_name: string | null;
+  source_url: string | null;
+  source_hash: string | null;
+  status: string | null;
+  first_seen_at: string | null;
+  last_seen_at: string | null;
+  last_changed_at: string | null;
+};
+
+export type CatalogProduct = {
+  catalog_product_id: string;
+  brand_key: CatalogBrandKey;
+  official_product_id: string;
+  brand: string;
+  catalog_scope: 'full_price';
+  market: string;
+  country: string;
+  language: 'en';
+  name: string;
+  gender: CatalogGender;
+  collection: string | null;
+  categories: string[];
+  category_sources: Record<string, string>;
+  list_price: number;
+  list_price_max: number;
+  currency: string;
+  color_names: string[];
+  primary_colors: string[];
+  season_codes: string[];
+  source_name: string;
+  source_url: string;
+  source_hash: string;
+  status: 'active';
+  first_seen_at: string;
+  last_seen_at: string;
+  last_changed_at: string;
+};
