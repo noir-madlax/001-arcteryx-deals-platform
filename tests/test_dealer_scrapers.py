@@ -213,6 +213,40 @@ class DealerScraperTests(unittest.TestCase):
             "https://www.evo.com/cdn/shop/files/product-image-1043638.jpg",
         )
 
+    def test_evo_rendered_snapshot_drops_analytics_products_without_a_current_card(self):
+        snapshot = {
+            "products": [
+                {
+                    "id": 1,
+                    "vendor": "Burton",
+                    "handle": "current-card",
+                    "variants": [{"price": 20000, "public_title": "M"}],
+                },
+                {
+                    "id": 2,
+                    "vendor": "Burton",
+                    "handle": "stale-analytics-row",
+                    "variants": [{"price": 30000, "public_title": "L"}],
+                },
+            ],
+            "inventory": {
+                "1": {"inventory": 1, "lowestVariantPrice": 15000},
+                "2": {"inventory": 1, "lowestVariantPrice": 25000},
+            },
+            "cards": [{
+                "url": "https://www.evo.com/products/current-card",
+                "name": "Burton Current Card Jacket",
+                "current_price": "Current price $150.00",
+                "original_price": "Original price $200.00",
+                "image": "https://cdn.example/current.jpg",
+                "colors": [],
+            }],
+        }
+
+        items = EvoScraper().parse_browser_snapshot(snapshot, "auto", "burton")
+
+        self.assertEqual([item["url"] for item in items], ["https://www.evo.com/products/current-card"])
+
     def test_evo_rendered_snapshot_isolates_burton_and_patagonia_vendors(self):
         snapshot = {
             "products": [

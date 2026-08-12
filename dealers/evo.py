@@ -133,6 +133,11 @@ class Scraper:
 
         inventory = snapshot.get("inventory") or {}
         products = list(snapshot.get("products") or [])
+        # ShopifyAnalytics can retain products from earlier/infinite-scroll
+        # renders. Only rows backed by a card on the current collection page
+        # belong to this page's completeness/accounting scope.
+        if cards:
+            products = [product for product in products if product.get("handle") in cards]
         known_handles = {product.get("handle") for product in products}
         for handle, card in cards.items():
             if handle not in known_handles:
