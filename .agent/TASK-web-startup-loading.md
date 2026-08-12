@@ -4,11 +4,11 @@
 
 让生产网页像 App 一样先展示可用商品，再在后台补齐完整目录，消除用户长时间停留在“加载数据中…”的等待。
 
-## 当前状态：待发布验证
+## 当前状态：已发布并验证
 
 ## 已确认事实
 
-- 生产 `https://001.100app.dev/` 的 `index.html` SHA-256 与 `origin/main:index.html` 一致；来源：2026-08-13 本会话 `curl | shasum` 与 `git show origin/main:index.html | shasum`，均为 `8c89ede967d6cde362063337030e5d5b043c4a006e79c739f3e90a57c6a4433b`。
+- 改动前生产 `https://001.100app.dev/` 的 `index.html` SHA-256 与当时的 `origin/main:index.html` 一致；来源：2026-08-13 本会话 `curl | shasum` 与 `git show origin/main:index.html | shasum`，均为 `8c89ede967d6cde362063337030e5d5b043c4a006e79c739f3e90a57c6a4433b`。
 - 浏览器禁用缓存冷加载：文档 load 约 1.47 秒，第一张商品卡约 12.85 秒；来源：2026-08-13 Browser/CDP 实测。
 - 生产页顺序请求 Supabase `products` 9 批（offset 0–8000），合计 8,347 行、约 1,171,045 编码字节、请求时长相加约 10.85 秒；来源：同一轮 Network 事件读回。
 - Web 只在完整循环结束后赋值 `products = loadedProducts` 并调用 `render()`；来源：`index.html:1785-1817`。
@@ -17,7 +17,7 @@
 
 ## 假设（未验证；验证后移入上区）
 
-- Web 使用同样的 200 件预览 + 24 小时缓存后，冷加载第一张卡可控制在 4 秒内；该目标受当次 Supabase 网络延迟影响，必须以发布后真实浏览器复测为准。
+- 无。
 
 ## 验收标准
 
@@ -41,10 +41,16 @@
 - 人工阻断全部 Supabase products 请求后，缓存预览在 0.804 秒显示，随后 `data.js` 兜底进入 `phase=fallback`，60 张卡可用。
 - 完整目录下品牌筛选从 US 2,157 件切到 Burton 932 件，仍保持 60 张分页卡；首卡详情链接有效生成。
 - 在线商品名审计读取当前 8,347 个 active 商品，`rejected=0`、`blank=0`、`lost_tokens=0`、`gender_mismatch=0`，但因 28 个既存 `unknown_family`（例如 Cusec）返回退出码 1；该审计只读线上商品数据，本次未改商品命名逻辑。
+- 实现提交 `ddd261ebeeea55d99c23978ea0ba5aa0169c00a4` 已无强推快进至 `main`，Vercel production deployment `dpl_CdorPM5Yib3NF1oUCH3mqk8PXSRa` 状态为 Ready，域名别名包含 `https://001.100app.dev`。
+- 发布后独立读回：线上 `index.html` SHA-256 为 `48027e252e3d507dd534563340ffb3cb042afb466ab41788e1739ef8b7710850`，`web-product-preview.js` 为 `0533addfe4b960a40e4d1a7d0b4525fda2843c5a6f3ebf39c3708d5bf41a6d6f`，均与本地发布文件一致。
+- 生产浏览器禁用 HTTP 缓存且移除预览缓存后，导航 1.729 秒进入 `phase=preview` 并展示 60 张卡/200 个预览结果，11.087 秒进入 `phase=complete`；相对改动前 12.85 秒才出现首卡，首屏提前约 11.12 秒。
+- 生产 Network 事件确认 GET 顺序为一个 `region=eq.us&limit=200&order=discount_pct.desc,sku_id.asc` 预览请求（804 毫秒收到响应），随后九个 offset 0–8000、`limit=1000&order=sku_id.asc` 的完整目录请求。
+- 生产最终状态为 `products=8347`、US `filtered=2157`、60 张分页卡；localStorage 只有 200 行 US 预览（165,602 字节），Burton 筛选返回 932 条且详情链接有效，控制台日志为空。
+- 生产热缓存复测 1.486 秒展示 60 张预览卡/200 个结果，10.393 秒补齐 US 2,157 个结果；测试结束已删除测试预览缓存并恢复浏览器 HTTP 缓存设置。
 
 ## 下一步
 
-1. 提交、推送、发布并生产复测。
+- 无；任务关闭。
 
 ## 死路
 
