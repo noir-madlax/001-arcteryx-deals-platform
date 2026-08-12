@@ -1,7 +1,7 @@
 # Keep the production web deployment scoped to the existing static site.
 app/
 .agent/
-brand/
+/brand/
 miniprogram/
 tools/
 xhs_cards/
