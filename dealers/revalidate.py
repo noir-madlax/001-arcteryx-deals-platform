@@ -217,14 +217,12 @@ def parse_evo_browser_snapshot(snapshot: dict, url: str) -> dict | None:
     fallback_sale = (_num(inventory.get("lowestVariantPrice")) or 0) / 100
     fallback_orig = (_num(regios.get("compareAtPriceInCents")) or 0) / 100
     if available:
+        # lowestVariantPrice is product-wide and can belong to a sold-out
+        # clearance colour. Once availability is known, price only those rows.
         prices = [(_num(variant.get("priceInCents")) or 0) / 100 for variant in available]
         compares = [(_num(variant.get("compareAtPriceInCents")) or 0) / 100 for variant in available]
         prices = [price for price in prices if price > 0]
         compares = [compare for compare in compares if compare > 0]
-        if fallback_sale > 0:
-            prices.append(fallback_sale)
-        if fallback_orig > 0:
-            compares.append(fallback_orig)
         if prices:
             sale = min(prices)
             orig = max(compares) if compares else sale
@@ -235,6 +233,9 @@ def parse_evo_browser_snapshot(snapshot: dict, url: str) -> dict | None:
                 "original_price": round(orig, 2),
                 "discount_pct": _disc(orig, sale),
             }
+        return None
+    if variants:
+        return {"_unavailable": True}
     if fallback_sale > 0:
         orig = fallback_orig if fallback_orig >= fallback_sale else fallback_sale
         return {
