@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12 12:49:23",
+  "generated_at": "2026-08-12 11:13:31",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -31587,7 +31587,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 140,
+      "count": 139,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -31713,19 +31713,6 @@
           "color": "Pineberry",
           "sale_price": 600.0,
           "original_price": 600.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
-          "name": "Arc'teryx Heliad 15 Backpack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/563496_source_1786393288.jpg",
-          "color": "Kasumi",
-          "sale_price": 100.0,
-          "original_price": 100.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -33410,7 +33397,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-12 05:49:24"
+      "refreshed_at": "2026-08-12 11:13:30"
     },
     "rei": {
       "name": "REI",
@@ -51547,11 +51534,9 @@
       "refreshed_at": "2026-08-12 12:32:59"
     }
   },
-  "total": 1892,
+  "total": 1891,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "evo"
+    "mec"
   ]
 }
