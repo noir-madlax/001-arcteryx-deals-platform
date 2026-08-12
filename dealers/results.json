@@ -31587,7 +31587,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 139,
+      "count": 140,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -31713,6 +31713,19 @@
           "color": "Pineberry",
           "sale_price": 600.0,
           "original_price": 600.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
+          "name": "Arc'teryx Heliad 15 Backpack - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/563496_source_1786393288.jpg",
+          "color": "Kasumi",
+          "sale_price": 100.0,
+          "original_price": 100.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -33319,6 +33332,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
+          "name": "Arc'teryx Covert Cardigan - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517313_source_1782759979.png",
+          "color": "Moondrop Heather",
+          "sale_price": 220.0,
+          "original_price": 220.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6037-648/arcteryx-squamish-hoodie-womens",
           "name": "Arc'teryx Squamish Hoodie - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518886_source_1776715530.jpg",
@@ -33358,19 +33384,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-504/arcteryx-rho-headband",
-          "name": "Arc'teryx Rho Headband",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560594_source_1786104167.png",
-          "color": "Black",
-          "sale_price": 45.0,
-          "original_price": 45.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6034-785/arcteryx-rho-base-layer-bottoms-womens",
           "name": "Arc'teryx Rho Base Layer Bottoms - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509242_source_1783425700.png",
@@ -33397,7 +33410,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-12 01:02:39"
+      "refreshed_at": "2026-08-12 05:49:24"
     },
     "rei": {
       "name": "REI",
@@ -51534,7 +51547,7 @@
       "refreshed_at": "2026-08-12 12:32:59"
     }
   },
-  "total": 1891,
+  "total": 1892,
   "rejected_dealers": {},
   "fresh_dealers": [
     "backcountry",
