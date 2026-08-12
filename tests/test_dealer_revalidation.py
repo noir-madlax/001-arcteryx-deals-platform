@@ -360,6 +360,60 @@ class DealerRevalidationTests(unittest.TestCase):
             "discount_pct": 30,
         })
 
+    def test_evo_browser_snapshot_ignores_sold_out_global_minimum(self):
+        snapshot = {
+            "ShopifyAnalytics": {"meta": {"product": {"id": 8587574018198}}},
+            "igProductData": {
+                "8587574018198": {"lowestVariantPrice": 5999},
+            },
+            "RegiosDOPP_ProductPage": {
+                "compareAtPriceInCents": 27495,
+                "variants": [
+                    {
+                        "priceInCents": 5999,
+                        "compareAtPriceInCents": 27495,
+                        "isOutOfStock": True,
+                    },
+                    {
+                        "priceInCents": 24499,
+                        "compareAtPriceInCents": 27495,
+                        "isOutOfStock": False,
+                    },
+                ],
+            },
+        }
+
+        result = parse_evo_browser_snapshot(
+            snapshot,
+            "https://www.evo.com/products/174895-burton-ak-baker-down-jacket-women-s",
+        )
+
+        self.assertEqual(result, {
+            "sale_price": 244.99,
+            "original_price": 274.95,
+            "discount_pct": 11,
+        })
+
+    def test_evo_browser_snapshot_does_not_price_known_sold_out_variants(self):
+        snapshot = {
+            "ShopifyAnalytics": {"meta": {"product": {"id": 1}}},
+            "igProductData": {"1": {"lowestVariantPrice": 5999}},
+            "RegiosDOPP_ProductPage": {
+                "compareAtPriceInCents": 27495,
+                "variants": [
+                    {
+                        "priceInCents": 5999,
+                        "compareAtPriceInCents": 27495,
+                        "isOutOfStock": True,
+                    },
+                ],
+            },
+        }
+
+        result = parse_evo_browser_snapshot(snapshot, "https://www.evo.com/products/test")
+
+        self.assertEqual(result, {"_unavailable": True})
+
     def test_evo_browser_fallback_triggers_on_any_non_successful_direct_result(self):
         self.assertTrue(_evo_needs_browser_fallback(None))
         self.assertTrue(_evo_needs_browser_fallback({"_err": "http HTTPError"}))
