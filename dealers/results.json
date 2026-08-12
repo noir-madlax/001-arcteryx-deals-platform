@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12 16:04:28",
+  "generated_at": "2026-08-12 20:07:43",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -31587,7 +31587,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 140,
+      "count": 139,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
@@ -31713,19 +31713,6 @@
           "color": "Pineberry",
           "sale_price": 600.0,
           "original_price": 600.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
-          "name": "Arc'teryx Heliad 15 Backpack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/563496_source_1786393288.jpg",
-          "color": "Kasumi",
-          "sale_price": 100.0,
-          "original_price": 100.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -33321,7 +33308,7 @@
         {
           "url": "https://www.mec.ca/en/product/6034-691/arcteryx-beta-ar-jacket-womens",
           "name": "Arc'teryx Beta AR Jacket - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519096_source_1783098991.png",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519109_source_1783098996.png",
           "color": "Alpine Blue",
           "sale_price": 800.0,
           "original_price": 800.0,
@@ -33410,7 +33397,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-12 16:04:28"
+      "refreshed_at": "2026-08-12 20:07:42"
     },
     "rei": {
       "name": "REI",
@@ -51547,7 +51534,7 @@
       "refreshed_at": "2026-08-12 12:32:59"
     }
   },
-  "total": 1892,
+  "total": 1891,
   "rejected_dealers": {},
   "fresh_dealers": [
     "mec"
