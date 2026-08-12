@@ -96,6 +96,29 @@ class WebMemoryGuardTests(unittest.TestCase):
         self.assertIn("Burton Outlet", self.index)
         self.assertIn("Backcountry Burton", self.index)
 
+    def test_supported_brand_and_platform_filters_remain_visible_at_zero_count(self):
+        self.assertIn("const brandOrder = ['arcteryx', 'burton', 'patagonia'];", self.index)
+        self.assertIn("...brandOrder.map(k => ({", self.index)
+        self.assertIn("disabled: !brandCounts[k] && state.brand !== k", self.index)
+        self.assertIn(
+            "const platformOrder = ['arcteryx_outlet','burton','backcountry','ssense','mec','evo','rei'];",
+            self.index,
+        )
+        self.assertIn("disabled: !platformCounts[k] && state.platform !== k", self.index)
+
+    def test_public_pages_use_the_confirmed_geardrop_logo_assets(self):
+        for source in (self.index, self.detail, self.support):
+            self.assertIn('/assets/brand/geardrop-logo.png', source)
+            self.assertIn('/site.webmanifest', source)
+        self.assertIn('https://001.100app.dev/assets/brand/geardrop-og.png', self.index)
+
+    def test_homepage_has_truthful_app_download_guidance(self):
+        self.assertIn('id="app-download"', self.index)
+        self.assertIn('App Store 即将上线', self.index)
+        self.assertIn('https://apps.apple.com/us/app/testflight/id899247664', self.index)
+        self.assertIn('已收到 GearDrop 内测邀请', self.index)
+        self.assertNotIn('https://apps.apple.com/app/id6790165332', self.index)
+
     def test_detail_purchase_cta_names_the_actual_platform(self):
         self.assertIn(
             "function ctaBlock(url, klass = '', platformLabel = '销售平台')",

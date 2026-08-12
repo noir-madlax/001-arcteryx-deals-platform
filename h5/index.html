@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0a0a0a">
-    <title>Arc'teryx Outlet | 折扣专区</title>
+    <title>GearDrop | 户外折扣专区</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/brand/favicon-48.png">
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net">
     <style>
         :root {
@@ -46,11 +50,14 @@
             margin-bottom: 12px;
         }
         .logo {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            display: inline-flex;
+            align-items: center;
         }
-        .logo span { color: var(--accent); }
+        .logo img {
+            display: block;
+            width: 142px;
+            height: auto;
+        }
         .stats {
             font-size: 12px;
             color: var(--text2);
@@ -363,7 +370,9 @@
 <body>
     <div class="header">
         <div class="header-top">
-            <div class="logo">ARC'TERYX <span>OUTLET</span></div>
+            <a class="logo" href="/" aria-label="GearDrop 首页">
+                <img src="/assets/brand/geardrop-logo-dark.png" alt="GearDrop">
+            </a>
             <div class="stats" id="stats">加载中...</div>
         </div>
         <div class="filter-row" id="categories">

@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#fafaf8">
+    <meta name="theme-color" content="#17372F">
     <title>GearDrop · Arc'teryx、Burton、Patagonia 折扣追踪</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/brand/favicon-48.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/brand/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="preload" as="image" href="/assets/brand/geardrop-logo.png">
 
     <!-- SEO: 描述与关键词（Google / Baidu 通用） -->
     <meta name="description" content="GearDrop 聚合 Arc'teryx、Burton 与 Patagonia 的官方奥莱及授权经销商折扣，每日更新原价、折扣价、库存与折扣率。">
@@ -24,12 +29,13 @@
     <meta property="og:description" content="聚合 Arc'teryx、Burton、Patagonia 与多家经销商折扣，每日更新。">
     <meta property="og:url" content="https://001.100app.dev/">
     <meta property="og:locale" content="zh_CN">
-    <meta property="og:image" content="https://images.arcteryx.com/F25-OG-arcteryx-deals-tracker.jpg">
+    <meta property="og:image" content="https://001.100app.dev/assets/brand/geardrop-og.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GearDrop · 多品牌户外折扣追踪">
     <meta name="twitter:description" content="Arc'teryx、Burton、Patagonia 全球经销商折扣聚合，每日更新。">
+    <meta name="twitter:image" content="https://001.100app.dev/assets/brand/geardrop-og.png">
 
     <!-- Schema.org JSON-LD：网站 + 检索 + ItemList（结构化数据，对 Google 富结果有用） -->
     <script type="application/ld+json">
@@ -53,7 +59,8 @@
                 "@type": "Organization",
                 "@id": "https://001.100app.dev/#org",
                 "name": "GearDrop",
-                "url": "https://001.100app.dev/"
+                "url": "https://001.100app.dev/",
+                "logo": "https://001.100app.dev/assets/brand/icon-512.png"
             }
         ]
     }
@@ -124,16 +131,14 @@
         }
         .brand {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             gap: 10px;
             min-width: 0;
             flex: 1 1 auto;        /* allow brand to take remaining space */
         }
-        .brand-mark {
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            white-space: nowrap;
+        .brand-logo {
+            width: 142px;
+            height: auto;
             flex-shrink: 0;        /* never clip the brand wordmark */
         }
         .brand-sub {
@@ -159,11 +164,39 @@
             font-weight: 600;
             font-variant-numeric: tabular-nums;
         }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+        .header-app-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 32px;
+            padding: 0 11px;
+            border-radius: 999px;
+            background: #17372f;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            transition: background 0.15s, transform 0.15s;
+        }
+        .header-app-link:hover { background: #0f2923; transform: translateY(-1px); }
+        .header-app-link-short { display: none; }
         @media (max-width: 640px) {
             .header-inner { padding: 12px 14px; gap: 10px; }
-            .brand-mark { font-size: 14px; letter-spacing: 0.01em; }
+            .brand-logo { width: 118px; }
             .brand-sub { display: none; }
-            .header-stats { gap: 10px; font-size: 11px; flex-wrap: wrap; justify-content: flex-end; }
+            .header-actions { gap: 8px; }
+            .header-app-link { min-height: 30px; padding-inline: 9px; }
+            .header-app-link-full { display: none; }
+            .header-app-link-short { display: inline; }
+            .header-stats { gap: 8px; font-size: 11px; justify-content: flex-end; }
+            .header-stats span:nth-child(2) { display: none; }
             .header-stats .hide-sm { display: none; }
         }
         @media (max-width: 380px) {
@@ -313,6 +346,100 @@
             .search { flex: 1 1 auto; max-width: none; }
             .filter-select { flex: 1 1 calc(33.333% - 6px); min-width: 96px; font-size: 11.5px; padding-left: 7px; }
             .sort-pill { flex: 1 1 calc(33.333% - 6px); }
+        }
+
+        /* ─── iPhone App guide ─── */
+        .app-download-wrap {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 14px 24px 2px;
+        }
+        .app-download {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 18px;
+            padding: 18px 20px;
+            overflow: hidden;
+            border-radius: var(--r-lg);
+            background: #17372f;
+            color: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+        .app-download-icon {
+            width: 58px;
+            height: 58px;
+            padding: 8px;
+            border-radius: 15px;
+            background: #f7f5ef;
+            object-fit: contain;
+        }
+        .app-download-kicker {
+            margin-bottom: 3px;
+            color: #ff7b61;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .app-download h2 {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+        }
+        .app-download p {
+            margin-top: 4px;
+            color: rgba(255,255,255,0.72);
+            font-size: 12px;
+        }
+        .app-download-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+        .app-store-status,
+        .testflight-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 38px;
+            padding: 0 14px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .app-store-status {
+            background: #ff6b51;
+            color: #fff;
+        }
+        .testflight-link {
+            border: 1px solid rgba(255,255,255,0.28);
+            color: #fff;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .testflight-link:hover {
+            background: rgba(255,255,255,0.10);
+            border-color: rgba(255,255,255,0.5);
+        }
+        @media (max-width: 760px) {
+            .app-download-wrap { padding: 10px 16px 2px; }
+            .app-download {
+                grid-template-columns: auto minmax(0, 1fr);
+                gap: 12px;
+                padding: 15px;
+            }
+            .app-download-icon { width: 50px; height: 50px; border-radius: 13px; }
+            .app-download h2 { font-size: 16px; }
+            .app-download-actions {
+                grid-column: 1 / -1;
+                justify-content: stretch;
+            }
+            .app-store-status,
+            .testflight-link { flex: 1 1 150px; }
         }
 
         /* ─── Grid ─── */
@@ -820,13 +947,18 @@
 <header class="site-header">
     <div class="header-inner">
         <div class="brand">
-            <span class="brand-mark">GEARDROP</span>
-            <span class="brand-sub">Multi-brand Deals</span>
+            <a href="/" aria-label="GearDrop 首页"><img class="brand-logo" src="/assets/brand/geardrop-logo.png" alt="GearDrop"></a>
+            <span class="brand-sub">Global Outdoor Deals</span>
         </div>
-        <div class="header-stats">
-            <span><strong id="stat-total">—</strong> 件</span>
-            <span>最高 <strong id="stat-max-disc">—</strong></span>
-            <span class="hide-sm" style="color:var(--text-3)"><strong id="stat-updated" style="color:var(--text-2)">—</strong></span>
+        <div class="header-actions">
+            <a class="header-app-link" href="#app-download" aria-label="查看 GearDrop App 下载指引">
+                <span class="header-app-link-full">获取 App</span><span class="header-app-link-short">App</span> ↓
+            </a>
+            <div class="header-stats">
+                <span><strong id="stat-total">—</strong> 件</span>
+                <span>最高 <strong id="stat-max-disc">—</strong></span>
+                <span class="hide-sm" style="color:var(--text-3)"><strong id="stat-updated" style="color:var(--text-2)">—</strong></span>
+            </div>
         </div>
     </div>
 </header>
@@ -867,6 +999,21 @@
         </select>
     </div>
 </section>
+
+<div class="app-download-wrap">
+    <section class="app-download" id="app-download" aria-labelledby="app-download-title">
+        <img class="app-download-icon" src="/assets/brand/geardrop-mark.png" alt="" aria-hidden="true">
+        <div>
+            <div class="app-download-kicker">GearDrop for iPhone</div>
+            <h2 id="app-download-title">随身收藏、看价格历史、接收降价提醒</h2>
+            <p>App Store 版本即将上线。已收到 GearDrop 内测邀请的用户，请先安装 TestFlight，再从 Apple 邀请邮件打开 App。</p>
+        </div>
+        <div class="app-download-actions">
+            <span class="app-store-status" aria-label="GearDrop App Store 版本即将上线">App Store 即将上线</span>
+            <a class="testflight-link" href="https://apps.apple.com/us/app/testflight/id899247664" target="_blank" rel="noopener">已受邀？安装 TestFlight ↗</a>
+        </div>
+    </section>
+</div>
 
 <main class="grid-wrap">
     <div class="grid" id="grid">
@@ -1338,7 +1485,7 @@ const buildSelect = (selectId, options, key) => {
     const el = document.getElementById(selectId);
     if (!el) return;
     el.innerHTML = options.map(opt =>
-        `<option value="${opt.value}">${opt.label}${opt.count != null ? ` (${opt.count})` : ''}</option>`
+        `<option value="${opt.value}"${opt.disabled ? ' disabled' : ''}>${opt.label}${opt.count != null ? ` (${opt.count})` : ''}</option>`
     ).join('');
     el.value = state[key];
     el.classList.toggle('active', state[key] !== 'all');
@@ -1413,10 +1560,11 @@ const initFilters = () => {
     const brandOrder = ['arcteryx', 'burton', 'patagonia'];
     buildSelect('brand-select', [
         { value: 'all', label: '全部品牌', count: brandPool.length },
-        ...brandOrder.filter(k => brandCounts[k] || state.brand === k).map(k => ({
+        ...brandOrder.map(k => ({
             value: k,
             label: BRAND[k]?.label || k,
             count: brandCounts[k] || 0,
+            disabled: !brandCounts[k] && state.brand !== k,
         })),
     ], 'brand');
 
@@ -1425,14 +1573,14 @@ const initFilters = () => {
     const platformCounts = countIn(platformPool, p => p._platform);
     if (state.platform !== 'all' && !platformCounts[state.platform]) platformCounts[state.platform] = 0;
     const platformOrder = ['arcteryx_outlet','burton','backcountry','ssense','mec','evo','rei'];
-    const platformKeys = [...new Set([...platformOrder, ...Object.keys(platformCounts)])]
-        .filter(k => platformCounts[k] !== undefined && (platformCounts[k] > 0 || k === state.platform));
+    const platformKeys = [...new Set([...platformOrder, ...Object.keys(platformCounts)])];
     buildSelect('platform-select', [
         { value: 'all', label: '全部平台', count: platformPool.length },
         ...platformKeys.map(k => ({
             value: k,
             label: (PLATFORM[k]?.label || k),
             count: platformCounts[k] || 0,
+            disabled: !platformCounts[k] && state.platform !== k,
         })),
     ], 'platform');
 
