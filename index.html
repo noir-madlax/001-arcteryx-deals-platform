@@ -68,9 +68,11 @@
 
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
+    <link rel="preconnect" href="https://bupqagkrcvrezjkdbald.supabase.co" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="arcteryx-names.js"></script>
     <script src="gear-brands.js"></script>
+    <script src="web-product-preview.js"></script>
     <style>
         :root {
             --bg: #fafaf8;
@@ -229,8 +231,10 @@
             transition: all 0.15s;
         }
         .filter-count .reset-link:hover { border-color: var(--text); color: var(--text); }
+        .catalog-status { color: var(--accent); }
         @media (max-width: 720px) {
             .filter-count .avg-label { display: none; }
+            .catalog-status { display: none; }
         }
 
         /* ─── Filter bar ─── */
@@ -979,6 +983,7 @@
         </div>
         <div class="filter-count">
             <strong id="result-count">0</strong> 件
+            <span class="catalog-status" id="catalog-status" role="status" aria-live="polite"></span>
             <span class="avg-label">· <strong id="result-avg">—</strong></span>
             <a href="#" class="reset-link" id="reset-link">清除</a>
         </div>
@@ -1293,6 +1298,7 @@ let products = [];
 const PAGE_SIZE = 60;
 let filteredProducts = [];
 let currentPage = 1;
+let catalogPhase = 'loading';
 
 const filterProducts = () => {
     const q = state.q.trim().toLowerCase();
@@ -1656,7 +1662,9 @@ const renderPage = () => {
     const start = (currentPage - 1) * PAGE_SIZE;
     const pageProducts = filteredProducts.slice(start, start + PAGE_SIZE);
 
-    if (!pageProducts.length) {
+    if (!pageProducts.length && catalogPhase === 'preview') {
+        grid.innerHTML = `<div class="empty"><p style="color:var(--text-3);font-size:14px">正在搜索完整目录…</p></div>`;
+    } else if (!pageProducts.length) {
         grid.innerHTML = `<div class="empty"><h3>没有符合条件的商品</h3><p>试试调整筛选或清除条件</p></div>`;
     } else {
         grid.innerHTML = pageProducts.map(buildCard).join('');
@@ -1752,6 +1760,28 @@ const initReset = () => {
 };
 
 // ── Bootstrap ────────────────────────────────────────────────────────────────
+const {
+    PRODUCT_PREVIEW_LIMIT,
+    parseProductPreviewCache,
+    productPreviewCacheKey,
+    serializeProductPreviewCache,
+} = window.GearDropPreview;
+
+const setCatalogPhase = (phase, label = '') => {
+    catalogPhase = phase;
+    document.documentElement.dataset.catalogPhase = phase;
+    document.getElementById('catalog-status').textContent = label;
+};
+
+const showProducts = (rows, phase, label = '') => {
+    if (!rows.length) return false;
+    products = rows;
+    setCatalogPhase(phase, label);
+    computeStats();
+    render();
+    return true;
+};
+
 async function init() {
     readURL();
     initSearch();
@@ -1762,9 +1792,9 @@ async function init() {
     // Show loading skeleton
     document.getElementById('grid').innerHTML =
         `<div class="empty"><p style="color:var(--text-3);font-size:14px">加载数据中…</p></div>`;
+    setCatalogPhase('loading', '· 正在载入');
 
-    // 旧版把完整商品表序列化进 localStorage，会在解析、刷新和重绘时制造多份大对象。
-    // 新版只保留必要字段并依赖 Supabase/CDN 缓存；顺手清理旧缓存。
+    // 旧版完整表缓存会制造多份大对象；只保留与 App 同量级的 200 件预览。
     try { localStorage.removeItem('products_cache_v1'); } catch (_) {}
     const LIST_COLUMNS = [
         'sku_id', 'brand', 'model', 'full_name', 'description', 'category', 'color',
@@ -1782,19 +1812,79 @@ async function init() {
         _platform:  platformKey(p),
     });
 
+    const previewRegion = state.region === 'all' ? 'all' : state.region;
+    const previewCacheKey = productPreviewCacheKey(previewRegion);
+    let previewShown = false;
+    try {
+        const cachedRows = parseProductPreviewCache(
+            localStorage.getItem(previewCacheKey),
+            previewRegion,
+        );
+        previewShown = showProducts(
+            visibleProducts(cachedRows).map(decorate),
+            'preview',
+            '· 正在补全',
+        );
+    } catch (_) {
+        // Storage failures must never block the live catalog.
+    }
+
+    let authoritativeRowsLoaded = false;
     try {
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+        try {
+            let previewQuery = db
+                .from('products')
+                .select(LIST_COLUMNS)
+                .order('discount_pct', { ascending: false })
+                .order('sku_id', { ascending: true })
+                .limit(PRODUCT_PREVIEW_LIMIT);
+            if (previewRegion !== 'all') previewQuery = previewQuery.eq('region', previewRegion);
+            const { data: previewData, error: previewError } = await previewQuery;
+            if (previewError) throw previewError;
+            const previewRows = visibleProducts(previewData || []);
+            if (previewRows.length) {
+                previewShown = showProducts(
+                    previewRows.map(decorate),
+                    'preview',
+                    '· 正在补全',
+                );
+                try {
+                    localStorage.setItem(
+                        previewCacheKey,
+                        serializeProductPreviewCache(previewRows, previewRegion),
+                    );
+                } catch (_) {
+                    // A cache write failure must not affect live results.
+                }
+            }
+        } catch (previewError) {
+            console.warn('Startup preview load failed; continuing with the full catalog:', previewError);
+        }
+
         const PAGE = 1000;
         const loadedProducts = [];
         for (let offset = 0; ; offset += PAGE) {
-            const { data, error } = await db.from('products').select(LIST_COLUMNS).range(offset, offset + PAGE - 1);
+            const { data, error } = await db
+                .from('products')
+                .select(LIST_COLUMNS)
+                .order('sku_id', { ascending: true })
+                .range(offset, offset + PAGE - 1);
             if (error) throw error;
             if (!data || !data.length) break;
             loadedProducts.push(...visibleProducts(data).map(decorate));
+            if (!previewShown) {
+                previewShown = showProducts(
+                    loadedProducts,
+                    'preview',
+                    '· 正在补全',
+                );
+            }
             if (data.length < PAGE) break;
             if (offset > 50000) break; // safety
         }
-        products = loadedProducts;
+        authoritativeRowsLoaded = showProducts(loadedProducts, 'complete');
     } catch (e) {
         console.warn('Supabase load failed, falling back to data.js:', e);
         // Graceful fallback: load data.js dynamically
@@ -1805,17 +1895,23 @@ async function init() {
             s.onerror = rej;
             document.head.appendChild(s);
         }).catch(() => {});
-        products = (typeof PRODUCTS !== 'undefined' ? PRODUCTS : [])
+        const fallbackRows = (typeof PRODUCTS !== 'undefined' ? PRODUCTS : [])
             .filter(p => !isBlockedProduct(p))
             .map(decorate);
+        authoritativeRowsLoaded = showProducts(fallbackRows, 'fallback', '· 离线数据');
+        if (!authoritativeRowsLoaded && previewShown) {
+            setCatalogPhase('preview-only', '· 预览数据');
+        } else if (!authoritativeRowsLoaded) {
+            setCatalogPhase('error', '· 加载失败');
+            document.getElementById('grid').innerHTML =
+                `<div class="empty"><h3>暂时无法加载商品</h3><p>请稍后刷新重试</p></div>`;
+        }
     }
 
     // dealer 数据 (Burton/Backcountry/SSENSE/MEC/EVO/REI) 现已并入 Supabase products 表 (dealer 列区分)
     // 不再 fetch dealers/results.json — 单一数据源 = Supabase
 
-    computeStats();
-    render();
-    maybeShowNewArrivals();
+    if (authoritativeRowsLoaded) maybeShowNewArrivals();
 }
 
 // ── 今日上新弹窗 ──────────────────────────────────────────────────────────

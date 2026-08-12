@@ -9,6 +9,7 @@ class WebMemoryGuardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.index = (ROOT / "index.html").read_text(encoding="utf-8")
+        cls.preview = (ROOT / "web-product-preview.js").read_text(encoding="utf-8")
         cls.detail = (ROOT / "product-detail.html").read_text(encoding="utf-8")
         cls.catalog = (ROOT / "app/lib/catalog.ts").read_text(encoding="utf-8")
         cls.names = (ROOT / "arcteryx-names.js").read_text(encoding="utf-8")
@@ -39,12 +40,31 @@ class WebMemoryGuardTests(unittest.TestCase):
         self.assertIn('id="page-prev"', self.index)
         self.assertIn('id="page-next"', self.index)
 
-    def test_homepage_uses_lean_rows_without_full_table_cache(self):
-        self.assertIn(".select(LIST_COLUMNS).range(", self.index)
+    def test_homepage_uses_lean_rows_with_only_a_bounded_preview_cache(self):
+        self.assertIn(".select(LIST_COLUMNS)", self.index)
+        self.assertIn(".range(offset, offset + PAGE - 1)", self.index)
+        self.assertIn(".order('sku_id', { ascending: true })", self.index)
         self.assertNotIn(".select('*').range(", self.index)
         self.assertNotIn("localStorage.getItem(CACHE_KEY)", self.index)
         self.assertNotIn("localStorage.setItem(CACHE_KEY", self.index)
         self.assertIn("localStorage.removeItem('products_cache_v1')", self.index)
+        self.assertIn("const PRODUCT_PREVIEW_LIMIT = 200;", self.preview)
+        self.assertIn(".slice(0, PRODUCT_PREVIEW_LIMIT)", self.preview)
+        self.assertIn("value.products.length > PRODUCT_PREVIEW_LIMIT", self.preview)
+        self.assertIn("localStorage.getItem(previewCacheKey)", self.index)
+        self.assertIn("serializeProductPreviewCache(previewRows, previewRegion)", self.index)
+        self.assertNotIn("serializeProductPreviewCache(loadedProducts", self.index)
+
+    def test_homepage_renders_a_preview_before_the_full_catalog(self):
+        self.assertIn('<link rel="preconnect" href="https://bupqagkrcvrezjkdbald.supabase.co" crossorigin>', self.index)
+        self.assertIn('<script src="web-product-preview.js"></script>', self.index)
+        self.assertIn(".limit(PRODUCT_PREVIEW_LIMIT)", self.index)
+        self.assertIn("previewQuery.eq('region', previewRegion)", self.index)
+        self.assertIn("showProducts(loadedProducts, 'complete')", self.index)
+        self.assertIn("document.documentElement.dataset.catalogPhase = phase", self.index)
+        preview_render = self.index.index("previewRows.map(decorate)")
+        full_loop = self.index.index("for (let offset = 0; ; offset += PAGE)")
+        self.assertLess(preview_render, full_loop)
 
     def test_card_images_are_resized_before_loading(self):
         self.assertIn("url.searchParams.set('w', String(width));", self.index)
