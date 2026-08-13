@@ -134,6 +134,7 @@ assert.ok(packageJson.scripts.typecheck, 'missing typecheck script');
 assert.ok(packageJson.scripts.doctor, 'missing doctor script');
 assert.ok(packageJson.scripts.test, 'missing test script');
 assert.ok(packageJson.scripts['verify:release-assets'], 'missing release asset verification script');
+assert.ok(packageJson.scripts['verify:store-metadata'], 'missing App Store metadata verification script');
 assert.ok(packageJson.scripts['eas:build:ios'], 'missing EAS iOS build script');
 assert.ok(packageJson.scripts['eas:submit:ios'], 'missing EAS iOS submit script');
 assert.ok(easJson.build?.production, 'missing production build profile');

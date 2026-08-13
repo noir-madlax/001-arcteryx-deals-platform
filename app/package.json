@@ -45,6 +45,7 @@
     "verify": "tsx scripts/verify-local.ts",
     "verify:config": "tsx scripts/verify-config.ts",
     "verify:release-assets": "tsx scripts/verify-release-assets.ts",
+    "verify:store-metadata": "tsx scripts/verify-store-metadata.ts",
     "verify:rates": "tsx scripts/verify-rates.ts",
     "verify:live-data": "tsx scripts/verify-live-data.ts",
     "typecheck": "tsc --noEmit",

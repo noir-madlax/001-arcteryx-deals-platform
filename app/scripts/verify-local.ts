@@ -5,6 +5,7 @@ const steps: Array<{ label: string; command: string; args: string[] }> = [
   { label: 'unit tests', command: 'npm', args: ['test'] },
   { label: 'config sanity', command: 'npm', args: ['run', 'verify:config'] },
   { label: 'release assets', command: 'npm', args: ['run', 'verify:release-assets'] },
+  { label: 'App Store metadata', command: 'npm', args: ['run', 'verify:store-metadata'] },
   { label: 'typecheck', command: 'npm', args: ['run', 'typecheck'] },
   { label: 'expo doctor', command: 'npm', args: ['run', 'doctor'] },
   { label: 'live currency rates', command: 'npm', args: ['run', 'verify:rates'] },

@@ -1,153 +1,96 @@
-# GearDrop / 值de App Store Metadata Draft
+# GearDrop App Store Metadata
 
-Use this as the starting copy for App Store Connect. Do not paste the monetization-dependent sections until the release mode is selected. Keep the public listing brand-neutral: do not use protected merchant brand names in the app name, subtitle, keywords, or promotional copy.
+## Status
 
-## Release Mode: Paid v1
+The ASO package is prepared for the **next App version only**. It must not be pasted into, or otherwise mutate, a version that is already in review.
 
-The paid path was selected on 2026-07-12. The app now uses RevenueCat's StoreKit wrapper in code; the products, `Pro` entitlement, default offering, and EAS public SDK key are configured. Submission remains blocked until sandbox purchase and restore are verified.
-
-Planned App Store products:
+Canonical metadata:
 
 ```text
-dev.100app.geardrop.pro.monthly  auto-renewable subscription  target US price $3.99/month
-dev.100app.geardrop.pro.annual   auto-renewable subscription  target US price $23.99/year
-dev.100app.geardrop.pro.lifetime non-consumable               target US price $49.99
-RevenueCat entitlement: Pro
-RevenueCat offering: current/default with monthly, annual, and lifetime packages
+app/store-metadata/next-version.json
 ```
 
-Prices shown in the app must come from StoreKit. A seven-day trial may be configured for the subscription group; the app only advertises it when RevenueCat reports the current Apple ID as eligible.
+The manifest contains five localizations (`en-US`, `zh-Hans`, `de-DE`, `fr-FR`, `ja`), six localized screenshot headlines per language, the standard Apple EULA link, and the production support/privacy URLs.
 
-## App Information
+Validate before any App Store Connect edit:
 
-Name:
+```sh
+cd app
+npm run verify:store-metadata
+```
+
+The verifier fails closed on Apple field limits, the 100-byte keyword limit, missing locales, malformed keywords, protected or competing names, duplicate EULA links, hard-coded storefront prices, incomplete screenshot slots, or a manifest that targets the current review.
+
+## Positioning
+
+Primary promise:
 
 ```text
-GearDrop: Outdoor Deals
+See whether an outdoor gear deal is actually worth buying now.
 ```
 
-Simplified Chinese name:
+Indexed English fields:
 
 ```text
-值de
+Name: GearDrop: Outdoor Deals
+Subtitle: Price Tracker & Buy Signals
+Keywords: gear,sale,discount,watchlist,alert,history,hiking,ski,snowboard,camping,climbing,outlet,compare,drop
 ```
 
-Subtitle:
+The listing stays brand-neutral. Protected merchant names and competing app names do not belong in the name, subtitle, keywords, promotional text, description, or screenshot headlines.
+
+## Screenshot Set
+
+The next-version order is:
+
+1. Deals feed — discover the strongest current outdoor price drops.
+2. Product detail signal — show whether the price is genuinely low.
+3. Region comparison — compare the same product across regions.
+4. Watchlist — save an item and track movement after saving.
+5. Pro price history — show the complete StoreKit-backed Pro value.
+6. Display preferences — show region, currency, and localization controls.
+
+Localized overlay copy is stored in the manifest. Capture and compose the final 1206×2622 images only from the final signed candidate for the next version. Do not reuse old simulator evidence, fabricate prices, or add merchant marks to the overlay copy. See `app/store-metadata/SCREENSHOT_PLAN.md`.
+
+## Review Notes Baseline
 
 ```text
-Outdoor gear deal tracker
+GearDrop is a native React Native / Expo app, not a WebView wrapper. It uses public merchant product and price-history data, stores saved products on-device, and collects an email address only when the user creates a price alert or sends a support request.
+
+Pro access is granted only from the RevenueCat `Pro` entitlement. The paywall loads localized prices from StoreKit and includes user-triggered Restore Purchases, Apple offer-code redemption, Terms of Use, Privacy Policy, pending-purchase handling, and cancellation/error states.
+
+Products included with the first paid release:
+- dev.100app.geardrop.pro.monthly
+- dev.100app.geardrop.pro.annual
+- dev.100app.geardrop.pro.lifetime
+
+Support: https://001.100app.dev/support.html
+Privacy: https://001.100app.dev/privacy.html
+Terms: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 ```
 
-Category:
+Before submission, replace or extend these notes with evidence from the exact next-version build and the current App Store Connect product states. Do not copy historical sandbox credentials into the repository.
 
-```text
-Shopping
-```
+## App Privacy Baseline
 
-Content Rights:
+Data collected depends on user action:
 
-```text
-The app displays merchant product names, prices, and images as deal discovery links to public product pages. Confirm any additional merchant-content rights policy before submission.
-```
+- Email address and product/target-price details when a price alert is created.
+- Email address, subject, message, language, and request status when support is contacted.
+- Purchase history handled by Apple and RevenueCat for entitlement validation and subscription reporting.
 
-## Promotional Text
+Saved watchlist items remain on-device. RevenueCat uses an anonymous app user ID that is not intentionally linked to the alert or support email. No third-party advertising tracking is implemented in the reviewed source baseline.
 
-```text
-Track outdoor gear markdowns across regions, compare current prices with recent history, and save items to watch later.
-```
+These are preparation notes, not proof of the live App Privacy answers. Read the live form again before the next submission.
 
-## Description
+## Next-Version Apply Boundary
 
-```text
-GearDrop helps outdoor shoppers spot worthwhile markdowns without sorting through long outlet catalogs.
+1. Read the live App, version, build, localization, screenshot, IAP, release-mode, and review-submission state.
+2. Wait until a new editable App version exists; do not edit an in-review version.
+3. Re-run the metadata verifier and the full App release gate on the final source commit.
+4. Capture all screenshots from that exact signed build and verify every visible claim and StoreKit price.
+5. Apply only the five manifest localizations and six matching screenshot sets.
+6. Use a fresh process or fresh UI navigation to read back every field and screenshot count.
+7. Keep metadata edit and App Review submission as separately authorized external actions.
 
-Browse live deal feeds, filter by region and category, search by product line, and open each deal with a clear price signal. Product pages show recent price history, a simple buy-or-wait verdict, and cheaper regional alternatives when available.
-
-Save items to your watchlist, set target prices, and keep an eye on movement since you saved.
-```
-
-Paid-release-only description addition, after real Apple IAP passes:
-
-```text
-GearDrop Pro unlocks full price history and richer low-price signals.
-```
-
-## Keywords
-
-```text
-outdoor gear,deals,price tracker,watchlist,markdowns,sale,shopping,hiking,climbing,skiing
-```
-
-## Support URL
-
-```text
-https://001.100app.dev/support.html
-```
-
-The dedicated form accepts app help, purchase, price-alert, privacy, and data requests. As of 2026-08-02 the live URL returns HTTP 404 because this branch has not been merged/deployed. Do not enter it in App Store Connect until the page and RPC migration are deployed and one controlled end-to-end request is verified.
-
-## Privacy Policy URL
-
-Live and verified:
-
-```text
-https://001.100app.dev/privacy.html
-```
-
-## Review Notes
-
-```text
-GearDrop is a native React Native / Expo app, not a WebView wrapper. The app uses merchant product and price-history data, local device storage for saved items, and an email address only when a user creates a price alert.
-
-Support is available at https://001.100app.dev/support.html. Support-form submissions are stored in a private queue and are not readable through the public API.
-
-Pro is unlocked only when the RevenueCat `Pro` entitlement is active. The paywall loads localized prices from StoreKit and includes user-triggered Restore Purchases, Terms of Use, Privacy Policy, pending-purchase handling, and cancellation/error states.
-
-Before review, replace this paragraph with sandbox/TestFlight account instructions and the exact products verified in App Store Connect.
-```
-
-## App Privacy Answers Draft
-
-Data collected:
-
-```text
-Email address: collected only when the user creates a price alert.
-Product interaction data: saved item SKU, target price, product URL, region, and current price are stored for alert delivery and on-device watchlist behavior.
-Customer support: email address, subject, message, language, and request status are collected only when the user submits the support form.
-Purchase history: collected by RevenueCat for App Functionality (receipt validation and entitlements) and Analytics (subscription reporting).
-```
-
-Linked to user:
-
-```text
-Email address may be linked to a price alert subscription.
-Support-form content is linked to the email address supplied in that request.
-RevenueCat purchase history uses an anonymous app user ID and is not linked to the alert email or another identified user account.
-```
-
-Tracking:
-
-```text
-No third-party tracking is implemented in this version.
-```
-
-Encryption export compliance:
-
-```text
-The app does not implement custom or non-exempt encryption. iOS app config sets usesNonExemptEncryption=false for standalone builds.
-```
-
-## Screenshot Checklist
-
-Capture after device smoke passes:
-
-```text
-1. Deals feed with New all-time low hero
-2. Germany region filter showing euro prices
-3. Product detail with price chart and verdict
-4. Watchlist with saved item
-5. StoreKit-backed Pro paywall with localized prices
-6. Privacy policy screen
-```
-
-Capture item 5 only after sandbox purchase and restore flows pass. Existing 1206×2622 iPhone 16 Pro screenshots are an accepted 6.3-inch portrait size; capture clean store screenshots after the RevenueCat offering is finalized.
+Research and measurement rationale: `reports/2026-08-14-geardrop-next-version-aso.md`.
