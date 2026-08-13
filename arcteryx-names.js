@@ -18,11 +18,11 @@
     // audit instead of being truncated by a generic heuristic.
     const MODEL_FAMILIES = Object.freeze([
         'Acrux', 'Aerios', 'Aestas', 'Align', 'Alpine', 'Alpha', 'Altus', 'Andessa',
-        "Arc'Word", 'AR-385a', 'AR-395a', 'Arris', 'Arro', 'Asset', 'Atom', 'Belfry', 'Beta',
+        "Arc'Word", 'AR-385a', 'AR-395a', 'Arris', 'Arro', 'Asset', 'Atom', 'Axios', 'Belfry', 'Beta',
         'Bird', 'Blade', 'Bora', 'Brize', 'Calidum', 'Carrier', 'Centroid', 'Cerium',
         'Clarkia', 'Coelle', 'Color', 'Conduit', 'Conic', 'Conveyor', 'Corbel', 'Cormac',
-        'Covert', 'Cranbrook', 'Creston', 'Cronin', 'Decca', 'Delta', 'Demlo', 'Dias',
-        'Diene', 'Diode', 'Eave', 'Elec', 'Emaris', 'Emblem', 'Entasis', 'Essent',
+        'Covert', 'Cranbrook', 'Creston', 'Cronin', 'Cusec', 'Decca', 'Delta', 'Demlo', 'Dias',
+        'Diene', 'Diode', 'Dromos', 'Eave', 'Elec', 'Emaris', 'Emblem', 'Entasis', 'Essent',
         'Field', 'Fissile', 'Fission', 'Focal', 'Frame', 'Gamma', 'Granville', 'Grotto',
         'Hadron', 'Hallam', 'Heliad', 'Icosa', 'Ifora', 'Incendia', 'Incendo', 'Index',
         'Indisce', 'Ion', 'Ionia', 'Kappa', 'Khara', 'Khard', 'Kopec', 'Konseal',
@@ -35,7 +35,7 @@
         'Secant', 'Sentinel', 'Serratus', 'Sigma', 'Silex', 'Silene', 'Sima', 'Sinsola',
         'Sinsolo', 'Skaha', 'Ski', 'Skyline', 'Solano', 'Sonii', 'Soria', 'Sorin',
         'Spere', 'Squamish', 'Sunna', 'Sylan', 'Taema', 'Therme', 'Theta', 'Thorium',
-        'Toric', 'Veilance', 'Venta', 'Vertex', 'Voronoi', 'Word', 'Zeta',
+        'Toric', 'Veilance', 'Venta', 'Verro', 'Vertex', 'Voronoi', 'Word', 'Zeta',
     ]);
 
     const BRAND_PREFIX = /^arc(?:[\s-]*[’'`]?teryx)\s+/i;
