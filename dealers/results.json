@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-14 00:03:21",
+  "generated_at": "2026-08-14 03:33:00",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -31691,7 +31691,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 138,
+      "count": 140,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-943/arcteryx-norvan-ld-4-trail-running-shoes-mens",
@@ -32942,6 +32942,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
+          "name": "Arc'teryx Heliad 15 Backpack - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520622_source_1773871544.jpg",
+          "color": "Black/Black",
+          "sale_price": 100.0,
+          "original_price": 100.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6029-804/arcteryx-skaha-harness-womens",
           "name": "Arc'teryx Skaha Harness - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/497417_source_1738404839.jpg",
@@ -33436,6 +33449,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
+          "name": "Arc'teryx Covert Cardigan - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517304_source_1782759979.png",
+          "color": "Moondrop Heather",
+          "sale_price": 220.0,
+          "original_price": 220.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6037-509/arcteryx-sima-5-panel-cap",
           "name": "Arc'teryx Sima 5 Panel Cap",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/554143_source_1783033538.png",
@@ -33488,7 +33514,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-13 22:01:02"
+      "refreshed_at": "2026-08-14 03:33:00"
     },
     "rei": {
       "name": "REI",
@@ -51536,14 +51562,9 @@
       "refreshed_at": "2026-08-13 23:29:09"
     }
   },
-  "total": 1889,
-  "rejected_dealers": {
-    "evo": "incomplete"
-  },
+  "total": 1891,
+  "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
