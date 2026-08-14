@@ -138,8 +138,9 @@ class GeoAssetTests(unittest.TestCase):
 
     def test_deployed_readiness_reader_retries_incomplete_responses(self):
         class Response:
-            def __init__(self, payload):
+            def __init__(self, payload, status=None):
                 self.payload = payload
+                self.status = status
 
             def __enter__(self):
                 return self
@@ -170,6 +171,47 @@ class GeoAssetTests(unittest.TestCase):
         self.assertEqual(payload, "retry-ok")
         self.assertEqual(urlopen.call_count, 2)
         sleep.assert_called_once_with(1)
+
+    def test_deployed_readiness_reader_resumes_large_incomplete_response(self):
+        class Response:
+            def __init__(self, payload, status):
+                self.payload = payload
+                self.status = status
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, traceback):
+                return False
+
+            def read(self):
+                if isinstance(self.payload, Exception):
+                    raise self.payload
+                return self.payload
+
+        responses = [
+            Response(http.client.IncompleteRead(b"first-", 6), http.client.OK),
+            Response(b"second", http.client.PARTIAL_CONTENT),
+        ]
+        with (
+            mock.patch.object(
+                self.readiness_module.urllib.request,
+                "urlopen",
+                side_effect=responses,
+            ) as urlopen,
+            mock.patch.object(self.readiness_module.time, "sleep") as sleep,
+        ):
+            read = self.readiness_module.url_reader("https://example.invalid")
+            payload = read("/sitemap-products.xml")
+
+        self.assertEqual(payload, "first-second")
+        self.assertEqual(urlopen.call_count, 2)
+        resumed_request = urlopen.call_args_list[1].args[0]
+        self.assertEqual(resumed_request.get_header("Range"), "bytes=6-")
+        sleep.assert_called_once_with(1)
+
+        self.assertEqual(read("/sitemap-products.xml"), "first-second")
+        self.assertEqual(urlopen.call_count, 2)
 
     def test_homepage_exposes_answer_ready_content_and_stable_product_urls(self):
         self.assertIn('<h1 id="catalog-heading">', self.index)

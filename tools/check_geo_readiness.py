@@ -498,25 +498,45 @@ def local_reader(root: Path) -> Callable[[str], str]:
 
 def url_reader(base_url: str) -> Callable[[str], str]:
     origin = base_url.rstrip("/")
+    cache: dict[str, str] = {}
 
     def read(path: str) -> str:
+        if path in cache:
+            return cache[path]
         url = f"{origin}{path}"
-        request = urllib.request.Request(
-            url,
-            headers={
+        payload = b""
+        for attempt in range(8):
+            headers = {
                 "User-Agent": "GearDrop-GEO-Audit/1.0",
                 "Accept-Encoding": "identity",
                 "Connection": "close",
-            },
-        )
-        for attempt in range(3):
+            }
+            if payload:
+                headers["Range"] = f"bytes={len(payload)}-"
+            request = urllib.request.Request(url, headers=headers)
+            status = None
             try:
                 with urllib.request.urlopen(request, timeout=30) as response:
-                    return response.read().decode("utf-8")
-            except http.client.IncompleteRead:
-                if attempt == 2:
+                    status = getattr(response, "status", None)
+                    chunk = response.read()
+                    if payload and status == http.client.PARTIAL_CONTENT:
+                        chunk = payload + chunk
+                    decoded = chunk.decode("utf-8")
+                    cache[path] = decoded
+                    return decoded
+            except http.client.IncompleteRead as error:
+                if payload and status == http.client.PARTIAL_CONTENT:
+                    payload += error.partial
+                else:
+                    payload = error.partial
+                if attempt == 7:
                     raise
-                time.sleep(2**attempt)
+                print(
+                    f"HTTP read retry {attempt + 1}/8 for {path}: "
+                    f"received={len(payload)} remaining={error.expected}",
+                    file=sys.stderr,
+                )
+                time.sleep(min(2**attempt, 4))
         raise AssertionError("unreachable")
 
     return read
