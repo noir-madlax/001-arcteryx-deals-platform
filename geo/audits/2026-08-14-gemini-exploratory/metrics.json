@@ -1,0 +1,242 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-08-13T21:02:34Z",
+  "measurement_status": "measured",
+  "planned_runs": 72,
+  "completed_runs": 72,
+  "coverage": 100.0,
+  "overall": {
+    "completed_runs": 72,
+    "valid_runs": 52,
+    "unaided_mention_rate": {
+      "status": "measured",
+      "numerator": 0,
+      "denominator": 41,
+      "rate": 0.0,
+      "percent": 0.0,
+      "wilson_95": {
+        "low": 0.0,
+        "high": 0.0857
+      },
+      "unit": "query_run"
+    },
+    "cited_mention_rate": {
+      "status": "not_measured",
+      "numerator": 0,
+      "denominator": 0,
+      "rate": null,
+      "percent": null,
+      "wilson_95": null,
+      "unit": "brand_mention_run"
+    },
+    "recommendation_rate": {
+      "status": "measured",
+      "numerator": 3,
+      "denominator": 40,
+      "rate": 0.075,
+      "percent": 7.5,
+      "wilson_95": {
+        "low": 0.0258,
+        "high": 0.1986
+      },
+      "unit": "query_run"
+    },
+    "factual_accuracy_rate": {
+      "status": "measured",
+      "numerator": 0,
+      "denominator": 11,
+      "rate": 0.0,
+      "percent": 0.0,
+      "wilson_95": {
+        "low": 0.0,
+        "high": 0.2588
+      },
+      "unit": "assessed_answer"
+    },
+    "mixed_accuracy_count": 5,
+    "action_validity_rate": {
+      "status": "measured",
+      "numerator": 4,
+      "denominator": 10,
+      "rate": 0.4,
+      "percent": 40.0,
+      "wilson_95": {
+        "low": 0.1682,
+        "high": 0.6873
+      },
+      "unit": "assessed_answer"
+    },
+    "owned_source_dependency": {
+      "status": "not_measured",
+      "numerator": 0,
+      "denominator": 0,
+      "rate": null,
+      "percent": null,
+      "wilson_95": null,
+      "unit": "cited_mention_run"
+    }
+  },
+  "groups": [
+    {
+      "dimensions": {
+        "market_id": "CN",
+        "surface": "gemini-consumer-web",
+        "account_arm": "clean",
+        "business_profile": "b2c"
+      },
+      "metrics": {
+        "completed_runs": 36,
+        "valid_runs": 32,
+        "unaided_mention_rate": {
+          "status": "measured",
+          "numerator": 0,
+          "denominator": 26,
+          "rate": 0.0,
+          "percent": 0.0,
+          "wilson_95": {
+            "low": 0.0,
+            "high": 0.1287
+          },
+          "unit": "query_run"
+        },
+        "cited_mention_rate": {
+          "status": "not_measured",
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "percent": null,
+          "wilson_95": null,
+          "unit": "brand_mention_run"
+        },
+        "recommendation_rate": {
+          "status": "measured",
+          "numerator": 3,
+          "denominator": 25,
+          "rate": 0.12,
+          "percent": 12.0,
+          "wilson_95": {
+            "low": 0.0417,
+            "high": 0.2996
+          },
+          "unit": "query_run"
+        },
+        "factual_accuracy_rate": {
+          "status": "measured",
+          "numerator": 0,
+          "denominator": 6,
+          "rate": 0.0,
+          "percent": 0.0,
+          "wilson_95": {
+            "low": 0.0,
+            "high": 0.3903
+          },
+          "unit": "assessed_answer"
+        },
+        "mixed_accuracy_count": 5,
+        "action_validity_rate": {
+          "status": "measured",
+          "numerator": 4,
+          "denominator": 5,
+          "rate": 0.8,
+          "percent": 80.0,
+          "wilson_95": {
+            "low": 0.3755,
+            "high": 0.9638
+          },
+          "unit": "assessed_answer"
+        },
+        "owned_source_dependency": {
+          "status": "not_measured",
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "percent": null,
+          "wilson_95": null,
+          "unit": "cited_mention_run"
+        }
+      }
+    },
+    {
+      "dimensions": {
+        "market_id": "US",
+        "surface": "gemini-consumer-web",
+        "account_arm": "clean",
+        "business_profile": "b2c"
+      },
+      "metrics": {
+        "completed_runs": 36,
+        "valid_runs": 20,
+        "unaided_mention_rate": {
+          "status": "measured",
+          "numerator": 0,
+          "denominator": 15,
+          "rate": 0.0,
+          "percent": 0.0,
+          "wilson_95": {
+            "low": 0.0,
+            "high": 0.2039
+          },
+          "unit": "query_run"
+        },
+        "cited_mention_rate": {
+          "status": "not_measured",
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "percent": null,
+          "wilson_95": null,
+          "unit": "brand_mention_run"
+        },
+        "recommendation_rate": {
+          "status": "measured",
+          "numerator": 0,
+          "denominator": 15,
+          "rate": 0.0,
+          "percent": 0.0,
+          "wilson_95": {
+            "low": 0.0,
+            "high": 0.2039
+          },
+          "unit": "query_run"
+        },
+        "factual_accuracy_rate": {
+          "status": "measured",
+          "numerator": 0,
+          "denominator": 5,
+          "rate": 0.0,
+          "percent": 0.0,
+          "wilson_95": {
+            "low": 0.0,
+            "high": 0.4345
+          },
+          "unit": "assessed_answer"
+        },
+        "mixed_accuracy_count": 0,
+        "action_validity_rate": {
+          "status": "measured",
+          "numerator": 0,
+          "denominator": 5,
+          "rate": 0.0,
+          "percent": 0.0,
+          "wilson_95": {
+            "low": 0.0,
+            "high": 0.4345
+          },
+          "unit": "assessed_answer"
+        },
+        "owned_source_dependency": {
+          "status": "not_measured",
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "percent": null,
+          "wilson_95": null,
+          "unit": "cited_mention_run"
+        }
+      }
+    }
+  ],
+  "notes": [
+    "Rates use valid observed/not_observed runs; blocked and inconclusive runs are excluded from rate denominators."
+  ]
+}

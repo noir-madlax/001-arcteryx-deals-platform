@@ -1,0 +1,310 @@
+import importlib.util
+import http.client
+import json
+import re
+import subprocess
+import sys
+import unittest
+from unittest import mock
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def load_module(name: str, path: Path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+class GeoAssetTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.index = (ROOT / "index.html").read_text(encoding="utf-8")
+        cls.detail = (ROOT / "product-detail.html").read_text(encoding="utf-8")
+        cls.llms = (ROOT / "llms.txt").read_text(encoding="utf-8")
+        cls.catalog_status = json.loads((ROOT / "catalog-status.json").read_text(encoding="utf-8"))
+        cls.audit_dir = ROOT / "geo" / "audits" / "2026-08-14-baseline"
+        cls.catalog_module = load_module(
+            "generate_geo_catalog", ROOT / "tools" / "generate_geo_catalog.py"
+        )
+        cls.content_module = load_module(
+            "build_geo_content", ROOT / "tools" / "build_geo_content.py"
+        )
+
+    def test_generated_knowledge_pages_match_the_source(self):
+        content = json.loads((ROOT / "geo" / "site-content.json").read_text(encoding="utf-8"))
+        outputs = self.content_module.build_outputs(content)
+        self.assertGreaterEqual(len(outputs), 12)
+        for path, expected in outputs.items():
+            self.assertTrue(path.exists(), path)
+            self.assertEqual(path.read_text(encoding="utf-8"), expected, path)
+
+    def test_local_geo_readiness_contract_passes(self):
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "tools" / "check_geo_readiness.py")],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["summary"]["failed"], 0)
+        self.assertGreaterEqual(report["summary"]["passed"], 80)
+        self.assertEqual(report["observed_ai_visibility"], "not_measured")
+
+    def test_product_sitemap_matches_timestamped_catalog_status(self):
+        tree = ET.parse(ROOT / "sitemap-products.xml")
+        namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+        locations = [node.text for node in tree.findall("sm:url/sm:loc", namespace)]
+        self.assertEqual(len(locations), self.catalog_status["active_product_urls"])
+        self.assertGreaterEqual(len(locations), 5000)
+        self.assertEqual(len(locations), len(set(locations)))
+        self.assertTrue(
+            all(
+                location.startswith(
+                    "https://001.100app.dev/p?sku="
+                )
+                for location in locations
+            )
+        )
+
+    def test_catalog_generator_encodes_sku_and_deduplicates_latest_row(self):
+        rows = [
+            {
+                "sku_id": "evo:products/foo/bar",
+                "brand": "arcteryx",
+                "dealer": "evo",
+                "region": "us",
+                "status": "active",
+                "last_updated": "2026-08-13T10:00:00+00:00",
+            },
+            {
+                "sku_id": "evo:products/foo/bar",
+                "brand": "arcteryx",
+                "dealer": "evo",
+                "region": "ca",
+                "status": "active",
+                "last_updated": "2026-08-13T11:00:00+00:00",
+            },
+            {"sku_id": "inactive", "status": "inactive"},
+        ]
+        normalized = self.catalog_module.normalize_rows(rows)
+        self.assertEqual(len(normalized), 1)
+        self.assertEqual(normalized[0]["region"], "ca")
+        url = self.catalog_module.product_url(normalized[0]["sku_id"])
+        self.assertIn("evo%3Aproducts%2Ffoo%2Fbar", url)
+        sitemap = self.catalog_module.render_product_sitemap(normalized)
+        root = ET.fromstring(sitemap)
+        namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+        self.assertEqual(root.find("sm:url/sm:loc", namespace).text, url)
+
+    def test_catalog_fetch_retries_incomplete_chunked_responses(self):
+        class Response:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, traceback):
+                return False
+
+            def read(self):
+                return b'[{"sku_id":"retry-ok"}]'
+
+        responses = [http.client.IncompleteRead(b"partial", 12), Response()]
+        with (
+            mock.patch.object(
+                self.catalog_module.urllib.request,
+                "urlopen",
+                side_effect=responses,
+            ) as urlopen,
+            mock.patch.object(self.catalog_module.time, "sleep") as sleep,
+        ):
+            payload = self.catalog_module.fetch_json(
+                "https://example.invalid/catalog", {"apikey": "public"}
+            )
+
+        self.assertEqual(payload, [{"sku_id": "retry-ok"}])
+        self.assertEqual(urlopen.call_count, 2)
+        sleep.assert_called_once_with(1)
+
+    def test_homepage_exposes_answer_ready_content_and_stable_product_urls(self):
+        self.assertIn('<h1 id="catalog-heading">', self.index)
+        for path in (
+            "/about.html",
+            "/methodology.html",
+            "/faq.html",
+            "/guides/outdoor-deal-guide.html",
+            "/brands/arcteryx.html",
+            "/brands/burton.html",
+            "/brands/patagonia.html",
+            "/catalog-status.html",
+        ):
+            self.assertIn(f'href="{path}"', self.index)
+        self.assertIn("? `product-detail.html?sku=${encodeURIComponent(p.sku_id)}`", self.index)
+        self.assertNotIn("const skuParam = p.sku_id", self.index)
+
+    def test_product_metadata_is_live_derived_and_truth_bounded(self):
+        required = (
+            'id="product-meta-description"',
+            'id="product-canonical"',
+            'id="product-jsonld"',
+            "function updateProductMetadata(p)",
+            "const productAvailability = (p)",
+            "'@type': 'Product'",
+            "'@type': 'Offer'",
+            "function updateNotFoundMetadata()",
+            "'noindex,follow'",
+            "const PRODUCT_PAGE_BASE = 'https://001.100app.dev/p';",
+            "setMetaContent('product-meta-robots', 'noindex,follow');",
+        )
+        for token in required:
+            self.assertIn(token, self.detail)
+        self.assertNotIn("aggregateRating", self.detail)
+        self.assertNotIn("reviewCount", self.detail)
+        self.assertIn("最终价格、库存、配送和退货条件以销售平台为准", self.detail)
+
+    def test_llms_file_is_discovery_aid_not_visibility_claim(self):
+        self.assertIn("Canonical entity: https://001.100app.dev/", self.llms)
+        self.assertIn("GearDrop is not a retailer", self.llms)
+        self.assertIn("GearDrop is not an official site", self.llms)
+        self.assertIn("does not prove AI mention, citation, or recommendation", self.llms)
+        self.assertIn("https://001.100app.dev/methodology.html", self.llms)
+
+    def test_continuous_workflows_refresh_and_audit_geo_assets(self):
+        monitor = (ROOT / ".github" / "workflows" / "geo-readiness.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("schedule:", monitor)
+        self.assertIn("permissions:\n  contents: read", monitor)
+        self.assertIn("build_geo_content.py --check", monitor)
+        self.assertIn("generate_geo_catalog.py --online --check", monitor)
+        self.assertIn("check_geo_readiness.py --base-url", monitor)
+        self.assertIn("Observed AI visibility remains not_measured", monitor)
+
+        visibility_monitor = (
+            ROOT / ".github" / "workflows" / "geo-visibility-baseline.yml"
+        ).read_text(encoding="utf-8")
+        self.assertIn("schedule:", visibility_monitor)
+        self.assertIn("permissions:\n  contents: read", visibility_monitor)
+        self.assertIn("python tools/check_geo_visibility_baseline.py", visibility_monitor)
+        self.assertIn("github.event_name == 'workflow_dispatch'", visibility_monitor)
+        self.assertIn("inputs.run_paid_api_probe", visibility_monitor)
+        self.assertNotIn(
+            "run: python tools/probe_gemini_grounding.py",
+            visibility_monitor.split("official-api-probe:", 1)[0],
+        )
+
+        for name in ("refresh-outlet.yml", "refresh-dealers.yml", "refresh-mec.yml"):
+            workflow = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
+            self.assertIn("python tools/generate_geo_catalog.py --online", workflow, name)
+            self.assertIn("sitemap-products.xml", workflow, name)
+            self.assertIn("catalog-status.html", workflow, name)
+            self.assertIn("catalog-status.json", workflow, name)
+
+    def test_internal_audit_data_is_not_deployed(self):
+        vercelignore = (ROOT / ".vercelignore").read_text(encoding="utf-8")
+        self.assertIn("/geo/", vercelignore)
+        self.assertIn(".github/", vercelignore)
+        self.assertIn("/tests/", vercelignore)
+        self.assertIn("tools/", vercelignore)
+        self.assertIn(".agent/", vercelignore)
+
+    def test_gemini_visibility_baseline_contract(self):
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "tools" / "check_geo_visibility_baseline.py")],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
+        report = json.loads(result.stdout)
+        self.assertTrue(report["valid"])
+        self.assertEqual(report["planned_runs"], 72)
+        self.assertEqual(report["retained_runs"], 72)
+        self.assertEqual(report["valid_runs"], 52)
+        self.assertEqual(report["blocked_runs"], 20)
+        self.assertEqual(report["unaided_mentions"], "0/41")
+
+    def test_gemini_api_probe_check_is_credential_free(self):
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "tools" / "probe_gemini_grounding.py"),
+                "--check",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
+        report = json.loads(result.stdout)
+        self.assertTrue(report["valid"])
+        self.assertEqual(report["tool"], "google_search")
+        self.assertNotIn("key", report)
+
+    def test_audit_report_binds_readiness_ux_and_continuous_validation(self):
+        report_path = (
+            self.audit_dir
+            / "artifacts"
+            / "geardrop-2026-08-14-seo-geo-report.html"
+        )
+        report = report_path.read_text(encoding="utf-8")
+        audit = json.loads((self.audit_dir / "audit.json").read_text(encoding="utf-8"))
+        ux = json.loads(
+            (self.audit_dir / "evidence" / "website-experience-audit.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        improvement = json.loads(
+            (self.audit_dir / "improvement-validation.json").read_text(encoding="utf-8")
+        )
+
+        self.assertIn('<nav class="report-nav" aria-label="报告章节">', report)
+        self.assertIn(f'SEO {audit["scores"]["seo"]["score"]}', report)
+        self.assertIn(f'GEO {audit["scores"]["geo"]["score"]}', report)
+        self.assertIn("网站体验不另外打分", report)
+        self.assertEqual(
+            set(re.findall(r'data-ux-finding="(UX-\d+)"', report)),
+            {item["id"] for item in ux["findings"]},
+        )
+        self.assertEqual(
+            set(re.findall(r'data-validation-workstream="(V-\d+)"', report)),
+            {item["id"] for item in improvement["workstreams"]},
+        )
+        self.assertEqual(report.count('class="validation-layer"'), 3)
+        self.assertEqual(report.count('class="validation-rule"'), 4)
+        self.assertEqual(
+            audit["observed_visibility"]["measurement_status"], "not_measured"
+        )
+
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "tools" / "enrich_geo_report.py"),
+                str(report_path),
+                "--audit",
+                str(self.audit_dir / "audit.json"),
+                "--website-experience",
+                str(self.audit_dir / "evidence" / "website-experience-audit.json"),
+                "--improvement-validation",
+                str(self.audit_dir / "improvement-validation.json"),
+                "--check",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
+
+
+if __name__ == "__main__":
+    unittest.main()

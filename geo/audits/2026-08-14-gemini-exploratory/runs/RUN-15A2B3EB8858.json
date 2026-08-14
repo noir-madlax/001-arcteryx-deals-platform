@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-15A2B3EB8858",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-15A2B3EB8858",
+    "panel_version": 1,
+    "randomization_key": "70c5bb3d682a3ba9",
+    "status": "pending",
+    "concept_id": "Q11",
+    "query": "I want discounted Arc'teryx, Burton, or Patagonia apparel now. Which site can give me verifiable links to the original retailer?",
+    "group": "buying/action",
+    "intent": "find a current branded outdoor deal with source link",
+    "persona_id": "technical-apparel-shopper",
+    "funnel_stage": "action",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 1,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-15A2B3EB8858.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:54:49.754Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nTo find authentic, discounted apparel from Arc’teryx, Burton, and Patagonia, you should prioritize authorized retailers and the brands' official circularity (resale) programs. These sources guarantee authenticity and provide verifiable links directly to the manufacturer or reputable third-party sellers.\n\n1. Official Brand Resale Programs (Best for Used/Discounted)\n\nThe safest way to get a deal on these specific brands is through their own \"pre-loved\" portals. These items are inspected, refurbished, and sold directly by the brand or their verified partner.\n\nBrand\tProgram Name\tBest For\tOfficial Link\nPatagonia\tWorn Wear\tQuality-checked used gear; repairs\twornwear.patagonia.com\nArc’teryx\tReGEAR\tProfessional refurbishment; high-end shells\tresale.arcteryx.com\nBurton\tPass Along\tSnowboarding gear and outerwear\tburton.com\n2. Trusted Authorized Retailers (Best for New Items)\n\nIf you are looking for new (not used) items on sale, these major outdoor retailers are authorized dealers. They frequently host clearance events and have dedicated \"Outlet\" sections where you can filter by brand.  \nCrux Range\n\nREI Co-op: Their REI Outlet is one of the most reliable places for deep discounts (often 30–50% off) on premium brands like Arc'teryx and Patagonia.\n\nBackcountry: A major retailer with a massive inventory. They also operate Steep & Cheap, a site dedicated entirely to flash sales and closeout deals on outdoor gear.\n\nEVO: Excellent for technical winter apparel and snowboarding gear (especially Burton). They offer a very generous return policy.  \nCrux Range\n\nSierra: Owned by TJX (the parent company of TJ Maxx), they specialize in closeout inventory from major outdoor brands. Their stock changes rapidly but prices are often lower than standard retail.\n\n3. Safety Tips for Avoiding Counterfeits\n\nWhen searching for deals on secondary marketplaces (eBay, Poshmark, Mercari), it is easy to encounter high-quality fakes for brands like Arc’teryx. Follow these rules to verify:\n\nCheck the Seller's History: Only buy from accounts with high ratings and detailed, original photos (not stock images).\n\nVerify Tags: Authentic items from these three brands always have specific internal care tags with style numbers. Ask the seller for a photo of the white interior tag.\n\nAvoid \"Too Good to Be True\": If a $700 Arc’teryx jacket is listed for $50 new, it is almost certainly a counterfeit site designed to steal your credit card information. Stick to the domains listed above.\n\nExpert Tip: If you have a specific item in mind, use the \"Price Alert\" feature on Backcountry or sign up for the REI Outlet email list to get notified the moment your size goes on markdown.  \nCrux Range\n\nWould you like help finding a specific type of jacket (e.g., hardshell vs. insulated) from one of these brands?",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://wornwear.patagonia.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.resale.arcteryx.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.burton.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/rei-garage",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.backcountry.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.evo.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.sierra.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.backcountry.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/rei-garage",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=11; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:55:52Z"
+}

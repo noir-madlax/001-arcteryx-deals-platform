@@ -125,6 +125,7 @@ jobs:
           # 真正的守门员：每个 dealer 必须存在且最新数据 <=36h（REI 失败 >36h 才让 build 红）。
           python tools/check_data_quality.py --online --dealer burton --dealer backcountry --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
           node tools/audit_product_names.mjs --online --strict-source
+          python tools/generate_geo_catalog.py --online
 
       - name: Optional price alerts
         run: python check_price_alerts.py || echo "price alerts check failed"
@@ -133,7 +134,7 @@ jobs:
         run: |
           git config user.email "bot@arcteryx-deals.local"
           git config user.name "ArcBot"
-          git add dealers/results.json
+          git add dealers/results.json sitemap-products.xml catalog-status.html catalog-status.json
           if git diff --cached --quiet; then
             echo "No dealer data changes to commit"
             exit 0

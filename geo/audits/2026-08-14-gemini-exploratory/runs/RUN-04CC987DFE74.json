@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-04CC987DFE74",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-04CC987DFE74",
+    "panel_version": 1,
+    "randomization_key": "6f0cf33b80a8a182",
+    "status": "pending",
+    "concept_id": "Q06",
+    "query": "Where can I compare current Burton, Arc'teryx, and Patagonia ski or outdoor apparel discounts across retailers?",
+    "group": "problem/application",
+    "intent": "find snow-sport apparel discounts",
+    "persona_id": "snow-sports-shopper",
+    "funnel_stage": "shortlist",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 2,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-04CC987DFE74.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:54:52.088Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nThere is no single \"universal\" search engine that perfectly aggregates real-time inventory and pricing for all three brands across every outdoor retailer. However, you can use specialized deal-aggregator tools and trusted multi-brand marketplaces to compare discounts effectively.\n\nBest Tools for Price Comparison\n\nOutside Online Deals: This is one of the most reliable aggregators for outdoor gear. It tracks sales across major retailers like Backcountry, REI, and others, allowing you to search for specific brands (Patagonia, Arc'teryx, Burton) and see which store currently has the lowest price.  \nwww.outsideonline.com\n\nGoogle Shopping: For a specific item (e.g., \"Arc’teryx Atom Hoody\"), use the Shopping tab on Google. It automatically pulls pricing from multiple retailers, shows price history (on desktop), and highlights items currently marked as \"On Sale.\"\n\nTop Retailers for Discounted Premium Gear\n\nThese retailers carry all three brands and have dedicated \"Outlet\" or \"Sale\" sections where inventory is aggregated:  \nwww.equipesport.com\n\nRetailer\tBest For\tDiscount Strategy\nREI Outlet\tReliability & Returns\tFrequent 30–50% off closeouts; member dividends apply.\nSteep & Cheap\tDeep Discounts\tBackcountry’s outlet site; features \"Daily Steals\" and rotating flash sales.\nBackcountry\tBroad Selection\tMassive inventory; check their \"Sale\" filter by brand.\nEvo\tSki/Snowboard Gear\tExcellent for Burton hardware and apparel; they offer a 5% price-match guarantee.\nOutdoor Gear Exchange\tCloseouts\tGreat for finding older season colors and discontinued models.\nPro-Tips for Finding the Best Price\n\nCheck Official \"Pre-Loved\" Programs: Patagonia’s Worn Wear and REI Re/Supply are excellent ways to get premium gear at 30–50% off. These items are inspected, cleaned, and often backed by guarantees.  \nFresh Off The Grid\n\nSign Up for Newsletters: Almost every major outdoor retailer (like Campsaver or Backcountry) offers a 10%–20% discount code for first-time email subscribers, which can often be stacked on top of existing sale prices.  \nCrux Range\n\nSeasonal Timing: Retailers typically mark down winter gear (Burton/Arc'teryx/Patagonia ski layers) significantly in late February/March and again in August/September as they clear floor space for new inventory.\n\nWould you like me to explain how to set up price alerts for specific items?\nYes",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://www.outsideonline.com/deals",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/outlet",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.backcountry.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.evo.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.gearx.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://wornwear.patagonia.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/used",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=8; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:55:52Z"
+}

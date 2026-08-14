@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-83140FAB1888",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-83140FAB1888",
+    "panel_version": 1,
+    "randomization_key": "2e49f8b745b0b078",
+    "status": "done",
+    "concept_id": "Q02",
+    "query": "Would you recommend GearDrop at https://001.100app.dev/ for comparing outdoor gear deals? Explain its strengths, limits, and what to verify before buying.",
+    "group": "brand/entity",
+    "intent": "evaluate the named brand before use",
+    "persona_id": "price-conscious-outdoor-shopper",
+    "funnel_stage": "validation",
+    "business_profile": "b2c",
+    "branded": true,
+    "recommendation_intent": true,
+    "eligible_for_geo": false,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 1,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-83140FAB1888.json",
+    "completed_at": "2026-08-13T20:51:10.647Z"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:51:10.647Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nI cannot recommend GearDrop at the URL [https://001.100app.dev/](https://001.100app.dev/).\n\nBased on an analysis of the site and general web security practices, this does not appear to be a reputable or established destination for outdoor gear deals.\n\nWhy You Should Be Cautious\n\nUnverified Domain/Source: The URL 100app.dev is a generic third-level domain often used for testing, personal projects, or temporary hosting. It lacks the professional infrastructure, security transparency, and business history associated with legitimate e-commerce aggregators (like OutdoorGearLab or industry-standard deal trackers).\n\nLack of Credibility: There is no public record of a legitimate company called \"GearDrop\" operating from this specific development domain. It is common for \"deal\" sites with obscure URLs to be fronts for affiliate link spam, phishing, or \"scraped\" content that provides no actual value or protection to the buyer.\n\nSecurity Risk: Engaging with unknown deal-aggregation sites can lead to redirected links that may host malware, tracking scripts, or fraudulent \"copycat\" storefronts designed to harvest credit card information.\n\nRecommended Alternatives for Outdoor Deals\n\nInstead of using unverified sites, rely on established platforms that are transparent about how they source deals and reviews:\n\nPlatform\tBest For\tWhy It’s Reliable\nOutdoorGearLab\tObjective Reviews\tThey buy all gear themselves for side-by-side, professional testing.\nActive Junky\tCashback & Deals\tPartners directly with major retailers (REI, Backcountry) to offer verified cash-back rewards.\nREI Outlet\tTrusted Clearance\tDirect source for past-season gear from a reputable retailer with a ironclad return policy.\nSteep and Cheap\tFlash Sales\tOperated by Backcountry; specializes in authentic, discounted outdoor apparel and equipment.\nHow to Verify Any \"Deal\" Site\n\nIf you encounter a new site claiming to offer gear deals, perform these three checks before clicking or buying:\n\nCheck the URL: Does it match a known brand? If it uses a free hosting extension (like .dev, .xyz, or .tk), exercise extreme skepticism.\n\nLook for \"About Us\" & Contact Info: A legitimate business will have a physical address, customer support email, and clear policies regarding shipping and returns. If these are missing or generic, do not use the site.\n\nVerify Affiliate Transparency: Most reputable deal sites will disclose that they earn a commission on links. If a site hides its business model, it is often because the model is predatory or illegitimate.\n\nAre you looking for a specific type of gear, such as camping equipment, technical climbing apparel, or backpacking supplies? I can point you toward reputable retailers or dedicated deal-tracking forums that specialize in those categories.",
+    "result": "observed",
+    "brand_mentioned": true,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://www.outdoorgearlab.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.activejunky.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/outlet",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "incorrect",
+    "action_validity": "invalid",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=4; blocked_reason=none; manual_review=2026-08-14; factual=incorrect; action=invalid"
+  },
+  "imported_at": "2026-08-13T21:00:42Z"
+}

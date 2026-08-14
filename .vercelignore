@@ -1,8 +1,15 @@
 # Keep the production web deployment scoped to the existing static site.
 app/
 .agent/
+.claude/
+.codegraph/
+.github/
+.pytest_cache/
+.ruff_cache/
+/geo/
 /brand/
 miniprogram/
+/tests/
 tools/
 xhs_cards/
 project.config.json

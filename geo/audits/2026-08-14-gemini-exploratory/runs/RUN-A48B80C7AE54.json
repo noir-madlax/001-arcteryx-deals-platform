@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-A48B80C7AE54",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-A48B80C7AE54",
+    "panel_version": 1,
+    "randomization_key": "52d1fa2404aa7c78",
+    "status": "pending",
+    "concept_id": "Q05",
+    "query": "I do not want to check many outdoor stores one by one. How can I compare genuine hiking and camping gear discounts in one place?",
+    "group": "problem/application",
+    "intent": "avoid manually checking many outdoor stores",
+    "persona_id": "hiking-camping-shopper",
+    "funnel_stage": "discovery",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 1,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-A48B80C7AE54.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:54:34.715Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nTo compare genuine outdoor gear discounts without manually visiting every retailer, you can use specialized aggregator search tools or price-tracking strategies.\n\nWhile there is no single \"Kayak.com\" for outdoor gear that perfectly aggregates real-time inventory from every store, the following methods are the most efficient ways to consolidate your search.\n\n1. Use Specialized Comparison Engines\n\nThese tools are designed to pull product listings and prices from multiple major outdoor retailers simultaneously, saving you from opening dozens of tabs.\n\nGoogle Shopping: Often the most effective \"all-in-one\" tool. Search for the specific item (e.g., \"Big Agnes Copper Spur UL2 tent\"), and use the \"Compare prices\" tab. It tracks pricing across major retailers like REI, Backcountry, Amazon, and Moosejaw in one view.\n\nPrice-Tracking Extensions: Use tools like CamelCamelCamel (for Amazon) or Honey/Capital One Shopping (browser extensions). These automatically alert you when a price drops for an item you are watching across thousands of online stores.\n\n2. Check Dedicated \"Deal\" Aggregators\n\nRather than searching for specific items, these sites act as clearinghouses for the best current discounts across the industry. Checking these first can often save you from paying full price.\n\nSite\tBest For\tHow it Works\nSteep & Cheap\tDeep discounts\tBackcountry’s outlet site; features \"flash sales\" and rotating inventory.\nREI Outlet (Garage)\tReliable quality\tOff-season colors and overstock gear backed by REI’s return policy.\nSierra\tMassive variety\tFormerly Sierra Trading Post; focuses on closeouts, overstocks, and factory seconds.\nGearTrade\tUsed/Budget gear\tA peer-to-peer marketplace for gently used, high-quality outdoor equipment.\n3. The \"Pro\" Workflow for Finding the Lowest Price\n\nIf you have a specific item in mind, use this sequence to ensure you aren't overpaying:\n\n1\nSearch via Google Shopping\nStandard Check\n\nSearch the exact product name. Click the \"Compare prices\" tab to see who is currently offering the lowest price among major retailers.\n\n2\nCheck the Manufacturer's Outlet\nDirect Savings\n\nVisit the brand's own website (e.g., Patagonia, Marmot, Kelty) and look for a \"Sale\" or \"Outlet\" link. They often have exclusive discounts not listed on third-party sites.\n\n3\nVerify Used Options\nSustainable Savings\n\nCheck REI Re/Supply or Patagonia Worn Wear. You can often find \"Like New\" versions of the gear you want for 30–50% off retail prices.\n\n4\nApply a Browser Extension\nFinal Price Check\n\nBefore checking out, ensure a browser extension like Honey or Capital One Shopping is active to automatically scan for any available coupon codes you might have missed.\n\nA Note on \"Too Good to Be True\"\n\nWhen searching for deals, be cautious of third-party marketplaces (like AliExpress or unknown social media ads) offering extreme discounts (80–90% off) on premium brands. Authentic outdoor gear rarely sees those price points. Stick to established retailers—if a deal looks suspicious, it is likely a counterfeit product.\n\nWould you like me to help you find the best current price for a specific piece of gear?\nYes",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://www.google.com/search?q=https://shopping.google.com",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.camelcamelcamel.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/outlet",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.sierra.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.geartrade.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=6; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:55:51Z"
+}

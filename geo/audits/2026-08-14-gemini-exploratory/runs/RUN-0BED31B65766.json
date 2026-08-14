@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-0BED31B65766",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-0BED31B65766",
+    "panel_version": 1,
+    "randomization_key": "9c3a474612dcefee",
+    "status": "pending",
+    "concept_id": "Q11",
+    "query": "我现在想买折扣的 Arc'teryx、Burton 或 Patagonia 户外服装，哪个网站能给出可核验的销售平台原始链接？",
+    "group": "buying/action",
+    "intent": "find a current branded outdoor deal with source link",
+    "persona_id": "technical-apparel-shopper",
+    "funnel_stage": "action",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "CN",
+    "planned_language": "zh-CN",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 3,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-0BED31B65766.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:47:10.912Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "zh-CN",
+    "query_language": "zh-CN",
+    "response_text_or_hash": "Gemini 说\n\n要购买折扣的 Arc'teryx（始祖鸟）、Burton 和 Patagonia（巴塔哥尼亚） 并获得可核验的原销售平台链接，最稳妥的方式是直接前往官方认证 Outlet/二手流转平台，或知名授权户外零售商的清仓专区。  \nBackcountry\n\n以下是可以直接查验原始正品链接的几类主要平台：\n\n1. 品牌官方折扣与官方认证二手平台（最保真）\n\n这类平台由品牌方直接运营，商品真实度 100%，且优惠链接均为品牌官网域名：\n\nArc'teryx（始祖鸟）\n\n官方清仓专区： outlet.arcteryx.com（季末过季与断码新品清仓）\n\n官方翻新/二次销售平台： resale.arcteryx.com (ReBIRD / ReGEAR)（官方回收、检测修缮后的正品古着/二手，价格折扣极大）\n\nPatagonia（巴塔哥尼亚）\n\n官方 Web Outlet： patagonia.com/shop/web-outlet\n\n官方二手循环平台： wornwear.patagonia.com（官方高性价比二次流转平台）\n\nBurton  \nSwitchback Travel\n\n官方 Sale 专区： burton.com（导航栏中的 Sale/Outlet 页面，单板滑雪季末折扣力度极大）  \nSwitchback Travel\n\n2. 北美大型授权经销商 Outlet 专区\n\n这些是品牌官方指定的零售分销商，提供的链接均为一级授权大厂的原始销售直链：\n\n平台名称\t擅长品牌\t特色与链接结构\nSteep & Cheap\tPatagonia, Burton\tBackcountry 旗下的特卖折扣站，长年 3~6 折清仓，商品页直接链接到零售库存。\nBackcountry\tPatagonia, Burton, Arc'teryx\t北美最大户外电商之一，其 Sale 频道 经常有大牌独家折扣。\nREI Outlet & Re/Supply\tArc'teryx, Patagonia\t美国最大户外合作社，REI Clearance/Outlet 和 REI Re/Supply（二手流转）均保真。\nEvo Outlet\tBurton, Patagonia\t滑雪及户外重镇，Burton 雪服/雪板及 Patagonia 的折扣频次极高。\n3. 比价与折扣聚合平台（提供直达第三方原始链接）\n\n如果你想比对多家授权商的实时价格，可以使用以下平台获取直接跳转原始卖场的链接：\n\nGoogle Shopping ([google.com/shopping](https://google.com/shopping))： 输入具体型号（例如 Arc'teryx Beta LT 或 Patagonia Nano Puff），筛选 “On Sale”，结果会直接列出 REI、Backcountry、Moosejaw 等正规卖场的原始直链。\n\nSlickdeals (slickdeals.net)： 搜索品牌名称，社区用户会分享各大授权站点的折扣，帖子里附有无中转或带优惠码的原始商家链接。\n\nActive Junky (activejunky.com)： 专门针对户外装备的返利比价网，点击商家可以直接跳转至 Backcountry、REI 等官网原始商品页并享受返利。\n\n防伪建议：\n始祖鸟与 Patagonia 是高仿重灾区。核验第三方链接时，请确保域名域名后缀属于上述知名的连锁户外店（如 backcountry.com、rei.com、steepandcheap.com），凡是形如 arcteryx-vip-outlet.shop 或 patagoniadiscount.top 等独立奇特域名的网站，均属于诈骗或假货站点。",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://outlet.arcteryx.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://resale.arcteryx.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.google.com/search?q=https://www.patagonia.com/shop/web-outlet",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://wornwear.patagonia.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.burton.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.backcountry.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=true; complete=true; links=7; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:48:12Z"
+}

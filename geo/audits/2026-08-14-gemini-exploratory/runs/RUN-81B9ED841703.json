@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-81B9ED841703",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-81B9ED841703",
+    "panel_version": 1,
+    "randomization_key": "3e6886cb7ef25330",
+    "status": "pending",
+    "concept_id": "Q05",
+    "query": "I do not want to check many outdoor stores one by one. How can I compare genuine hiking and camping gear discounts in one place?",
+    "group": "problem/application",
+    "intent": "avoid manually checking many outdoor stores",
+    "persona_id": "hiking-camping-shopper",
+    "funnel_stage": "discovery",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 3,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-81B9ED841703.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:51:27.625Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nTo compare outdoor gear deals across multiple retailers without visiting them individually, you can use cashback portals that act as aggregators or browser-based price trackers that monitor sites for you.\n\n1. The Best \"One-Stop\" Aggregator: Active Junky\n\nActive Junky is the industry standard for outdoor-specific deal hunting.\n\nHow it works: It functions as a shopping portal. You search for a brand or product on their site, and they show you which outdoor retailers (like Backcountry, REI, or CampSaver) have it in stock.\n\nThe Bonus: When you click through their links to complete a purchase, you earn cashback (typically 5–12%) on the sale price.\n\nBest for: Finding the best current price across 100+ outdoor retailers while getting a little extra money back on your purchase.\n\n2. Best for Tracking Price Drops (Automated)\n\nIf you have a specific item in mind (e.g., a \"Big Agnes Copper Spur Tent\"), don't manually check sites. Use a price-tracking tool to do the work for you.\n\nHARPA AI (Recommended): Unlike standard tools limited to Amazon, this browser extension uses AI to monitor any website. You can open any product page on any outdoor retailer's site, click the extension, and tell it to \"monitor this price.\" It will alert you the moment the price drops.  \nHarpa AI\n\nHoney: Best for broad, multi-retailer support. It automatically searches for coupon codes at checkout and tracks prices on major sites like Amazon, Walmart, and various outdoor specialty stores.  \nHarpa AI\n+ 1\n\nCamelCamelCamel: If you are comfortable buying from Amazon, this is the gold standard for seeing the price history of an item. It ensures you aren't buying something at a \"fake\" discount when it has been cheaper in the past.\n\n3. The \"Big Three\" Discount Hubs\n\nIf you prefer to browse \"clearance\" inventory rather than searching for specific items, these three sites aggregate last-season gear from top manufacturers at deep discounts (often 30–60% off):\n\nRetailer\tBest For\tWhy It Saves Time\nREI Garage\tPremium quality\tEverything here is vetted by REI’s quality standards, often featuring last-season colors/models.\nSteep & Cheap\tFlash sales\tOwned by Backcountry; it is essentially a permanent clearance rack with \"Current Steals\" that refresh constantly.\nSierra\tBudget finds\tOwned by the TJX companies (TJ Maxx/Marshalls). It carries a mix of big-name brands and budget-friendly alternatives.\nPro-Tip: Check the Used Gear Market\n\nBefore buying new, check these two sites. They aggregate pre-owned gear from individuals and retailers, which is often significantly cheaper than even the deepest \"new\" clearance discounts:\n\nREI Used Gear: High-quality, inspected returns or trade-ins from REI members.\n\nGearTrade: Often described as the \"eBay of outdoor gear,\" it is the most reliable marketplace for buying directly from other enthusiasts.\n\nWould you like me to show you how to set a price alert for a specific piece of gear?\nYes",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://harpa.ai/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.joinhoney.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://camelcamelcamel.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.google.com/search?q=https://www.rei.com/garage",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.sierra.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/used",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.geartrade.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=8; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:52:01Z"
+}

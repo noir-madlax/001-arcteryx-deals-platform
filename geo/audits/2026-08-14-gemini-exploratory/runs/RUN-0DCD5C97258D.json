@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-0DCD5C97258D",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-0DCD5C97258D",
+    "panel_version": 1,
+    "randomization_key": "4a81545389c8b3b4",
+    "status": "pending",
+    "concept_id": "Q04",
+    "query": "Recommend a price-comparison tool that shows outdoor gear prices, discounts, and update times across retailers.",
+    "group": "category",
+    "intent": "find an outdoor price comparison tool",
+    "persona_id": "price-conscious-outdoor-shopper",
+    "funnel_stage": "shortlist",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 3,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-0DCD5C97258D.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:54:21.791Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nFor tracking outdoor gear, the most effective approach is to combine a dedicated outdoor deal aggregator (for discovery) with a universal price-tracking tool (for specific items).\n\nNo single tool perfectly displays \"live\" update times for every retailer because most aggregate data via periodic API refreshes. However, the tools below offer the best balance of transparency and functionality.\n\n1. Best Dedicated Outdoor Aggregators\n\nThese platforms specialize in outdoor gear and are curated by experts, meaning they often filter out \"fake\" sales or low-quality items.\n\nOutside Deals Finder:\n\nHow it works: Aggregates major retailers like REI, Backcountry, evo, and Competitive Cyclist into one searchable hub.\n\nBest for: Searching by category (e.g., \"sleeping pads\") or sorting by \"Biggest Discount\" to find clearance gems.\n\nUpdate Frequency: Refreshes its data feed every few hours.  \nOutside Magazine\n\nTreeline Review Deal Finder:\n\nHow it works: A high-quality, human-curated list. They only track items that have passed their own field-testing standards.\n\nBest for: Quality assurance. You won't find junk here; you’ll only find deals on gear they actually recommend.\n\nUpdate Frequency: Updated daily.  \nTreeline Review\n\n2. Best Universal Price Trackers (For Specific Items)\n\nIf you have your eye on a specific model (e.g., Garmin inReach Mini 2), these tools allow you to paste a URL and receive alerts the moment the price drops at that specific store.\n\nTool\tBest Feature\tUpdate Frequency\nUptimeRobot\tMonitors specific page elements (like the price tag) for changes.\tChecks every 5 minutes.\nWhisprice\tExcellent mobile app for managing a \"wishlist\" across any US store.\tNear real-time monitoring.\n3. Pro-Tip: Don't Forget Cash Back\n\nFor outdoor gear, the \"best price\" often includes the cash back you earn after the purchase. Before buying at a discount, check these two sites to see if you can stack an additional 2–10% savings:\n\nActive Junky: The gold standard for outdoor-specific cash back. They partner with 2,500+ outdoor retailers.\n\nRakuten: Generally better for larger, non-specialized retailers (like Backcountry or Moosejaw when they run promos).\n\nSummary Recommendation\n\nTo browse deals: Start with the Outside Deals Finder to see what is currently on sale across the industry.\n\nTo buy a specific item: Use Whisprice or UptimeRobot to monitor that specific product page so you are notified the moment it hits your target price.\n\nTo maximize value: Always click through Active Junky before completing your purchase to earn a percentage back on the final sale price.  \nActive Junky\n\nWould you like a guide on how to set up price alerts for a specific piece of gear?\nYes",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://www.outsideonline.com/outdoor-gear/introducing-outside-deals-finder/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.treelinereview.com/deals",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://uptimerobot.com/free-tools/price-tracking/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.whisprice.com/us",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.activejunky.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=5; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:55:51Z"
+}

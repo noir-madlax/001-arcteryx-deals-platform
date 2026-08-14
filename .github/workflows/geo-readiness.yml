@@ -1,0 +1,92 @@
+name: GEO Readiness Monitor
+
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geardrop-geo-readiness-monitor
+  cancel-in-progress: true
+
+env:
+  SITE_URL: https://001.100app.dev
+
+jobs:
+  geo-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - id: generated_content
+        name: Verify generated knowledge pages
+        continue-on-error: true
+        run: python tools/build_geo_content.py --check
+
+      - id: catalog_assets
+        name: Verify catalog sitemap and coverage snapshot
+        continue-on-error: true
+        run: python tools/generate_geo_catalog.py --online --check
+
+      - id: repository_contract
+        name: Audit repository GEO contract
+        continue-on-error: true
+        run: python tools/check_geo_readiness.py --output geo-readiness-repository.json
+
+      - id: production_contract
+        name: Audit production GEO contract
+        continue-on-error: true
+        run: python tools/check_geo_readiness.py --base-url "$SITE_URL" --output geo-readiness-production.json
+
+      - name: Upload structured GEO evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geardrop-geo-readiness-${{ github.run_id }}
+          path: |
+            geo-readiness-repository.json
+            geo-readiness-production.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Aggregate GEO quality gate
+        if: always()
+        env:
+          GENERATED_CONTENT: ${{ steps.generated_content.outcome }}
+          CATALOG_ASSETS: ${{ steps.catalog_assets.outcome }}
+          REPOSITORY_CONTRACT: ${{ steps.repository_contract.outcome }}
+          PRODUCTION_CONTRACT: ${{ steps.production_contract.outcome }}
+        run: |
+          {
+            echo "## GearDrop GEO readiness"
+            echo ""
+            echo "This job measures owned-surface readiness. It does not measure AI mentions, citations, or recommendations."
+            echo ""
+            echo "| Check | Outcome |"
+            echo "|---|---|"
+            echo "| Generated knowledge content | $GENERATED_CONTENT |"
+            echo "| Product sitemap and catalog snapshot | $CATALOG_ASSETS |"
+            echo "| Repository GEO contract | $REPOSITORY_CONTRACT |"
+            echo "| Production GEO contract | $PRODUCTION_CONTRACT |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          failed=0
+          for result in "$GENERATED_CONTENT" "$CATALOG_ASSETS" "$REPOSITORY_CONTRACT" "$PRODUCTION_CONTRACT"; do
+            if [ "$result" != "success" ]; then
+              failed=1
+            fi
+          done
+          if [ "$failed" -ne 0 ]; then
+            echo "One or more GEO readiness checks failed; inspect the retained JSON evidence."
+            exit 1
+          fi
+          echo "All GEO readiness checks passed. Observed AI visibility remains not_measured."

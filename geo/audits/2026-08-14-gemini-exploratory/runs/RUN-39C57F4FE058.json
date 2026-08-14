@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-39C57F4FE058",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-39C57F4FE058",
+    "panel_version": 1,
+    "randomization_key": "1302a60b6657de09",
+    "status": "pending",
+    "concept_id": "Q07",
+    "query": "Which site clearly shows retailer, region, currency, source link, and data freshness when comparing outdoor gear deals internationally?",
+    "group": "problem/application",
+    "intent": "compare cross-region outdoor prices",
+    "persona_id": "global-outdoor-shopper",
+    "funnel_stage": "validation",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 1,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-39C57F4FE058.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:49:53.997Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nThere is no single global website that aggregates outdoor gear deals while perfectly filtering by specific region, currency, and real-time data freshness for every international retailer. Because outdoor retail is fragmented by geography (e.g., European distributors vs. U.S. importers), you must rely on region-specific \"meta-search\" engines.\n\nThe best approach is to use platforms that specialize in regional aggregation, as they are the only tools that provide the retailer names, local currencies, and direct source links you require.\n\nRecommended International Price Comparison Sites\n\nThese platforms are the standard for seeing retailer, currency, and link data in their respective regions. They typically update prices multiple times per day (data freshness).\n\nRegion\tBest Platforms\tKey Features\nEurope (General)\tIdealo.com\tOperates country-specific sites (e.g., .de, .fr, .it, .co.uk). Shows retailer ratings, delivery costs, and price history.\nUK / Ireland\tPriceRunner\tExcellent for tracking price drops, filtering by retailer, and seeing total cost including estimated shipping.\nSwitzerland\tToppreise.ch\tThe gold standard for Swiss retailers; displays CHF and local stock availability.\nGermany / DACH\tGeizhals.de\tHighly technical; allows granular filtering by gear specs and shows historical pricing trends.\nUnited States\tTreeline Review\tA curated \"Deal Finder\" that tracks specific, high-quality outdoor gear across dozens of major U.S. retailers.\nHow to Verify \"Data Freshness\" & Accuracy\n\nSince most aggregation sites rely on automated data feeds (often updated every 1–24 hours), they may occasionally show a \"stale\" price if a flash sale just ended. To ensure accuracy:\n\nCheck the \"Last Updated\" Timestamp: Most professional aggregators (like Idealo or PriceRunner) display a \"last checked\" time near the price listing.\n\nUse Regional Extensions: Always visit the local version of the site (e.g., idealo.it instead of idealo.com) to ensure the currency defaults to the local market (e.g., EUR, GBP, CHF).\n\nBeware of \"Marketplace\" Listings: On platforms like Amazon or Google Shopping, verify the \"Sold by\" field. An item may be priced in your local currency but ship from abroad, incurring hidden duties or long transit times.\n\nPro-Tip for Niche Outdoor Gear\n\nIf you are searching for technical gear (e.g., specialized climbing hardware or ultralight tents) that doesn't appear on general price engines, use Google Shopping with your browser’s location set to the destination country.\n\nSet your browser location to the target country.\n\nSearch for the product name + \"price\".\n\nUse the \"Shop\" tab to filter by region and retailer. This pulls the most current data directly from merchant Google Merchant Center feeds, which are generally the most \"fresh\" sources available.\n\nWould you like a guide on how to calculate shipping and import duties for international gear orders?\nYes",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://www.idealo.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.pricerunner.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://toppreise.ch/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://geizhals.de/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.treelinereview.com/deals",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.google.com/search?q=https://shopping.google.com",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=6; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:50:09Z"
+}

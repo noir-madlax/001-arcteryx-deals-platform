@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-97577E0E83D9",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-97577E0E83D9",
+    "panel_version": 1,
+    "randomization_key": "3a10126506348157",
+    "status": "pending",
+    "concept_id": "Q03",
+    "query": "Which websites aggregate hiking, camping, climbing, skiing, and cycling gear deals across multiple retailers?",
+    "group": "category",
+    "intent": "discover multi-retailer outdoor deal aggregators",
+    "persona_id": "multi-sport-outdoor-shopper",
+    "funnel_stage": "discovery",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 2,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-97577E0E83D9.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:52:00.330Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nTrue \"cross-retailer\" price comparison engines for outdoor gear have become rarer in recent years, as many have been absorbed by larger retail conglomerates. However, you can still find deals across the industry by using a combination of specialized deal aggregators, consignment platforms, and retailer-specific outlet sections.\n\n1. Dedicated Deal Aggregators & Price Trackers\n\nWhile there is no single \"Google Flights\" for outdoor gear, these resources help you track price drops and aggregate sales across multiple stores.\n\nGearAtlas: One of the few remaining dedicated price comparison tools for the outdoor industry. It allows you to search for specific items (primarily hiking, camping, and backpacking gear) and see current pricing across several major outdoor retailers to find the lowest available price.  \ngearatlas.com\n\nActive Junky: While primarily a cashback site, it functions as a powerful deal aggregator. By shopping through their links, you earn cash back at dozens of partner retailers (like REI, Backcountry, and Moosejaw). They also feature a \"Deals\" section that highlights current site-wide sales and coupon codes across the outdoor industry.\n\n2. Retailer-Owned \"Deal\" Sites\n\nThese sites are owned by major parent companies (often Backcountry or similar entities) but act as centralized hubs for clearance inventory from their own and partner stock.\n\nSteep & Cheap: Owned by Backcountry, this is the industry standard for \"flash sales.\" They feature a rotating selection of heavily discounted gear (often 30–70% off) across climbing, skiing, cycling, and hiking categories.  \nwww.steepandcheap.com\n\nREI Outlet (The Garage): While this only aggregates REI’s own clearance inventory, it is widely considered the most reliable source for high-quality, name-brand outdoor gear at deep discounts (typically 30–50% off). Signing up for their email list is the best way to get daily deal alerts.  \nCrux Range\n\n3. Sustainable/Used Gear Marketplaces\n\nIf you are looking for specific items regardless of whether they are \"new\" or \"used,\" these platforms aggregate listings from individual sellers and retail trade-in programs, often resulting in lower prices than new gear.\n\nGeartrade: A massive marketplace for pre-loved outdoor gear. It acts as an aggregator for individual sellers, professional shops, and brand-direct trade-in programs (like Patagonia Worn Wear or Arc'teryx ReGEAR). It is excellent for finding high-end technical gear that is otherwise expensive.\n\nSummary Comparison of Options\nPlatform Type\tBest For\tExamples\nPrice Comparison\tFinding the lowest price on a new item\tGearAtlas\nCashback/Coupons\tSaving money on full-price or sale items\tActive Junky\nFlash Sales\tImpulse buys on closeout inventory\tSteep & Cheap\nConsignment\tFinding high-end gear at a fraction of the cost\tGeartrade\nPro-Tip: How to \"Aggregate\" Like a Pro\n\nSince no single site covers every retailer, experienced gear buyers often use this three-step workflow:\n\nResearch: Use OutdoorGearLab to identify the specific model you want based on their objective, hands-on testing.\n\nCompare: Plug that model name into GearAtlas or a standard Google Shopping search to check current pricing across major retailers.\n\nActivate: Before checking out, check Active Junky to see if that retailer is offering a 5–10% cash-back incentive.\n\nAre you looking for a specific type of gear, such as high-end climbing protection or a specific camping tent, that might be easier to track via a dedicated alert?",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "http://gearatlas.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://activejunky.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/outlet",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://geartrade.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.outdoorgearlab.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=6; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:52:01Z"
+}
