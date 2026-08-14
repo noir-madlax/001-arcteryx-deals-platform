@@ -1,0 +1,341 @@
+<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GearDrop · 品牌 SEO＋GEO 诊断报告</title><meta name="description" content="本地候选版本已通过 81/81 readiness；当前生产仍为 9/33，尚不能宣称上线或 AI 能见度提升。"><style>
+:root{--ink:#122022;--muted:#647174;--paper:#f6f3ed;--card:#fffdfa;--line:#dcd8cf;--teal:#006c67;--lime:#b7e34a;--blue:#3b67d8;--orange:#e86f3e;--red:#c7453d;--shadow:0 20px 55px rgba(22,39,42,.09);font-family:Inter,"Noto Sans SC","Noto Sans TC",system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--paper)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);line-height:1.65}a{color:var(--teal);text-decoration-thickness:1px;text-underline-offset:3px}button{font:inherit}.wrap{width:min(1180px,calc(100% - 40px));margin:auto}.hero{padding:72px 0 46px;background:linear-gradient(135deg,#10282b 0%,#173f41 58%,#295b55 100%);color:white;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:420px;height:420px;border:90px solid rgba(183,227,74,.14);border-radius:50%;right:-130px;top:-170px}.kicker,.eyebrow{text-transform:uppercase;letter-spacing:.11em;font-size:12px;font-weight:800}.hero h1{font-size:clamp(40px,6vw,76px);line-height:1.03;margin:12px 0;max-width:920px}.hero .subtitle{font-size:20px;color:#d8e5e3;max-width:760px}.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.meta span,.hero .meta a{padding:7px 12px;border:1px solid rgba(255,255,255,.24);border-radius:999px;color:#edf7f5;text-decoration:none;font-size:13px}.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:-24px auto 52px;position:relative;z-index:2}.score-card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:22px;padding:26px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}.score-ring{--score:0;width:96px;height:96px;border-radius:50%;display:grid;place-content:center;text-align:center;background:radial-gradient(circle at center,var(--card) 57%,transparent 59%),conic-gradient(var(--accent) calc(var(--score)*1%),#e9e5dc 0)}.score-ring strong{font-size:31px;line-height:1}.score-ring span{font-size:11px;color:var(--muted)}.score-card .verdict{font-size:15px;margin:5px 0}.micro{display:flex;gap:8px;flex-wrap:wrap}.micro span{font-size:11px;color:var(--muted);background:#f0eee8;border-radius:99px;padding:4px 8px}section.report-section{padding:34px 0 46px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:22px}.section-head h2{font-size:clamp(28px,4vw,44px);line-height:1.1;margin:0}.section-head p{max-width:580px;color:var(--muted)}.summary-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:20px}.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px}.panel h3{margin-top:0}.big-verdict{font-size:clamp(23px,3vw,38px);line-height:1.25;margin:0 0 20px}.opportunity{border-left:5px solid var(--lime);background:#f0f5df;padding:16px 18px;border-radius:0 12px 12px 0}.two-lists{display:grid;grid-template-columns:1fr 1fr;gap:14px}.two-lists ul{padding-left:20px}.score-tables{display:grid;grid-template-columns:1fr 1fr;gap:20px}.table-wrap{overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:#eeece6}td small{display:block;color:var(--muted);margin-top:4px;line-height:1.35}.number{white-space:nowrap}.bar{height:7px;background:#e9e5dc;border-radius:9px;min-width:90px;margin-top:8px}.bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--teal),var(--lime))}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.filters button{border:1px solid var(--line);background:var(--card);padding:8px 14px;border-radius:99px;cursor:pointer;color:var(--ink)}.filters button.active{background:var(--ink);color:white}.finding-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.finding{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 7px 24px rgba(22,39,42,.04)}.finding[hidden]{display:none}.finding-top{display:flex;align-items:center;gap:7px}.finding-id{margin-left:auto;color:var(--muted);font-size:11px}.finding h3{font-size:22px;line-height:1.25;margin:16px 0 8px}.pill{display:inline-block;padding:4px 8px;border-radius:99px;background:#eceae4;color:#485457;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.pill.sev.critical{background:#f4d1cc;color:#8f211b}.pill.sev.high{background:#fde0ca;color:#8a3a16}.pill.sev.medium{background:#e4e9fb;color:#2446a3}.pill.area{background:#d8efeb;color:#0d645e}.finding-meta{display:flex;gap:13px;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:11px;color:var(--muted)}.callout{margin-top:14px}.callout p{margin:3px 0}.callout.recommendation{padding:13px 15px;background:#eef4df;border-radius:12px}.evidence-list{padding-left:18px}.evidence-list li{margin-bottom:8px}.evidence-list span{display:block;color:var(--muted);font-size:12px}details summary{cursor:pointer;font-weight:700;margin-top:15px}.query-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}.stat{background:var(--card);border:1px solid var(--line);padding:12px 16px;border-radius:13px}.stat b{font-size:23px;margin-right:6px}.result{font-size:11px;padding:4px 7px;border-radius:9px;background:#eee}.result.observed{background:#d9eee1;color:#185f36}.result.not_observed{background:#f5d9d6;color:#8b2f28}.competitor-grid,.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.competitor,.kpi{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}.competitor h3,.kpi h3{font-size:21px;margin:10px 0}.compare{display:flex;gap:8px}.compare span{background:#f0eee9;padding:6px 9px;border-radius:8px;font-size:12px}.roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:road}.roadmap-card{position:relative;background:#132b2d;color:white;border-radius:20px;padding:28px;min-height:350px}.roadmap-card .step{position:absolute;right:22px;top:15px;font-size:58px;font-weight:900;color:rgba(255,255,255,.07)}.roadmap-card .eyebrow{color:var(--lime)}.roadmap-card h3{font-size:24px;line-height:1.25}.roadmap-card ul{padding-left:18px}.roadmap-foot{position:absolute;left:28px;right:28px;bottom:25px;color:#bdd0ce;font-size:11px}.roadmap-foot span{display:block;margin-top:4px}.kpi>div{display:grid;gap:7px;margin-top:16px}.kpi>div span{font-size:11px;color:var(--muted)}.kpi>div b{display:block;color:var(--ink);font-size:13px}.source-list{list-style:none;padding:0;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}.source-list li{display:grid;grid-template-columns:42px 1fr auto auto;gap:14px;align-items:start;padding:15px 18px;border-bottom:1px solid var(--line)}.source-list p{margin:3px 0;color:var(--muted);font-size:12px}.source-id{font-weight:900;color:var(--teal)}.source-list time{font-size:11px;color:var(--muted)}.footer{padding:30px 0 50px;color:var(--muted);font-size:12px}.print-button{position:fixed;right:20px;bottom:20px;border:0;background:var(--ink);color:white;padding:11px 15px;border-radius:99px;box-shadow:var(--shadow);cursor:pointer;z-index:9}.empty{color:var(--muted)}@media(max-width:850px){.score-grid,.summary-grid,.score-tables,.finding-grid,.competitor-grid,.roadmap,.kpi-grid{grid-template-columns:1fr}.score-grid{margin-top:20px}.source-list li{grid-template-columns:38px 1fr}.source-list .pill,.source-list time{display:none}.two-lists{grid-template-columns:1fr}.hero{padding-top:48px}.wrap{width:min(100% - 24px,1180px)}}@media print{.print-button,.filters{display:none!important}.hero{background:#173f41!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.finding,.panel,.score-card,.roadmap-card,.kpi,.competitor{break-inside:avoid}.report-section{break-before:auto}.wrap{width:100%}body{background:white}}
+
+.confidential-banner{position:sticky;top:0;z-index:20;padding:7px 16px;text-align:center;background:#8d2d25;color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em}
+.platform-block{margin-bottom:28px}.platform-block table{min-width:1080px}.subsection-title{font-size:20px;margin:24px 0 12px}.metric-stack{display:block;min-width:86px}.metric-stack b{display:block;font-size:13px;white-space:nowrap}.metric-stack small{display:block;color:var(--muted);font-size:10px;white-space:nowrap}.metric-divider{display:block;color:var(--muted);font-size:10px;margin:4px 0}
+@media print{.confidential-banner{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact}.platform-block table{min-width:0;font-size:9px}.platform-block th,.platform-block td{padding:7px 5px}.platform-block .metric-stack{min-width:0}.platform-block .metric-stack b,.platform-block .metric-stack small{white-space:normal;font-size:9px}}
+/* GEARDROP_AUDIT_SUPPLEMENT_CSS_START */
+.report-nav{position:sticky;top:0;z-index:18;background:rgba(246,243,237,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+.report-nav .wrap{display:flex;gap:10px;align-items:center;overflow-x:auto;padding-top:10px;padding-bottom:10px}
+.report-nav a{white-space:nowrap;text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 11px;font-size:12px}
+.canonical-scores{margin:0 0 0 auto;white-space:nowrap;font-size:12px;font-weight:800;color:var(--ink)}
+.score-card.score-block{grid-column:1/-1}
+.score-card.decision-metric{min-height:190px}
+.appendix-shell{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:0 24px 24px}
+.appendix-shell>summary{font-size:18px;padding:20px 0;margin:0}
+.supplement-note{color:var(--muted);max-width:850px}
+.supplement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.supplement-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.supplement-card h3{font-size:20px;line-height:1.25;margin:8px 0}
+.supplement-card p{margin:7px 0}
+.supplement-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.supplement-meta span{font-size:11px;color:var(--muted);background:#f0eee8;border-radius:99px;padding:4px 8px}
+.validation-layers,.validation-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:16px 0 24px}
+.validation-rules{grid-template-columns:repeat(4,minmax(0,1fr))}
+.validation-layer,.validation-rule{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.validation-layer strong,.validation-rule strong{display:block;margin-bottom:5px}
+.validation-layer p,.validation-rule p{font-size:13px;color:var(--muted);margin:0}
+.workstream-list{display:grid;gap:14px}
+.workstream{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.workstream h3{margin:5px 0 12px;font-size:21px}
+.workstream dl{display:grid;grid-template-columns:140px 1fr;gap:7px 14px;margin:0}
+.workstream dt{font-size:12px;color:var(--muted);font-weight:800}
+.workstream dd{margin:0}
+@media(max-width:850px){.canonical-scores{display:none}.supplement-grid,.validation-layers,.validation-rules{grid-template-columns:1fr}.workstream dl{grid-template-columns:1fr}.workstream dd{margin-bottom:8px}}
+@media print{.report-nav{display:none}}
+/* GEARDROP_AUDIT_SUPPLEMENT_CSS_END */
+</style></head><body>
+    <header class="hero"><div class="wrap"><p class="kicker">品牌 SEO＋GEO 诊断报告</p><h1>GearDrop</h1><p class="subtitle">本地候选已建立 GEO 信息层；生产尚未发布，真实 AI 能见度未测量。</p>
+    <div class="meta"><span>诊断日期: 2026-08-14</span><span>目标市场: CN, US</span><span>语言: zh-CN, en-US</span><a href="https://001.100app.dev/" target="_blank" rel="noopener">https://001.100app.dev/ ↗</a></div></div></header>
+<!-- GEARDROP_AUDIT_SUPPLEMENT_NAV_START -->
+<nav class="report-nav" aria-label="报告章节"><div class="wrap">
+  <a href="#decision-summary">结论</a>
+  <a href="#observed-visibility">AI 能见度</a>
+  <a href="#website-experience">网站体验</a>
+  <a href="#priority-roadmap">路线</a>
+  <a href="#improvement-validation">改进验证</a>
+  <a href="#evidence-sources">证据</a>
+  <p class="canonical-scores">SEO 63.9 · GEO 67.2</p>
+</div></nav>
+<!-- GEARDROP_AUDIT_SUPPLEMENT_NAV_END -->
+<main><div class="wrap score-grid">
+    <article class="score-card score-block" style="--accent:#b7e34a">
+      <div class="score-ring" style="--score:66"><strong>66</strong><span>/100</span></div>
+      <div><p class="eyebrow">综合准备度</p><p class="verdict">本地候选版本已通过 81/81 readiness；当前生产仍为 9/33，尚不能宣称上线或 AI 能见度提升。</p>
+      <div class="micro"><span>证据覆盖率 87%</span><span>置信度 —</span></div></div>
+    </article>
+    <article class="score-card decision-metric" style="--accent:#3b67d8">
+      <div class="score-ring" style="--score:64"><strong>64</strong><span>/100</span></div>
+      <div><p class="eyebrow">SEO 搜索发现能力</p><p class="verdict">本地候选版本具备可用的抓取、语义、架构和内容基线，但国际化、独立权威与转化测量仍有实质缺口；该分数不代表当前生产站。</p>
+      <div class="micro"><span>证据覆盖率 86%</span><span>置信度 medium</span></div></div>
+    </article>
+    <article class="score-card decision-metric" style="--accent:#e86f3e">
+      <div class="score-ring" style="--score:67"><strong>67</strong><span>/100</span></div>
+      <div><p class="eyebrow">GEO / AI 引用准备度</p><p class="verdict">候选版本已形成可检索、可识别、可直接回答并带方法边界的信息层；外部佐证不足，真实 AI 提及、引用和推荐仍为 not_measured。</p>
+      <div class="micro"><span>证据覆盖率 88%</span><span>置信度 medium</span></div></div>
+    </article></div>
+    <section class="report-section" id="decision-summary"><div class="wrap"><div class="section-head"><h2>执行摘要</h2></div><div class="summary-grid"><article class="panel"><p class="big-verdict">本地候选版本已通过 81/81 readiness；当前生产仍为 9/33，尚不能宣称上线或 AI 能见度提升。</p><p><b>SEO</b> · 候选版本具备抓取、语义、架构和内容基线，国际化、独立权威与转化测量仍有缺口。</p><p><b>GEO</b> · 信息已可检索、识别和引用，但外部佐证不足，平台提及、引用与推荐均未测量。</p><div class="opportunity"><b>增长机会</b><p>先完成生产 81/81 与动作读回，再用 en-US、独立引用和 30/90 天冻结面板持续验证效果。</p></div></article><article class="panel"><div class="two-lists"><div><h3>现有优势</h3><ul><li>服务器可读的实体、方法、FAQ、品牌、指南、目录状态和具体商品信息层。</li><li>8,219 个稳定商品实体 URL 及同批次、带时间边界的目录快照。</li><li>每日只读 readiness 与现有数据刷新后的 sitemap/status 更新机制。</li></ul></div><div><h3>关键风险</h3><ul><li>候选版本尚未发布，生产仅通过 9/33。</li><li>同名租赁与抽奖实体突出，目标服务缺独立佐证。</li><li>en-US、转化回执与真实 AI 能见度尚未完成。</li></ul></div></div></article></div></div></section>
+    <section class="report-section"><div class="wrap"><div class="section-head"><h2>评分拆解</h2></div><div class="score-tables"><div class="table-wrap"><table><thead><tr><th>SEO</th><th>评分</th><th></th><th>置信度</th></tr></thead><tbody>
+        <tr><td><strong>Crawl and index foundations</strong><small>候选版本有 robots、sitemap index、静态与商品 sitemap、canonical 和 noindex 合同；生产尚未发布。</small></td>
+        <td class="number">13.5 / 15</td>
+        <td><div class="bar"><i style="width:90%"></i></div></td>
+        <td>high</td></tr>
+        <tr><td><strong>On-page semantics</strong><small>核心页面具备标题、描述、单一 H1、语言、OG 与可解析 JSON-LD；规范 /p 商品页由服务端读取真实目录记录并输出 Product/Offer。</small></td>
+        <td class="number">12.9 / 15</td>
+        <td><div class="bar"><i style="width:86%"></i></div></td>
+        <td>high</td></tr>
+        <tr><td><strong>Architecture and internal discovery</strong><small>首页、页脚、品牌页、方法、FAQ、指南、状态页和商品 URL 互链；完整孤岛与分页分析未覆盖。</small></td>
+        <td class="number">8.0 / 10</td>
+        <td><div class="bar"><i style="width:80%"></i></div></td>
+        <td>high</td></tr>
+        <tr><td><strong>Content and intent coverage</strong><small>覆盖实体、数据口径、品牌、常见问题、选择与核验意图；英文内容和更细分比较意图仍不足。</small></td>
+        <td class="number">16.0 / 20</td>
+        <td><div class="bar"><i style="width:80%"></i></div></td>
+        <td>medium</td></tr>
+        <tr><td><strong>International and local targeting</strong><small>主内容为 zh-CN，尚无成套 en-US 页面、hreflang 或市场入口。</small></td>
+        <td class="number">3.0 / 10</td>
+        <td><div class="bar"><i style="width:30%"></i></div></td>
+        <td>high</td></tr>
+        <tr><td><strong>Authority and reputation</strong><small>小样本未观察到目标服务的独立引用，且同名实体突出；未提供完整链接、评论或媒体数据。</small></td>
+        <td class="number">3.0 / 15</td>
+        <td><div class="bar"><i style="width:20%"></i></div></td>
+        <td>low</td></tr>
+        <tr><td><strong>Conversion and measurement readiness</strong><small>购买与 Support 动作清晰，但未执行生产提交、外链 canary、分析或后端回执对账。</small></td>
+        <td class="number">7.5 / 15</td>
+        <td><div class="bar"><i style="width:50%"></i></div></td>
+        <td>medium</td></tr></tbody></table></div><div class="table-wrap"><table><thead><tr><th>GEO</th><th>评分</th><th></th><th>置信度</th></tr></thead><tbody>
+        <tr><td><strong>Retrieval and crawler accessibility</strong><small>核心答案页及规范 /p 商品实体无需 JavaScript 即可读取，拥有稳定 URL、sitemap 与 llms 发现文件；生产尚未发布。</small></td>
+        <td class="number">13.5 / 15</td>
+        <td><div class="bar"><i style="width:90%"></i></div></td>
+        <td>high</td></tr>
+        <tr><td><strong>Entity clarity and consistency</strong><small>明确 GearDrop Outdoor Deals、规范域名、非销售/非品牌官网边界，并显式排除同名租赁与抽奖含义。</small></td>
+        <td class="number">12.0 / 15</td>
+        <td><div class="bar"><i style="width:80%"></i></div></td>
+        <td>medium</td></tr>
+        <tr><td><strong>Answer-ready coverage</strong><small>关于、方法、FAQ、品牌与指南页面提供直接回答和购买前核验步骤。</small></td>
+        <td class="number">16.0 / 20</td>
+        <td><div class="bar"><i style="width:80%"></i></div></td>
+        <td>medium</td></tr>
+        <tr><td><strong>Evidence and citability</strong><small>提供来源、币种、观察时间、计算公式、限制、商品原始链接和目录快照；缺独立作者与版本化外部研究。</small></td>
+        <td class="number">19.0 / 25</td>
+        <td><div class="bar"><i style="width:76%"></i></div></td>
+        <td>medium</td></tr>
+        <tr><td><strong>External corroboration</strong><small>小样本未观察到目标服务的独立 corroboration，并观察到两个显著同名实体。</small></td>
+        <td class="number">3.2 / 20</td>
+        <td><div class="bar"><i style="width:16%"></i></div></td>
+        <td>low</td></tr>
+        <tr><td><strong>Measurement readiness</strong><small>已有冻结查询概念、readiness 审计、版本化快照与日程工作流；平台实验和结果仍未运行。</small></td>
+        <td class="number">3.5 / 5</td>
+        <td><div class="bar"><i style="width:70%"></i></div></td>
+        <td>high</td></tr></tbody></table></div></div></div></section>
+    <section class="report-section"><div class="wrap"><div class="section-head"><h2>诊断发现</h2><p>先完成生产 81/81 与动作读回，再用 en-US、独立引用和 30/90 天冻结面板持续验证效果。</p></div><div class="filters"><button class="active" data-filter="all">全部</button><button data-filter="seo">SEO</button><button data-filter="geo">GEO</button><button data-filter="both">SEO + GEO</button><button data-filter="priority">高优先级</button></div><div class="finding-grid">
+        <article class="finding" data-area="both" data-severity="critical">
+          <div class="finding-top"><span class="pill area">SEO + GEO</span><span class="pill sev critical">严重</span><span class="finding-id">F-01</span></div>
+          <h3>候选 GEO 信息层尚未发布到生产</h3><p>生产读回仅通过 9/33 项，实体、方法、FAQ、指南、品牌、目录状态、llms 和拆分 sitemap 均未上线，也没有规范的服务端商品实体页。</p>
+          <div class="finding-meta"><span>影响: <b>high</b></span><span>投入: <b>medium</b></span><span>置信度: <b>high</b></span></div>
+          <div class="callout"><b>业务影响</b><p>搜索与生成式系统仍只能看到旧的薄信息层，无法利用本轮实现；把本地结果当上线会造成错误决策。</p></div>
+          <div class="callout recommendation"><b>建议</b><p>在独立审批后发布，随后运行生产 readiness 检查并人工复核首页、商品、方法、状态和 Support；任何关键失败都应回滚或修复后再声明上线。</p></div>
+          <details><summary>证据</summary><ul class="evidence-list"><li><a href="https://001.100app.dev/" target="_blank" rel="noopener">Production readiness report</a><span>2026-08-14 production readback passed 9 of 33 checks and failed 24.</span></li><li><a href="http://127.0.0.1:8765/" target="_blank" rel="noopener">Local candidate readiness report</a><span>The local candidate passed 81 of 81 checks.</span></li></ul></details>
+        </article>
+        <article class="finding" data-area="geo" data-severity="high">
+          <div class="finding-top"><span class="pill area">GEO</span><span class="pill sev high">高</span><span class="finding-id">F-02</span></div>
+          <h3>同名实体突出且目标服务缺少独立佐证</h3><p>日期限定的小样本搜索未返回目标域名，却返回 GearDrop 租赁服务和 BaseMap GearDrop 抽奖游戏。</p>
+          <div class="finding-meta"><span>影响: <b>high</b></span><span>投入: <b>high</b></span><span>置信度: <b>medium</b></span></div>
+          <div class="callout"><b>业务影响</b><p>生成式系统和用户可能把目标服务与其他 GearDrop 混淆；仅靠 owned-site 自述难以形成稳定信任。</p></div>
+          <div class="callout recommendation"><b>建议</b><p>稳定使用 GearDrop Outdoor Deals 辅助名称与规范域名，并争取与方法、目录数据和真实使用价值相关的独立引用；不得把合作方或自有内容计作独立背书。</p></div>
+          <details><summary>证据</summary><ul class="evidence-list"><li><a href="https://geardrop.co/" target="_blank" rel="noopener">Same-name rental entity</a><span>An unrelated GearDrop entity presents itself as a backcountry equipment rental service.</span></li><li><a href="https://www.basemap.com/geardrop" target="_blank" rel="noopener">Same-name giveaway entity</a><span>BaseMap uses GearDrop for an outdoor giveaway game.</span></li></ul></details>
+        </article>
+        <article class="finding" data-area="both" data-severity="medium">
+          <div class="finding-top"><span class="pill area">SEO + GEO</span><span class="pill sev medium">中</span><span class="finding-id">F-03</span></div>
+          <h3>en-US 与多市场发现面尚不完整</h3><p>候选知识层主要是 zh-CN，尚无完整 en-US 对应页、hreflang 或可核验的市场入口。</p>
+          <div class="finding-meta"><span>影响: <b>medium</b></span><span>投入: <b>medium</b></span><span>置信度: <b>high</b></span></div>
+          <div class="callout"><b>业务影响</b><p>美国英语用户与英语生成式查询可能缺少语言匹配、实体一致性和地区口径。</p></div>
+          <div class="callout recommendation"><b>建议</b><p>先为实体、方法、FAQ、指南和品牌页建立内容等价的 en-US 版本，再加 self/alternate/x-default hreflang；不要只做机器直译或共享错误价格口径。</p></div>
+          <details><summary>证据</summary><ul class="evidence-list"><li><a href="http://127.0.0.1:8765/about.html" target="_blank" rel="noopener">Local entity page</a><span>The candidate page declares zh-CN and no paired en-US knowledge route was observed.</span></li></ul></details>
+        </article>
+        <article class="finding" data-area="seo" data-severity="medium">
+          <div class="finding-top"><span class="pill area">SEO</span><span class="pill sev medium">中</span><span class="finding-id">F-04</span></div>
+          <h3>转化与第一方搜索结果缺少可复核基线</h3><p>没有 Search Console、analytics、CRM 或生产 canary 回执，Support 提交和外部购买动作也未执行。</p>
+          <div class="finding-meta"><span>影响: <b>medium</b></span><span>投入: <b>medium</b></span><span>置信度: <b>high</b></span></div>
+          <div class="callout"><b>业务影响</b><p>即使发现面改善，也无法区分抓取、点击、合格动作和真实业务结果。</p></div>
+          <div class="callout recommendation"><b>建议</b><p>定义品牌/非品牌搜索、有效出站点击、Support 成功与错误事件，发布后先做受控 canary，再建立 30 天同口径基线。</p></div>
+          <details><summary>证据</summary><ul class="evidence-list"><li><a href="http://127.0.0.1:8765/support.html" target="_blank" rel="noopener">Website experience audit</a><span>The form and purchase path were inspected but not submitted; analytics and backend reconciliation were unavailable.</span></li></ul></details>
+        </article>
+        <article class="finding" data-area="geo" data-severity="medium">
+          <div class="finding-top"><span class="pill area">GEO</span><span class="pill sev medium">中</span><span class="finding-id">F-05</span></div>
+          <h3>真实 AI 能见度尚未测量</h3><p>本轮是 readiness_only，未在冻结市场、语言、账号、记忆、模型与日期条件下执行平台查询。</p>
+          <div class="finding-meta"><span>影响: <b>medium</b></span><span>投入: <b>medium</b></span><span>置信度: <b>high</b></span></div>
+          <div class="callout"><b>业务影响</b><p>无法回答 GearDrop 是否已被提及、引用、推荐，或回答中的价格与行动是否准确。</p></div>
+          <div class="callout recommendation"><b>建议</b><p>生产稳定后运行冻结查询面板，区分无提示品牌与提示品牌、提及与引用、推荐与事实准确，并在至少两个日期复测。</p></div>
+          <details><summary>证据</summary><ul class="evidence-list"><li><a href="https://001.100app.dev/" target="_blank" rel="noopener">Audit plan</a><span>measurement_mode is readiness_only with zero platform repetitions.</span></li></ul></details>
+        </article></div></div></section>
+    <section class="report-section" id="observed-visibility"><div class="wrap"><div class="section-head"><h2>AI 可见性实测</h2><p>准备度评分与真实平台表现分开呈现</p></div><div class="query-stats"><div class="stat"><b>—</b> 非品牌提及率<small>未测量</small></div><div class="stat"><b>—</b> 提及后有效引用率<small>未测量</small></div><div class="stat"><b>—</b> 推荐率<small>未测量</small></div><div class="stat"><b>—</b> 事实准确率<small>未测量</small></div><div class="stat"><b>—</b> 行动有效率<small>未测量</small></div><div class="stat"><b>—</b> 自有来源依赖<small>未测量</small></div></div><div class="query-stats"><div class="stat"><b>—</b> 测试问题</div><div class="stat"><b>—/—</b> 已出现</div><div class="stat"><b>—/—</b> 被推荐</div></div><div class="table-wrap"><table><thead><tr><th>问题</th><th>市场</th><th>观察结果</th><th>出现品牌</th><th>说明</th></tr></thead><tbody><tr><td colspan="5">—</td></tr></tbody></table></div></div></section>
+    <section class="report-section"><div class="wrap"><div class="section-head"><h2>竞争参照</h2></div><div class="competitor-grid">
+        <article class="competitor"><div><span class="pill">same-name entity, not a validated commercial competitor</span><h3>GearDrop backcountry rental</h3></div>
+        <div class="compare"><span>SEO <b>—</b></span><span>GEO <b>—</b></span></div>
+        <p></p><a href="https://geardrop.co/" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="competitor"><div><span class="pill">same-name giveaway product, not a validated commercial competitor</span><h3>BaseMap GearDrop</h3></div>
+        <div class="compare"><span>SEO <b>—</b></span><span>GEO <b>—</b></span></div>
+        <p></p><a href="https://www.basemap.com/geardrop" target="_blank" rel="noopener">Source ↗</a></article></div></div></section>
+    <section class="report-section" id="priority-roadmap"><div class="wrap"><div class="section-head"><h2>90 天优先路线</h2></div><div class="roadmap">
+        <article class="roadmap-card"><span class="step">01</span><p class="eyebrow">Release gate</p><h3>发布与生产读回</h3>
+        <ul><li>取得发布审批并保留回滚点</li><li>运行生产 81 项 readiness</li><li>独立复核桌面、移动、服务端商品与 Support</li></ul><div class="roadmap-foot"><span>负责人: Web release owner</span><span>完成标准: 81/81 production readiness plus independent browser readback; otherwise no上线 claim.</span></div></article>
+        <article class="roadmap-card"><span class="step">02</span><p class="eyebrow">Measurement baseline</p><h3>建立同定义基线</h3>
+        <ul><li>冻结指标和排除规则</li><li>完成批准的动作 canary 与回执对账</li><li>运行第一次完整 GEO 面板</li></ul><div class="roadmap-foot"><span>负责人: Search and analytics owner</span><span>完成标准: Complete denominators, retained answers, reconciled events, and explicit not_measured fields where sources remain unavailable.</span></div></article>
+        <article class="roadmap-card"><span class="step">03</span><p class="eyebrow">Authority and localization</p><h3>补齐语言与独立佐证</h3>
+        <ul><li>发布 en-US 等价内容与 hreflang</li><li>统一 GearDrop Outdoor Deals 实体描述</li><li>逐条分类独立引用与关系</li></ul><div class="roadmap-foot"><span>负责人: Content and partnerships owner</span><span>完成标准: hreflang pairs pass, same-name ambiguity declines in sampled results, and citations are independently classified.</span></div></article>
+        <article class="roadmap-card"><span class="step">04</span><p class="eyebrow">Continuous optimization</p><h3>按证据持续优化</h3>
+        <ul><li>每日检查 readiness 漂移</li><li>每月复核搜索、覆盖和动作</li><li>按 30/90 天重复效果调整 backlog</li></ul><div class="roadmap-foot"><span>负责人: GEO program owner</span><span>完成标准: No readiness regression; improvements repeat across dates and more than one query group before promotion.</span></div></article></div></div></section>
+    <section class="report-section"><div class="wrap"><div class="section-head"><h2>建议 KPI</h2></div><div class="kpi-grid">
+        <article class="kpi"><p class="eyebrow">tools/check_geo_readiness.py</p><h3>Production GEO readiness contract</h3><p>同一公开发现、实体、schema 与真值边界合同。</p>
+        <div><span>基线<b>9/33 pass before release</b></span><span>目标<b>81/81 after release</b></span><span>频率<b>每日与每次发布</b></span></div></article>
+        <article class="kpi"><p class="eyebrow"></p><h3>Stable product entity URLs</h3><p>同一批活跃目录生成的规范商品 URL；不等于收录或库存。</p>
+        <div><span>基线<b>8219</b></span><span>目标<b>无未解释骤降</b></span><span>频率<b>每次数据刷新</b></span></div></article>
+        <article class="kpi"><p class="eyebrow">Search Console not provided</p><h3>Indexed valid pages</h3><p>Search Console 中有效收录且 canonical 正确的页面。</p>
+        <div><span>基线<b>not_measured</b></span><span>目标<b>基线后设定</b></span><span>频率<b>每月</b></span></div></article>
+        <article class="kpi"><p class="eyebrow">Frozen platform panel not run</p><h3>Unaided AI mention rate</h3><p>有效无品牌提示运行中提及 GearDrop 的比例。</p>
+        <div><span>基线<b>not_measured</b></span><span>目标<b>30 天基线后设定</b></span><span>频率<b>30/90 天</b></span></div></article>
+        <article class="kpi"><p class="eyebrow">Frozen platform panel not run</p><h3>Cited mention rate</h3><p>提及 GearDrop 的有效运行中包含可核验引用的比例。</p>
+        <div><span>基线<b>not_measured</b></span><span>目标<b>30 天基线后设定</b></span><span>频率<b>30/90 天</b></span></div></article>
+        <article class="kpi"><p class="eyebrow">Frozen platform panel not run</p><h3>Recommendation rate and factual accuracy</h3><p>推荐意图运行中的推荐比例及被评估回答的事实准确率。</p>
+        <div><span>基线<b>not_measured</b></span><span>目标<b>30 天基线后设定</b></span><span>频率<b>30/90 天</b></span></div></article>
+        <article class="kpi"><p class="eyebrow">Analytics and backend reconciliation not provided</p><h3>Qualified outbound and Support completion</h3><p>排除测试和重复事件后的有效销售平台出站与 Support 成功。</p>
+        <div><span>基线<b>not_measured</b></span><span>目标<b>30 天基线后设定</b></span><span>频率<b>每月</b></span></div></article></div></div></section>
+<!-- GEARDROP_AUDIT_SUPPLEMENT_BODY_START -->
+
+<section class="report-section" id="website-experience"><div class="wrap">
+  <div class="section-head"><div><p class="eyebrow">代表性桌面与移动走查</p><h2>网站体验</h2><p class="supplement-note">The local candidate adds a coherent, readable knowledge layer and preserves the commerce path; production release, complete mobile coverage, and conversion readback remain pending. 网站体验不另外打分，也不计入 SEO 或 GEO readiness。</p></div></div>
+  <div class="supplement-grid" id="ux-findings">
+<article class="supplement-card" data-ux-finding="UX-01">
+  <div class="supplement-meta"><span>UX-01</span><span>visual_style</span><span>low</span></div>
+  <h3>The new knowledge layer preserves the product-led visual system</h3>
+  <p>Representative screenshots show consistent GearDrop type, spacing, color, and card treatment across discovery and product detail.</p>
+  <p><strong>业务影响：</strong>Consistency reduces the risk that informational pages feel detached from the shopping journey.</p>
+  <p><strong>完成测试：</strong>Representative homepage and product screenshots show no brand-system regression at 1440px and 390px.</p>
+</article>
+<article class="supplement-card" data-ux-finding="UX-02">
+  <div class="supplement-meta"><span>UX-02</span><span>information_architecture</span><span>medium</span></div>
+  <h3>The primary Chinese journey ends in an English-only Support surface</h3>
+  <p>The local candidate exposes entity, method, FAQ, guide, brand, and status navigation in Chinese, while Support remains English-only.</p>
+  <p><strong>业务影响：</strong>Users arriving from Chinese discovery pages may lose confidence or abandon a data correction or privacy request.</p>
+  <p><strong>完成测试：</strong>The zh-CN support path, validation messages, privacy link, and success state are independently verified without changing the English path.</p>
+</article>
+<article class="supplement-card" data-ux-finding="UX-03">
+  <div class="supplement-meta"><span>UX-03</span><span>interaction_conversion</span><span>medium</span></div>
+  <h3>Conversion completion and attribution are not yet evidenced</h3>
+  <p>Product and Support actions are visible, but no form submission, external checkout, event reconciliation, or CRM readback was performed.</p>
+  <p><strong>业务影响：</strong>A visible action can still fail or remain unmeasured after release, hiding qualified demand and support failures.</p>
+  <p><strong>完成测试：</strong>Approved canary actions produce the expected UI state, event payload, and backend or destination readback without duplicate side effects.</p>
+</article>
+<article class="supplement-card" data-ux-finding="UX-04">
+  <div class="supplement-meta"><span>UX-04</span><span>responsive_accessibility</span><span>low</span></div>
+  <h3>Representative mobile pages pass overflow checks but coverage is incomplete</h3>
+  <p>Homepage, product detail, and methodology had one H1 and no horizontal overflow at 390x844; guide, about, and Support were not separately exercised on mobile.</p>
+  <p><strong>业务影响：</strong>Uncovered page types can regress without being caught by the current manual sample.</p>
+  <p><strong>完成测试：</strong>Every public template passes 390px overflow, heading, landmark, focus, and keyboard checks with retained evidence.</p>
+</article></div>
+</div></section>
+
+<section class="report-section" id="improvement-validation"><div class="wrap">
+  <div class="section-head"><div><p class="eyebrow">Implementation ≠ GEO effect ≠ business effect</p><h2>改进验证</h2><p class="supplement-note">每项改进都绑定基线、非实现者复核、通过条件与下一次复测；缺来源时保持未测量。</p></div></div>
+  <h3>验证层</h3><div class="validation-layers"><article class="validation-layer"><strong>L1 · 实现验收</strong><p>请求的页面、内容、技术合同和自动化是否被正确交付？</p></article><article class="validation-layer"><strong>L2 · GEO 效果</strong><p>在相同控制条件下，AI 提及、引用、推荐和事实准确率是否改善？</p></article><article class="validation-layer"><strong>L3 · 业务效果</strong><p>搜索发现和合格动作是否在同定义基线上改善？</p></article></div>
+  <h3>判定规则</h3><div class="validation-rules"><article class="validation-rule"><strong>通过</strong><p>所有必需条件通过，且非实现者可以复现证据。</p></article><article class="validation-rule"><strong>部分通过</strong><p>已有改进，但仍缺至少一个必需条件、环境或证据。</p></article><article class="validation-rule"><strong>失败</strong><p>关键条件失败或结果无法复现。</p></article><article class="validation-rule"><strong>未测量</strong><p>所需来源、观察期或完整复测不可用。</p></article></div>
+  <h3 id="validation-workstreams">持续优化工作流</h3><div class="workstream-list">
+<article class="workstream" data-validation-workstream="V-01">
+  <div class="supplement-meta"><span>V-01</span><span>critical</span><span>partial</span><span>L1</span></div>
+  <h3>发布候选信息层并完成生产读回</h3>
+  <dl>
+    <dt>问题</dt><dd>本地候选通过 81/81，但生产仍只有 9/33，任何上线结论都不成立。</dd>
+    <dt>变更前基线</dt><dd>生产 9/33；本地 81/81；production_release_status=not_deployed。</dd>
+    <dt>交付物</dt><dd>经审批的生产发布、生产 readiness JSON、代表页截图和回滚记录。</dd>
+    <dt>验证方法</dt><dd>发布后运行 tools/check_geo_readiness.py --base-url https://001.100app.dev/，再独立浏览首页、商品、方法、状态、Support 和移动断点。</dd>
+    <dt>通过条件</dt><dd>生产 81/81；关键 URL 返回 200；/p 商品无需 JavaScript 即可读到对应 H1、canonical、Product/Offer 与真实目录来源；浏览器无阻断错误。</dd>
+    <dt>时间</dt><dd>审批后发布日和第 7 天</dd>
+    <dt>执行 / 复核</dt><dd>Web release owner / Independent production QA</dd>
+  </dl>
+</article>
+<article class="workstream" data-validation-workstream="V-02">
+  <div class="supplement-meta"><span>V-02</span><span>high</span><span>in_progress</span><span>L1 + L2</span></div>
+  <h3>降低同名实体混淆并建立独立佐证</h3>
+  <dl>
+    <dt>问题</dt><dd>同名租赁与 BaseMap 抽奖实体在样本中突出，目标服务缺少独立 corroboration。</dd>
+    <dt>变更前基线</dt><dd>小样本未观察到目标域名，观察到两个无关同名实体。</dd>
+    <dt>交付物</dt><dd>一致的 GearDrop Outdoor Deals 实体描述、相关公共资料，以及独立分类的媒体/目录/使用引用。</dd>
+    <dt>验证方法</dt><dd>逐条核对名称、规范域名、服务类型和关系声明；每月重复固定搜索样本并区分 owned、partner、independent。</dd>
+    <dt>通过条件</dt><dd>所有受控资料一致；至少获得两个相关独立来源；同名查询样本可明确区分目标服务且无虚假背书。</dd>
+    <dt>时间</dt><dd>发布后 30-90 天</dd>
+    <dt>执行 / 复核</dt><dd>Content and partnerships owner / Independent brand evidence reviewer</dd>
+  </dl>
+</article>
+<article class="workstream" data-validation-workstream="V-03">
+  <div class="supplement-meta"><span>V-03</span><span>medium</span><span>planned</span><span>L1</span></div>
+  <h3>补齐 en-US、hreflang 与 Support 本地化</h3>
+  <dl>
+    <dt>问题</dt><dd>目标包含 en-US，但候选知识层与 Support 语言体验不成对。</dd>
+    <dt>变更前基线</dt><dd>主知识内容为 zh-CN；无完整 en-US 配对或 hreflang；Support 为 English-only。</dd>
+    <dt>交付物</dt><dd>内容等价的 en-US 实体、方法、FAQ、指南、品牌与 Support 页面，以及 self/alternate/x-default hreflang。</dd>
+    <dt>验证方法</dt><dd>构建期逐对检查 canonical、lang、hreflang、标题、直接回答、价格与地区边界；浏览器验证两种语言的 Support 状态。</dd>
+    <dt>通过条件</dt><dd>所有目标页面一一配对，无坏链或自动重定向陷阱；人工语言 QA 通过；Support 成功/错误状态均本地化。</dd>
+    <dt>时间</dt><dd>下一内容硬化周期</dd>
+    <dt>执行 / 复核</dt><dd>Localization and web owner / Bilingual content QA</dd>
+  </dl>
+</article>
+<article class="workstream" data-validation-workstream="V-04">
+  <div class="supplement-meta"><span>V-04</span><span>medium</span><span>not_measured</span><span>L1 + L3</span></div>
+  <h3>验证并测量购买与 Support 动作</h3>
+  <dl>
+    <dt>问题</dt><dd>动作可见但没有生产提交、目标读回、事件对账或第一方基线。</dd>
+    <dt>变更前基线</dt><dd>not_measured；本轮未提交表单或购买。</dd>
+    <dt>交付物</dt><dd>批准的 Support 和出站 canary、事件字典、排除规则、后端/目标对账及 30 天基线。</dd>
+    <dt>验证方法</dt><dd>使用标记测试数据完成一次窄 canary，核对 UI、事件、后端回执和重复副作用，然后按同定义汇总 30 天。</dd>
+    <dt>通过条件</dt><dd>每个 canary 只有一次有效结果且可独立读回；测试流量可排除；事件与业务回执 100% 对账。</dd>
+    <dt>时间</dt><dd>发布日、第 7 天和第 30 天</dd>
+    <dt>执行 / 复核</dt><dd>Product analytics owner / Independent data QA and support owner</dd>
+  </dl>
+</article>
+<article class="workstream" data-validation-workstream="V-05">
+  <div class="supplement-meta"><span>V-05</span><span>low</span><span>partial</span><span>L1</span></div>
+  <h3>把视觉与移动覆盖变成回归门</h3>
+  <dl>
+    <dt>问题</dt><dd>代表性视觉基础通过，但并非每个模板都有移动和可访问性证据。</dd>
+    <dt>变更前基线</dt><dd>首页、商品和方法在测试断点无横向溢出；三张截图保留；其余移动模板与 WCAG 未完整覆盖。</dd>
+    <dt>交付物</dt><dd>所有公共模板的桌面/390px smoke、键盘与焦点检查，以及稳定截图基线。</dd>
+    <dt>验证方法</dt><dd>自动检查 scrollWidth、H1、landmark、可见焦点和关键 CTA，并由非实现者复核差异截图。</dd>
+    <dt>通过条件</dt><dd>所有模板无横向溢出、无关键控制不可达、无未解释视觉差异，且截图资产可复现。</dd>
+    <dt>时间</dt><dd>每次公共模板变更</dd>
+    <dt>执行 / 复核</dt><dd>Web QA automation owner / Independent accessibility reviewer</dd>
+  </dl>
+</article>
+<article class="workstream" data-validation-workstream="V-06">
+  <div class="supplement-meta"><span>V-06</span><span>medium</span><span>not_measured</span><span>L2</span></div>
+  <h3>建立受控 GEO 平台基线与复测</h3>
+  <dl>
+    <dt>问题</dt><dd>readiness 已实现，但真实提及、引用、推荐与准确性完全未测量。</dd>
+    <dt>变更前基线</dt><dd>not_measured；planned_runs=0，completed_runs=0。</dd>
+    <dt>交付物</dt><dd>冻结查询面板、控制矩阵、两个日期的完整平台运行与带分母结果。</dd>
+    <dt>验证方法</dt><dd>保持市场、语言、账号、记忆、模型/版本、位置和执行面一致，分别计算无提示品牌提及、引用、推荐、事实准确和行动有效率。</dd>
+    <dt>通过条件</dt><dd>面板覆盖 100%；所有答案与引用保留；改善在两个日期和至少两个问题组重复，且不把 prompted-brand 结果混入 unaided。</dd>
+    <dt>时间</dt><dd>发布后第 30 天和第 90 天</dd>
+    <dt>执行 / 复核</dt><dd>GEO experiment operator / Independent audit owner</dd>
+  </dl>
+</article>
+<article class="workstream" data-validation-workstream="V-07">
+  <div class="supplement-meta"><span>V-07</span><span>medium</span><span>in_progress</span><span>L3</span></div>
+  <h3>持续优化决策看板</h3>
+  <dl>
+    <dt>问题</dt><dd>没有跨 readiness、搜索、AI 与业务动作的同定义节奏，容易把单次技术改动误认为效果。</dd>
+    <dt>变更前基线</dt><dd>只有本地 readiness 和目录快照；其他 KPI 为 not_measured。</dd>
+    <dt>交付物</dt><dd>每日 readiness、每月搜索与覆盖回顾、30/90 天 GEO 复测及按证据优先级排序的 backlog。</dd>
+    <dt>验证方法</dt><dd>每个周期锁定指标定义、来源、分母、排除和观察窗口，只在同定义对比中调整优先级。</dd>
+    <dt>通过条件</dt><dd>每日无未解释回归；每月数据完整；所有优化项有来源、owner、完成测试和下一次复测日期。</dd>
+    <dt>时间</dt><dd>每日、每月、每季度</dd>
+    <dt>执行 / 复核</dt><dd>GEO program owner / Business owner and independent data QA</dd>
+  </dl>
+</article></div>
+</div></section>
+<!-- GEARDROP_AUDIT_SUPPLEMENT_BODY_END -->
+<section class="report-section" id="evidence-sources"><div class="wrap"><details class="appendix-shell" open><summary>证据附录</summary><div class="section-head"><h2>证据与来源</h2></div><ul class="source-list">
+        <li><span class="source-id">S-OWN-01</span><div><a href="https://001.100app.dev/" target="_blank" rel="noopener">GearDrop production site</a>
+        <p>Production HTTP and pre-release readiness baseline.</p></div><span class="pill">自有来源</span><time>2026-08-14</time></li>
+        <li><span class="source-id">S-LOCAL-01</span><div><a href="http://127.0.0.1:8765/" target="_blank" rel="noopener">GearDrop local candidate</a>
+        <p>Local readiness contract and representative browser observations.</p></div><span class="pill">工具验证</span><time>2026-08-14</time></li>
+        <li><span class="source-id">S-LOCAL-02</span><div><a href="http://127.0.0.1:8765/catalog-status.html" target="_blank" rel="noopener">GearDrop local catalog status</a>
+        <p>Same-batch 8,219 active product URL snapshot and explicit measurement boundary.</p></div><span class="pill">第一方数据</span><time>2026-08-14</time></li>
+        <li><span class="source-id">S-EXT-01</span><div><a href="https://geardrop.co/" target="_blank" rel="noopener">GearDrop rental entity</a>
+        <p>Observed same-name entity collision.</p></div><span class="pill">独立来源</span><time>2026-08-14</time></li>
+        <li><span class="source-id">S-EXT-02</span><div><a href="https://www.basemap.com/geardrop" target="_blank" rel="noopener">BaseMap GearDrop</a>
+        <p>Observed same-name entity collision.</p></div><span class="pill">独立来源</span><time>2026-08-14</time></li></ul></details></div></section>
+    <section class="report-section"><div class="wrap summary-grid"><article class="panel"><h2>范围与限制</h2><ul><li>The readiness scores describe the local candidate, not the current production deployment.</li><li>The production site has not been modified, deployed, pushed, or submitted in this task.</li><li>AI platform visibility was not measured and must not be inferred from technical readiness.</li><li>Search Console, analytics, CRM, backlink exports, full review data, and server logs were not provided.</li><li>The external-authority assessment is a small date-bound search sample, not an exhaustive awareness or indexing study.</li><li>Retailer stock, checkout eligibility, tax, shipping, and returns were not independently revalidated for all 8,219 rows.</li><li>Support submission and external purchase actions were not performed.</li></ul></article><article class="panel"><h2>方法说明</h2><p>基于仓库结构、生产 HTTP 读回、本地 81 项合同、代表性桌面/移动浏览器走查和日期限定搜索样本；未执行 AI 平台实验。</p><p class="eyebrow">8 pages · zh-CN, en-US</p></article></div></section></main>
+    <footer class="footer"><div class="wrap">GearDrop · 品牌 SEO＋GEO 诊断报告 · 2026-08-14</div></footer><button class="print-button" onclick="window.print()">打印 / 保存 PDF</button>
+    <script>document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');const f=b.dataset.filter;document.querySelectorAll('.finding').forEach(card=>{card.hidden=!(f==='all'||card.dataset.area===f||(f==='priority'&&['critical','high'].includes(card.dataset.severity)))})}));</script></body></html>

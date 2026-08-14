@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import http.client
 import json
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -499,9 +501,23 @@ def url_reader(base_url: str) -> Callable[[str], str]:
 
     def read(path: str) -> str:
         url = f"{origin}{path}"
-        request = urllib.request.Request(url, headers={"User-Agent": "GearDrop-GEO-Audit/1.0"})
-        with urllib.request.urlopen(request, timeout=30) as response:
-            return response.read().decode("utf-8")
+        request = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "GearDrop-GEO-Audit/1.0",
+                "Accept-Encoding": "identity",
+                "Connection": "close",
+            },
+        )
+        for attempt in range(3):
+            try:
+                with urllib.request.urlopen(request, timeout=30) as response:
+                    return response.read().decode("utf-8")
+            except http.client.IncompleteRead:
+                if attempt == 2:
+                    raise
+                time.sleep(2**attempt)
+        raise AssertionError("unreachable")
 
     return read
 

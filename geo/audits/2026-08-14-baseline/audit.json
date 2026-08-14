@@ -1,0 +1,239 @@
+{
+  "meta": {
+    "brand": "GearDrop",
+    "url": "https://001.100app.dev/",
+    "audit_date": "2026-08-14",
+    "locale": "zh-CN",
+    "industry": "户外装备折扣发现与价格追踪",
+    "target_markets": ["CN", "US"],
+    "languages": ["zh-CN", "en-US"],
+    "site_audit_depth": "full",
+    "measurement_mode": "readiness_only",
+    "business_profile": "b2c",
+    "subtitle": "本地候选已建立 GEO 信息层；生产尚未发布，真实 AI 能见度未测量。",
+    "score_environment": "local_candidate",
+    "production_release_status": "not_deployed"
+  },
+  "scores": {
+    "seo": {
+      "score": 63.9,
+      "coverage": 86,
+      "confidence": "medium",
+      "verdict": "本地候选版本具备可用的抓取、语义、架构和内容基线，但国际化、独立权威与转化测量仍有实质缺口；该分数不代表当前生产站。",
+      "dimensions": [
+        {"name": "Crawl and index foundations", "score": 13.5, "max": 15, "maturity": 4.5, "confidence": "high", "note": "候选版本有 robots、sitemap index、静态与商品 sitemap、canonical 和 noindex 合同；生产尚未发布。"},
+        {"name": "On-page semantics", "score": 12.9, "max": 15, "maturity": 4.3, "confidence": "high", "note": "核心页面具备标题、描述、单一 H1、语言、OG 与可解析 JSON-LD；规范 /p 商品页由服务端读取真实目录记录并输出 Product/Offer。"},
+        {"name": "Architecture and internal discovery", "score": 8.0, "max": 10, "maturity": 4.0, "confidence": "high", "note": "首页、页脚、品牌页、方法、FAQ、指南、状态页和商品 URL 互链；完整孤岛与分页分析未覆盖。"},
+        {"name": "Content and intent coverage", "score": 16.0, "max": 20, "maturity": 4.0, "confidence": "medium", "note": "覆盖实体、数据口径、品牌、常见问题、选择与核验意图；英文内容和更细分比较意图仍不足。"},
+        {"name": "International and local targeting", "score": 3.0, "max": 10, "maturity": 1.5, "confidence": "high", "note": "主内容为 zh-CN，尚无成套 en-US 页面、hreflang 或市场入口。"},
+        {"name": "Authority and reputation", "score": 3.0, "max": 15, "maturity": 1.0, "confidence": "low", "note": "小样本未观察到目标服务的独立引用，且同名实体突出；未提供完整链接、评论或媒体数据。"},
+        {"name": "Conversion and measurement readiness", "score": 7.5, "max": 15, "maturity": 2.5, "confidence": "medium", "note": "购买与 Support 动作清晰，但未执行生产提交、外链 canary、分析或后端回执对账。"}
+      ]
+    },
+    "geo": {
+      "score": 67.2,
+      "coverage": 88,
+      "confidence": "medium",
+      "verdict": "候选版本已形成可检索、可识别、可直接回答并带方法边界的信息层；外部佐证不足，真实 AI 提及、引用和推荐仍为 not_measured。",
+      "dimensions": [
+        {"name": "Retrieval and crawler accessibility", "score": 13.5, "max": 15, "maturity": 4.5, "confidence": "high", "note": "核心答案页及规范 /p 商品实体无需 JavaScript 即可读取，拥有稳定 URL、sitemap 与 llms 发现文件；生产尚未发布。"},
+        {"name": "Entity clarity and consistency", "score": 12.0, "max": 15, "maturity": 4.0, "confidence": "medium", "note": "明确 GearDrop Outdoor Deals、规范域名、非销售/非品牌官网边界，并显式排除同名租赁与抽奖含义。"},
+        {"name": "Answer-ready coverage", "score": 16.0, "max": 20, "maturity": 4.0, "confidence": "medium", "note": "关于、方法、FAQ、品牌与指南页面提供直接回答和购买前核验步骤。"},
+        {"name": "Evidence and citability", "score": 19.0, "max": 25, "maturity": 3.8, "confidence": "medium", "note": "提供来源、币种、观察时间、计算公式、限制、商品原始链接和目录快照；缺独立作者与版本化外部研究。"},
+        {"name": "External corroboration", "score": 3.2, "max": 20, "maturity": 0.8, "confidence": "low", "note": "小样本未观察到目标服务的独立 corroboration，并观察到两个显著同名实体。"},
+        {"name": "Measurement readiness", "score": 3.5, "max": 5, "maturity": 3.5, "confidence": "high", "note": "已有冻结查询概念、readiness 审计、版本化快照与日程工作流；平台实验和结果仍未运行。"}
+      ]
+    }
+  },
+  "executive_summary": {
+    "verdict": "本地候选版本已通过 81/81 readiness；当前生产仍为 9/33，尚不能宣称上线或 AI 能见度提升。",
+    "seo_verdict": "候选版本具备抓取、语义、架构和内容基线，国际化、独立权威与转化测量仍有缺口。",
+    "geo_verdict": "信息已可检索、识别和引用，但外部佐证不足，平台提及、引用与推荐均未测量。",
+    "opportunity": "先完成生产 81/81 与动作读回，再用 en-US、独立引用和 30/90 天冻结面板持续验证效果。",
+    "strengths": [
+      "服务器可读的实体、方法、FAQ、品牌、指南、目录状态和具体商品信息层。",
+      "8,219 个稳定商品实体 URL 及同批次、带时间边界的目录快照。",
+      "每日只读 readiness 与现有数据刷新后的 sitemap/status 更新机制。"
+    ],
+    "risks": [
+      "候选版本尚未发布，生产仅通过 9/33。",
+      "同名租赁与抽奖实体突出，目标服务缺独立佐证。",
+      "en-US、转化回执与真实 AI 能见度尚未完成。"
+    ],
+    "conclusion": "本地 GEO 候选版本已实现并通过 81/81 readiness 合同，但生产站仍是改动前基线：9/33 通过、24/33 失败，因此尚不能把改进描述为已上线。",
+    "what_changed": [
+      "新增可抓取的实体、数据方法、FAQ、选购指南、品牌和目录状态页面。",
+      "新增 8,219 个规范 /p 商品实体 URL、商品/静态 sitemap、robots、llms.txt、llms-full.txt 与同批次目录快照。",
+      "首页、交互详情和服务端商品页补齐可验证的语义、canonical、H1、内部链接和 JSON-LD；商品价格只从真实目录记录写入 Offer。",
+      "新增每日只读 readiness 工作流，并接入现有目录刷新工作流更新 sitemap 与状态快照。"
+    ],
+    "highest_priority": [
+      "取得发布授权后部署候选版本，并用同一 81 项合同做生产读回。",
+      "建立独立 corroboration 与同名实体区分，避免 GearDrop 被解释为租赁或抽奖产品。",
+      "补齐 en-US 与 hreflang，并把 Support 本地化和转化回执纳入验收。",
+      "发布后冻结查询面板，在至少两个日期测量 AI 提及、引用、推荐与事实准确率。"
+    ],
+    "truth_boundary": "readiness、schema、sitemap、llms.txt 或普通搜索结果都不是 AI 推荐已发生的证明。"
+  },
+  "findings": [
+    {
+      "id": "F-01",
+      "area": "Both",
+      "severity": "critical",
+      "title": "候选 GEO 信息层尚未发布到生产",
+      "summary": "生产读回仅通过 9/33 项，实体、方法、FAQ、指南、品牌、目录状态、llms 和拆分 sitemap 均未上线，也没有规范的服务端商品实体页。",
+      "business_impact": "搜索与生成式系统仍只能看到旧的薄信息层，无法利用本轮实现；把本地结果当上线会造成错误决策。",
+      "recommendation": "在独立审批后发布，随后运行生产 readiness 检查并人工复核首页、商品、方法、状态和 Support；任何关键失败都应回滚或修复后再声明上线。",
+      "impact": "high",
+      "effort": "medium",
+      "confidence": "high",
+      "evidence": [
+        {"label": "Production readiness report", "url": "https://001.100app.dev/", "artifact": "evidence/production-geo-readiness.json", "observation": "2026-08-14 production readback passed 9 of 33 checks and failed 24.", "claim_class": "observed"},
+        {"label": "Local candidate readiness report", "url": "http://127.0.0.1:8765/", "artifact": "evidence/local-geo-readiness.json", "observation": "The local candidate passed 81 of 81 checks.", "claim_class": "observed"}
+      ]
+    },
+    {
+      "id": "F-02",
+      "area": "GEO",
+      "severity": "high",
+      "title": "同名实体突出且目标服务缺少独立佐证",
+      "summary": "日期限定的小样本搜索未返回目标域名，却返回 GearDrop 租赁服务和 BaseMap GearDrop 抽奖游戏。",
+      "business_impact": "生成式系统和用户可能把目标服务与其他 GearDrop 混淆；仅靠 owned-site 自述难以形成稳定信任。",
+      "recommendation": "稳定使用 GearDrop Outdoor Deals 辅助名称与规范域名，并争取与方法、目录数据和真实使用价值相关的独立引用；不得把合作方或自有内容计作独立背书。",
+      "impact": "high",
+      "effort": "high",
+      "confidence": "medium",
+      "evidence": [
+        {"label": "Same-name rental entity", "url": "https://geardrop.co/", "artifact": "evidence/external-authority.json", "observation": "An unrelated GearDrop entity presents itself as a backcountry equipment rental service.", "claim_class": "observed"},
+        {"label": "Same-name giveaway entity", "url": "https://www.basemap.com/geardrop", "artifact": "evidence/external-authority.json", "observation": "BaseMap uses GearDrop for an outdoor giveaway game.", "claim_class": "observed"}
+      ]
+    },
+    {
+      "id": "F-03",
+      "area": "Both",
+      "severity": "medium",
+      "title": "en-US 与多市场发现面尚不完整",
+      "summary": "候选知识层主要是 zh-CN，尚无完整 en-US 对应页、hreflang 或可核验的市场入口。",
+      "business_impact": "美国英语用户与英语生成式查询可能缺少语言匹配、实体一致性和地区口径。",
+      "recommendation": "先为实体、方法、FAQ、指南和品牌页建立内容等价的 en-US 版本，再加 self/alternate/x-default hreflang；不要只做机器直译或共享错误价格口径。",
+      "impact": "medium",
+      "effort": "medium",
+      "confidence": "high",
+      "evidence": [
+        {"label": "Local entity page", "url": "http://127.0.0.1:8765/about.html", "artifact": "evidence/owned-surface.json", "observation": "The candidate page declares zh-CN and no paired en-US knowledge route was observed.", "claim_class": "observed"}
+      ]
+    },
+    {
+      "id": "F-04",
+      "area": "SEO",
+      "severity": "medium",
+      "title": "转化与第一方搜索结果缺少可复核基线",
+      "summary": "没有 Search Console、analytics、CRM 或生产 canary 回执，Support 提交和外部购买动作也未执行。",
+      "business_impact": "即使发现面改善，也无法区分抓取、点击、合格动作和真实业务结果。",
+      "recommendation": "定义品牌/非品牌搜索、有效出站点击、Support 成功与错误事件，发布后先做受控 canary，再建立 30 天同口径基线。",
+      "impact": "medium",
+      "effort": "medium",
+      "confidence": "high",
+      "evidence": [
+        {"label": "Website experience audit", "url": "http://127.0.0.1:8765/support.html", "artifact": "evidence/website-experience-audit.json", "observation": "The form and purchase path were inspected but not submitted; analytics and backend reconciliation were unavailable.", "claim_class": "unavailable"}
+      ]
+    },
+    {
+      "id": "F-05",
+      "area": "GEO",
+      "severity": "medium",
+      "title": "真实 AI 能见度尚未测量",
+      "summary": "本轮是 readiness_only，未在冻结市场、语言、账号、记忆、模型与日期条件下执行平台查询。",
+      "business_impact": "无法回答 GearDrop 是否已被提及、引用、推荐，或回答中的价格与行动是否准确。",
+      "recommendation": "生产稳定后运行冻结查询面板，区分无提示品牌与提示品牌、提及与引用、推荐与事实准确，并在至少两个日期复测。",
+      "impact": "medium",
+      "effort": "medium",
+      "confidence": "high",
+      "evidence": [
+        {"label": "Audit plan", "url": "https://001.100app.dev/", "artifact": "audit-plan.json", "observation": "measurement_mode is readiness_only with zero platform repetitions.", "claim_class": "observed"}
+      ]
+    }
+  ],
+  "query_tests": [],
+  "competitors": [
+    {"name": "GearDrop backcountry rental", "url": "https://geardrop.co/", "relationship": "same-name entity, not a validated commercial competitor", "observed_in_sample": true},
+    {"name": "BaseMap GearDrop", "url": "https://www.basemap.com/geardrop", "relationship": "same-name giveaway product, not a validated commercial competitor", "observed_in_sample": true}
+  ],
+  "roadmap": [
+    {"phase": "Release gate", "title": "发布与生产读回", "timing": "0-7 days after approval", "owner": "Web release owner", "deliverable": "Deploy candidate, run 81-item production readiness readback, verify representative pages and rollback notes.", "actions": ["取得发布审批并保留回滚点", "运行生产 81 项 readiness", "独立复核桌面、移动、服务端商品与 Support"], "success": "81/81 production readiness plus independent browser readback; otherwise no上线 claim."},
+    {"phase": "Measurement baseline", "title": "建立同定义基线", "timing": "7-30 days after release", "owner": "Search and analytics owner", "deliverable": "Search Console/analytics definitions, conversion canaries, and first complete GEO panel.", "actions": ["冻结指标和排除规则", "完成批准的动作 canary 与回执对账", "运行第一次完整 GEO 面板"], "success": "Complete denominators, retained answers, reconciled events, and explicit not_measured fields where sources remain unavailable."},
+    {"phase": "Authority and localization", "title": "补齐语言与独立佐证", "timing": "30-90 days", "owner": "Content and partnerships owner", "deliverable": "en-US entity/method/guide equivalents and relevant independent citations.", "actions": ["发布 en-US 等价内容与 hreflang", "统一 GearDrop Outdoor Deals 实体描述", "逐条分类独立引用与关系"], "success": "hreflang pairs pass, same-name ambiguity declines in sampled results, and citations are independently classified."},
+    {"phase": "Continuous optimization", "title": "按证据持续优化", "timing": "Monthly and quarterly", "owner": "GEO program owner", "deliverable": "Daily readiness, monthly coverage review, 30/90-day GEO retests, and evidence-backed backlog reprioritization.", "actions": ["每日检查 readiness 漂移", "每月复核搜索、覆盖和动作", "按 30/90 天重复效果调整 backlog"], "success": "No readiness regression; improvements repeat across dates and more than one query group before promotion."}
+  ],
+  "kpis": [
+    {"name": "Production GEO readiness contract", "status": "measured", "definition": "同一公开发现、实体、schema 与真值边界合同。", "baseline": "9/33 pass before release", "target": "81/81 after release", "cadence": "每日与每次发布", "source": "tools/check_geo_readiness.py"},
+    {"name": "Stable product entity URLs", "status": "measured", "definition": "同一批活跃目录生成的规范商品 URL；不等于收录或库存。", "baseline": 8219, "target": "无未解释骤降", "cadence": "每次数据刷新", "unit": "active product URLs", "boundary": "Directory coverage only; not indexation or stock."},
+    {"name": "Indexed valid pages", "status": "not_measured", "definition": "Search Console 中有效收录且 canonical 正确的页面。", "baseline": "not_measured", "target": "基线后设定", "cadence": "每月", "source": "Search Console not provided"},
+    {"name": "Unaided AI mention rate", "status": "not_measured", "definition": "有效无品牌提示运行中提及 GearDrop 的比例。", "baseline": "not_measured", "target": "30 天基线后设定", "cadence": "30/90 天", "source": "Frozen platform panel not run"},
+    {"name": "Cited mention rate", "status": "not_measured", "definition": "提及 GearDrop 的有效运行中包含可核验引用的比例。", "baseline": "not_measured", "target": "30 天基线后设定", "cadence": "30/90 天", "source": "Frozen platform panel not run"},
+    {"name": "Recommendation rate and factual accuracy", "status": "not_measured", "definition": "推荐意图运行中的推荐比例及被评估回答的事实准确率。", "baseline": "not_measured", "target": "30 天基线后设定", "cadence": "30/90 天", "source": "Frozen platform panel not run"},
+    {"name": "Qualified outbound and Support completion", "status": "not_measured", "definition": "排除测试和重复事件后的有效销售平台出站与 Support 成功。", "baseline": "not_measured", "target": "30 天基线后设定", "cadence": "每月", "source": "Analytics and backend reconciliation not provided"}
+  ],
+  "limitations": [
+    "The readiness scores describe the local candidate, not the current production deployment.",
+    "The production site has not been modified, deployed, pushed, or submitted in this task.",
+    "AI platform visibility was not measured and must not be inferred from technical readiness.",
+    "Search Console, analytics, CRM, backlink exports, full review data, and server logs were not provided.",
+    "The external-authority assessment is a small date-bound search sample, not an exhaustive awareness or indexing study.",
+    "Retailer stock, checkout eligibility, tax, shipping, and returns were not independently revalidated for all 8,219 rows.",
+    "Support submission and external purchase actions were not performed."
+  ],
+  "sources": [
+    {"id": "S-OWN-01", "label": "GearDrop production site", "url": "https://001.100app.dev/", "source_type": "owned", "accessed": "2026-08-14", "supports": "Production HTTP and pre-release readiness baseline."},
+    {"id": "S-LOCAL-01", "label": "GearDrop local candidate", "url": "http://127.0.0.1:8765/", "source_type": "tool", "accessed": "2026-08-14", "supports": "Local readiness contract and representative browser observations."},
+    {"id": "S-LOCAL-02", "label": "GearDrop local catalog status", "url": "http://127.0.0.1:8765/catalog-status.html", "source_type": "first_party_data", "accessed": "2026-08-14", "supports": "Same-batch 8,219 active product URL snapshot and explicit measurement boundary."},
+    {"id": "S-EXT-01", "label": "GearDrop rental entity", "url": "https://geardrop.co/", "source_type": "independent", "accessed": "2026-08-14", "supports": "Observed same-name entity collision."},
+    {"id": "S-EXT-02", "label": "BaseMap GearDrop", "url": "https://www.basemap.com/geardrop", "source_type": "independent", "accessed": "2026-08-14", "supports": "Observed same-name entity collision."}
+  ],
+  "methodology": {
+    "site_audit_depth": "full",
+    "measurement_mode": "readiness_only",
+    "execution_mode": "manual_ui",
+    "account_arm": "clean",
+    "business_profile": "b2c",
+    "query_count": 0,
+    "pages_reviewed": 8,
+    "search_locales": ["zh-CN", "en-US"],
+    "tools_or_surfaces": ["repository contract checks", "public HTTP readback", "in-app browser representative walkthrough", "web search sample"],
+    "notes": "基于仓库结构、生产 HTTP 读回、本地 81 项合同、代表性桌面/移动浏览器走查和日期限定搜索样本；未执行 AI 平台实验。",
+    "score_boundary": "SEO and GEO scores apply to the local candidate only; production is reported as a separate raw readiness baseline.",
+    "visibility_boundary": "Observed visibility is not measured and is excluded from GEO readiness."
+  },
+  "observed_visibility": {
+    "measurement_status": "not_measured",
+    "planned_runs": 0,
+    "completed_runs": 0,
+    "coverage": null,
+    "metrics": {
+      "unaided_mention_rate": {"status": "not_measured", "numerator": 0, "denominator": 0, "rate": null},
+      "cited_mention_rate": {"status": "not_measured", "numerator": 0, "denominator": 0, "rate": null},
+      "recommendation_rate": {"status": "not_measured", "numerator": 0, "denominator": 0, "rate": null},
+      "factual_accuracy_rate": {"status": "not_measured", "numerator": 0, "denominator": 0, "rate": null},
+      "action_validity_rate": {"status": "not_measured", "numerator": 0, "denominator": 0, "rate": null},
+      "owned_source_dependency": {"status": "not_measured", "numerator": 0, "denominator": 0, "rate": null}
+    },
+    "groups": []
+  },
+  "risk_gates": [
+    {"id": "RG-01", "name": "Production crawler and index access", "severity": "critical", "status": "fail", "evidence": ["evidence/production-geo-readiness.json"], "note": "The candidate discovery and entity surfaces are not deployed."},
+    {"id": "RG-02", "name": "Entity consistency", "severity": "high", "status": "fail", "evidence": ["evidence/external-authority.json", "about.html"], "note": "The candidate disambiguates the entity, but production and independent corroboration do not yet carry that distinction."},
+    {"id": "RG-03", "name": "Material factual accuracy", "severity": "high", "status": "not_assessed", "evidence": [], "note": "The live catalog snapshot is first-party directory data; retailer stock and checkout were not exhaustively revalidated."},
+    {"id": "RG-04", "name": "Market and language correctness", "severity": "high", "status": "fail", "evidence": ["evidence/owned-surface.json"], "note": "The declared en-US target lacks a complete localized knowledge surface and hreflang."},
+    {"id": "RG-05", "name": "Action validity", "severity": "high", "status": "not_assessed", "evidence": [], "note": "No Support submission or retailer checkout action was performed."},
+    {"id": "RG-06", "name": "Privacy and credential handling", "severity": "medium", "status": "pass", "evidence": ["evidence/website-experience-audit.json"], "note": "The reviewed Support page links to Privacy and the audit transmitted no personal data or credentials."},
+    {"id": "RG-07", "name": "Severe safety or reputation claim", "severity": "high", "status": "pass", "evidence": ["about.html", "methodology.html"], "note": "Candidate pages explicitly reject brand authorization, sales, stock guarantees, and AI recommendation claims."}
+  ],
+  "recommendation_eligible": false,
+  "evidence_claims": [
+    {"id": "EC-01", "claim": "The production baseline passed 9 of 33 readiness checks.", "claim_class": "observed", "confidence": "high", "evidence_ids": ["S-OWN-01", "evidence/production-geo-readiness.json"]},
+    {"id": "EC-02", "claim": "The local candidate passed 81 of 81 readiness checks.", "claim_class": "observed", "confidence": "high", "evidence_ids": ["S-LOCAL-01", "evidence/local-geo-readiness.json"]},
+    {"id": "EC-03", "claim": "The generated catalog snapshot contains 8,219 active product URLs from one observed batch.", "claim_class": "derived", "confidence": "high", "evidence_ids": ["S-LOCAL-02", "catalog-status.json"]},
+    {"id": "EC-04", "claim": "Unrelated rental and giveaway services use the GearDrop name.", "claim_class": "observed", "confidence": "medium", "evidence_ids": ["S-EXT-01", "S-EXT-02"]},
+    {"id": "EC-05", "claim": "AI mention, citation, recommendation, and accuracy are not measured.", "claim_class": "unavailable", "confidence": "high", "evidence_ids": ["audit-plan.json"]}
+  ]
+}
