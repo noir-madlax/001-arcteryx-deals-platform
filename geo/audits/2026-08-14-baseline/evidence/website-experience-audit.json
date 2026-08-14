@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.0.0",
+  "audit_type": "website_experience",
+  "brand": "GearDrop",
+  "checked_date": "2026-08-14",
+  "status": "partial",
+  "score_status": "not_scored",
+  "score_boundary": "No frozen website-experience scoring rubric was used. This supplement records representative observations without creating a UX score.",
+  "methodology": {
+    "surface": "local_candidate_public_website",
+    "viewports": [
+      {"label": "desktop", "width": 1440, "height": 1000},
+      {"label": "mobile", "width": 390, "height": 844}
+    ],
+    "dimensions": [
+      "visual_style",
+      "information_architecture",
+      "interaction_conversion",
+      "responsive_accessibility"
+    ],
+    "limitations": [
+      "The candidate was tested locally and has not been released to production.",
+      "No support form was submitted and no external purchase was attempted.",
+      "Mobile overflow was directly checked for the homepage, product detail, and methodology page; remaining representative pages were not separately exercised at mobile size.",
+      "Analytics, user research, Core Web Vitals, and a complete WCAG audit were not available."
+    ]
+  },
+  "summary": {
+    "verdict": "The local candidate adds a coherent, readable knowledge layer and preserves the commerce path; production release, complete mobile coverage, and conversion readback remain pending.",
+    "dimensions": [
+      {"id": "visual_style", "label": "Visual and brand expression", "status": "measured", "client_label": "Consistent foundation", "summary": "Homepage and product screenshots retain the existing GearDrop typography, spacing, colors, and product emphasis."},
+      {"id": "information_architecture", "label": "Information architecture", "status": "partial", "client_label": "Knowledge path added", "summary": "Entity, methodology, FAQ, guide, brand, and status links are discoverable, but the Support surface remains English-only."},
+      {"id": "interaction_conversion", "label": "Interaction and conversion", "status": "partial", "client_label": "Primary paths visible", "summary": "Product purchase and support paths are visible; submission, external checkout, and analytics confirmation were intentionally not performed."},
+      {"id": "responsive_accessibility", "label": "Responsive and accessibility basics", "status": "partial", "client_label": "Representative paths pass", "summary": "Tested 390px pages had no horizontal overflow and exposed one H1; exhaustive mobile and WCAG coverage remains open."}
+    ]
+  },
+  "pages": [
+    {
+      "id": "P-UX-01",
+      "label": "Homepage and discovery",
+      "url": "http://127.0.0.1:8765/",
+      "page_type": "homepage",
+      "desktop": {"status": "observed", "horizontal_overflow": false, "h1_count": 1, "console_warning_error_count": 0},
+      "mobile": {"status": "observed", "horizontal_overflow": false, "h1_count": 1, "console_warning_error_count": 0},
+      "evidence_assets": [
+        "geo/audits/2026-08-14-baseline/evidence/website-experience/home-desktop-1440x1000.png",
+        "geo/audits/2026-08-14-baseline/evidence/website-experience/home-mobile-390x844.png"
+      ]
+    },
+    {
+      "id": "P-UX-02",
+      "label": "Live-data product detail",
+      "url": "http://127.0.0.1:8765/product-detail.html?sku=evo%3Aproducts%2F218050-burton-lalik-jacket-women-s",
+      "page_type": "product_service",
+      "desktop": {"status": "observed", "horizontal_overflow": false, "h1_count": 1, "purchase_cta": "前往 EVO 购买", "console_warning_error_count": 0},
+      "mobile": {"status": "observed", "horizontal_overflow": false, "h1_count": 1, "purchase_cta": "前往 EVO 购买", "console_warning_error_count": 0},
+      "evidence_assets": [
+        "geo/audits/2026-08-14-baseline/evidence/website-experience/product-desktop-1440x1000.png"
+      ]
+    },
+    {
+      "id": "P-UX-03",
+      "label": "Data methodology",
+      "url": "http://127.0.0.1:8765/methodology.html",
+      "page_type": "trust_evidence",
+      "desktop": {"status": "not_separately_observed", "reason": "Desktop structure was covered by static contract checks; no dedicated desktop browser evidence was retained."},
+      "mobile": {"status": "observed", "horizontal_overflow": false, "h1_count": 1, "console_warning_error_count": 0},
+      "evidence_assets": []
+    },
+    {
+      "id": "P-UX-04",
+      "label": "Outdoor deal verification guide",
+      "url": "http://127.0.0.1:8765/guides/outdoor-deal-guide.html",
+      "page_type": "use_case",
+      "desktop": {"status": "observed", "horizontal_overflow": false, "h1_count": 1, "console_warning_error_count": 0},
+      "mobile": {"status": "not_separately_observed", "reason": "Not included in the representative mobile browser sample."},
+      "evidence_assets": []
+    },
+    {
+      "id": "P-UX-05",
+      "label": "About and entity definition",
+      "url": "http://127.0.0.1:8765/about.html",
+      "page_type": "capability",
+      "desktop": {"status": "observed", "horizontal_overflow": false, "h1_count": 1, "console_warning_error_count": 0},
+      "mobile": {"status": "not_separately_observed", "reason": "Not included in the representative mobile browser sample."},
+      "evidence_assets": []
+    },
+    {
+      "id": "P-UX-06",
+      "label": "Support contact path",
+      "url": "http://127.0.0.1:8765/support.html",
+      "page_type": "contact_conversion",
+      "desktop": {"status": "observed", "horizontal_overflow": false, "required_fields": ["email", "subject", "message"], "privacy_link": true, "console_warning_error_count": 0},
+      "mobile": {"status": "not_separately_observed", "reason": "Not included in the representative mobile browser sample."},
+      "evidence_assets": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "UX-01",
+      "dimension": "visual_style",
+      "severity": "low",
+      "title": "The new knowledge layer preserves the product-led visual system",
+      "summary": "Representative screenshots show consistent GearDrop type, spacing, color, and card treatment across discovery and product detail.",
+      "business_impact": "Consistency reduces the risk that informational pages feel detached from the shopping journey.",
+      "recommendation": "Keep the retained desktop and mobile screenshots as visual regression references when the knowledge layer changes.",
+      "owner": "Web design owner",
+      "timing": "Every release",
+      "completion_test": "Representative homepage and product screenshots show no brand-system regression at 1440px and 390px.",
+      "evidence_page_ids": ["P-UX-01", "P-UX-02"]
+    },
+    {
+      "id": "UX-02",
+      "dimension": "information_architecture",
+      "severity": "medium",
+      "title": "The primary Chinese journey ends in an English-only Support surface",
+      "summary": "The local candidate exposes entity, method, FAQ, guide, brand, and status navigation in Chinese, while Support remains English-only.",
+      "business_impact": "Users arriving from Chinese discovery pages may lose confidence or abandon a data correction or privacy request.",
+      "recommendation": "Localize Support and its confirmation/error states for zh-CN while preserving an English route or language switch.",
+      "owner": "Content and web owner",
+      "timing": "Before broad CN promotion",
+      "completion_test": "The zh-CN support path, validation messages, privacy link, and success state are independently verified without changing the English path.",
+      "evidence_page_ids": ["P-UX-05", "P-UX-06"]
+    },
+    {
+      "id": "UX-03",
+      "dimension": "interaction_conversion",
+      "severity": "medium",
+      "title": "Conversion completion and attribution are not yet evidenced",
+      "summary": "Product and Support actions are visible, but no form submission, external checkout, event reconciliation, or CRM readback was performed.",
+      "business_impact": "A visible action can still fail or remain unmeasured after release, hiding qualified demand and support failures.",
+      "recommendation": "Run a production canary for Support and outbound retailer clicks, then reconcile analytics and backend receipts before declaring the journey healthy.",
+      "owner": "Product analytics and QA owner",
+      "timing": "Release day and day 7",
+      "completion_test": "Approved canary actions produce the expected UI state, event payload, and backend or destination readback without duplicate side effects.",
+      "evidence_page_ids": ["P-UX-02", "P-UX-06"]
+    },
+    {
+      "id": "UX-04",
+      "dimension": "responsive_accessibility",
+      "severity": "low",
+      "title": "Representative mobile pages pass overflow checks but coverage is incomplete",
+      "summary": "Homepage, product detail, and methodology had one H1 and no horizontal overflow at 390x844; guide, about, and Support were not separately exercised on mobile.",
+      "business_impact": "Uncovered page types can regress without being caught by the current manual sample.",
+      "recommendation": "Add automated mobile smoke checks for every public knowledge template and complete a keyboard and WCAG-focused review.",
+      "owner": "Web QA owner",
+      "timing": "Next hardening cycle",
+      "completion_test": "Every public template passes 390px overflow, heading, landmark, focus, and keyboard checks with retained evidence.",
+      "evidence_page_ids": ["P-UX-01", "P-UX-02", "P-UX-03", "P-UX-04", "P-UX-05", "P-UX-06"]
+    }
+  ]
+}

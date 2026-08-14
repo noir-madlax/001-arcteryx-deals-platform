@@ -36,6 +36,9 @@ class GeoAssetTests(unittest.TestCase):
         cls.content_module = load_module(
             "build_geo_content", ROOT / "tools" / "build_geo_content.py"
         )
+        cls.readiness_module = load_module(
+            "check_geo_readiness", ROOT / "tools" / "check_geo_readiness.py"
+        )
 
     def test_generated_knowledge_pages_match_the_source(self):
         content = json.loads((ROOT / "geo" / "site-content.json").read_text(encoding="utf-8"))
@@ -130,6 +133,41 @@ class GeoAssetTests(unittest.TestCase):
             )
 
         self.assertEqual(payload, [{"sku_id": "retry-ok"}])
+        self.assertEqual(urlopen.call_count, 2)
+        sleep.assert_called_once_with(1)
+
+    def test_deployed_readiness_reader_retries_incomplete_responses(self):
+        class Response:
+            def __init__(self, payload):
+                self.payload = payload
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, traceback):
+                return False
+
+            def read(self):
+                if isinstance(self.payload, Exception):
+                    raise self.payload
+                return self.payload
+
+        responses = [
+            Response(http.client.IncompleteRead(b"partial", 4)),
+            Response(b"retry-ok"),
+        ]
+        with (
+            mock.patch.object(
+                self.readiness_module.urllib.request,
+                "urlopen",
+                side_effect=responses,
+            ) as urlopen,
+            mock.patch.object(self.readiness_module.time, "sleep") as sleep,
+        ):
+            read = self.readiness_module.url_reader("https://example.invalid")
+            payload = read("/about.html")
+
+        self.assertEqual(payload, "retry-ok")
         self.assertEqual(urlopen.call_count, 2)
         sleep.assert_called_once_with(1)
 

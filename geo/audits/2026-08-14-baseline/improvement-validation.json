@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0.0",
+  "audit_type": "improvement_validation_plan",
+  "brand": "GearDrop",
+  "based_on_date": "2026-08-14",
+  "status": "in_progress",
+  "purpose": "把本地 GEO 候选版本转成可复现的上线验收、受控 AI 能见度复测和业务结果闭环，并持续用证据重新排序优化项。",
+  "source_artifacts": [
+    "audit.json",
+    "evidence/website-experience-audit.json",
+    "evidence/owned-surface.json",
+    "evidence/external-authority.json"
+  ],
+  "validation_layers": [
+    {
+      "id": "L1",
+      "title": "实现验收",
+      "question": "请求的页面、内容、技术合同和自动化是否被正确交付？",
+      "description": "以生成器一致性、结构化检查、定向测试和生产读回验证交付，不把本地结果冒充上线。",
+      "outcome": "把实现分类为 pass、partial 或 fail。"
+    },
+    {
+      "id": "L2",
+      "title": "GEO 效果",
+      "question": "在相同控制条件下，AI 提及、引用、推荐和事实准确率是否改善？",
+      "description": "发布稳定后在至少两个日期重复冻结查询面板，保持市场、语言、账号、记忆、模型和执行面一致。",
+      "outcome": "按市场和问题组报告带分母的变化；当前保持 not_measured。"
+    },
+    {
+      "id": "L3",
+      "title": "业务效果",
+      "question": "搜索发现和合格动作是否在同定义基线上改善？",
+      "description": "使用 Search Console、analytics 和后端回执建立 30 天基线，并在 90 天复核有效出站和 Support 完成。",
+      "outcome": "来源或观察期缺失时保持 not_measured。"
+    }
+  ],
+  "decision_rules": [
+    {"status": "pass", "label": "通过", "definition": "所有必需条件通过，且非实现者可以复现证据。"},
+    {"status": "partial", "label": "部分通过", "definition": "已有改进，但仍缺至少一个必需条件、环境或证据。"},
+    {"status": "fail", "label": "失败", "definition": "关键条件失败或结果无法复现。"},
+    {"status": "not_measured", "label": "未测量", "definition": "所需来源、观察期或完整复测不可用。"}
+  ],
+  "checkpoints": [
+    {
+      "id": "C0",
+      "timing": "发布前",
+      "focus": "实现质量与发布边界",
+      "gate": "81 项本地 readiness、生成器检查、测试和发布审批通过，保留回滚点。",
+      "validator": "非实现者 QA 或内容审批人",
+      "evidence": "命令原始输出、URL、截图、变更清单、审批与回滚说明"
+    },
+    {
+      "id": "C1",
+      "timing": "发布后 0-7 天",
+      "focus": "生产稳定与动作有效性",
+      "gate": "生产 81/81，通过代表页、服务端商品实体与 sitemap 读回；批准的 Support/外链 canary 与事件回执一致。",
+      "validator": "生产 QA 与分析负责人",
+      "evidence": "生产 readiness JSON、浏览器截图、事件与后端或目标读回"
+    },
+    {
+      "id": "C2",
+      "timing": "发布后 30 天",
+      "focus": "首次效果基线",
+      "gate": "Search Console/analytics 30 天基线和第一次完整 GEO 复测完成。",
+      "validator": "分析负责人和独立审计负责人",
+      "evidence": "搜索、分析、动作对账和完整 GEO 运行记录"
+    },
+    {
+      "id": "C3",
+      "timing": "发布后 90 天",
+      "focus": "可重复改善",
+      "gate": "第二次 GEO 复测与相同定义业务比较完成，改善至少跨两个日期与两个问题组重复。",
+      "validator": "业务负责人和独立审计负责人",
+      "evidence": "跨日期平台对比、独立引用分类和 90 天业务报告"
+    }
+  ],
+  "workstreams": [
+    {
+      "id": "V-01",
+      "priority": "critical",
+      "title": "发布候选信息层并完成生产读回",
+      "layers": ["L1"],
+      "source_finding_ids": ["F-01"],
+      "problem": "本地候选通过 81/81，但生产仍只有 9/33，任何上线结论都不成立。",
+      "baseline": "生产 9/33；本地 81/81；production_release_status=not_deployed。",
+      "deliverable": "经审批的生产发布、生产 readiness JSON、代表页截图和回滚记录。",
+      "validation_method": "发布后运行 tools/check_geo_readiness.py --base-url https://001.100app.dev/，再独立浏览首页、商品、方法、状态、Support 和移动断点。",
+      "pass_criteria": "生产 81/81；关键 URL 返回 200；/p 商品无需 JavaScript 即可读到对应 H1、canonical、Product/Offer 与真实目录来源；浏览器无阻断错误。",
+      "timing": "审批后发布日和第 7 天",
+      "implementer": "Web release owner",
+      "validator": "Independent production QA",
+      "evidence_required": ["Production readiness JSON", "Desktop and mobile screenshots", "Deployment identity", "Rollback record"],
+      "current_status": "partial"
+    },
+    {
+      "id": "V-02",
+      "priority": "high",
+      "title": "降低同名实体混淆并建立独立佐证",
+      "layers": ["L1", "L2"],
+      "source_finding_ids": ["F-02"],
+      "problem": "同名租赁与 BaseMap 抽奖实体在样本中突出，目标服务缺少独立 corroboration。",
+      "baseline": "小样本未观察到目标域名，观察到两个无关同名实体。",
+      "deliverable": "一致的 GearDrop Outdoor Deals 实体描述、相关公共资料，以及独立分类的媒体/目录/使用引用。",
+      "validation_method": "逐条核对名称、规范域名、服务类型和关系声明；每月重复固定搜索样本并区分 owned、partner、independent。",
+      "pass_criteria": "所有受控资料一致；至少获得两个相关独立来源；同名查询样本可明确区分目标服务且无虚假背书。",
+      "timing": "发布后 30-90 天",
+      "implementer": "Content and partnerships owner",
+      "validator": "Independent brand evidence reviewer",
+      "evidence_required": ["Canonical entity matrix", "Independent source URLs", "Monthly fixed-query snapshots", "Relationship classification"],
+      "current_status": "in_progress"
+    },
+    {
+      "id": "V-03",
+      "priority": "medium",
+      "title": "补齐 en-US、hreflang 与 Support 本地化",
+      "layers": ["L1"],
+      "source_finding_ids": ["F-03", "UX-02"],
+      "problem": "目标包含 en-US，但候选知识层与 Support 语言体验不成对。",
+      "baseline": "主知识内容为 zh-CN；无完整 en-US 配对或 hreflang；Support 为 English-only。",
+      "deliverable": "内容等价的 en-US 实体、方法、FAQ、指南、品牌与 Support 页面，以及 self/alternate/x-default hreflang。",
+      "validation_method": "构建期逐对检查 canonical、lang、hreflang、标题、直接回答、价格与地区边界；浏览器验证两种语言的 Support 状态。",
+      "pass_criteria": "所有目标页面一一配对，无坏链或自动重定向陷阱；人工语言 QA 通过；Support 成功/错误状态均本地化。",
+      "timing": "下一内容硬化周期",
+      "implementer": "Localization and web owner",
+      "validator": "Bilingual content QA",
+      "evidence_required": ["Locale route matrix", "Hreflang validator output", "Bilingual screenshots", "Human language approval"],
+      "current_status": "planned"
+    },
+    {
+      "id": "V-04",
+      "priority": "medium",
+      "title": "验证并测量购买与 Support 动作",
+      "layers": ["L1", "L3"],
+      "source_finding_ids": ["F-04", "UX-03"],
+      "problem": "动作可见但没有生产提交、目标读回、事件对账或第一方基线。",
+      "baseline": "not_measured；本轮未提交表单或购买。",
+      "deliverable": "批准的 Support 和出站 canary、事件字典、排除规则、后端/目标对账及 30 天基线。",
+      "validation_method": "使用标记测试数据完成一次窄 canary，核对 UI、事件、后端回执和重复副作用，然后按同定义汇总 30 天。",
+      "pass_criteria": "每个 canary 只有一次有效结果且可独立读回；测试流量可排除；事件与业务回执 100% 对账。",
+      "timing": "发布日、第 7 天和第 30 天",
+      "implementer": "Product analytics owner",
+      "validator": "Independent data QA and support owner",
+      "evidence_required": ["Event specification", "Approved canary record", "Backend or destination readback", "30-day baseline"],
+      "current_status": "not_measured"
+    },
+    {
+      "id": "V-05",
+      "priority": "low",
+      "title": "把视觉与移动覆盖变成回归门",
+      "layers": ["L1"],
+      "source_finding_ids": ["UX-01", "UX-04"],
+      "problem": "代表性视觉基础通过，但并非每个模板都有移动和可访问性证据。",
+      "baseline": "首页、商品和方法在测试断点无横向溢出；三张截图保留；其余移动模板与 WCAG 未完整覆盖。",
+      "deliverable": "所有公共模板的桌面/390px smoke、键盘与焦点检查，以及稳定截图基线。",
+      "validation_method": "自动检查 scrollWidth、H1、landmark、可见焦点和关键 CTA，并由非实现者复核差异截图。",
+      "pass_criteria": "所有模板无横向溢出、无关键控制不可达、无未解释视觉差异，且截图资产可复现。",
+      "timing": "每次公共模板变更",
+      "implementer": "Web QA automation owner",
+      "validator": "Independent accessibility reviewer",
+      "evidence_required": ["Viewport matrix", "Automated smoke output", "Keyboard review", "Approved screenshot diff"],
+      "current_status": "partial"
+    },
+    {
+      "id": "V-06",
+      "priority": "medium",
+      "title": "建立受控 GEO 平台基线与复测",
+      "layers": ["L2"],
+      "source_finding_ids": ["F-05"],
+      "problem": "readiness 已实现，但真实提及、引用、推荐与准确性完全未测量。",
+      "baseline": "not_measured；planned_runs=0，completed_runs=0。",
+      "deliverable": "冻结查询面板、控制矩阵、两个日期的完整平台运行与带分母结果。",
+      "validation_method": "保持市场、语言、账号、记忆、模型/版本、位置和执行面一致，分别计算无提示品牌提及、引用、推荐、事实准确和行动有效率。",
+      "pass_criteria": "面板覆盖 100%；所有答案与引用保留；改善在两个日期和至少两个问题组重复，且不把 prompted-brand 结果混入 unaided。",
+      "timing": "发布后第 30 天和第 90 天",
+      "implementer": "GEO experiment operator",
+      "validator": "Independent audit owner",
+      "evidence_required": ["Frozen query panel", "Control matrix", "Complete retained answers", "Cross-date metric comparison"],
+      "current_status": "not_measured"
+    },
+    {
+      "id": "V-07",
+      "priority": "medium",
+      "title": "持续优化决策看板",
+      "layers": ["L3"],
+      "source_finding_ids": [],
+      "source_kpis": ["Production readiness", "Indexed valid pages", "Qualified outbound clicks", "Support completion", "Unaided mention", "Cited mention", "Recommendation accuracy"],
+      "problem": "没有跨 readiness、搜索、AI 与业务动作的同定义节奏，容易把单次技术改动误认为效果。",
+      "baseline": "只有本地 readiness 和目录快照；其他 KPI 为 not_measured。",
+      "deliverable": "每日 readiness、每月搜索与覆盖回顾、30/90 天 GEO 复测及按证据优先级排序的 backlog。",
+      "validation_method": "每个周期锁定指标定义、来源、分母、排除和观察窗口，只在同定义对比中调整优先级。",
+      "pass_criteria": "每日无未解释回归；每月数据完整；所有优化项有来源、owner、完成测试和下一次复测日期。",
+      "timing": "每日、每月、每季度",
+      "implementer": "GEO program owner",
+      "validator": "Business owner and independent data QA",
+      "evidence_required": ["Scheduled workflow history", "Metric dictionary", "Monthly review", "Prioritized evidence backlog"],
+      "current_status": "in_progress"
+    }
+  ]
+}
