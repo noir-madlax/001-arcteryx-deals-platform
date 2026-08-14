@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-14 10:26:47",
+  "generated_at": "2026-08-14 11:11:35",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -32495,7 +32495,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 140,
+      "count": 142,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-943/arcteryx-norvan-ld-4-trail-running-shoes-mens",
@@ -32929,8 +32929,8 @@
         {
           "url": "https://www.mec.ca/en/product/6034-836/arcteryx-granville-crossbody-bag-unisex",
           "name": "Arc'teryx Granville Crossbody Bag - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520616_source_1773730229.jpg",
-          "color": "Sea Salt",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520625_source_1773730230.jpg",
+          "color": "Black 2026",
           "sale_price": 130.0,
           "original_price": 130.0,
           "discount_pct": 0,
@@ -33369,6 +33369,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-781/arcteryx-lithos-sl-harness-unisex",
+          "name": "Arc'teryx Lithos SL Harness - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/549242_source_1773265252.jpg",
+          "color": "Black/Mantis",
+          "sale_price": 190.0,
+          "original_price": 190.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-787/arcteryx-emblem-fleece-hoodie-mens",
           "name": "Arc'teryx Emblem Fleece Hoodie - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/522914_source_1762422383.jpg",
@@ -33609,19 +33622,6 @@
           "color": "Black",
           "sale_price": 300.0,
           "original_price": 300.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6037-781/arcteryx-lithos-sl-harness-unisex",
-          "name": "Arc'teryx Lithos SL Harness - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/549241_source_1773265251.jpg",
-          "color": "Black/Mantis",
-          "sale_price": 190.0,
-          "original_price": 190.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -34175,6 +34175,32 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6030-494/arcteryx-mantis-2-waist-pack-unisex",
+          "name": "Arc'teryx Mantis 2 Waist Pack - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/493670_source_1745313831.jpg",
+          "color": "24k Black",
+          "sale_price": 60.0,
+          "original_price": 60.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6034-813/arcteryx-heliad-crossbody-unisex",
+          "name": "Arc'teryx Heliad Crossbody - Unisex",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560805_source_1784846222.jpg",
+          "color": "Sea Salt",
+          "sale_price": 60.0,
+          "original_price": 60.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
           "name": "Arc'teryx Kopec Mid Gore-Tex Hiking Boots - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/526512_source_1771544469.jpg",
@@ -34318,7 +34344,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-14 04:01:03"
+      "refreshed_at": "2026-08-14 11:11:35"
     },
     "rei": {
       "name": "REI",
@@ -52735,13 +52761,9 @@
       "refreshed_at": "2026-08-14 10:01:12"
     }
   },
-  "total": 1923,
+  "total": 1925,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
