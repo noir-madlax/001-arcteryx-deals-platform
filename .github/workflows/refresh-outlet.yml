@@ -103,6 +103,7 @@ jobs:
           python -u tools/check_product_urls.py --status active --stored-http-status 404 --stored-http-status 410 --max-rows 500
           python -u tools/check_product_urls.py --status missing --max-rows 500
           python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --max-product-age-hours 72 --min-rows 100 --forbid-region jp
+          python tools/generate_geo_catalog.py --online
 
       - name: Optional notifications
         run: |
@@ -113,7 +114,7 @@ jobs:
         run: |
           git config user.email "bot@arcteryx-deals.local"
           git config user.name "ArcBot"
-          git add .last_sync .crawl_manifest.json .sku_progress.json arcteryx_skus.json global_data.json data.js h5/data.js
+          git add .last_sync .crawl_manifest.json .sku_progress.json arcteryx_skus.json global_data.json data.js h5/data.js sitemap-products.xml catalog-status.html catalog-status.json
           if git diff --cached --quiet; then
             echo "No Outlet data changes to commit"
             exit 0

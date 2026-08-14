@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#17372F">
+    <title>GearDrop 数据方法｜折扣、价格与库存如何记录</title>
+    <meta name="description" content="GearDrop 如何采集、标准化、复核并发布户外品牌折扣数据，以及价格、库存、汇率和来源的限制。">
+    <meta name="author" content="GearDrop">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+    <link rel="canonical" href="https://001.100app.dev/methodology.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://001.100app.dev/methodology.html">
+    <link rel="alternate" hreflang="x-default" href="https://001.100app.dev/methodology.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="GearDrop">
+    <meta property="og:title" content="GearDrop 数据方法｜折扣、价格与库存如何记录">
+    <meta property="og:description" content="GearDrop 如何采集、标准化、复核并发布户外品牌折扣数据，以及价格、库存、汇率和来源的限制。">
+    <meta property="og:url" content="https://001.100app.dev/methodology.html">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://001.100app.dev/assets/brand/geardrop-og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GearDrop 数据方法｜折扣、价格与库存如何记录">
+    <meta name="twitter:description" content="GearDrop 如何采集、标准化、复核并发布户外品牌折扣数据，以及价格、库存、汇率和来源的限制。">
+    <meta name="twitter:image" content="https://001.100app.dev/assets/brand/geardrop-og.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/brand/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="/assets/geo.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://001.100app.dev/#organization",
+      "name": "GearDrop",
+      "alternateName": "GearDrop Outdoor Deals",
+      "url": "https://001.100app.dev/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://001.100app.dev/assets/brand/icon-512.png"
+      },
+      "description": "独立的户外品牌折扣发现与价格追踪服务，聚合 Arc'teryx、Burton、Patagonia 的官方奥莱及经销商公开信息。",
+      "disambiguatingDescription": "Independent outdoor deal discovery and price-tracking service at 001.100app.dev; not a retailer, rental marketplace, giveaway game, or an official site of the tracked brands.",
+      "publishingPrinciples": "https://001.100app.dev/methodology.html"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://001.100app.dev/#website",
+      "url": "https://001.100app.dev/",
+      "name": "GearDrop",
+      "alternateName": "GearDrop Outdoor Deals",
+      "description": "独立的户外品牌折扣发现与价格追踪服务，聚合 Arc'teryx、Burton、Patagonia 的官方奥莱及经销商公开信息。",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@id": "https://001.100app.dev/#organization"
+      }
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://001.100app.dev/methodology.html#webpage",
+      "url": "https://001.100app.dev/methodology.html",
+      "name": "GearDrop 数据方法｜折扣、价格与库存如何记录",
+      "description": "GearDrop 如何采集、标准化、复核并发布户外品牌折扣数据，以及价格、库存、汇率和来源的限制。",
+      "inLanguage": "zh-CN",
+      "isPartOf": {
+        "@id": "https://001.100app.dev/#website"
+      },
+      "publisher": {
+        "@id": "https://001.100app.dev/#organization"
+      },
+      "breadcrumb": {
+        "@id": "https://001.100app.dev/methodology.html#breadcrumb"
+      },
+      "dateModified": "2026-08-14",
+      "headline": "折扣数据如何产生",
+      "datePublished": "2026-08-14",
+      "author": {
+        "@id": "https://001.100app.dev/#organization"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://001.100app.dev/methodology.html#webpage"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://001.100app.dev/methodology.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "GearDrop",
+          "item": "https://001.100app.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "折扣数据如何产生",
+          "item": "https://001.100app.dev/methodology.html"
+        }
+      ]
+    }
+  ]
+}
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand-link" href="/" aria-label="GearDrop 首页">
+                <img class="brand-logo" src="/assets/brand/geardrop-logo.png" alt="GearDrop" width="355" height="76">
+            </a>
+            <nav class="site-nav" aria-label="主要导航">
+                <a href="/">折扣目录</a>
+                <a href="/about.html">关于</a>
+                <a href="/methodology.html" aria-current="page">数据方法</a>
+                <a href="/faq.html">常见问题</a>
+                <a href="/guides/outdoor-deal-guide.html">选购指南</a>
+            </nav>
+        </div>
+    </header>
+    <main class="page-shell" id="main-content">
+        <nav class="breadcrumb" aria-label="面包屑">
+            <a href="/">GearDrop</a><span aria-hidden="true">/</span><span>折扣数据如何产生</span>
+        </nav>
+        <header class="hero">
+            <div class="eyebrow">数据方法</div>
+            <h1>折扣数据如何产生</h1>
+            <p class="lead">GearDrop 把品牌官网、官方 Outlet 和经销商公开页面中的商品事实标准化，但不会把一次抓取结果包装成永久有效的价格承诺。</p>
+            <div class="updated">内容更新：2026-08-14</div>
+        </header>
+        <section class="answer-box" aria-label="直接回答">
+            <strong>直接回答</strong>
+            <p>每条商品记录至少保留品牌、商品名、销售平台、地区、币种、原始链接和更新时间；折扣率在原价大于现价时按 (原价－现价) ÷ 原价计算。购买前必须回到销售平台复核实时价格、库存与适用条件。</p>
+        </section>
+        <div class="content-grid">
+<section class="content-section">
+<h2>处理流程</h2>
+<ol>
+<li><strong>读取公开来源</strong><br>按来源分批读取品牌官方 Outlet、公开商品页或经销商页面，不绕过登录、验证码或权限控制。</li>
+<li><strong>标准化商品事实</strong><br>统一品牌、商品名、品类、地区、币种、原价、现价、折扣率、尺码和来源标识。</li>
+<li><strong>运行质量门</strong><br>检查最低数量、更新时间、URL 生命周期、价格关系、图片和来源完整性；无法可靠确认的记录不应被包装成当前有效折扣。</li>
+<li><strong>发布并保留时间</strong><br>网页优先读取当前数据库，静态数据只作为降级；每条记录显示最近观察时间，并链接回销售平台。</li>
+</ol>
+</section>
+<section class="content-section">
+<h2>折扣率定义</h2>
+<p>仅当原价和现价都为正数且原价大于现价时，GearDrop 才把差额表达为折扣。折扣率为四舍五入后的百分比，销售平台可能使用不同的舍入、会员价或促销口径。</p>
+<p>不同国家或地区的商品不可只凭换算后的人民币数字直接比较，因为税费、运费、关税、退货成本和商品版本可能不同。</p>
+</section>
+<section class="content-section">
+<h2>更新时间与新鲜度</h2>
+<p>自动任务按来源分批运行，通常每日多次。具体商品是否新鲜，以商品页显示的更新时间和原始销售页面为准，而不是以网站整体的宣传频率为准。</p>
+<p>销售平台可能在两次观察之间改价、售罄、恢复库存或重定向 URL；GearDrop 的时间戳描述的是最近一次成功观察。</p>
+</section>
+<section class="content-section full">
+<h2>价格、库存与汇率限制</h2>
+<ul>
+<li>页面展示的原币价格优先；人民币换算是固定参考汇率，不是支付报价。</li>
+<li>库存和尺码只在来源提供且解析成功时展示；缺失不等于有货或无货。</li>
+<li>税费、运费、会员资格、优惠码、区域配送限制和退货政策由销售平台决定。</li>
+<li>同名商品可能因年份、性别、颜色、尺码或区域不同而不是同一 SKU。</li>
+<li>GearDrop 不以模糊名称强行合并无法可靠对应的商品。</li>
+</ul>
+<div class="note">若 GearDrop 与销售平台信息冲突，以销售平台结算页和政策为准；欢迎通过 Support 提供可复核的原始 URL 与时间。</div>
+</section>
+<section class="content-section full">
+<h2>机器可读与持续审计</h2>
+<p>这些文件改善发现、解析和审计能力，但不证明任何 AI 平台已经提及、引用或推荐 GearDrop。真实 AI 能见度必须在固定市场、语言、账号状态、查询面板和日期下独立测量。</p>
+<div class="link-list">
+<a class="link-card" href="/catalog-status.html">
+    <strong>目录状态快照 →</strong>
+    <span>带时间戳的品牌、来源与地区覆盖汇总</span>
+</a>
+<a class="link-card" href="/catalog-status.json">
+    <strong>目录状态 JSON →</strong>
+    <span>同一快照的机器可读版本</span>
+</a>
+<a class="link-card" href="/llms.txt">
+    <strong>llms.txt →</strong>
+    <span>可选的站点发现与引用边界说明</span>
+</a>
+<a class="link-card" href="/sitemap.xml">
+    <strong>Sitemap →</strong>
+    <span>静态知识页与商品实体 URL 索引</span>
+</a>
+</div>
+</section>
+        </div>
+
+        <section class="cta-band" aria-labelledby="cta-heading">
+            <div>
+                <h2 id="cta-heading">先理解口径，再比较折扣</h2>
+                <p>使用选购指南核对地区、尺码、来源和总成本。</p>
+            </div>
+            <a class="button" href="/guides/outdoor-deal-guide.html">阅读选购指南 →</a>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <nav class="footer-links" aria-label="页脚导航">
+            <a href="/about.html">关于 GearDrop</a>
+            <a href="/methodology.html">数据方法</a>
+            <a href="/faq.html">常见问题</a>
+            <a href="/support.html">Support</a>
+            <a href="/privacy.html">Privacy</a>
+        </nav>
+        <div>GearDrop 是独立折扣追踪服务，不销售商品，也不代表所列品牌或销售平台。</div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-26672ADDB172",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-26672ADDB172",
+    "panel_version": 1,
+    "randomization_key": "4d574f921fb8e5d4",
+    "status": "pending",
+    "concept_id": "Q05",
+    "query": "I do not want to check many outdoor stores one by one. How can I compare genuine hiking and camping gear discounts in one place?",
+    "group": "problem/application",
+    "intent": "avoid manually checking many outdoor stores",
+    "persona_id": "hiking-camping-shopper",
+    "funnel_stage": "discovery",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 2,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-26672ADDB172.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:54:21.688Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nTo avoid the tedious process of checking dozens of websites individually, you can use specialized outdoor aggregators and universal shopping tools that do the heavy lifting for you.\n\nWhile there is no single \"perfect\" search engine dedicated solely to outdoor gear, the following strategy will help you compare prices across the industry in just a few clicks.\n\n1. Use \"Aggregator\" Sites (The Best Strategy)\n\nSeveral websites exist specifically to aggregate clearance items and discounts from major outdoor retailers (like Backcountry, REI, and Moosejaw) into one view.  \nCrux Range\n\nSteep & Cheap: Owned by Backcountry, this site is a dedicated outlet that pulls discounted gear from major brands into one searchable interface. It is the closest thing to a \"one-stop shop\" for genuine outdoor markdowns.  \nSteep & Cheap\n\nCampSaver Outlet: Similar to Steep & Cheap, this consolidates clearance and \"last year's model\" inventory from various manufacturers, often showing percentage discounts clearly next to the list price.\n\nGeartrade: If you are open to used or \"open-box\" gear, this is the premier aggregator for the outdoor resale market. It connects you to listings from individuals and retailers in one place, often at a fraction of the retail cost.  \nBearfoot Theory\n\n2. Leverage Universal Shopping Tools\n\nFor brand-new gear, don't rely on outdoor-specific sites alone. Use general price-comparison tools that scan the entire web, including smaller retailers you might otherwise miss.\n\nGoogle Shopping: When you search for a specific item (e.g., \"Osprey Atmos AG 65\"), click the Shopping tab. Google automatically aggregates prices from hundreds of stores, shows you a \"Price History\" graph (to see if it's actually a deal), and allows you to filter by \"Sale\" items.\n\nCamelCamelCamel: If you are shopping on Amazon, paste the product URL into this site. It provides a historical price chart so you can see if the current \"discount\" is genuine or if the price was artificially inflated recently.\n\n3. Quick Reference: Where to Find Discounts\n\nIf you have a specific brand or type of gear in mind, check these \"Outlet\" sections first; they are more reliable than random third-party discount sites:\n\nRetailer\tBest For\tWhy?\nREI Outlet\tReliable, quality gear\tBest return policy for clearance items.\nPatagonia Worn Wear\tSustainable/Used\tOfficial trade-in program for discounted branded gear.\nBackcountry\tPremium brands\tFrequent seasonal sales; inventory is vast.\nOutdoor Gear Exchange\tNiche/Expert gear\tGreat for finding specific technical equipment.\nPro-Tip for Faster Searching\n\nInstead of browsing, use a Price Alert. If you know exactly what you want (e.g., a specific tent model), set a price alert on Google Shopping or CamelCamelCamel. You will receive an automated email the moment the price drops, eliminating the need to check stores manually.\n\nWould you like me to help you compare specific models of a certain gear type?\nYes",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.campsaver.com/outlet.html",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://geartrade.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=3; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:55:51Z"
+}

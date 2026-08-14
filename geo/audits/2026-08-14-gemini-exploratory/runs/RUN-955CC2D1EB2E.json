@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-955CC2D1EB2E",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-955CC2D1EB2E",
+    "panel_version": 1,
+    "randomization_key": "3fdca1bb6a6e8451",
+    "status": "pending",
+    "concept_id": "Q12",
+    "query": "Recommend a site for quickly screening global outdoor gear deals before purchase, including currency, region, freshness, and verification reminders.",
+    "group": "buying/action",
+    "intent": "choose an outdoor deal before checkout",
+    "persona_id": "global-outdoor-shopper",
+    "funnel_stage": "action",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 3,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-955CC2D1EB2E.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:51:42.445Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nThere is no single \"global\" aggregator that perfectly tracks all outdoor inventory while handling localized taxes, shipping, and currency conversions in real-time. Because outdoor retailers operate with fragmented regional warehouses, the most effective strategy is to combine specialized deal aggregators with price-history trackers.\n\nThe Recommended Strategy\n\nTo \"quickly screen\" for deals, use Keepa or CamelCamelCamel for price verification, and scan specific discount outlets for inventory.\n\n1. The Verification Standard: Keepa (Browser Extension)\n\nFor any gear you find on a major site (Amazon, etc.), Keepa is the gold standard for checking if a \"deal\" is authentic.\n\nWhy: It overlays a historical price chart directly onto the product page.\n\nGlobal Utility: It supports multiple Amazon locales (US, UK, DE, FR, JP, etc.), allowing you to compare if importing an item is cheaper than buying locally.\n\nVerification: It flags \"fake\" discounts where a seller raises the price before a sale to make the discount look larger.\n\n2. The Best \"Discovery\" Outlets\n\nRather than searching general aggregators, monitor these trusted \"permanent sale\" sites. They specialize in off-season or overstock inventory from premium brands.\n\nRetailer\tBest For\tRegional Notes\nREI Outlet\tTrusted gear, high-quality returns\tPrimarily US; limited international shipping.\nSteep & Cheap\tFlash sales on technical apparel\tBackcountry-owned; daily rotating deals.\nPatagonia Worn Wear\tCircular economy, verified used\tBest for sustainable, long-term value.\nEvo\tSki, Snowboard, MTB gear\tStrong technical selection and expert guides.\nQuick Screening Checklist\n\nWhen evaluating a deal, use this 4-point protocol to avoid common online traps:\n\n1\nVerify the 'Freshness'\nCheck price history\n\nUse Keepa to ensure the \"Sale Price\" isn't higher than the average price over the last 90 days. If it's a new product, assume it is full price.\n\n2\nConfirm Regional Total\nAccount for 'hidden' costs\n\nBefore checkout, confirm if the site calculates VAT/Import Duties at checkout (DDP - Delivered Duty Paid). If they don’t, you may be hit with 20%–40% extra fees upon arrival.\n\n3\nCheck Authorization\nAvoid counterfeit risks\n\nStick to authorized dealers (listed on the brand's \"Where to Buy\" page). If a site offers 70% off \"Arc'teryx\" or \"Hilleberg\" globally, it is almost certainly a phishing site.\n\n4\nCross-Reference Reviews\nUse independent testing\n\nBefore buying, check OutdoorGearLab or GearJunkie. If a deal seems too good to be true, it’s often because the model is an outdated, lower-spec version of the gear you actually want.\n\nPro Tip for Global Shoppers\n\nIf you are buying across borders, check Bobalob. It is similar to Keepa but specifically built to compare prices across different Amazon European stores, helping you spot when the exact same item is significantly cheaper in a neighboring country’s currency/market.  \nMoonsift\n\nWould you like a list of regional outdoor retailers for a specific country (e.g., UK, Canada, Australia)?\nYes",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://keepa.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://camelcamelcamel.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/outlet",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://wornwear.patagonia.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.evo.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.outdoorgearlab.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://gearjunkie.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://bobalob.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=9; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:52:02Z"
+}

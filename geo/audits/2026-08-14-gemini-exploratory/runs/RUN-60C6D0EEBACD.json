@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-60C6D0EEBACD",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-60C6D0EEBACD",
+    "panel_version": 1,
+    "randomization_key": "115ccf45980ce46e",
+    "status": "pending",
+    "concept_id": "Q06",
+    "query": "Where can I compare current Burton, Arc'teryx, and Patagonia ski or outdoor apparel discounts across retailers?",
+    "group": "problem/application",
+    "intent": "find snow-sport apparel discounts",
+    "persona_id": "snow-sports-shopper",
+    "funnel_stage": "shortlist",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 3,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-60C6D0EEBACD.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:49:52.954Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nTo compare discounts on premium outdoor brands like Arc'teryx, Patagonia, and Burton across multiple retailers, you should rely on specialized aggregation tools rather than searching each site manually.\n\nBest Tools for Price Comparison\n\nBecause major outdoor brands often have \"Minimum Advertised Price\" (MAP) policies, specific sale prices may be hidden until added to your cart or might only appear on authorized outlet sections. Use these tools to track those changes:\n\nGoogle Shopping: The most effective way to compare prices across hundreds of retailers simultaneously. Search for the specific item (e.g., \"Arc'teryx Beta Jacket\"), and the \"Compare prices from X stores\" tab will aggregate active listings, sales, and shipping costs.\n\nSlickdeals: A community-driven platform where users post and vote on verified deals. Set a \"Deal Alert\" for keywords like \"Arc'teryx\" or \"Patagonia\" to receive instant notifications when the community finds a significant price drop.\n\nSteep & Cheap: Owned by Backcountry, this site acts as a permanent outlet aggregator for premium outdoor gear. It is one of the best places to find past-season Patagonia and Arc'teryx apparel at deep discounts without hunting through individual brand sites.\n\nTop Retailers for Reliable Sales\n\nIf you are looking for authorized, high-quality gear, these retailers frequently run seasonal \"clearance\" events (typically at the end of Winter and Summer seasons):\n\nRetailer\tBest For\tWhy Check Here\nEvo\tSki/Snowboard Gear\tExcellent for Burton hard goods and bundled ski packages.\nBackcountry\tApparel & Layers\tMassive inventory; their \"Sale\" section is frequently updated with premium brands.\nREI\tMembers-only Deals\tCheck the \"REI Outlet\" section and use your member dividend for extra savings.\nSun & Ski Sports\tSeasonal Clearance\tOften has remaining stock of premium apparel after larger retailers sell out.\nPro-Tips for Finding the Lowest Price\n\nCheck the Official \"Used\" Programs: Patagonia (Worn Wear), Arc'teryx (ReGEAR), and Burton all have official resale platforms. These are the most reliable ways to get premium gear at a fraction of the cost, and the items are inspected/guaranteed by the brand.\n\nShop Off-Season: Outdoor retail follows a strict calendar. You will find the deepest discounts on winter apparel (Arc'teryx/Burton) in March–April and summer gear in September–October.\n\nBrowser Extensions: Use tools like Honey or Capital One Shopping while browsing these sites; they automatically test coupon codes at checkout that you might otherwise miss.\n\nWould you like me to explain how to verify if an online outdoor retailer is legitimate?\nYes",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://www.google.com/shopping",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://slickdeals.net/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.evo.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.backcountry.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.sunandski.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=7; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:50:09Z"
+}

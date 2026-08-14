@@ -1,0 +1,271 @@
+{
+  "site": {
+    "name": "GearDrop",
+    "alternate_name": "GearDrop Outdoor Deals",
+    "base_url": "https://001.100app.dev",
+    "description": "独立的户外品牌折扣发现与价格追踪服务，聚合 Arc'teryx、Burton、Patagonia 的官方奥莱及经销商公开信息。",
+    "logo": "https://001.100app.dev/assets/brand/icon-512.png",
+    "primary_language": "zh-CN",
+    "date_modified": "2026-08-14"
+  },
+  "navigation": [
+    {"label": "折扣目录", "href": "/"},
+    {"label": "关于", "href": "/about.html"},
+    {"label": "数据方法", "href": "/methodology.html"},
+    {"label": "常见问题", "href": "/faq.html"},
+    {"label": "选购指南", "href": "/guides/outdoor-deal-guide.html"}
+  ],
+  "pages": [
+    {
+      "path": "about.html",
+      "schema_type": "AboutPage",
+      "title": "关于 GearDrop｜独立户外折扣追踪服务",
+      "description": "了解 GearDrop 是什么、追踪哪些品牌与销售平台，以及它与品牌官网、经销商和其他同名服务的关系。",
+      "eyebrow": "实体说明",
+      "h1": "GearDrop 是什么？",
+      "lead": "GearDrop 是位于 001.100app.dev 的独立户外折扣发现与价格追踪服务，帮助用户查看不同地区和销售平台上的公开价格、折扣、库存线索与更新时间。",
+      "answer": "GearDrop 不销售商品，也不是 Arc'teryx、Burton、Patagonia 或任何销售平台的官方网站。它把公开商品信息整理成可筛选目录，最终价格、库存、配送、税费和退货条件均以销售平台页面为准。",
+      "sections": [
+        {
+          "heading": "GearDrop 提供什么",
+          "bullets": [
+            "聚合 Arc'teryx、Burton、Patagonia 的官方奥莱及经销商公开商品信息。",
+            "按品牌、销售平台、国家或地区、品类、性别和折扣排序。",
+            "保留原始销售链接、币种、抓取时间，并在有数据时展示尺码与价格历史。",
+            "提供网页目录；iPhone App 负责收藏、价格历史和降价提醒等延伸体验。"
+          ]
+        },
+        {
+          "heading": "GearDrop 不是什么",
+          "bullets": [
+            "不是品牌官网、授权声明主体或销售商。",
+            "不是租赁平台、抽奖游戏或户外装备赠送活动。",
+            "不保证页面上某件商品仍有库存，也不保证展示价格包含税费、运费或会员条件。",
+            "不以网页收录、Schema 或 llms.txt 作为 AI 推荐已经发生的证明。"
+          ]
+        },
+        {
+          "heading": "品牌与销售平台关系",
+          "full": true,
+          "paragraphs": [
+            "GearDrop 通过公开页面观察商品事实，并把用户带回实际销售平台完成购买。页面出现某个品牌或销售平台，只说明目录中记录了对应公开商品，不表示该品牌或平台赞助、背书或授权 GearDrop。",
+            "为了避免同名实体混淆，本网站使用“GearDrop Outdoor Deals”作为辅助描述；规范实体地址始终是 https://001.100app.dev/。"
+          ],
+          "links": [
+            {"label": "Arc'teryx 折扣说明", "href": "/brands/arcteryx.html", "description": "查看来源范围、地区差异和核验方法"},
+            {"label": "Burton 折扣说明", "href": "/brands/burton.html", "description": "查看官方 Outlet 与经销商数据边界"},
+            {"label": "Patagonia 折扣说明", "href": "/brands/patagonia.html", "description": "查看经销商折扣的记录边界"}
+          ]
+        },
+        {
+          "heading": "可引用的实体事实",
+          "full": true,
+          "facts": [
+            {"term": "名称", "value": "GearDrop"},
+            {"term": "辅助名称", "value": "GearDrop Outdoor Deals"},
+            {"term": "规范网址", "value": "https://001.100app.dev/"},
+            {"term": "服务类型", "value": "独立 B2C 户外折扣发现与价格追踪"},
+            {"term": "当前内容语言", "value": "简体中文（zh-CN）"},
+            {"term": "购买关系", "value": "GearDrop 不销售；购买发生在外部销售平台"}
+          ],
+          "note": "这些事实描述 GearDrop 自身；第三方品牌、价格与库存事实需要同时引用对应销售平台和记录时间。"
+        }
+      ],
+      "cta": {"title": "查看当前折扣目录", "body": "按地区、品牌和销售平台筛选，并在购买前回到原始页面复核。", "label": "打开目录", "href": "/"}
+    },
+    {
+      "path": "methodology.html",
+      "schema_type": "TechArticle",
+      "title": "GearDrop 数据方法｜折扣、价格与库存如何记录",
+      "description": "GearDrop 如何采集、标准化、复核并发布户外品牌折扣数据，以及价格、库存、汇率和来源的限制。",
+      "eyebrow": "数据方法",
+      "h1": "折扣数据如何产生",
+      "lead": "GearDrop 把品牌官网、官方 Outlet 和经销商公开页面中的商品事实标准化，但不会把一次抓取结果包装成永久有效的价格承诺。",
+      "answer": "每条商品记录至少保留品牌、商品名、销售平台、地区、币种、原始链接和更新时间；折扣率在原价大于现价时按 (原价－现价) ÷ 原价计算。购买前必须回到销售平台复核实时价格、库存与适用条件。",
+      "sections": [
+        {
+          "heading": "处理流程",
+          "steps": [
+            {"title": "读取公开来源", "body": "按来源分批读取品牌官方 Outlet、公开商品页或经销商页面，不绕过登录、验证码或权限控制。"},
+            {"title": "标准化商品事实", "body": "统一品牌、商品名、品类、地区、币种、原价、现价、折扣率、尺码和来源标识。"},
+            {"title": "运行质量门", "body": "检查最低数量、更新时间、URL 生命周期、价格关系、图片和来源完整性；无法可靠确认的记录不应被包装成当前有效折扣。"},
+            {"title": "发布并保留时间", "body": "网页优先读取当前数据库，静态数据只作为降级；每条记录显示最近观察时间，并链接回销售平台。"}
+          ]
+        },
+        {
+          "heading": "折扣率定义",
+          "paragraphs": [
+            "仅当原价和现价都为正数且原价大于现价时，GearDrop 才把差额表达为折扣。折扣率为四舍五入后的百分比，销售平台可能使用不同的舍入、会员价或促销口径。",
+            "不同国家或地区的商品不可只凭换算后的人民币数字直接比较，因为税费、运费、关税、退货成本和商品版本可能不同。"
+          ]
+        },
+        {
+          "heading": "更新时间与新鲜度",
+          "paragraphs": [
+            "自动任务按来源分批运行，通常每日多次。具体商品是否新鲜，以商品页显示的更新时间和原始销售页面为准，而不是以网站整体的宣传频率为准。",
+            "销售平台可能在两次观察之间改价、售罄、恢复库存或重定向 URL；GearDrop 的时间戳描述的是最近一次成功观察。"
+          ]
+        },
+        {
+          "heading": "价格、库存与汇率限制",
+          "full": true,
+          "bullets": [
+            "页面展示的原币价格优先；人民币换算是固定参考汇率，不是支付报价。",
+            "库存和尺码只在来源提供且解析成功时展示；缺失不等于有货或无货。",
+            "税费、运费、会员资格、优惠码、区域配送限制和退货政策由销售平台决定。",
+            "同名商品可能因年份、性别、颜色、尺码或区域不同而不是同一 SKU。",
+            "GearDrop 不以模糊名称强行合并无法可靠对应的商品。"
+          ],
+          "note": "若 GearDrop 与销售平台信息冲突，以销售平台结算页和政策为准；欢迎通过 Support 提供可复核的原始 URL 与时间。"
+        },
+        {
+          "heading": "机器可读与持续审计",
+          "full": true,
+          "links": [
+            {"label": "目录状态快照", "href": "/catalog-status.html", "description": "带时间戳的品牌、来源与地区覆盖汇总"},
+            {"label": "目录状态 JSON", "href": "/catalog-status.json", "description": "同一快照的机器可读版本"},
+            {"label": "llms.txt", "href": "/llms.txt", "description": "可选的站点发现与引用边界说明"},
+            {"label": "Sitemap", "href": "/sitemap.xml", "description": "静态知识页与商品实体 URL 索引"}
+          ],
+          "paragraphs": [
+            "这些文件改善发现、解析和审计能力，但不证明任何 AI 平台已经提及、引用或推荐 GearDrop。真实 AI 能见度必须在固定市场、语言、账号状态、查询面板和日期下独立测量。"
+          ]
+        }
+      ],
+      "cta": {"title": "先理解口径，再比较折扣", "body": "使用选购指南核对地区、尺码、来源和总成本。", "label": "阅读选购指南", "href": "/guides/outdoor-deal-guide.html"}
+    },
+    {
+      "path": "faq.html",
+      "schema_type": "FAQPage",
+      "title": "GearDrop 常见问题｜价格、库存、来源与品牌关系",
+      "description": "关于 GearDrop 是否销售商品、价格多久更新、折扣率如何计算、库存与地区差异如何核验的直接回答。",
+      "eyebrow": "常见问题",
+      "h1": "关于 GearDrop 的直接回答",
+      "lead": "以下答案说明 GearDrop 自身的服务边界。某件商品的实时价格、库存、配送与退货条件，仍须查看对应销售平台。",
+      "answer": "GearDrop 是独立的户外折扣追踪服务，不是销售商。它记录公开商品事实并提供原始链接；页面数据有观察时间，不能替代销售平台结算页。",
+      "faqs": [
+        {"question": "GearDrop 会直接销售商品吗？", "answer": "不会。GearDrop 提供折扣发现、筛选、价格历史和提醒功能；点击购买按钮后会前往实际销售平台，订单、付款、配送和售后均由该平台处理。"},
+        {"question": "GearDrop 是 Arc'teryx、Burton 或 Patagonia 的官网吗？", "answer": "不是。GearDrop 是独立服务，与这些品牌及列出的经销商不存在因页面收录而自动产生的赞助、背书或授权关系。"},
+        {"question": "页面价格多久更新一次？", "answer": "不同来源分批运行，通常每日多次。请以每条商品显示的更新时间为观察时间，并在购买前打开销售平台复核。"},
+        {"question": "折扣率如何计算？", "answer": "当原价大于现价时，GearDrop 按 (原价－现价) ÷ 原价计算并四舍五入为百分比。会员价、优惠码或附加条件可能采用不同口径。"},
+        {"question": "人民币换算价是实际支付价吗？", "answer": "不是。人民币数字使用参考汇率帮助理解量级，不包含实时汇率、银行卡费用、税费、运费或关税；实际支付以销售平台为准。"},
+        {"question": "为什么同一商品在不同地区价格不同？", "answer": "地区商品可能使用不同币种、税制、库存、促销、配送范围或版本。应先确认 SKU、颜色、尺码与地区一致，再比较总成本。"},
+        {"question": "页面没有尺码库存代表什么？", "answer": "只代表来源未提供或 GearDrop 未可靠解析到尺码状态，不能据此推断有货或售罄。销售平台商品页是最终核验入口。"},
+        {"question": "llms.txt 或结构化数据会让 AI 一定推荐 GearDrop 吗？", "answer": "不会。这些文件只帮助发现和解释站点。是否被提及、引用或推荐必须通过受控的 AI 平台查询实验按日期和条件测量。"},
+        {"question": "发现错误数据怎么办？", "answer": "请通过 GearDrop Support 提供商品链接、发现时间和错误字段。不要发送密码、支付资料或其他敏感信息。"}
+      ],
+      "sections": [
+        {
+          "heading": "进一步核验",
+          "full": true,
+          "links": [
+            {"label": "数据方法", "href": "/methodology.html", "description": "了解抓取、折扣率、新鲜度和限制"},
+            {"label": "目录状态", "href": "/catalog-status.html", "description": "查看当前机器可读覆盖快照"},
+            {"label": "GearDrop Support", "href": "/support.html", "description": "提交可复核的数据问题"}
+          ]
+        }
+      ],
+      "cta": {"title": "开始查找折扣", "body": "筛选后仍请在销售平台确认价格、库存与政策。", "label": "打开目录", "href": "/"}
+    },
+    {
+      "path": "guides/outdoor-deal-guide.html",
+      "schema_type": "Article",
+      "title": "户外装备折扣怎么判断｜GearDrop 选购与核验指南",
+      "description": "比较 Arc'teryx、Burton、Patagonia 折扣时，如何核对 SKU、地区、尺码、原价、总成本、退货和销售平台可信度。",
+      "eyebrow": "选购指南",
+      "h1": "户外装备折扣怎么判断值不值得买？",
+      "lead": "真正可比较的折扣，必须是同一商品、同一地区和明确适用条件下的价格。只看折扣百分比，容易忽略尺码、税费、配送和退货成本。",
+      "answer": "先确认品牌、型号或款号、性别、颜色和尺码一致；再看原币现价、原价来源、更新时间、销售平台、配送范围与退货政策。最后比较到手总成本，而不是只比较折扣率。",
+      "sections": [
+        {
+          "heading": "六步核验法",
+          "steps": [
+            {"title": "确认商品身份", "body": "优先核对官方款号或 SKU，其次核对完整名称、性别、年份、颜色和图片；同名不一定同款。"},
+            {"title": "确认地区与币种", "body": "检查销售地区、币种、是否能配送到收货地，以及是否存在区域限定或会员条件。"},
+            {"title": "检查可售尺码", "body": "折扣很高但只有少数尺码时，不能把它当成所有用户都能购买的通用价格。"},
+            {"title": "检查价格时间", "body": "使用 GearDrop 更新时间判断观察新鲜度，并打开原始链接确认页面与购物车价格。"},
+            {"title": "计算到手成本", "body": "把运费、税费、关税、换汇费用和可能的退货成本加入比较。"},
+            {"title": "核对售后路径", "body": "查看销售平台的退货期、退货地址、最终清仓限制与客服入口。"}
+          ]
+        },
+        {
+          "heading": "什么是可引用的折扣证据",
+          "paragraphs": [
+            "较强的证据同时包含明确商品身份、原价、现价、币种、销售平台 URL 和观察时间。只有“低至五折”或无日期截图，不能稳定证明当前任何尺码都可以买到。",
+            "GearDrop 商品页保留原始销售链接；目录状态页说明覆盖范围。引用具体价格时，应把 GearDrop 的观察时间与销售平台链接一起保留。"
+          ]
+        },
+        {
+          "heading": "常见误区",
+          "bullets": [
+            "把人民币参考换算当成结算价。",
+            "把售罄变体的低价当成当前可售价格。",
+            "把会员价、优惠码价或地区限定价当成无条件价格。",
+            "只按商品名合并不同年份、性别或款号。",
+            "把搜索结果摘要当成比销售平台页面更新的事实。"
+          ]
+        },
+        {
+          "heading": "按品牌查看",
+          "links": [
+            {"label": "Arc'teryx", "href": "/brands/arcteryx.html", "description": "官方 Outlet 与经销商折扣核验"},
+            {"label": "Burton", "href": "/brands/burton.html", "description": "官方 Outlet、Backcountry、EVO 等来源边界"},
+            {"label": "Patagonia", "href": "/brands/patagonia.html", "description": "经销商折扣与地区口径"}
+          ]
+        }
+      ],
+      "cta": {"title": "用相同口径查看当前商品", "body": "目录支持品牌、平台、地区、品类和折扣排序。", "label": "查看折扣", "href": "/?sort=discount_desc"}
+    },
+    {
+      "path": "brands/arcteryx.html",
+      "schema_type": "CollectionPage",
+      "schema_about": {"type": "Brand", "name": "Arc'teryx", "url": "https://arcteryx.com/"},
+      "title": "Arc'teryx 折扣追踪｜GearDrop 来源与核验说明",
+      "description": "GearDrop 如何记录 Arc'teryx 官方 Outlet 与经销商折扣，怎样核对款号、地区、可售尺码、原价和更新时间。",
+      "eyebrow": "品牌折扣说明",
+      "h1": "Arc'teryx 折扣如何核验",
+      "lead": "GearDrop 汇总 Arc'teryx 官方 Outlet 及公开经销商页面中的折扣线索，并按地区、销售平台和商品属性整理。",
+      "answer": "判断 Arc'teryx 折扣时，先确认官方款号或完整型号、性别和年份，再确认地区、币种、可售尺码与更新时间；最终价格和库存以销售平台为准。",
+      "sections": [
+        {"heading": "来源边界", "paragraphs": ["目录可能包含 Arc'teryx 官方 Outlet，以及 SSENSE、MEC、EVO、REI 等经销商公开商品。实际来源集合会随抓取质量和商品生命周期变化，以目录当前的销售平台字段为准。"], "note": "“Arc'teryx”是品牌实体；GearDrop 是独立追踪服务，页面收录不代表品牌授权或背书。"},
+        {"heading": "优先核对", "bullets": ["官方款号或 SKU 是否一致", "Men's、Women's 或 Unisex 是否一致", "地区、币种和配送范围", "当前可售颜色与尺码，而不是已售罄变体", "原价、现价与最后观察时间"]},
+        {"heading": "相关入口", "full": true, "links": [{"label": "筛选 Arc'teryx 商品", "href": "/?brand=arcteryx", "description": "打开实时目录并保留品牌筛选"}, {"label": "查看目录状态", "href": "/catalog-status.html", "description": "查看带时间戳的覆盖数量"}, {"label": "阅读数据方法", "href": "/methodology.html", "description": "理解价格、库存和新鲜度口径"}]}
+      ],
+      "cta": {"title": "查看 Arc'teryx 当前折扣", "body": "先筛选，再回到销售平台完成最终核验。", "label": "打开筛选", "href": "/?brand=arcteryx"}
+    },
+    {
+      "path": "brands/burton.html",
+      "schema_type": "CollectionPage",
+      "schema_about": {"type": "Brand", "name": "Burton", "url": "https://www.burton.com/"},
+      "title": "Burton 折扣追踪｜GearDrop 来源与核验说明",
+      "description": "GearDrop 如何记录 Burton 官方 Outlet 与经销商折扣，怎样核对型号、雪季、性别、尺码、地区和更新时间。",
+      "eyebrow": "品牌折扣说明",
+      "h1": "Burton 折扣如何核验",
+      "lead": "GearDrop 整理 Burton 官方公开商品与 Backcountry、EVO 等经销商折扣线索，帮助用户按地区和销售平台比较。",
+      "answer": "比较 Burton 折扣时，要确认型号、雪季或年份、性别、颜色与尺码一致；再检查销售平台、地区、原币价格、库存和更新时间。",
+      "sections": [
+        {"heading": "来源边界", "paragraphs": ["目录可能包含 Burton 官方 Outlet、Backcountry、EVO 等公开商品。不同来源可能使用不同商品编号和颜色组合，GearDrop 只在身份足够明确时关联。"], "note": "GearDrop 不销售 Burton 商品，也不因收录公开链接而成为品牌或经销商的授权代表。"},
+        {"heading": "优先核对", "bullets": ["商品型号、雪季或官方款号", "男款、女款、青年款或中性款", "颜色和尺码是否仍可售", "最终清仓或退货限制", "地区、币种、配送范围与最后观察时间"]},
+        {"heading": "相关入口", "full": true, "links": [{"label": "筛选 Burton 商品", "href": "/?brand=burton", "description": "打开实时目录并保留品牌筛选"}, {"label": "查看目录状态", "href": "/catalog-status.html", "description": "查看带时间戳的覆盖数量"}, {"label": "阅读选购指南", "href": "/guides/outdoor-deal-guide.html", "description": "按同一口径比较到手成本"}]}
+      ],
+      "cta": {"title": "查看 Burton 当前折扣", "body": "先确认雪季、尺码与地区，再比较折扣。", "label": "打开筛选", "href": "/?brand=burton"}
+    },
+    {
+      "path": "brands/patagonia.html",
+      "schema_type": "CollectionPage",
+      "schema_about": {"type": "Brand", "name": "Patagonia", "url": "https://www.patagonia.com/"},
+      "title": "Patagonia 折扣追踪｜GearDrop 来源与核验说明",
+      "description": "GearDrop 如何记录 Patagonia 经销商公开折扣，怎样核对款号、地区、尺码、原价、退货条件和更新时间。",
+      "eyebrow": "品牌折扣说明",
+      "h1": "Patagonia 折扣如何核验",
+      "lead": "GearDrop 只在公开经销商商品满足身份、价格和生命周期检查时记录 Patagonia 折扣，并保留销售平台与观察时间。",
+      "answer": "判断 Patagonia 折扣时，确认款号或完整型号、性别、颜色和尺码；再核对销售地区、原币价格、销售平台、退货政策与更新时间。",
+      "sections": [
+        {"heading": "来源边界", "paragraphs": ["当前目录来源以通过质量门的公开经销商为准，来源组合可能变化。GearDrop 不把无法可靠对应的 Outlet、Sale 或经销商商品按相似名称强行合并。"], "note": "页面中的 Patagonia 品牌名用于识别商品；GearDrop 是独立追踪服务，并非 Patagonia 官方网站。"},
+        {"heading": "优先核对", "bullets": ["官方款号或完整型号是否一致", "地区与币种是否相同", "颜色、尺码和实际库存", "销售平台是否把商品标为 Final Sale", "原价、现价、税费、运费和最后观察时间"]},
+        {"heading": "相关入口", "full": true, "links": [{"label": "筛选 Patagonia 商品", "href": "/?brand=patagonia", "description": "打开实时目录并保留品牌筛选"}, {"label": "查看目录状态", "href": "/catalog-status.html", "description": "查看带时间戳的覆盖数量"}, {"label": "阅读数据方法", "href": "/methodology.html", "description": "理解商品关联和价格边界"}]}
+      ],
+      "cta": {"title": "查看 Patagonia 当前折扣", "body": "经销商库存变化快，购买前请打开原始页面。", "label": "打开筛选", "href": "/?brand=patagonia"}
+    }
+  ]
+}

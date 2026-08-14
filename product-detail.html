@@ -9,6 +9,23 @@
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/brand/favicon-48.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/brand/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
+    <meta id="product-meta-description" name="description" content="查看 GearDrop 记录的户外商品品牌、销售平台、地区、价格、库存线索与更新时间；最终交易信息以销售平台为准。">
+    <meta id="product-meta-robots" name="robots" content="noindex,follow">
+    <link id="product-canonical" rel="canonical" href="https://001.100app.dev/product-detail.html">
+    <meta id="product-og-title" property="og:title" content="商品详情 · GearDrop">
+    <meta id="product-og-description" property="og:description" content="查看品牌、销售平台、地区、价格与最近观察时间。">
+    <meta id="product-og-url" property="og:url" content="https://001.100app.dev/product-detail.html">
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="GearDrop">
+    <meta property="og:locale" content="zh_CN">
+    <meta id="product-og-image" property="og:image" content="https://001.100app.dev/assets/brand/geardrop-og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta id="product-twitter-title" name="twitter:title" content="商品详情 · GearDrop">
+    <meta id="product-twitter-description" name="twitter:description" content="查看品牌、销售平台、地区、价格与最近观察时间。">
+    <meta id="product-twitter-image" name="twitter:image" content="https://001.100app.dev/assets/brand/geardrop-og.png">
+    <script id="product-jsonld" type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebPage","name":"GearDrop 商品详情","url":"https://001.100app.dev/product-detail.html"}
+    </script>
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -338,7 +355,7 @@
             text-align: center;
             color: var(--text-2);
         }
-        .state h2 { color: var(--text); font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+        .state h1, .state h2 { color: var(--text); font-size: 20px; font-weight: 600; margin: 0 0 8px; }
         .state .cta { margin-top: 18px; }
 
         .skel { background: linear-gradient(90deg, #f0ece4 0%, #e8e2d4 50%, #f0ece4 100%); background-size: 200% 100%; border-radius: var(--r-md); animation: shine 1.4s ease-in-out infinite; }
@@ -521,6 +538,28 @@
             text-align: center;
             padding: 28px 0;
         }
+        .detail-context {
+            max-width: 1280px;
+            margin: 0 auto 64px;
+            padding: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-2);
+        }
+        .detail-context h2 { margin: 0 0 8px; color: var(--text); font-size: 17px; }
+        .detail-context p { max-width: 860px; margin: 0; font-size: 12.5px; line-height: 1.75; }
+        .detail-context nav { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+        .detail-context a { color: var(--text); border-bottom: 1px solid var(--border-strong); font-size: 12px; }
+        .detail-footer {
+            border-top: 1px solid var(--border);
+            padding: 28px 20px 88px;
+            color: var(--text-3);
+            text-align: center;
+            font-size: 11.5px;
+        }
+        .detail-footer a { color: var(--text-2); }
+        @media (max-width: 640px) {
+            .detail-context { margin-bottom: 40px; padding: 20px 16px; }
+        }
     </style>
 </head>
 <body>
@@ -540,9 +579,24 @@
 
 <main id="main">
     <div class="state" id="initial-state">
-        <h2>加载中…</h2>
+        <h1>正在读取 GearDrop 商品详情…</h1>
     </div>
 </main>
+
+<section class="detail-context" aria-labelledby="detail-data-heading">
+    <h2 id="detail-data-heading">商品数据说明</h2>
+    <p>GearDrop 是独立折扣追踪服务，不销售商品。商品页记录品牌、销售平台、地区、公开价格、库存线索与最近观察时间；税费、运费、会员条件、实时库存和退货政策以销售平台为准。</p>
+    <nav aria-label="商品数据说明链接">
+        <a href="/methodology.html">数据方法</a>
+        <a href="/faq.html">常见问题</a>
+        <a href="/guides/outdoor-deal-guide.html">折扣选购指南</a>
+        <a href="/catalog-status.html">目录状态</a>
+    </nav>
+</section>
+
+<footer class="detail-footer">
+    <a href="/about.html">关于 GearDrop</a> · <a href="/support.html">Support</a> · <a href="/privacy.html">Privacy</a> · Non-affiliated
+</footer>
 
 <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
     <img id="lightbox-img" alt="">
@@ -681,6 +735,141 @@ const normalizeProducts = (rows) => (rows || [])
         images:     parseMaybeJson(p.images, []),
         _brand:     brandKey(p),
     }));
+
+const PRODUCT_PAGE_BASE = 'https://001.100app.dev/p';
+const setMetaContent = (id, value) => {
+    const node = document.getElementById(id);
+    if (node) node.setAttribute('content', value);
+};
+
+const canonicalProductUrl = (p) => {
+    const canonical = new URL(PRODUCT_PAGE_BASE);
+    if (p?.sku_id) canonical.searchParams.set('sku', p.sku_id);
+    return canonical.toString();
+};
+
+const productMetaDescription = (p) => {
+    const name = productName(p);
+    const platform = inferPlatform(p).label;
+    const region = REGION_LABEL[p.region] || p.region || '对应地区';
+    return `${name}：GearDrop 记录的 ${platform} ${region}商品信息、折扣、库存线索与更新时间。最终价格、库存、配送和退货条件以销售平台为准。`;
+};
+
+const productAvailability = (p) => {
+    const stock = parseMaybeJson(p.size_stock, {});
+    const values = Object.values(stock || {});
+    if (values.some(value => value === 'in_stock')) return 'https://schema.org/InStock';
+    if (values.length && values.every(value => value === 'out_of_stock')) return 'https://schema.org/OutOfStock';
+    return null;
+};
+
+function updateProductMetadata(p) {
+    const name = productName(p);
+    const brand = brandLabel(p);
+    const platform = inferPlatform(p).label;
+    const canonical = canonicalProductUrl(p);
+    const description = productMetaDescription(p);
+    const images = [p.image_url, ...(Array.isArray(p.images) ? p.images : [])].filter(Boolean);
+
+    document.title = `${name} 折扣与价格 · GearDrop`;
+    document.getElementById('product-canonical')?.setAttribute('href', canonical);
+    setMetaContent('product-meta-description', description);
+    setMetaContent('product-meta-robots', 'noindex,follow');
+    setMetaContent('product-og-title', `${name} · GearDrop`);
+    setMetaContent('product-og-description', description);
+    setMetaContent('product-og-url', canonical);
+    setMetaContent('product-og-image', images[0] || 'https://001.100app.dev/assets/brand/geardrop-og.png');
+    setMetaContent('product-twitter-title', `${name} · GearDrop`);
+    setMetaContent('product-twitter-description', description);
+    setMetaContent('product-twitter-image', images[0] || 'https://001.100app.dev/assets/brand/geardrop-og.png');
+
+    const product = {
+        '@type': 'Product',
+        '@id': `${canonical}#product`,
+        name,
+        description: resolveDesc(p) || description,
+        sku: p.sku_id || undefined,
+        image: images.length ? [...new Set(images)].slice(0, 8) : undefined,
+        brand: brand && brand !== '—' ? { '@type': 'Brand', name: brand } : undefined,
+        category: p.category || undefined,
+        color: cleanColor(p.color || '') || undefined,
+        mainEntityOfPage: { '@id': `${canonical}#webpage` },
+        additionalProperty: [
+            { '@type': 'PropertyValue', name: '销售平台', value: platform },
+            { '@type': 'PropertyValue', name: '销售地区', value: REGION_LABEL[p.region] || p.region || '未知' },
+            { '@type': 'PropertyValue', name: '最近观察时间', value: p.last_updated || '未提供' },
+        ],
+    };
+
+    const price = Number(p.sale_price);
+    const currency = String(p.currency || '').toUpperCase();
+    if (Number.isFinite(price) && price > 0 && /^[A-Z]{3}$/.test(currency) && p.url) {
+        const offer = {
+            '@type': 'Offer',
+            url: p.url,
+            price,
+            priceCurrency: currency,
+            seller: { '@type': 'Organization', name: platform },
+        };
+        const availability = productAvailability(p);
+        if (availability) offer.availability = availability;
+        product.offers = offer;
+    }
+
+    const graph = {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'Organization',
+                '@id': 'https://001.100app.dev/#organization',
+                name: 'GearDrop',
+                alternateName: 'GearDrop Outdoor Deals',
+                url: 'https://001.100app.dev/',
+                publishingPrinciples: 'https://001.100app.dev/methodology.html',
+            },
+            {
+                '@type': 'WebPage',
+                '@id': `${canonical}#webpage`,
+                url: canonical,
+                name: `${name} 折扣与价格`,
+                description,
+                inLanguage: 'zh-CN',
+                isPartOf: { '@id': 'https://001.100app.dev/#website' },
+                publisher: { '@id': 'https://001.100app.dev/#organization' },
+                mainEntity: { '@id': `${canonical}#product` },
+                breadcrumb: { '@id': `${canonical}#breadcrumb` },
+                dateModified: p.last_updated ? p.last_updated.slice(0, 10) : undefined,
+            },
+            product,
+            {
+                '@type': 'BreadcrumbList',
+                '@id': `${canonical}#breadcrumb`,
+                itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: 'GearDrop', item: 'https://001.100app.dev/' },
+                    { '@type': 'ListItem', position: 2, name: brand, item: `https://001.100app.dev/?brand=${encodeURIComponent(brandKey(p))}` },
+                    { '@type': 'ListItem', position: 3, name, item: canonical },
+                ],
+            },
+        ],
+    };
+    document.getElementById('product-jsonld').textContent = JSON.stringify(graph);
+}
+
+function updateNotFoundMetadata() {
+    document.title = '未找到商品 · GearDrop';
+    document.getElementById('product-canonical')?.setAttribute('href', PRODUCT_PAGE_BASE);
+    setMetaContent('product-meta-description', '该商品可能已下架或链接已变更。返回 GearDrop 折扣目录继续查找。');
+    setMetaContent('product-meta-robots', 'noindex,follow');
+    setMetaContent('product-og-title', '未找到商品 · GearDrop');
+    setMetaContent('product-og-description', '该商品可能已下架或链接已变更。');
+    setMetaContent('product-og-url', PRODUCT_PAGE_BASE);
+    document.getElementById('product-jsonld').textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: '未找到商品',
+        url: PRODUCT_PAGE_BASE,
+    });
+}
 
 const loadStaticProducts = async () => {
     if (typeof PRODUCTS !== 'undefined') return PRODUCTS;
@@ -991,6 +1180,7 @@ function stickyCTA(p) {
 }
 
 function renderSKU(current, all, outletUrl) {
+    updateProductMetadata(current);
     const name = productName(current);
     const images = (current.images && current.images.length ? current.images : [current.image_url]).filter(Boolean);
     const ctaUrl = outletUrl || current.url;   // respect original region URL
@@ -1069,6 +1259,7 @@ function renderSKU(current, all, outletUrl) {
 }
 
 function renderBase(p) {
+    updateProductMetadata(p);
     const name = productName(p);
     const html = `
     <div class="product">
@@ -1123,6 +1314,7 @@ function renderBase(p) {
 }
 
 function renderNotFound() {
+    updateNotFoundMetadata();
     document.getElementById('main').innerHTML = `
     <div class="state">
         <h2>未找到该商品</h2>

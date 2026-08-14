@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-2E14B8F5557C",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-2E14B8F5557C",
+    "panel_version": 1,
+    "randomization_key": "38fa476ab3fda3b0",
+    "status": "pending",
+    "concept_id": "Q11",
+    "query": "I want discounted Arc'teryx, Burton, or Patagonia apparel now. Which site can give me verifiable links to the original retailer?",
+    "group": "buying/action",
+    "intent": "find a current branded outdoor deal with source link",
+    "persona_id": "technical-apparel-shopper",
+    "funnel_stage": "action",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 3,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-2E14B8F5557C.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:51:12.387Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nTo find discounted Arc’teryx, Burton, or Patagonia apparel with the certainty that you are buying authentic gear, you should use official brand outlets or authorized major retailers.\n\nAvoid \"deal\" aggregator sites or unknown clearance websites, which are frequently used for counterfeit listings.\n\n1. The Gold Standard: Official Brand \"Used\" & Outlet Sites\n\nThese platforms are run directly by the manufacturers. They offer the best guarantee of authenticity and often support sustainability by giving older gear a second life.\n\nBrand\tOfficial Discount Platform\tType of Inventory\nPatagonia\tWorn Wear\tCertified pre-owned and repaired gear.\nArc'teryx\tReGEAR\tOfficial trade-in and refurbished items.\nBurton\tOutlet / Sale\tCurrent site navigation features an \"Outlet\" or \"Sale\" section.\n\nTip: Arc'teryx also operates physical \"Factory Outlet\" locations in many major premium outlet malls. You can find these by using the official store locator.  \nArc'teryx\n\n2. Trusted Authorized Retailers\n\nThese major retailers are authorized dealers for all three brands. They have strict return policies and guaranteed authentic inventory. Their \"Outlet\" or \"Garage\" sections are reliable sources for last-season colors and styles.  \nCrux Range\n\nREI (REI Outlet / Re/Supply): The most trusted name in the industry. The \"REI Outlet\" sells new past-season gear, while \"Re/Supply\" sells used gear at a significant discount.  \nThe Wandering Queen\n\nBackcountry: A massive authorized retailer. They own Steep & Cheap, a site dedicated specifically to flash sales and clearance items from these exact brands.  \nBackpackers.com\n\nevo: Highly reliable, especially for Burton snow gear. Their outlet section is extensive and carries premium technical apparel.  \nCrux Range\n\nPublic Lands: Owned by DICK’S Sporting Goods, they are an authorized dealer for these brands and frequently run site-wide clearance events.\n\n3. How to Verify Authenticity\n\nIf you find a deal on a site not listed above, follow these steps to avoid scams:\n\nCheck the URL: Scammers often use \"typo-squatting\" (e.g., arcteryx-outlet-sale.com instead of arcteryx.com). If the URL is not the brand’s official domain or a major retailer listed above, do not enter your credit card information.\n\nLook for Physical Addresses: Legitimate retailers provide a real corporate address and customer service phone number in their \"Contact Us\" or \"Footer\" section.\n\nBeware of \"Too Good to Be True\": If a $800 Arc'teryx shell is listed for $49.99, it is almost certainly a counterfeit site designed to steal your payment data.\n\nIf you are looking for specific types of gear, I can help you narrow down the best platform for your needs.\nBest places for used/refurbished snow gear\nHow to identify fake Arc'teryx jackets\nCurrent sales at major outdoor retailers",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://wornwear.patagonia.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.google.com/search?q=https://www.arcteryx.com/us/en/shop/regear",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.burton.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://stores.arcteryx.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/outlet",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.backcountry.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.evo.com/outlet",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.publiclands.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=9; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:52:01Z"
+}

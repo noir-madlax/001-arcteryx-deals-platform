@@ -1,0 +1,59 @@
+name: GEO Visibility Baseline
+
+on:
+  schedule:
+    - cron: "15 4 1 * *"
+  workflow_dispatch:
+    inputs:
+      run_paid_api_probe:
+        description: "Run one billable official Gemini grounding probe"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geardrop-geo-visibility-baseline
+  cancel-in-progress: false
+
+jobs:
+  baseline-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate frozen visibility baseline
+        run: python tools/check_geo_visibility_baseline.py | tee geo-visibility-baseline-check.json
+      - name: Upload baseline validation
+        uses: actions/upload-artifact@v4
+        with:
+          name: geardrop-geo-visibility-baseline-${{ github.run_id }}
+          path: geo-visibility-baseline-check.json
+          retention-days: 90
+
+  official-api-probe:
+    if: github.event_name == 'workflow_dispatch' && inputs.run_paid_api_probe
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run one explicitly approved Gemini grounding probe
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python tools/probe_gemini_grounding.py > gemini-grounding-probe.json
+      - name: Upload sanitized probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geardrop-gemini-probe-${{ github.run_id }}
+          path: gemini-grounding-probe.json
+          if-no-files-found: warn
+          retention-days: 90

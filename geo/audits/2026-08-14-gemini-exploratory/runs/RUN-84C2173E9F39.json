@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-84C2173E9F39",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-84C2173E9F39",
+    "panel_version": 1,
+    "randomization_key": "625c876705c3f77c",
+    "status": "done",
+    "concept_id": "Q01",
+    "query": "What is GearDrop at https://001.100app.dev/, and what does it offer outdoor enthusiasts?",
+    "group": "brand/entity",
+    "intent": "understand the named brand and service",
+    "persona_id": "multi-sport-outdoor-shopper",
+    "funnel_stage": "discovery",
+    "business_profile": "b2c",
+    "branded": true,
+    "recommendation_intent": false,
+    "eligible_for_geo": false,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 1,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-84C2173E9F39.json",
+    "completed_at": "2026-08-13T20:54:35.308Z"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:54:35.308Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nThe URL https://001.100app.dev/ redirects to the BaseMap mobile and desktop hunting GPS application.\n\nGearDrop™ is a recurring promotional feature within the BaseMap app designed to engage outdoor enthusiasts by offering them a chance to win premium hunting and outdoor gear.  \nPR Newswire\n\nWhat is GearDrop?\n\nGearDrop functions as a gamified loyalty or engagement program within the BaseMap ecosystem. It is frequently highlighted as one of the app's interactive community features, alongside its core mapping and navigation tools.  \nUpdateStar\n\nHow it works: Users typically participate in the challenge directly through the BaseMap platform for a chance to win featured products from industry partners.  \nbasemap-hunting-gps-maps.updatestar.com\n\nPurpose: It serves to incentivize app usage and reward the community, often featuring partnerships with well-known outdoor brands and personalities, such as the Bone Collector team.  \nPR Newswire\n\nWhat BaseMap Offers Outdoor Enthusiasts\n\nSince the link directs you to BaseMap, users gain access to a comprehensive suite of digital scouting and navigation tools tailored for hunters, hikers, and anglers:  \nUpdateStar\n\nAdvanced Mapping: Access to nationwide public and private land ownership data, parcel boundaries, and owner names (often restricted to Pro subscribers).  \nUpdateStar\n\nOffline Navigation: The ability to download high-resolution satellite imagery and topographic maps for use in areas without cellular service.  \nUpdateStar\n\nPlanning Tools: Features like HuntWind™ (wind direction and scent drift forecasting), 3D terrain visualization, and \"SmartMarkers\" for logging trail cameras, stand locations, or animal sightings.  \nPR Newswire\n\nTracking & Logging: Real-time GPS tracking and an \"Outdoor Journal\" to log harvest data, weather conditions, and trip details.  \nUpdateStar\n\nNote: Several outdoor brands use the term \"Gear Drop\" (or \"GearDrop\") for their own content. For example, Mossy Oak hosts a \"Gear Drop\" video series where they review and showcase the latest hunting products. However, in the context of the specific URL provided, it refers to the giveaway feature within the BaseMap hunting app.  \nMossy Oak GO\n+ 1\n\nWould you like to know the differences between BaseMap's free and Pro subscription plans?\nYes",
+    "result": "observed",
+    "brand_mentioned": true,
+    "brand_cited": true,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://001.100app.dev/",
+        "source_type": "owned"
+      },
+      {
+        "url": "https://go.mossyoak.com/gear-drop",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "incorrect",
+    "action_validity": "invalid",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=2; blocked_reason=none; manual_review=2026-08-14; factual=incorrect; action=invalid"
+  },
+  "imported_at": "2026-08-13T21:00:42Z"
+}

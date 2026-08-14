@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-F4B07D7F84B5",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-F4B07D7F84B5",
+    "panel_version": 1,
+    "randomization_key": "251731b7f0ab4da0",
+    "status": "done",
+    "concept_id": "Q02",
+    "query": "Would you recommend GearDrop at https://001.100app.dev/ for comparing outdoor gear deals? Explain its strengths, limits, and what to verify before buying.",
+    "group": "brand/entity",
+    "intent": "evaluate the named brand before use",
+    "persona_id": "price-conscious-outdoor-shopper",
+    "funnel_stage": "validation",
+    "business_profile": "b2c",
+    "branded": true,
+    "recommendation_intent": true,
+    "eligible_for_geo": false,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 3,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-F4B07D7F84B5.json",
+    "completed_at": "2026-08-13T20:50:53.029Z"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:50:53.029Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nI cannot recommend using [https://001.100app.dev/](https://001.100app.dev/) (GearDrop) as a primary source for comparing outdoor gear deals.\n\nWhy You Should Approach with Caution\n\nThere is no publicly available record, industry verification, or established reputation for a service called \"GearDrop\" at that specific URL.\n\nSecurity & Legitimacy: The domain 100app.dev uses a .dev extension often associated with developer testing or personal projects. Websites that aggregate financial or shopping data without a clear \"About Us,\" transparent business model, or established security certificates (HTTPS is not enough to prove legitimacy) pose a high risk for phishing or data scraping.\n\nLack of Transparency: Legitimate deal aggregators (like those listed below) explicitly state which retailers they track, how they make money (usually through affiliate links), and who operates the site. This URL provides none of that information.\n\nRecommended Alternatives for Outdoor Deals\n\nInstead of using unverified aggregators, use platforms that are trusted by the outdoor community for price tracking and verified discounts:\n\nPlatform\tBest For\tWhy It’s Reliable\nActive Junky\tCashback\tOffers significant cash-back rebates at major outdoor retailers.\nSteep & Cheap\tDaily Deals\tThe official outlet for Backcountry; highly reputable for deep discounts.\nExpertVoice\tPro Deals\tConnects industry professionals and enthusiasts to direct-from-brand discounts.\nREI Used Gear\tQuality Used\tVetted, inspected pre-owned gear with transparent condition ratings.\nOutdoor Gear Exchange\tConsignment/New\tA reputable physical and online shop specializing in both new and used gear.\nChecklist: Verify Before You Buy\n\nIf you are using a new or unfamiliar site to find a \"deal,\" perform these checks before entering any payment information:\n\nCheck the URL: Does it match the official site of a known retailer? If you see a typo (e.g., backountry.com instead of backcountry.com), leave immediately.\n\nSearch for \"Scam\": Search Google for \"[Site Name] reviews\" or \"[Site Name] scam.\" If there are no independent reviews, assume the site is untrustworthy.\n\nInspect Policies: A legitimate store will have clear Return, Shipping, and Privacy Policies accessible in the footer. If these pages are blank, broken, or use generic \"Lorem Ipsum\" text, it is likely a fraudulent site.\n\nUse Secure Payments: Always pay via methods that offer purchase protection, such as PayPal, Apple Pay, or a credit card with fraud protection. Never use wire transfers, gift cards, or direct crypto payments.\n\nCompare the Price: If a deal looks \"too good to be true\" (e.g., a $500 tent for $40), it is almost certainly a scam site designed to harvest your credit card information.\n\nAre you looking for a specific type of gear (like hiking boots or camping tents), or are you trying to find the best price on a particular brand?",
+    "result": "observed",
+    "brand_mentioned": true,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://activejunky.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.steepandcheap.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.expertvoice.com/",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.rei.com/used",
+        "source_type": "independent"
+      },
+      {
+        "url": "https://www.gearx.com/",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "incorrect",
+    "action_validity": "invalid",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=5; blocked_reason=none; manual_review=2026-08-14; factual=incorrect; action=invalid"
+  },
+  "imported_at": "2026-08-13T21:00:43Z"
+}

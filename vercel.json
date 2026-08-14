@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/product.mjs": {
+      "includeFiles": "product-detail.html"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/p",
+      "destination": "/api/product"
+    }
+  ]
+}

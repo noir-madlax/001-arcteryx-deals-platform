@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "RUN-98364D35E813",
+  "project_id": "geardrop-gemini-exploratory-2026-08-14",
+  "planned": {
+    "schema_version": "1.0.0",
+    "run_id": "RUN-98364D35E813",
+    "panel_version": 1,
+    "randomization_key": "19c55419f9460d19",
+    "status": "pending",
+    "concept_id": "Q07",
+    "query": "Which site clearly shows retailer, region, currency, source link, and data freshness when comparing outdoor gear deals internationally?",
+    "group": "problem/application",
+    "intent": "compare cross-region outdoor prices",
+    "persona_id": "global-outdoor-shopper",
+    "funnel_stage": "validation",
+    "business_profile": "b2c",
+    "branded": false,
+    "recommendation_intent": true,
+    "eligible_for_geo": true,
+    "market_id": "US",
+    "planned_language": "en-US",
+    "surface": "gemini-consumer-web",
+    "account_arm": "clean",
+    "repetition": 2,
+    "created_at": "2026-08-13T20:30:41Z",
+    "run_file": "runs/RUN-98364D35E813.json"
+  },
+  "observation": {
+    "captured_at": "2026-08-13T20:50:54.071Z",
+    "actual_location": "not_exposed",
+    "model_or_version": "Gemini Flash consumer web (backend version not exposed)",
+    "tier": "logged-in consumer web; account tier not exposed",
+    "login_state": "logged_in",
+    "memory_state": "temporary",
+    "prior_context": "none",
+    "ui_locale": "en-US",
+    "query_language": "en-US",
+    "response_text_or_hash": "Gemini said\n\nThere is no single consumer-facing public website that perfectly aggregates international outdoor gear deals while explicitly displaying a \"data freshness\" timestamp for every listing. Most consumer comparison tools prioritize ease of use over technical data transparency.\n\nHowever, depending on your needs, specific platforms excel at providing these data points.\n\nThe Best Tools for International Comparison\n\nFor a consumer looking for the best balance of these features, the following tools are your best options:\n\nTool\tRetailer/Source Link\tRegion/Currency\tData Freshness\tBest For\nGoogle Shopping\tYes\tYes (Geo-based)\tImplicit (Near Real-time)\tBroadest global coverage\nIdealo (Europe)\tYes\tYes (Country-specific)\tPrice History Charts\tEuropean market depth\nGearAtlas\tYes\tNo\tVaries\tTechnical specs & category filtering\nWayvia/Centric\tYes\tYes\tExplicit (Real-time)\tEnterprise/Professional use\nAnalysis of Recommended Platforms\n1. Google Shopping (Best for General Global Use)\n\nGoogle is the most effective tool for international gear hunting because it automatically adjusts results based on your IP address (region) and currency.\n\nHow to verify freshness: Google does not show a \"last updated\" timestamp on individual items. However, its algorithm favors results that match current feed data (refreshed by retailers daily/hourly). You can verify the data is current by clicking the \"Compare prices\" button on a product page, which lists multiple retailers with their current pricing and shipping status.\n\nTip: To force a different region, use the URL parameter &gl=countrycode (e.g., &gl=uk for the United Kingdom) in your search results.\n\n2. Idealo (Best for Europe)\n\nIf you are shopping within Europe, Idealo is the industry standard for price transparency. It is available in various regional domains (e.g., idealo.de, idealo.co.uk, idealo.it).\n\nTransparency: It provides direct source links to retailers, clear currency display, and—most importantly—price history charts (up to 1 year). While it doesn't give a \"last crawled\" timestamp, the price history graph allows you to see if a price is volatile or stable, serving as a proxy for data reliability.\n\n3. GearAtlas (Best for Outdoor Specs)\n\nGearAtlas is a specialized niche engine for hiking and camping equipment.\n\nFocus: It is superior for comparing technical specifications (weight, temperature ratings, volume) across different brands. While it links to retailers to show pricing, it is less reliable for real-time global inventory availability compared to Google or Idealo.\n\n4. Enterprise Tools (For Professional-Grade Data)\n\nIf you require explicit \"data freshness\" (e.g., \"Last updated 12 minutes ago\") and absolute price verification, these are professional market intelligence platforms:\n\nWayvia: A commerce enablement platform that tracks retail links, pricing, and inventory signals across 32,000+ retailers.\n\nCentric Market Intelligence: Used by brands to monitor competitive pricing, with data typically refreshed every 12–24 hours.\n\nNote: These tools generally require a business subscription or demo request.\n\nSummary Recommendation\n\nFor quick, daily deals: Use Google Shopping with regional URL parameters to see current market pricing.\n\nFor tracking price drops over time: Use Idealo (if in Europe) or set up Price Alerts directly on major outdoor sites like Backcountry or REI, which will email you immediately when a tracked item goes on sale.\n\nWould you like instructions on how to use price tracking tools to get automated alerts?\nYes",
+    "result": "not_observed",
+    "brand_mentioned": false,
+    "brand_cited": false,
+    "brand_recommended": false,
+    "citations": [
+      {
+        "url": "https://www.google.com/search?q=http://gearatlas.com",
+        "source_type": "independent"
+      }
+    ],
+    "citation_support": "none",
+    "factual_accuracy": "not_assessed",
+    "action_validity": "not_assessed",
+    "confidence": "high",
+    "limitations": [
+      "Gemini consumer-web Flash surface; this is not an official API observation.",
+      "A visibly temporary conversation was activated before submission for the clean prior-context control.",
+      "Actual serving location and backend model version were not exposed by the interface."
+    ],
+    "notes": "visible_temporary=false; complete=true; links=1; blocked_reason=none"
+  },
+  "imported_at": "2026-08-13T20:52:00Z"
+}
