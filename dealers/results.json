@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-14 18:13:30",
+  "generated_at": "2026-08-14 19:59:28",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -32021,7 +32021,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 142,
+      "count": 141,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-943/arcteryx-norvan-ld-4-trail-running-shoes-mens",
@@ -32715,8 +32715,8 @@
         {
           "url": "https://www.mec.ca/en/product/6034-836/arcteryx-granville-crossbody-bag-unisex",
           "name": "Arc'teryx Granville Crossbody Bag - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520625_source_1773730230.jpg",
-          "color": "Black 2026",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520616_source_1773730229.jpg",
+          "color": "Sea Salt",
           "sale_price": 130.0,
           "original_price": 130.0,
           "discount_pct": 0,
@@ -32832,8 +32832,8 @@
         {
           "url": "https://www.mec.ca/en/product/6032-520/arcteryx-gamma-pant-mens",
           "name": "Arc'teryx Gamma Pant - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504566_source_1780401665.jpg",
-          "color": "Black",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560836_source_1784846223.jpg",
+          "color": "Cloud",
           "sale_price": 260.0,
           "original_price": 260.0,
           "discount_pct": 0,
@@ -33779,19 +33779,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
-          "name": "Arc'teryx Covert Cardigan - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517304_source_1782759979.png",
-          "color": "Moondrop Heather",
-          "sale_price": 220.0,
-          "original_price": 220.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6032-659/arcteryx-kopec-mid-gore-tex-hiking-boots-womens",
           "name": "Arc'teryx Kopec Mid Gore-Tex Hiking Boots - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/505298_source_1737886608.jpg",
@@ -33870,7 +33857,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-14 16:08:11"
+      "refreshed_at": "2026-08-14 19:59:28"
     },
     "rei": {
       "name": "REI",
@@ -51976,13 +51963,9 @@
       "refreshed_at": "2026-08-14 17:44:14"
     }
   },
-  "total": 1917,
+  "total": 1916,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "evo",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
