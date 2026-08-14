@@ -173,6 +173,10 @@ class GeoAssetTests(unittest.TestCase):
 
     def test_homepage_exposes_answer_ready_content_and_stable_product_urls(self):
         self.assertIn('<h1 id="catalog-heading">', self.index)
+        self.assertRegex(
+            self.index,
+            r'<meta name="google-site-verification" content="[A-Za-z0-9_-]+">',
+        )
         for path in (
             "/about.html",
             "/methodology.html",
