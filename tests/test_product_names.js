@@ -23,6 +23,8 @@ test('preserves Arc\'teryx discriminators and canonical gender', () => {
     "Beta AR - StormHood Jacket Men's",
   );
   assert.equal(standardProductName("Diene Shirt LS Women's"), "Diene Shirt LS Women's");
+  assert.equal(standardProductName("AR 385a Harness - Women's"), "AR-385a Harness Women's");
+  assert.equal(standardProductName("AR 395a Harness - Men's"), "AR-395a Harness Men's");
 });
 
 test('strips retailer color only for a verified Arc\'teryx model URL', () => {

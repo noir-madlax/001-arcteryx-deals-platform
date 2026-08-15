@@ -41,6 +41,7 @@
     const BRAND_PREFIX = /^arc(?:[\s-]*[’'`]?teryx)\s+/i;
     const KNOWN_TOKEN_CASE = Object.freeze([
         [/\barc[’']?word\b/gi, "Arc'Word"],
+        [/\bAR[\s-]+(385a|395a)\b/gi, 'AR-$1'],
         [/\blitric\b/gi, 'LiTRIC'],
         [/\bsuperlight\b/gi, 'SuperLight'],
         [/\bstormhood\b/gi, 'StormHood'],
