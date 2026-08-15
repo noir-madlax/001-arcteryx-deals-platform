@@ -1,6 +1,6 @@
 """EVO (evo.com) Shopify scraper with a Camoufox rendered-page fallback."""
 from __future__ import annotations
-from .base import normalize_price, discount_pct
+from .base import discount_pct
 from .brands import BRAND_LABELS, vendor_matches_brand
 import json, urllib.request, ssl, os, re, time
 from collections import Counter, defaultdict
@@ -45,6 +45,7 @@ class Scraper:
     def __init__(self):
         self.crawl_complete = False
         self.http_blocked = False
+        self.pdp_confirmation_failed = False
 
     @staticmethod
     def _product_image(product: dict, card: dict) -> str | None:
@@ -102,6 +103,9 @@ class Scraper:
         print(f"[evo] FETCH ERR {url}: {last}", flush=True)
         return None
 
+    def _fetch_pdp_json(self, handle: str) -> dict | None:
+        return self._fetch_json(f"{HOST}/products/{handle}.js", retries=1)
+
     @staticmethod
     def _money_values(label: str | None) -> list[float]:
         return [float(value.replace(",", "")) for value in _MONEY_RE.findall(label or "")]
@@ -116,6 +120,58 @@ class Scraper:
         if "men's" in lowered_name or "mens" in lowered_name:
             return "men"
         return "unisex"
+
+    @staticmethod
+    def parse_pdp_product(product: dict) -> dict | None:
+        """Return prices and available variants from Shopify's product JSON.
+
+        The collection JSON can retain prices for discontinued variants. The
+        product ``.js`` endpoint is the authoritative current-PDP source, so
+        only variants marked available are eligible for the price pair.
+        ``None`` means the response was malformed; ``available=False`` means
+        the product is currently unavailable and should be skipped.
+        """
+        if not isinstance(product, dict):
+            return None
+        variants = product.get("variants") or []
+        if product.get("available") is False:
+            return {"available": False, "variants": []}
+
+        available_variants = [
+            variant
+            for variant in variants
+            if isinstance(variant, dict) and variant.get("available")
+        ]
+        if not available_variants:
+            return {"available": False, "variants": []}
+
+        prices = []
+        compares = []
+        for variant in available_variants:
+            price = variant.get("price")
+            if price is not None:
+                try:
+                    prices.append(float(price) / 100)
+                except (TypeError, ValueError):
+                    continue
+            compare_at_price = variant.get("compare_at_price")
+            if compare_at_price is not None:
+                try:
+                    compares.append(float(compare_at_price) / 100)
+                except (TypeError, ValueError):
+                    continue
+        if not prices:
+            return None
+
+        sale = min(prices)
+        original = max(compares or [sale])
+        original = max(original, sale)
+        return {
+            "available": True,
+            "variants": available_variants,
+            "sale_price": round(sale, 2),
+            "original_price": round(original, 2),
+        }
 
     def parse_browser_snapshot(
         self,
@@ -404,20 +460,42 @@ class Scraper:
                     if not handle or handle in seen:
                         continue
                     seen.add(handle)
-                    variants = p.get("variants") or []
-                    # 关键: 只看 available=True 的 variants 取价。否则 EVO 会把
-                    # 历史清仓色 (e.g. 7 个 $29.99 "Paradox" 已停产 variants)
-                    # min 出来当成今日 -88% 假折扣
-                    avail_variants = [v for v in variants if v.get("available")]
-                    if not avail_variants:
+                    pdp = self._fetch_pdp_json(handle)
+                    parsed_pdp = self.parse_pdp_product(pdp)
+                    if parsed_pdp is None:
+                        self.pdp_confirmation_failed = True
+                        print(
+                            f"[evo] PDP confirmation failed for {handle}; refusing to publish list price",
+                            flush=True,
+                        )
+                        return [], False
+                    if not parsed_pdp["available"]:
                         continue  # 整品都缺货, 跳过 (不是 deal)
-                    prices = [normalize_price(v.get("price")) for v in avail_variants if v.get("price")]
-                    compares = [normalize_price(v.get("compare_at_price")) for v in avail_variants if v.get("compare_at_price")]
-                    sale = min([x for x in prices if x], default=None)
-                    orig = max([x for x in compares if x], default=None)
-                    if not sale:
-                        continue
-                    if not orig or orig < sale: orig = sale
+
+                    # The collection endpoint is only an identity/index source.
+                    # Prices and inventory must come from the current product PDP
+                    # so a stale clearance/list variant cannot overwrite a live
+                    # price (e.g. 47.99/75 instead of the current 69/69).
+                    pdp_vendor = pdp.get("vendor") if isinstance(pdp, dict) else None
+                    if pdp_vendor and not vendor_matches_brand(pdp_vendor, brand):
+                        self.pdp_confirmation_failed = True
+                        print(
+                            f"[evo] PDP brand mismatch for {handle}: {pdp_vendor!r}",
+                            flush=True,
+                        )
+                        return [], False
+                    pdp_handle = pdp.get("handle") if isinstance(pdp, dict) else None
+                    if pdp_handle and pdp_handle != handle:
+                        self.pdp_confirmation_failed = True
+                        print(
+                            f"[evo] PDP handle mismatch for {handle}: {pdp_handle!r}",
+                            flush=True,
+                        )
+                        return [], False
+
+                    avail_variants = parsed_pdp["variants"]
+                    sale = parsed_pdp["sale_price"]
+                    orig = parsed_pdp["original_price"]
                     # 库存按 size 聚合: option2 才是尺码; option1 是颜色, 别 fallback
                     # sizes/colors 只统计在售 variants, 跟价格逻辑保持一致
                     by_size = defaultdict(bool)
@@ -430,18 +508,11 @@ class Scraper:
                             by_size[sz] = True
                     sizes = sorted([s for s in by_size if s], key=lambda x: (len(x), x))
                     size_stock = {s: ("in_stock" if by_size[s] else "out_of_stock") for s in sizes}
-                    # 图片: 取第一个 variant 的 featured_image
-                    img = None
-                    for v in variants:
-                        fi = v.get("featured_image")
-                        if fi and fi.get("src"):
-                            img = fi["src"]; break
-                    if not img:
-                        imgs = p.get("images") or []
-                        if imgs: img = imgs[0].get("src")
+                    img = self._product_image(pdp, {}) or self._product_image(p, {})
+                    name = (pdp.get("title") if isinstance(pdp, dict) else None) or p.get("title") or ""
                     out.append({
                         "url":            f"{HOST}/products/{handle}",
-                        "name":           p.get("title") or "",
+                        "name":           name,
                         "image":          img,
                         "original_price": orig,
                         "sale_price":     sale,
@@ -457,8 +528,8 @@ class Scraper:
                         "dealer_name":    self.NAME,
                         "brand":          brand,
                         "region":         self.REGION,
-                        "category":       p.get("product_type") or "",
-                        "price_source_quality": "api",
+                        "category":       (pdp.get("type") if isinstance(pdp, dict) else None) or p.get("product_type") or "",
+                        "price_source_quality": "pdp",
                     })
                 if len(products) < 250:
                     scope_complete = True
@@ -472,6 +543,13 @@ class Scraper:
         if complete and self._meets_brand_minimums(items):
             self.crawl_complete = True
             return items
+        if self.pdp_confirmation_failed:
+            print(
+                "[evo] current PDP prices could not be confirmed; preserving the previous snapshot",
+                flush=True,
+            )
+            self.crawl_complete = False
+            return []
         if complete and items:
             print(
                 f"[evo] direct snapshot returned {len(items)} items but missed a brand floor; "

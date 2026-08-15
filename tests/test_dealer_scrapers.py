@@ -15,6 +15,96 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 class DealerScraperTests(unittest.TestCase):
+    def test_evo_pdp_parser_ignores_unavailable_clearance_variants(self):
+        product = {
+            "available": True,
+            "handle": "patagonia-baggies-5-shorts-women-s",
+            "vendor": "Patagonia",
+            "variants": [
+                {
+                    "available": False,
+                    "price": 4799,
+                    "compare_at_price": 7500,
+                    "option1": "Archive Yellow",
+                    "option2": "XS",
+                },
+                {
+                    "available": True,
+                    "price": 6900,
+                    "compare_at_price": 6900,
+                    "option1": "Black",
+                    "option2": "S",
+                },
+            ],
+        }
+
+        parsed = EvoScraper.parse_pdp_product(product)
+
+        self.assertEqual(parsed["sale_price"], 69.0)
+        self.assertEqual(parsed["original_price"], 69.0)
+        self.assertEqual(len(parsed["variants"]), 1)
+        self.assertEqual(parsed["variants"][0]["option1"], "Black")
+
+    def test_evo_pdp_parser_marks_product_without_available_variants_unavailable(self):
+        parsed = EvoScraper.parse_pdp_product({
+            "available": False,
+            "variants": [{"available": False, "price": 4799}],
+        })
+
+        self.assertEqual(parsed, {"available": False, "variants": []})
+
+    def test_evo_http_snapshot_publishes_pdp_price_instead_of_collection_price(self):
+        scraper = EvoScraper()
+        scraper.COLLECTIONS = [("patagonia", "auto", "patagonia")]
+        collection_product = {
+            "vendor": "Patagonia",
+            "handle": "patagonia-baggies-5-shorts-women-s",
+            "title": "Patagonia Baggies 5 Shorts - Women's",
+            "product_type": "Shorts",
+            "variants": [{"available": True, "price": "47.99", "compare_at_price": "75.00"}],
+        }
+        pdp_product = {
+            "available": True,
+            "handle": collection_product["handle"],
+            "vendor": "Patagonia",
+            "title": collection_product["title"],
+            "variants": [{
+                "available": True,
+                "price": 6900,
+                "compare_at_price": 6900,
+                "option1": "Black",
+                "option2": "S",
+            }],
+        }
+
+        with patch.object(scraper, "_fetch_json", return_value={"products": [collection_product]}), patch.object(
+            scraper, "_fetch_pdp_json", return_value=pdp_product
+        ):
+            items, complete = scraper._scrape_http()
+
+        self.assertTrue(complete)
+        self.assertEqual(items[0]["sale_price"], 69.0)
+        self.assertEqual(items[0]["original_price"], 69.0)
+        self.assertEqual(items[0]["price_source_quality"], "pdp")
+
+    def test_evo_http_snapshot_fails_closed_when_pdp_confirmation_fails(self):
+        scraper = EvoScraper()
+        scraper.COLLECTIONS = [("patagonia", "auto", "patagonia")]
+        collection_product = {
+            "vendor": "Patagonia",
+            "handle": "patagonia-baggies-5-shorts-women-s",
+            "variants": [{"available": True, "price": "47.99", "compare_at_price": "75.00"}],
+        }
+
+        with patch.object(scraper, "_fetch_json", return_value={"products": [collection_product]}), patch.object(
+            scraper, "_fetch_pdp_json", return_value=None
+        ):
+            items, complete = scraper._scrape_http()
+
+        self.assertEqual(items, [])
+        self.assertFalse(complete)
+        self.assertTrue(scraper.pdp_confirmation_failed)
+
     def test_burton_rendered_parser_pairs_live_card_prices_with_catalog_identity(self):
         products = {
             "9100998246657": {
