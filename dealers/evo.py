@@ -322,6 +322,66 @@ class Scraper:
             return False
         return True
 
+    def _confirm_browser_item_with_pdp(self, item: dict) -> dict | None:
+        """Replace rendered list prices with prices from the current product PDP."""
+        url = item.get("url") or ""
+        handle = url.split("/products/")[-1].split("?", 1)[0]
+        if not handle:
+            self.pdp_confirmation_failed = True
+            print("[evo] browser item has no product handle; refusing to publish list price", flush=True)
+            return None
+
+        pdp = self._fetch_pdp_json(handle)
+        parsed_pdp = self.parse_pdp_product(pdp)
+        if parsed_pdp is None:
+            self.pdp_confirmation_failed = True
+            print(
+                f"[evo] PDP confirmation failed for browser item {handle}; refusing to publish list price",
+                flush=True,
+            )
+            return None
+        if not parsed_pdp["available"]:
+            return None
+
+        pdp_vendor = pdp.get("vendor") if isinstance(pdp, dict) else None
+        if pdp_vendor and not vendor_matches_brand(pdp_vendor, item.get("brand")):
+            self.pdp_confirmation_failed = True
+            print(f"[evo] browser PDP brand mismatch for {handle}: {pdp_vendor!r}", flush=True)
+            return None
+        pdp_handle = pdp.get("handle") if isinstance(pdp, dict) else None
+        if pdp_handle and pdp_handle != handle:
+            self.pdp_confirmation_failed = True
+            print(f"[evo] browser PDP handle mismatch for {handle}: {pdp_handle!r}", flush=True)
+            return None
+
+        avail_variants = parsed_pdp["variants"]
+        by_size = defaultdict(bool)
+        colors = set()
+        for variant in avail_variants:
+            size = (variant.get("option2") or "").strip()
+            color = (variant.get("option1") or "").strip()
+            if color:
+                colors.add(color)
+            if size:
+                by_size[size] = True
+        sizes = sorted(by_size, key=lambda value: (len(value), value))
+        confirmed = dict(item)
+        confirmed.update({
+            "name": (pdp.get("title") if isinstance(pdp, dict) else None) or item.get("name") or "",
+            "image": self._product_image(pdp, {}) or item.get("image"),
+            "original_price": parsed_pdp["original_price"],
+            "sale_price": parsed_pdp["sale_price"],
+            "in_stock": True,
+            "sizes": sizes,
+            "size_stock": {size: "in_stock" for size in sizes},
+            "color": ", ".join(sorted(colors)[:3]),
+            "colors": sorted(colors),
+            "discount_pct": discount_pct(parsed_pdp["original_price"], parsed_pdp["sale_price"]),
+            "category": (pdp.get("type") if isinstance(pdp, dict) else None) or item.get("category") or "",
+            "price_source_quality": "pdp",
+        })
+        return confirmed
+
     def _scrape_browser(self) -> tuple[list[dict], bool]:
         from camoufox.sync_api import Camoufox
 
@@ -364,7 +424,16 @@ class Scraper:
                         if item["url"] in seen:
                             continue
                         seen.add(item["url"])
-                        out.append(item)
+                        confirmed_item = self._confirm_browser_item_with_pdp(item)
+                        if self.pdp_confirmation_failed:
+                            print(
+                                "[evo] current PDP prices could not be confirmed; preserving the previous snapshot",
+                                flush=True,
+                            )
+                            return [], False
+                        if confirmed_item is None:
+                            continue
+                        out.append(confirmed_item)
                         added += 1
                     print(f"[evo] browser {slug} page {page_number}/{max_page}: +{added} ({len(scope_items)} parsed)", flush=True)
                     page_number += 1

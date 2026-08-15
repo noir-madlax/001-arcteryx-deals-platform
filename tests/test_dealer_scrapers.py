@@ -105,6 +105,56 @@ class DealerScraperTests(unittest.TestCase):
         self.assertFalse(complete)
         self.assertTrue(scraper.pdp_confirmation_failed)
 
+    def test_evo_browser_fallback_replaces_list_price_with_pdp_price(self):
+        scraper = EvoScraper()
+        item = {
+            "url": "https://www.evo.com/products/patagonia-baggies-5-shorts-women-s",
+            "name": "Patagonia Baggies 5 Shorts - Women's",
+            "brand": "patagonia",
+            "sale_price": 47.99,
+            "original_price": 75.0,
+            "discount_pct": 36,
+            "price_source_quality": "list_fallback",
+            "sizes": ["XS"],
+            "colors": ["Archive Yellow"],
+        }
+        pdp_product = {
+            "available": True,
+            "handle": "patagonia-baggies-5-shorts-women-s",
+            "vendor": "Patagonia",
+            "title": item["name"],
+            "variants": [{
+                "available": True,
+                "price": 6900,
+                "compare_at_price": 6900,
+                "option1": "Black",
+                "option2": "S",
+            }],
+        }
+
+        with patch.object(scraper, "_fetch_pdp_json", return_value=pdp_product):
+            confirmed = scraper._confirm_browser_item_with_pdp(item)
+
+        self.assertEqual(confirmed["sale_price"], 69.0)
+        self.assertEqual(confirmed["original_price"], 69.0)
+        self.assertEqual(confirmed["price_source_quality"], "pdp")
+        self.assertEqual(confirmed["colors"], ["Black"])
+
+    def test_evo_browser_fallback_fails_closed_when_pdp_confirmation_fails(self):
+        scraper = EvoScraper()
+        item = {
+            "url": "https://www.evo.com/products/patagonia-baggies-5-shorts-women-s",
+            "brand": "patagonia",
+            "sale_price": 47.99,
+            "original_price": 75.0,
+        }
+
+        with patch.object(scraper, "_fetch_pdp_json", return_value=None):
+            confirmed = scraper._confirm_browser_item_with_pdp(item)
+
+        self.assertIsNone(confirmed)
+        self.assertTrue(scraper.pdp_confirmation_failed)
+
     def test_burton_rendered_parser_pairs_live_card_prices_with_catalog_identity(self):
         products = {
             "9100998246657": {
