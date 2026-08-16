@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-16 17:25:50",
+  "generated_at": "2026-08-16 19:38:12",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -31750,7 +31750,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 148,
+      "count": 147,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-693/arcteryx-beta-jacket-mens",
@@ -33586,19 +33586,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
-          "name": "Arc'teryx Covert Cardigan - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517313_source_1782759979.png",
-          "color": "Moondrop Heather",
-          "sale_price": 220.0,
-          "original_price": 220.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6032-659/arcteryx-kopec-mid-gore-tex-hiking-boots-womens",
           "name": "Arc'teryx Kopec Mid Gore-Tex Hiking Boots - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/505298_source_1737886608.jpg",
@@ -33677,7 +33664,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-16 16:04:16"
+      "refreshed_at": "2026-08-16 19:38:12"
     },
     "rei": {
       "name": "REI",
@@ -51517,12 +51504,9 @@
       "refreshed_at": "2026-08-16 17:04:54"
     }
   },
-  "total": 1904,
+  "total": 1903,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
