@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17 20:25:23",
+  "generated_at": "2026-08-17 22:04:27",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -31750,7 +31750,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 147,
+      "count": 148,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-693/arcteryx-beta-jacket-mens",
@@ -33430,6 +33430,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-805/arcteryx-ion-sl-chalk-bag",
+          "name": "Arc'teryx Ion SL Chalk Bag",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/546626_source_1771628134.jpg",
+          "color": "24k Black",
+          "sale_price": 60.0,
+          "original_price": 60.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6003-899/arcteryx-conveyor-belt-unisex",
           "name": "Arc'teryx Conveyor Belt - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/8905_source_1784135931.png",
@@ -33462,19 +33475,6 @@
           "color": "Black",
           "sale_price": 80.0,
           "original_price": 80.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6037-805/arcteryx-ion-sl-chalk-bag",
-          "name": "Arc'teryx Ion SL Chalk Bag",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/546626_source_1771628134.jpg",
-          "color": "24k Black",
-          "sale_price": 60.0,
-          "original_price": 60.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -33560,19 +33560,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6032-652/arcteryx-kopec-gore-tex-hiking-shoes-mens",
-          "name": "Arc'teryx Kopec Gore-Tex Hiking Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504815_source_1753980943.jpg",
-          "color": "Black/Yukon",
-          "sale_price": 230.0,
-          "original_price": 230.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6034-691/arcteryx-beta-ar-jacket-womens",
           "name": "Arc'teryx Beta AR Jacket - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519109_source_1783098996.png",
@@ -33638,6 +33625,32 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6001-071/arcteryx-kyanite-hoodie-womens",
+          "name": "Arc'teryx Kyanite Hoodie - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518177_source_1767829001.jpg",
+          "color": "Dk Stratus",
+          "sale_price": 260.0,
+          "original_price": 260.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6037-504/arcteryx-rho-headband",
+          "name": "Arc'teryx Rho Headband",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560594_source_1786104167.png",
+          "color": "Black",
+          "sale_price": 45.0,
+          "original_price": 45.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-785/arcteryx-rho-base-layer-bottoms-womens",
           "name": "Arc'teryx Rho Base Layer Bottoms - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/509242_source_1783425700.png",
@@ -33664,7 +33677,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-17 19:46:40"
+      "refreshed_at": "2026-08-17 22:04:27"
     },
     "rei": {
       "name": "REI",
@@ -51422,12 +51435,9 @@
       "refreshed_at": "2026-08-17 20:05:34"
     }
   },
-  "total": 1901,
+  "total": 1902,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
