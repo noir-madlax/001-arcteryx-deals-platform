@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-16 23:23:04",
+  "generated_at": "2026-08-17 01:01:04",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -32923,6 +32923,19 @@
           "price_source_quality": "list_fallback"
         },
         {
+          "url": "https://www.mec.ca/en/product/6030-116/arcteryx-kragg-heavyweight-cotton-bird-crew-long-sleeve-womens",
+          "name": "Arc'teryx Kragg Heavyweight Cotton Bird Crew Long Sleeve - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518182_source_1767829000.jpg",
+          "color": "Lt Moondrop",
+          "sale_price": 120.0,
+          "original_price": 120.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "price_source_quality": "list_fallback"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6037-630/arcteryx-kyanite-lt-hoodie-womens",
           "name": "Arc'teryx Kyanite LT Hoodie - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529300_source_1778328070.jpg",
@@ -32942,19 +32955,6 @@
           "color": "Black",
           "sale_price": 600.0,
           "original_price": 600.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6030-116/arcteryx-kragg-heavyweight-cotton-bird-crew-long-sleeve-womens",
-          "name": "Arc'teryx Kragg Heavyweight Cotton Bird Crew Long Sleeve - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518182_source_1767829000.jpg",
-          "color": "Lt Moondrop",
-          "sale_price": 120.0,
-          "original_price": 120.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -33664,7 +33664,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-16 19:38:12"
+      "refreshed_at": "2026-08-17 01:01:04"
     },
     "rei": {
       "name": "REI",
@@ -51482,9 +51482,6 @@
   "total": 1902,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
