@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18 03:07:06",
+  "generated_at": "2026-08-18 05:03:45",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -33411,14 +33411,30 @@
           "url": "https://www.mec.ca/en/product/6030-096/arcteryx-delta-jacket-mens",
           "name": "Arc'teryx Delta Jacket - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/563506_source_1786393289.jpg",
-          "color": "Bracken/Mongoose",
-          "sale_price": 260.0,
+          "color": "Black, Bracken/Mongoose",
+          "sale_price": 99.93,
           "original_price": 260.0,
-          "discount_pct": 0,
+          "discount_pct": 62,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "price_source_quality": "list_fallback"
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large"
+          ],
+          "size_stock": {
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Bracken/Mongoose"
+          ],
+          "price_source_quality": "pdp"
         },
         {
           "url": "https://www.mec.ca/en/product/6037-530/arcteryx-gamma-lightweight-hoodie-mens",
@@ -33528,26 +33544,57 @@
           "name": "Arc'teryx Kyanite Hoodie - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/408707_source_1773777025.jpg",
           "color": "Black",
-          "sale_price": 260.0,
+          "sale_price": 153.94,
           "original_price": 260.0,
-          "discount_pct": 0,
+          "discount_pct": 41,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "price_source_quality": "list_fallback"
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large",
+            "X-Small"
+          ],
+          "size_stock": {
+            "X-Small": "in_stock",
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ],
+          "price_source_quality": "pdp"
         },
         {
           "url": "https://www.mec.ca/en/product/6032-375/arcteryx-sinsolo-bucket-hat-unisex",
           "name": "Arc'teryx Sinsolo Bucket Hat - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/512792_source_1744881682.jpg",
-          "color": "Black",
+          "color": "Black, Verve",
           "sale_price": 100.0,
           "original_price": 100.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "price_source_quality": "list_fallback"
+          "sizes": [
+            "Large/X-Large",
+            "Small/Medium"
+          ],
+          "size_stock": {
+            "Small/Medium": "in_stock",
+            "Large/X-Large": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Verve"
+          ],
+          "price_source_quality": "pdp"
         },
         {
           "url": "https://www.mec.ca/en/product/6040-309/arcteryx-kopec-2-gore-tex-hiking-shoes-mens",
@@ -36168,7 +36215,7 @@
         {
           "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
           "name": "Arc'teryx Covert Cardigan - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517310_source_1771628157.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517313_source_1782759979.png",
           "color": "Cloud Heather/Void, Dark Stratus Heather/Blac, Habitat Heather, Moondrop Heather",
           "sale_price": 49.93,
           "original_price": 230.0,
@@ -36289,38 +36336,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.mec.ca/en/product/6001-071/arcteryx-kyanite-hoodie-womens",
-          "name": "Arc'teryx Kyanite Hoodie - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518177_source_1767829001.jpg",
-          "color": "",
-          "sale_price": 153.93,
-          "original_price": 260.0,
-          "discount_pct": 41,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small",
-            "XX-Small"
-          ],
-          "size_stock": {
-            "XX-Small": "in_stock",
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [],
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6037-504/arcteryx-rho-headband",
           "name": "Arc'teryx Rho Headband",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560594_source_1786104167.png",
@@ -36435,6 +36450,34 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-540/arcteryx-kragg-sl-cotton-sky-pilot-ss1-ss-mens",
+          "name": "Arc'teryx Kragg SL Cotton Sky Pilot SS1 SS - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533772_source_1782142566.png",
+          "color": "Black/Fluidity",
+          "sale_price": 63.0,
+          "original_price": 90.0,
+          "discount_pct": 30,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large"
+          ],
+          "size_stock": {
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock"
+          },
+          "colors": [
+            "Black/Fluidity"
+          ],
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6034-788/arcteryx-kragg-cotton-lithographica-short-sleeve-mens",
           "name": "Arc'teryx Kragg Cotton Lithographica Short Sleeve - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533925_source_1763157970.jpg",
@@ -36465,7 +36508,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-18 02:39:36"
+      "refreshed_at": "2026-08-18 05:03:45"
     },
     "rei": {
       "name": "REI",
@@ -54274,9 +54317,6 @@
   "total": 1906,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
