@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18 09:34:24",
+  "generated_at": "2026-08-18 10:56:40",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -33204,8 +33204,8 @@
           "name": "Arc'teryx Kragg Approach Shoes - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/548547_source_1772497231.jpg",
           "color": "Black/Black, Void/Black",
-          "sale_price": 200.0,
-          "original_price": 200.0,
+          "sale_price": 180.0,
+          "original_price": 180.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -33807,9 +33807,9 @@
           "name": "Arc'teryx Kragg Approach Shoes - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/548702_source_1781871356.png",
           "color": "Arctic Silk/Arctic Silk, Black/Black",
-          "sale_price": 200.0,
+          "sale_price": 180.0,
           "original_price": 200.0,
-          "discount_pct": 0,
+          "discount_pct": 10,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
@@ -36508,7 +36508,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-18 05:03:45"
+      "refreshed_at": "2026-08-18 10:56:40"
     },
     "rei": {
       "name": "REI",
@@ -54560,9 +54560,6 @@
   "total": 1906,
   "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
