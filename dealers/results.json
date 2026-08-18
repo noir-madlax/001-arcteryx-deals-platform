@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18 14:22:38",
+  "generated_at": "2026-08-18 16:05:05",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -33346,7 +33346,7 @@
           "url": "https://www.mec.ca/en/product/6034-837/arcteryx-granville-25-backpack-unisex",
           "name": "Arc'teryx Granville 25 Backpack - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534753_source_1758559541.jpg",
-          "color": "Dk Stratus, Mars",
+          "color": "Black 2026, Dk Stratus, Mars",
           "sale_price": 260.0,
           "original_price": 290.0,
           "discount_pct": 10,
@@ -33360,6 +33360,7 @@
             "One Size": "in_stock"
           },
           "colors": [
+            "Black 2026",
             "Dk Stratus",
             "Mars"
           ],
@@ -34531,36 +34532,14 @@
           "url": "https://www.mec.ca/en/product/6032-441/arcteryx-atom-sl-hoodie-womens",
           "name": "Arc'teryx Atom SL Hoodie - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518406_source_1753980933.jpg",
-          "color": "Alpine Blue, Arctic Silk",
-          "sale_price": 238.0,
-          "original_price": 360.0,
-          "discount_pct": 34,
+          "color": "Arctic Silk",
+          "sale_price": 340.0,
+          "original_price": 340.0,
+          "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small",
-            "XX-Small"
-          ],
-          "size_stock": {
-            "XX-Small": "in_stock",
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Alpine Blue",
-            "Arctic Silk"
-          ],
-          "price_source_quality": "pdp"
+          "price_source_quality": "list_fallback"
         },
         {
           "url": "https://www.mec.ca/en/product/6037-697/arcteryx-squamish-hoodie-mens",
@@ -35199,7 +35178,7 @@
           "url": "https://www.mec.ca/en/product/6034-813/arcteryx-heliad-crossbody-unisex",
           "name": "Arc'teryx Heliad Crossbody - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560805_source_1784846222.jpg",
-          "color": "Black / Black, Sea Salt",
+          "color": "Sea Salt",
           "sale_price": 60.0,
           "original_price": 60.0,
           "discount_pct": 0,
@@ -35213,7 +35192,6 @@
             "One Size": "in_stock"
           },
           "colors": [
-            "Black / Black",
             "Sea Salt"
           ],
           "price_source_quality": "pdp"
@@ -36125,7 +36103,7 @@
           "url": "https://www.mec.ca/en/product/6030-091/arcteryx-covert-cardigan-mens",
           "name": "Arc'teryx Covert Cardigan - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517313_source_1782759979.png",
-          "color": "Cloud Heather/Void, Dark Stratus Heather/Blac, Habitat Heather, Moondrop Heather",
+          "color": "Moondrop Heather",
           "sale_price": 49.93,
           "original_price": 230.0,
           "discount_pct": 78,
@@ -36147,9 +36125,6 @@
             "XX-Large": "in_stock"
           },
           "colors": [
-            "Cloud Heather/Void",
-            "Dark Stratus Heather/Blac",
-            "Habitat Heather",
             "Moondrop Heather"
           ],
           "price_source_quality": "pdp"
@@ -36508,7 +36483,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-18 14:22:37"
+      "refreshed_at": "2026-08-18 16:05:05"
     },
     "rei": {
       "name": "REI",
