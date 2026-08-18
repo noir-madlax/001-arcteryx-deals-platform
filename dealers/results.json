@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18 16:05:05",
+  "generated_at": "2026-08-18 19:51:46",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -31965,7 +31965,7 @@
           "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
           "name": "Arc'teryx Heliad 15 Backpack - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520622_source_1773871544.jpg",
-          "color": "Black/Black",
+          "color": "",
           "sale_price": 100.0,
           "original_price": 100.0,
           "discount_pct": 0,
@@ -31978,16 +31978,14 @@
           "size_stock": {
             "One Size": "in_stock"
           },
-          "colors": [
-            "Black/Black"
-          ],
+          "colors": [],
           "price_source_quality": "pdp"
         },
         {
           "url": "https://www.mec.ca/en/product/6040-488/arcteryx-axios-20-tote-unisex",
           "name": "Arc'teryx Axios 20 Tote - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560576_source_1786795264.png",
-          "color": "Mongoose",
+          "color": "",
           "sale_price": 150.0,
           "original_price": 150.0,
           "discount_pct": 0,
@@ -32000,9 +31998,7 @@
           "size_stock": {
             "One Size": "in_stock"
           },
-          "colors": [
-            "Mongoose"
-          ],
+          "colors": [],
           "price_source_quality": "pdp"
         },
         {
@@ -33346,7 +33342,7 @@
           "url": "https://www.mec.ca/en/product/6034-837/arcteryx-granville-25-backpack-unisex",
           "name": "Arc'teryx Granville 25 Backpack - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534753_source_1758559541.jpg",
-          "color": "Black 2026, Dk Stratus, Mars",
+          "color": "Dk Stratus, Mars",
           "sale_price": 260.0,
           "original_price": 290.0,
           "discount_pct": 10,
@@ -33360,7 +33356,6 @@
             "One Size": "in_stock"
           },
           "colors": [
-            "Black 2026",
             "Dk Stratus",
             "Mars"
           ],
@@ -34532,14 +34527,36 @@
           "url": "https://www.mec.ca/en/product/6032-441/arcteryx-atom-sl-hoodie-womens",
           "name": "Arc'teryx Atom SL Hoodie - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518406_source_1753980933.jpg",
-          "color": "Arctic Silk",
-          "sale_price": 340.0,
-          "original_price": 340.0,
-          "discount_pct": 0,
+          "color": "Alpine Blue, Arctic Silk",
+          "sale_price": 238.0,
+          "original_price": 360.0,
+          "discount_pct": 34,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "price_source_quality": "list_fallback"
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large",
+            "X-Small",
+            "XX-Small"
+          ],
+          "size_stock": {
+            "XX-Small": "in_stock",
+            "X-Small": "in_stock",
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock"
+          },
+          "colors": [
+            "Alpine Blue",
+            "Arctic Silk"
+          ],
+          "price_source_quality": "pdp"
         },
         {
           "url": "https://www.mec.ca/en/product/6037-697/arcteryx-squamish-hoodie-mens",
@@ -36483,7 +36500,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-18 16:05:05"
+      "refreshed_at": "2026-08-18 19:51:46"
     },
     "rei": {
       "name": "REI",
