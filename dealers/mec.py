@@ -191,8 +191,8 @@ class Scraper:
                 ss.fetch(f"{HOST}/en/", timeout=90000)  # warm + solve turnstile
                 s = _ScraplingShim(ss)
                 using_scrapling = True
-                print("[mec] scrapling 已就绪 (注意: PDP enrich 会跳过,"
-                      " 因为 scrapling 每次 fetch 重解 CF 太慢, list 数据足够)", flush=True)
+                print("[mec] scrapling 已就绪 (将尝试 PDP enrich;"
+                      " 失败时保留 list fallback)", flush=True)
             except Exception as e:
                 print(f"[mec] scrapling fallback 也挂: {type(e).__name__} {str(e)[:100]}", file=sys.stderr)
                 if scrapling_ctx:
@@ -268,35 +268,50 @@ class Scraper:
                     break
                 time.sleep(1)
         # ── 阶段 2: PDP enrich (sizes / 精确 sale vs orig 区分)
-        # scrapling 模式跳过: 每次 fetch 重解 CF turnstile ~5min/PDP, 不可行.
-        # list 数据已经够 (url/model/price/image/color), sizes 由 sync 的
-        # preserve-existing 逻辑保留 DB 老值.
-        if using_scrapling:
-            print(f"[mec] scrapling 模式跳过 PDP enrich, 仅用 list 数据 ({len(items)} 件)", flush=True)
-            for it in items:
-                it["price_source_quality"] = "list_fallback"
-                it.pop("_hit", None)
-        else:
-            print(f"[mec] enriching {len(items)} PDPs via curl_cffi...", flush=True)
-            for i, it in enumerate(items, 1):
-                detail = fetch_pdp(s, it["url"])
-                if detail and not detail.get("_err") and not detail.get("_unavailable"):
-                    it.pop("_hit", None)
-                    it.update(detail)
-                elif detail and detail.get("_unavailable"):
-                    # 整品下架, 跳过 (不写入 items? 还是保留含 list 价?)
-                    # 保留, 让 14 天 stale 兜底; 但移除 _hit
-                    it.pop("_hit", None)
-                else:
-                    it.pop("_hit", None)
-                if i % 20 == 0:
-                    print(f"[mec] enriched {i}/{len(items)}", flush=True)
-                time.sleep(0.3)
+        # Both HTTP and Scrapling paths must attempt the official PDP.  The
+        # list price is only a low-trust fallback when that confirmation is
+        # unavailable; skipping PDPs here can publish a stale or variant-
+        # incorrect price as if it were current.
+        _enrich_items(s, items, "scrapling" if using_scrapling else "curl_cffi")
         # 主动关掉 scrapling (StealthySession 持有 Camoufox 进程, 不关浪费 RAM)
         if scrapling_ctx is not None:
             try: scrapling_ctx.__exit__(None, None, None)
             except Exception: pass
         return items
+
+
+def _apply_pdp_detail(item: dict, detail: dict | None) -> None:
+    """Promote a valid official PDP result, otherwise keep list fallback."""
+    item.pop("_hit", None)
+    sale = detail.get("sale_price") if detail else None
+    orig = detail.get("original_price") if detail else None
+    if (
+        detail
+        and not detail.get("_err")
+        and not detail.get("_unavailable")
+        and isinstance(sale, (int, float))
+        and sale > 0
+        and isinstance(orig, (int, float))
+        and orig >= sale
+    ):
+        item.update(detail)
+        item["price_source_quality"] = "pdp"
+    else:
+        item["price_source_quality"] = "list_fallback"
+
+
+def _enrich_items(session, items: list[dict], source: str) -> None:
+    """Read each item's official PDP and preserve an explicit fallback state."""
+    print(f"[mec] enriching {len(items)} PDPs via {source}...", flush=True)
+    for i, item in enumerate(items, 1):
+        try:
+            detail = fetch_pdp(session, item["url"])
+        except Exception as exc:
+            detail = {"_err": f"pdp_exception:{type(exc).__name__}"}
+        _apply_pdp_detail(item, detail)
+        if i % 20 == 0:
+            print(f"[mec] enriched {i}/{len(items)}", flush=True)
+        time.sleep(0.3)
 
 
 # ── size 排序 helper (保留旧逻辑) ──────────────────────────────────────────

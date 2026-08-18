@@ -6,7 +6,7 @@ from unittest.mock import patch
 from dealers.backcountry import Scraper as BackcountryScraper
 from dealers.burton import Scraper as BurtonScraper
 from dealers.evo import Scraper as EvoScraper
-from dealers.mec import Scraper as MecScraper
+from dealers.mec import Scraper as MecScraper, _enrich_items
 from dealers.rei import Scraper as ReiScraper
 from dealers.ssense import Scraper as SsenseScraper, normalize_image_url
 
@@ -650,18 +650,54 @@ class DealerScraperTests(unittest.TestCase):
             ],
         )
 
-    def test_mec_scrapling_fallback_marks_list_prices_as_low_trust(self):
-        scraper = MecScraper()
-        item = {"url": "https://www.mec.ca/en/product/6030-116/example", "_hit": {"id": 1}}
+    @patch("dealers.mec.time.sleep")
+    @patch("dealers.mec.fetch_pdp")
+    def test_mec_scrapling_fallback_promotes_official_pdp_price(self, fetch_pdp, sleep):
+        session = object()
+        item = {
+            "url": "https://www.mec.ca/en/product/6037-632/arcteryx-olera-crew-womens",
+            "sale_price": 200.0,
+            "original_price": 200.0,
+            "discount_pct": 0,
+            "_hit": {"id": 1},
+        }
+        fetch_pdp.return_value = {
+            "sale_price": 140.0,
+            "original_price": 200.0,
+            "discount_pct": 30,
+            "color": "Solitude",
+        }
 
-        with self.subTest("before fallback cleanup"):
-            self.assertNotIn("price_source_quality", item)
+        _enrich_items(session, [item], "scrapling")
 
-        item["price_source_quality"] = "list_fallback"
-        item.pop("_hit", None)
+        fetch_pdp.assert_called_once_with(session, item["url"])
+        self.assertEqual(item["sale_price"], 140.0)
+        self.assertEqual(item["original_price"], 200.0)
+        self.assertEqual(item["discount_pct"], 30)
+        self.assertEqual(item["price_source_quality"], "pdp")
+        self.assertNotIn("_hit", item)
+        sleep.assert_called_once_with(0.3)
 
+    @patch("dealers.mec.time.sleep")
+    @patch("dealers.mec.fetch_pdp", return_value={"_err": "http_failed"})
+    def test_mec_pdp_failure_keeps_list_price_as_low_trust(self, fetch_pdp, sleep):
+        session = object()
+        item = {
+            "url": "https://www.mec.ca/en/product/6030-116/example",
+            "sale_price": 200.0,
+            "original_price": 200.0,
+            "discount_pct": 0,
+            "_hit": {"id": 1},
+        }
+
+        _enrich_items(session, [item], "scrapling")
+
+        fetch_pdp.assert_called_once_with(session, item["url"])
+        self.assertEqual(item["sale_price"], 200.0)
+        self.assertEqual(item["original_price"], 200.0)
         self.assertEqual(item["price_source_quality"], "list_fallback")
         self.assertNotIn("_hit", item)
+        sleep.assert_called_once_with(0.3)
 
     def test_browser_stack_versions_are_pinned_to_live_working_combo(self):
         requirements = (ROOT / "requirements.txt").read_text(encoding="utf-8")
