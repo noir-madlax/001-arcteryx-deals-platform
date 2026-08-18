@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18 19:51:46",
+  "generated_at": "2026-08-18 22:04:22",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -31750,7 +31750,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 151,
+      "count": 149,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6037-693/arcteryx-beta-jacket-mens",
@@ -31959,46 +31959,6 @@
           "colors": [
             "Solitude"
           ],
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
-          "name": "Arc'teryx Heliad 15 Backpack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/520622_source_1773871544.jpg",
-          "color": "",
-          "sale_price": 100.0,
-          "original_price": 100.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "One Size"
-          ],
-          "size_stock": {
-            "One Size": "in_stock"
-          },
-          "colors": [],
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6040-488/arcteryx-axios-20-tote-unisex",
-          "name": "Arc'teryx Axios 20 Tote - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560576_source_1786795264.png",
-          "color": "",
-          "sale_price": 150.0,
-          "original_price": 150.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "One Size"
-          ],
-          "size_stock": {
-            "One Size": "in_stock"
-          },
-          "colors": [],
           "price_source_quality": "pdp"
         },
         {
@@ -36500,7 +36460,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-18 19:51:46"
+      "refreshed_at": "2026-08-18 22:04:22"
     },
     "rei": {
       "name": "REI",
@@ -54319,7 +54279,7 @@
       "refreshed_at": "2026-08-18 13:50:35"
     }
   },
-  "total": 1906,
+  "total": 1904,
   "rejected_dealers": {},
   "fresh_dealers": [
     "mec"
