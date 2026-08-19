@@ -128,7 +128,10 @@ for f in .crawl_manifest.json data.js arcteryx_skus.json global_data.json; do
 done
 rm -rf "$TMPDIR"
 
-git add .crawl_manifest.json data.js arcteryx_skus.json global_data.json
+log "Step 4a: Refresh GEO product sitemap and catalog snapshot"
+$PYTHON tools/generate_geo_catalog.py --online 2>&1 | tee -a "$LOG_FILE"
+
+git add .crawl_manifest.json data.js arcteryx_skus.json global_data.json sitemap-products.xml catalog-status.html catalog-status.json
 if ! git diff --cached --quiet; then
   git commit -m "data: auto update $(date '+%Y-%m-%d %H:%M')"
   git push origin main 2>&1 | tee -a "$LOG_FILE" || log "git push failed (non-fatal)"

@@ -291,6 +291,23 @@ class GeoAssetTests(unittest.TestCase):
             self.assertIn("catalog-status.html", workflow, name)
             self.assertIn("catalog-status.json", workflow, name)
 
+        server_runner = (ROOT / "server_run_update.sh").read_text(encoding="utf-8")
+        refresh_command = "$PYTHON tools/generate_geo_catalog.py --online"
+        self.assertIn(refresh_command, server_runner)
+        self.assertGreater(
+            server_runner.index(refresh_command),
+            server_runner.index('rm -rf "$TMPDIR"'),
+        )
+        git_add = next(
+            line for line in server_runner.splitlines() if line.startswith("git add ")
+        )
+        for asset in (
+            "sitemap-products.xml",
+            "catalog-status.html",
+            "catalog-status.json",
+        ):
+            self.assertIn(asset, git_add)
+
     def test_internal_audit_data_is_not_deployed(self):
         vercelignore = (ROOT / ".vercelignore").read_text(encoding="utf-8")
         self.assertIn("/geo/", vercelignore)
