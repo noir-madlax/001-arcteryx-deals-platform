@@ -87,6 +87,9 @@ class Scraper:
                     )
                     if r.status_code == 200:
                         return r.json()
+                    if r.status_code == 404:
+                        print(f"[evo] HTTP 404; treating source item as unavailable: {url}", flush=True)
+                        return {"_unavailable": True}
                     if r.status_code in {401, 403}:
                         self.http_blocked = True
                         last = RuntimeError(f"HTTP {r.status_code}: {r.text[:120]}")
@@ -110,6 +113,9 @@ class Scraper:
             except Exception as e:
                 last = e
                 code = getattr(e, "code", None)
+                if code == 404:
+                    print(f"[evo] HTTP 404; treating source item as unavailable: {url}", flush=True)
+                    return {"_unavailable": True}
                 if code in {401, 403}:
                     self.http_blocked = True
                     break
@@ -168,7 +174,7 @@ class Scraper:
         if not isinstance(product, dict):
             return None
         variants = product.get("variants") or []
-        if product.get("available") is False:
+        if product.get("available") is False or product.get("_unavailable"):
             return {"available": False, "variants": []}
 
         available_variants = [
@@ -550,6 +556,9 @@ class Scraper:
                     if self.http_blocked:
                         print("[evo] direct Shopify endpoint blocked; stopping HTTP retries", flush=True)
                         return [], False
+                    break
+                if data.get("_unavailable"):
+                    print(f"[evo] collection endpoint unavailable; forcing browser fallback: {url}", flush=True)
                     break
                 products = data.get("products") or []
                 if not products:

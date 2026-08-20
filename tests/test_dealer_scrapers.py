@@ -29,6 +29,15 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(curl_requests.get.call_count, 2)
         sleep.assert_called_once_with(15)
 
+    @patch("dealers.evo.curl_requests")
+    def test_evo_treats_pdp_404_as_unavailable(self, curl_requests):
+        curl_requests.get.return_value = MagicMock(status_code=404, text="not found", headers={})
+
+        result = EvoScraper()._fetch_json("https://www.evo.com/products/removed.js", retries=2)
+
+        self.assertEqual(result, {"_unavailable": True})
+        self.assertEqual(curl_requests.get.call_count, 1)
+
     def test_evo_pdp_parser_ignores_unavailable_clearance_variants(self):
         product = {
             "available": True,
@@ -66,6 +75,12 @@ class DealerScraperTests(unittest.TestCase):
         })
 
         self.assertEqual(parsed, {"available": False, "variants": []})
+
+    def test_evo_pdp_parser_marks_http_404_unavailable(self):
+        self.assertEqual(
+            EvoScraper.parse_pdp_product({"_unavailable": True}),
+            {"available": False, "variants": []},
+        )
 
     def test_evo_http_snapshot_publishes_pdp_price_instead_of_collection_price(self):
         scraper = EvoScraper()
