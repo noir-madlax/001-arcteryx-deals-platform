@@ -119,6 +119,28 @@ class DealerScraperTests(unittest.TestCase):
         self.assertFalse(complete)
         self.assertTrue(scraper.pdp_confirmation_failed)
 
+    def test_evo_http_snapshot_skips_missing_pdp_product(self):
+        scraper = EvoScraper()
+        scraper.COLLECTIONS = [("patagonia", "auto", "patagonia")]
+        collection_product = {
+            "vendor": "Patagonia",
+            "handle": "patagonia-discontinued-item",
+            "variants": [{"available": True, "price": "47.99", "compare_at_price": "75.00"}],
+        }
+
+        def missing_pdp(_handle):
+            scraper.last_fetch_status = 404
+            return None
+
+        with patch.object(scraper, "_fetch_json", return_value={"products": [collection_product]}), patch.object(
+            scraper, "_fetch_pdp_json", side_effect=missing_pdp
+        ):
+            items, complete = scraper._scrape_http()
+
+        self.assertEqual(items, [])
+        self.assertTrue(complete)
+        self.assertFalse(scraper.pdp_confirmation_failed)
+
     def test_evo_browser_fallback_replaces_list_price_with_pdp_price(self):
         scraper = EvoScraper()
         item = {
@@ -168,6 +190,25 @@ class DealerScraperTests(unittest.TestCase):
 
         self.assertIsNone(confirmed)
         self.assertTrue(scraper.pdp_confirmation_failed)
+
+    def test_evo_browser_fallback_skips_missing_pdp_product(self):
+        scraper = EvoScraper()
+        item = {
+            "url": "https://www.evo.com/products/discontinued-item",
+            "brand": "patagonia",
+            "sale_price": 47.99,
+            "original_price": 75.0,
+        }
+
+        def missing_pdp(_handle):
+            scraper.last_fetch_status = 404
+            return None
+
+        with patch.object(scraper, "_fetch_pdp_json", side_effect=missing_pdp):
+            confirmed = scraper._confirm_browser_item_with_pdp(item)
+
+        self.assertIsNone(confirmed)
+        self.assertFalse(scraper.pdp_confirmation_failed)
 
     def test_burton_rendered_parser_pairs_live_card_prices_with_catalog_identity(self):
         products = {

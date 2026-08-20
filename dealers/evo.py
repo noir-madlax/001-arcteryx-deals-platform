@@ -46,6 +46,7 @@ class Scraper:
         self.crawl_complete = False
         self.http_blocked = False
         self.pdp_confirmation_failed = False
+        self.last_fetch_status = None
 
     @staticmethod
     def _product_image(product: dict, card: dict) -> str | None:
@@ -73,6 +74,7 @@ class Scraper:
 
     def _fetch_json(self, url: str, retries: int = 2) -> dict | None:
         last = None
+        self.last_fetch_status = None
         for i in range(retries + 1):
             try:
                 if curl_requests is not None:
@@ -85,6 +87,7 @@ class Scraper:
                             "referer": "https://www.evo.com/shop/arcteryx",
                         },
                     )
+                    self.last_fetch_status = r.status_code
                     if r.status_code == 200:
                         return r.json()
                     if r.status_code in {401, 403}:
@@ -103,15 +106,23 @@ class Scraper:
                             time.sleep(delay)
                             continue
                         break
+                    if r.status_code in {404, 410}:
+                        last = RuntimeError(f"HTTP {r.status_code}: {r.text[:120]}")
+                        break
                     raise RuntimeError(f"HTTP {r.status_code}: {r.text[:120]}")
                 req = urllib.request.Request(url, headers={"User-Agent": _UA, "Accept": "application/json"})
                 with urllib.request.urlopen(req, context=_CTX, timeout=20) as r:
+                    self.last_fetch_status = getattr(r, "status", 200)
                     return json.loads(r.read())
             except Exception as e:
                 last = e
                 code = getattr(e, "code", None)
+                if code is not None:
+                    self.last_fetch_status = code
                 if code in {401, 403}:
                     self.http_blocked = True
+                    break
+                if code in {404, 410}:
                     break
                 if code == 429:
                     self.http_blocked = True
@@ -368,6 +379,9 @@ class Scraper:
         pdp = self._fetch_pdp_json(handle)
         parsed_pdp = self.parse_pdp_product(pdp)
         if parsed_pdp is None:
+            if self.last_fetch_status in {404, 410}:
+                print(f"[evo] PDP {self.last_fetch_status} for browser item {handle}; skipping unavailable item", flush=True)
+                return None
             self.pdp_confirmation_failed = True
             print(
                 f"[evo] PDP confirmation failed for browser item {handle}; refusing to publish list price",
@@ -566,6 +580,9 @@ class Scraper:
                     pdp = self._fetch_pdp_json(handle)
                     parsed_pdp = self.parse_pdp_product(pdp)
                     if parsed_pdp is None:
+                        if self.last_fetch_status in {404, 410}:
+                            print(f"[evo] PDP {self.last_fetch_status} for {handle}; skipping unavailable item", flush=True)
+                            continue
                         self.pdp_confirmation_failed = True
                         print(
                             f"[evo] PDP confirmation failed for {handle}; refusing to publish list price",
