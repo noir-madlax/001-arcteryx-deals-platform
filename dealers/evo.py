@@ -87,9 +87,21 @@ class Scraper:
                     )
                     if r.status_code == 200:
                         return r.json()
-                    if r.status_code in {401, 403, 429}:
+                    if r.status_code in {401, 403}:
                         self.http_blocked = True
                         last = RuntimeError(f"HTTP {r.status_code}: {r.text[:120]}")
+                        break
+                    if r.status_code == 429:
+                        self.http_blocked = True
+                        last = RuntimeError(f"HTTP {r.status_code}: {r.text[:120]}")
+                        if i < retries:
+                            delay = self._http_retry_delay(getattr(r, "headers", {}), i)
+                            print(
+                                f"[evo] HTTP 429 retry {i + 1}/{retries} after {delay:.0f}s: {url}",
+                                flush=True,
+                            )
+                            time.sleep(delay)
+                            continue
                         break
                     raise RuntimeError(f"HTTP {r.status_code}: {r.text[:120]}")
                 req = urllib.request.Request(url, headers={"User-Agent": _UA, "Accept": "application/json"})
@@ -97,14 +109,36 @@ class Scraper:
                     return json.loads(r.read())
             except Exception as e:
                 last = e
-                if getattr(e, "code", None) in {401, 403, 429}:
+                code = getattr(e, "code", None)
+                if code in {401, 403}:
                     self.http_blocked = True
+                    break
+                if code == 429:
+                    self.http_blocked = True
+                    if i < retries:
+                        delay = self._http_retry_delay(getattr(e, "headers", {}), i)
+                        print(
+                            f"[evo] HTTP 429 retry {i + 1}/{retries} after {delay:.0f}s: {url}",
+                            flush=True,
+                        )
+                        time.sleep(delay)
+                        continue
                     break
         print(f"[evo] FETCH ERR {url}: {last}", flush=True)
         return None
 
+    @staticmethod
+    def _http_retry_delay(headers, attempt: int) -> float:
+        fallback = max(0.0, float(os.environ.get("EVO_HTTP_RETRY_DELAY_SECONDS", "15")))
+        raw = headers.get("Retry-After") if headers else None
+        try:
+            delay = float(raw)
+        except (TypeError, ValueError):
+            delay = fallback * (attempt + 1)
+        return min(max(delay, 0.0), 60.0)
+
     def _fetch_pdp_json(self, handle: str) -> dict | None:
-        return self._fetch_json(f"{HOST}/products/{handle}.js", retries=1)
+        return self._fetch_json(f"{HOST}/products/{handle}.js", retries=2)
 
     @staticmethod
     def _money_values(label: str | None) -> list[float]:

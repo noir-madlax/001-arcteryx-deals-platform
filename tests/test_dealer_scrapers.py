@@ -1,7 +1,7 @@
 import json
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from dealers.backcountry import Scraper as BackcountryScraper
 from dealers.burton import Scraper as BurtonScraper
@@ -15,6 +15,20 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 class DealerScraperTests(unittest.TestCase):
+    @patch("dealers.evo.time.sleep")
+    @patch("dealers.evo.curl_requests")
+    def test_evo_retries_pdp_429_with_bounded_backoff(self, curl_requests, sleep):
+        first = MagicMock(status_code=429, text="rate limited", headers={})
+        second = MagicMock(status_code=200)
+        second.json.return_value = {"available": True, "variants": []}
+        curl_requests.get.side_effect = [first, second]
+
+        result = EvoScraper()._fetch_json("https://www.evo.com/products/example.js", retries=1)
+
+        self.assertEqual(result, {"available": True, "variants": []})
+        self.assertEqual(curl_requests.get.call_count, 2)
+        sleep.assert_called_once_with(15)
+
     def test_evo_pdp_parser_ignores_unavailable_clearance_variants(self):
         product = {
             "available": True,
