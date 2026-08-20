@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19 23:05:27",
+  "generated_at": "2026-08-20 01:05:23",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -31750,7 +31750,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 156,
+      "count": 157,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6032-439/arcteryx-atom-hoodie-womens",
@@ -31913,7 +31913,7 @@
           "url": "https://www.mec.ca/en/product/6030-493/arcteryx-mantis-26-daypack-unisex",
           "name": "Arc'teryx Mantis 26 Daypack - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560756_source_1784846220.jpg",
-          "color": "Dark Jade / Mongoose, Stratus/Blk Sapphire",
+          "color": "Black, Dark Jade / Mongoose, Stratus/Blk Sapphire",
           "sale_price": 190.0,
           "original_price": 200.0,
           "discount_pct": 5,
@@ -31927,6 +31927,7 @@
             "One Size": "in_stock"
           },
           "colors": [
+            "Black",
             "Dark Jade / Mongoose",
             "Stratus/Blk Sapphire"
           ],
@@ -32323,7 +32324,7 @@
           "url": "https://www.mec.ca/en/product/6032-442/arcteryx-beta-sl-jacket-womens",
           "name": "Arc'teryx Beta SL Jacket - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/518545_source_1773871548.jpg",
-          "color": "Pineberry",
+          "color": "Moondrop, Pineberry",
           "sale_price": 360.0,
           "original_price": 640.0,
           "discount_pct": 44,
@@ -32349,6 +32350,7 @@
             "XX-Large": "in_stock"
           },
           "colors": [
+            "Moondrop",
             "Pineberry"
           ],
           "price_source_quality": "pdp"
@@ -33376,26 +33378,14 @@
           "url": "https://www.mec.ca/en/product/6032-375/arcteryx-sinsolo-bucket-hat-unisex",
           "name": "Arc'teryx Sinsolo Bucket Hat - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/512792_source_1744881682.jpg",
-          "color": "Black, Verve",
+          "color": "Black",
           "sale_price": 100.0,
           "original_price": 100.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "sizes": [
-            "Large/X-Large",
-            "Small/Medium"
-          ],
-          "size_stock": {
-            "Small/Medium": "in_stock",
-            "Large/X-Large": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Verve"
-          ],
-          "price_source_quality": "pdp"
+          "price_source_quality": "list_fallback"
         },
         {
           "url": "https://www.mec.ca/en/product/6040-303/arcteryx-konseal-approach-shoes-mens",
@@ -33684,16 +33674,7 @@
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "sizes": [
-            "One Size"
-          ],
-          "size_stock": {
-            "One Size": "in_stock"
-          },
-          "colors": [
-            "Mongoose"
-          ],
-          "price_source_quality": "pdp"
+          "price_source_quality": "list_fallback"
         },
         {
           "url": "https://www.mec.ca/en/product/6034-783/arcteryx-rho-lt-base-layer-bottoms-mens",
@@ -35627,6 +35608,41 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-628/arcteryx-kragg-cotton-little-bird-crew-short-sleeve-t-shirt-womens",
+          "name": "Arc'teryx Kragg Cotton Little Bird Crew Short Sleeve T-Shirt - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560760_source_1784846220.jpg",
+          "color": "Black/Black, Black/Multi",
+          "sale_price": 63.0,
+          "original_price": 90.0,
+          "discount_pct": 30,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large",
+            "X-Small",
+            "XX-Small"
+          ],
+          "size_stock": {
+            "XX-Small": "in_stock",
+            "X-Small": "in_stock",
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock"
+          },
+          "colors": [
+            "Black/Black",
+            "Black/Multi"
+          ],
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6032-371/arcteryx-bird-word-cap-unisex",
           "name": "Arc'teryx Bird Word Cap - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/505846_source_1740824649.jpg",
@@ -35729,7 +35745,7 @@
         {
           "url": "https://www.mec.ca/en/product/6040-615/arcteryx-grotto-toque-unisex",
           "name": "Arc'teryx Grotto Toque - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560574_source_1784846158.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560574_source_1787169054.png",
           "color": "Black/Void",
           "sale_price": 80.0,
           "original_price": 80.0,
@@ -35939,41 +35955,6 @@
           },
           "colors": [
             "Black"
-          ],
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6037-628/arcteryx-kragg-cotton-little-bird-crew-short-sleeve-t-shirt-womens",
-          "name": "Arc'teryx Kragg Cotton Little Bird Crew Short Sleeve T-Shirt - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533658_source_1773163234.jpg",
-          "color": "Black/Black, Black/Multi",
-          "sale_price": 63.0,
-          "original_price": 90.0,
-          "discount_pct": 30,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small",
-            "XX-Small"
-          ],
-          "size_stock": {
-            "XX-Small": "in_stock",
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Black/Black",
-            "Black/Multi"
           ],
           "price_source_quality": "pdp"
         },
@@ -36248,6 +36229,68 @@
           "colors": [
             "Black/Black",
             "Canvas/Forage"
+          ],
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6032-652/arcteryx-kopec-gore-tex-hiking-shoes-mens",
+          "name": "Arc'teryx Kopec Gore-Tex Hiking Shoes - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/526553_source_1771544535.jpg",
+          "color": "Habitat/Void LT",
+          "sale_price": 138.0,
+          "original_price": 230.0,
+          "discount_pct": 40,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "UK 10",
+            "UK 10.5",
+            "UK 11",
+            "UK 11.5",
+            "UK 12",
+            "UK 12.5",
+            "UK 7.5",
+            "UK 8",
+            "UK 8.5",
+            "UK 9",
+            "UK 9.5"
+          ],
+          "size_stock": {
+            "8": "in_stock",
+            "8.5": "in_stock",
+            "9": "in_stock",
+            "9.5": "in_stock",
+            "10": "in_stock",
+            "10.5": "in_stock",
+            "11": "in_stock",
+            "11.5": "in_stock",
+            "12": "in_stock",
+            "12.5": "in_stock",
+            "UK 7.5": "in_stock",
+            "UK 8": "in_stock",
+            "UK 8.5": "in_stock",
+            "UK 9": "in_stock",
+            "UK 9.5": "in_stock",
+            "UK 10": "in_stock",
+            "UK 10.5": "in_stock",
+            "UK 11": "in_stock",
+            "UK 11.5": "in_stock",
+            "UK 12": "in_stock",
+            "UK 12.5": "in_stock"
+          },
+          "colors": [
+            "Habitat/Void LT"
           ],
           "price_source_quality": "pdp"
         },
@@ -36675,7 +36718,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-19 23:05:27"
+      "refreshed_at": "2026-08-20 01:05:23"
     },
     "rei": {
       "name": "REI",
@@ -54494,7 +54537,7 @@
       "refreshed_at": "2026-08-18 13:50:35"
     }
   },
-  "total": 1911,
+  "total": 1912,
   "rejected_dealers": {},
   "fresh_dealers": [
     "mec"
