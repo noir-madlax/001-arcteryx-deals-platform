@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20 23:06:03",
+  "generated_at": "2026-08-20 23:47:31",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -43569,12 +43569,10 @@
           "region": "US",
           "price_source_quality": "pdp",
           "sizes": [
-            "L",
             "XL",
             "XXL"
           ],
           "size_stock": {
-            "L": "in_stock",
             "XL": "in_stock",
             "XXL": "in_stock"
           },
@@ -43622,20 +43620,31 @@
           "url": "https://www.rei.com/product/235148/arcteryx-covert-cardigan-mens",
           "name": "Covert Cardigan - Men's",
           "image": "https://www.rei.com/media/f456f59a-6bf3-47a3-91aa-694a2e7675f4.jpg",
-          "original_price": 126.93,
+          "original_price": 180.0,
           "sale_price": 126.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 0,
+          "discount_pct": 29,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
+          "price_source_quality": "pdp",
+          "sizes": [
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black Heather Ii",
+            "Cloud Heather/Void",
+            "Habitat Heather",
+            "Dk Stratus Htr/Black Sapphire"
+          ],
+          "color": "Black Heather Ii"
         },
         {
           "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
@@ -43651,10 +43660,30 @@
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black Sapphire",
+            "Black",
+            "Bracken",
+            "Habitat",
+            "Forage"
+          ],
+          "color": "Black Sapphire"
         },
         {
           "url": "https://www.rei.com/product/250406/arcteryx-emblem-fleece-crew-mens",
@@ -43689,36 +43718,15 @@
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "list_fallback",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Dark Jade",
-            "Forage",
-            "Black",
-            "Sea Salt",
-            "Cloud",
-            "Shincha"
-          ],
-          "color": "Dark Jade"
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/250403/arcteryx-kragg-cotton-long-sleeve-shirt-mens",
           "name": "Kragg Cotton Long-Sleeve Shirt - Men's",
-          "image": "https://www.rei.com/media/1f3ca430-ee46-40e3-8682-6ff478539c33.jpg",
+          "image": "https://www.rei.com/media/aef4a51b-656a-40d5-a3a1-01d42408d2f2.jpg",
           "original_price": 80.0,
           "sale_price": 55.93,
           "currency": "USD",
@@ -43747,7 +43755,7 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "list_fallback",
+          "price_source_quality": "pdp",
           "sizes": [],
           "size_stock": {},
           "colors": [],
@@ -43823,7 +43831,7 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "pdp",
+          "price_source_quality": "list_fallback",
           "sizes": [],
           "size_stock": {},
           "colors": [],
@@ -43909,16 +43917,16 @@
           "url": "https://www.rei.com/product/235370/arcteryx-kopec-mid-gtx-hiking-boots-womens",
           "name": "Kopec Mid GTX Hiking Boots - Women's",
           "image": "https://www.rei.com/media/04a8f883-a155-4246-bc7e-eb4b7dd24041.jpg",
-          "original_price": 139.93,
+          "original_price": 200.0,
           "sale_price": 139.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
-          "discount_pct": 0,
+          "discount_pct": 30,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "list_fallback",
+          "price_source_quality": "pdp",
           "sizes": [],
           "size_stock": {},
           "colors": [],
@@ -43975,7 +43983,7 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "list_fallback",
+          "price_source_quality": "pdp",
           "sizes": [],
           "size_stock": {},
           "colors": [],
@@ -44052,35 +44060,10 @@
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "list_fallback",
-          "sizes": [
-            "00",
-            "0",
-            "2",
-            "4",
-            "6",
-            "8",
-            "10",
-            "12",
-            "14",
-            "16"
-          ],
-          "size_stock": {
-            "00": "in_stock",
-            "0": "in_stock",
-            "2": "in_stock",
-            "4": "in_stock",
-            "6": "in_stock",
-            "8": "in_stock",
-            "10": "in_stock",
-            "12": "in_stock",
-            "14": "in_stock",
-            "16": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Mallow"
-          ],
-          "color": "Mallow"
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/249770/arcteryx-konseal-approach-shoes-mens",
@@ -44210,10 +44193,39 @@
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
+          "sizes": [
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13"
+          ],
+          "size_stock": {
+            "8": "in_stock",
+            "8.5": "in_stock",
+            "9": "in_stock",
+            "9.5": "in_stock",
+            "10": "in_stock",
+            "10.5": "in_stock",
+            "11": "in_stock",
+            "11.5": "in_stock",
+            "12": "in_stock",
+            "12.5": "in_stock",
+            "13": "in_stock"
+          },
+          "colors": [
+            "Graphite/Moondrop Dark",
+            "Canvas/Forage",
+            "Atmos/Dark Arctic Silk",
+            "Black/Black"
+          ],
+          "color": "Graphite/Moondrop Dark"
         },
         {
           "url": "https://www.rei.com/product/249631/arcteryx-venta-gloves",
@@ -44266,7 +44278,7 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "list_fallback",
+          "price_source_quality": "pdp",
           "sizes": [],
           "size_stock": {},
           "colors": [],
@@ -44285,7 +44297,7 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "pdp",
+          "price_source_quality": "list_fallback",
           "sizes": [],
           "size_stock": {},
           "colors": [],
@@ -44419,27 +44431,10 @@
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "list_fallback",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Cloud"
-          ],
-          "color": "Black"
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/228431/arcteryx-mantis-16-pack",
@@ -44575,7 +44570,7 @@
           "color": ""
         }
       ],
-      "refreshed_at": "2026-08-20 18:50:36"
+      "refreshed_at": "2026-08-20 23:43:26"
     },
     "ssense": {
       "name": "SSENSE",
@@ -45228,12 +45223,12 @@
           "region": "US"
         }
       ],
-      "refreshed_at": "2026-08-20 18:54:59"
+      "refreshed_at": "2026-08-20 23:47:31"
     },
     "backcountry": {
       "name": "Backcountry",
       "region": "US",
-      "count": 148,
+      "count": 149,
       "items": [
         {
           "source_id": "BURZA14",
@@ -46595,6 +46590,30 @@
             "True Black"
           ],
           "discount_pct": 40,
+          "dealer": "backcountry",
+          "dealer_name": "Backcountry",
+          "brand": "burton",
+          "region": "US",
+          "category": "",
+          "price_source_quality": "list_fallback"
+        },
+        {
+          "source_id": "BURZ9PP",
+          "url": "https://www.backcountry.com/burton-felix-boa-snowboard-boot-2026-womens",
+          "name": "Felix Boa Snowboard Boot - 2026 - Women's",
+          "image": "https://content.backcountry.com/images/items/large/BUR/BURZ9PP/BLA.jpg",
+          "original_price": 479.95,
+          "sale_price": 263.97,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "sizes": [],
+          "size_stock": {},
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 45,
           "dealer": "backcountry",
           "dealer_name": "Backcountry",
           "brand": "burton",
@@ -49044,12 +49063,12 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-20 18:13:28"
+      "refreshed_at": "2026-08-20 23:10:00"
     },
     "burton": {
       "name": "Burton",
       "region": "US",
-      "count": 335,
+      "count": 334,
       "items": [
         {
           "source_id": "9100998246657",
@@ -56317,7 +56336,7 @@
           "source_id": "9177421742337",
           "url": "https://www.burton.com/en-us/products/kids-burton-vent-gloves-104161b-o",
           "name": "Kids' Burton Vent Gloves",
-          "image": "https://www.burton.com/cdn/shop/files/104161BEWV_1.webp?v=1778458576&width=2100",
+          "image": "https://www.burton.com/cdn/shop/files/104161BEZV_1.webp?v=1778458575&width=2100",
           "original_price": 52.95,
           "sale_price": 26.48,
           "currency": "USD",
@@ -57565,13 +57584,11 @@
           "sizes": [
             "5",
             "2T",
-            "3T",
             "18M"
           ],
           "size_stock": {
             "5": "in_stock",
             "2T": "in_stock",
-            "3T": "in_stock",
             "18M": "in_stock"
           },
           "color": "Soft Sage",
@@ -60384,34 +60401,6 @@
           "price_source_quality": "rendered"
         },
         {
-          "source_id": "9100999819521",
-          "url": "https://www.burton.com/en-us/products/womens-burton-escapade-re-flex-snowboard-bindings-1054319-o",
-          "name": "Women's Burton Escapade Re:Flex Snowboard Bindings",
-          "image": "https://www.burton.com/cdn/shop/files/1054319A50_1.webp?v=1776133822&width=2100",
-          "original_price": 399.95,
-          "sale_price": 279.97,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "sizes": [
-            "L"
-          ],
-          "size_stock": {
-            "L": "in_stock"
-          },
-          "color": "White",
-          "colors": [
-            "White"
-          ],
-          "discount_pct": 30,
-          "dealer": "burton",
-          "dealer_name": "Burton",
-          "brand": "burton",
-          "region": "US",
-          "category": "BINDINGS",
-          "price_source_quality": "rendered"
-        },
-        {
           "source_id": "9101006962945",
           "url": "https://www.burton.com/en-us/products/mens-burton-phayse-merino-quarter-zip-base-layer-shirt-2384910-o",
           "name": "Men's Burton Phayse Merino Quarter-Zip Base Layer Shirt",
@@ -60814,12 +60803,17 @@
           "price_source_quality": "rendered"
         }
       ],
-      "refreshed_at": "2026-08-20 18:13:23"
+      "refreshed_at": "2026-08-20 23:09:55"
     }
   },
   "total": 1897,
-  "rejected_dealers": {},
+  "rejected_dealers": {
+    "evo": "incomplete"
+  },
   "fresh_dealers": [
-    "mec"
+    "backcountry",
+    "burton",
+    "rei",
+    "ssense"
   ]
 }
