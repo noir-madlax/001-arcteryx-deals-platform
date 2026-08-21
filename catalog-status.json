@@ -2,13 +2,13 @@
   "schema_version": "1.0.0",
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://001.100app.dev/",
-  "snapshot_observed_at": "2026-08-21T05:17:39+00:00",
-  "active_product_urls": 8315,
+  "snapshot_observed_at": "2026-08-21T06:44:31.673378+00:00",
+  "active_product_urls": 8311,
   "brands": [
     {
       "id": "arcteryx",
       "label": "Arc'teryx",
-      "count": 6930
+      "count": 6926
     },
     {
       "id": "burton",
@@ -25,12 +25,12 @@
     {
       "id": "arcteryx_outlet",
       "label": "Arc'teryx Outlet",
-      "count": 6458
+      "count": 6442
     },
     {
       "id": "evo",
       "label": "EVO",
-      "count": 1113
+      "count": 1119
     },
     {
       "id": "burton",
@@ -50,7 +50,7 @@
     {
       "id": "rei",
       "label": "REI",
-      "count": 61
+      "count": 67
     },
     {
       "id": "ssense",
@@ -62,72 +62,72 @@
     {
       "id": "us",
       "label": "美国",
-      "count": 2148
+      "count": 2158
     },
     {
       "id": "at",
       "label": "奥地利",
-      "count": 440
+      "count": 439
     },
     {
       "id": "be",
       "label": "比利时",
-      "count": 440
+      "count": 439
     },
     {
       "id": "ch",
       "label": "瑞士",
-      "count": 440
+      "count": 439
     },
     {
       "id": "de",
       "label": "德国",
-      "count": 440
+      "count": 439
     },
     {
       "id": "dk",
       "label": "丹麦",
-      "count": 440
+      "count": 439
     },
     {
       "id": "es",
       "label": "西班牙",
-      "count": 440
+      "count": 439
     },
     {
       "id": "fi",
       "label": "芬兰",
-      "count": 440
+      "count": 439
     },
     {
       "id": "fr",
       "label": "法国",
-      "count": 440
+      "count": 439
     },
     {
       "id": "gb",
       "label": "英国",
-      "count": 440
+      "count": 439
     },
     {
       "id": "ie",
       "label": "爱尔兰",
-      "count": 440
+      "count": 439
     },
     {
       "id": "it",
       "label": "意大利",
-      "count": 440
+      "count": 439
     },
     {
       "id": "nl",
       "label": "荷兰",
-      "count": 440
+      "count": 439
     },
     {
       "id": "se",
       "label": "瑞典",
-      "count": 440
+      "count": 439
     },
     {
       "id": "ca",
@@ -137,7 +137,7 @@
     {
       "id": "au",
       "label": "澳大利亚",
-      "count": 22
+      "count": 21
     }
   ],
   "measurement_boundary": "Counts describe active GearDrop product URLs at the recorded observation time. They do not prove retailer stock, search indexing, AI mention, citation, or recommendation.",
