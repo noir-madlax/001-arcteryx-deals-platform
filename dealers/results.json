@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-22 14:17:27",
+  "generated_at": "2026-08-22 15:04:24",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -43007,8 +43007,8 @@
             "XXXL": "in_stock"
           },
           "colors": [
-            "Black Sapphire",
             "Black",
+            "Black Sapphire",
             "Sea Salt"
           ],
           "color": "Black Sapphire"
@@ -43293,6 +43293,50 @@
           "color": "Cloud"
         },
         {
+          "url": "https://www.rei.com/product/236060/arcteryx-cronin-cotton-pants-mens",
+          "name": "Cronin Cotton Pants - Men's",
+          "image": "https://www.rei.com/media/bf58bc26-213e-43b3-a1be-066a30bf1d85.jpg",
+          "original_price": 180.0,
+          "sale_price": 125.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 30,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "30 IN Waist",
+            "32 IN Waist",
+            "34 IN Waist",
+            "34 Short",
+            "36 IN Waist",
+            "36 Short",
+            "38 IN Waist",
+            "38 Short"
+          ],
+          "size_stock": {
+            "30 IN Waist": "in_stock",
+            "32 IN Waist": "in_stock",
+            "34 IN Waist": "in_stock",
+            "34 Short": "in_stock",
+            "36 IN Waist": "in_stock",
+            "36 Short": "in_stock",
+            "38 IN Waist": "in_stock",
+            "38 Short": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Braken",
+            "Cloud",
+            "Habitat",
+            "Canvas",
+            "Void"
+          ],
+          "color": "Void"
+        },
+        {
           "url": "https://www.rei.com/product/250404/arcteryx-kragg-cotton-lithographica-t-shirt-mens",
           "name": "Kragg Cotton Lithographica T-Shirt - Men's",
           "image": "https://www.rei.com/media/f3a0d99e-eaad-4ec8-ab93-0234b55aab53.jpg",
@@ -43363,48 +43407,37 @@
           "color": "Habitat"
         },
         {
-          "url": "https://www.rei.com/product/236060/arcteryx-cronin-cotton-pants-mens",
-          "name": "Cronin Cotton Pants - Men's",
-          "image": "https://www.rei.com/media/bf58bc26-213e-43b3-a1be-066a30bf1d85.jpg",
-          "original_price": 180.0,
-          "sale_price": 125.93,
+          "url": "https://www.rei.com/product/193584/arcteryx-rho-lt-zip-neck-base-layer-top-mens",
+          "name": "Rho LT Zip-Neck Base Layer Top - Men's",
+          "image": "https://www.rei.com/media/ceec8710-9fa4-4322-920c-5ce5c0f47def.jpg",
+          "original_price": 120.0,
+          "sale_price": 120.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 30,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "pdp",
           "sizes": [
-            "30 IN Waist",
-            "32 IN Waist",
-            "34 IN Waist",
-            "34 Short",
-            "36 IN Waist",
-            "36 Short",
-            "38 IN Waist",
-            "38 Short"
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
           ],
           "size_stock": {
-            "30 IN Waist": "in_stock",
-            "32 IN Waist": "in_stock",
-            "34 IN Waist": "in_stock",
-            "34 Short": "in_stock",
-            "36 IN Waist": "in_stock",
-            "36 Short": "in_stock",
-            "38 IN Waist": "in_stock",
-            "38 Short": "in_stock"
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
           },
           "colors": [
-            "Black",
-            "Braken",
-            "Cloud",
-            "Habitat",
-            "Canvas",
-            "Void"
+            "Black Sapphire"
           ],
-          "color": "Void"
+          "color": "Black Sapphire"
         },
         {
           "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
@@ -43440,37 +43473,31 @@
           "color": "Black Sapphire"
         },
         {
-          "url": "https://www.rei.com/product/193584/arcteryx-rho-lt-zip-neck-base-layer-top-mens",
-          "name": "Rho LT Zip-Neck Base Layer Top - Men's",
-          "image": "https://www.rei.com/media/ceec8710-9fa4-4322-920c-5ce5c0f47def.jpg",
-          "original_price": 120.0,
-          "sale_price": 120.0,
+          "url": "https://www.rei.com/product/222935/arcteryx-rho-toque-hat",
+          "name": "Rho Toque Hat",
+          "image": "https://www.rei.com/media/49c4226f-a3c5-4a82-ba60-8a7338bffe31.jpg",
+          "original_price": 45.0,
+          "sale_price": 45.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "men",
+          "gender": "unisex",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "pdp",
           "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
+            "S/M",
+            "L/XL"
           ],
           "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
+            "S/M": "in_stock",
+            "L/XL": "in_stock"
           },
           "colors": [
-            "Black Sapphire"
+            "Black"
           ],
-          "color": "Black Sapphire"
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
@@ -43510,33 +43537,6 @@
             "Forage"
           ],
           "color": "Black Sapphire"
-        },
-        {
-          "url": "https://www.rei.com/product/222935/arcteryx-rho-toque-hat",
-          "name": "Rho Toque Hat",
-          "image": "https://www.rei.com/media/49c4226f-a3c5-4a82-ba60-8a7338bffe31.jpg",
-          "original_price": 45.0,
-          "sale_price": 45.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S/M",
-            "L/XL"
-          ],
-          "size_stock": {
-            "S/M": "in_stock",
-            "L/XL": "in_stock"
-          },
-          "colors": [
-            "Black"
-          ],
-          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/235148/arcteryx-covert-cardigan-mens",
@@ -43580,7 +43580,7 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "pdp",
+          "price_source_quality": "list_fallback",
           "sizes": [
             "S",
             "M",
@@ -43614,28 +43614,11 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock"
-          },
-          "colors": [
-            "Dark Jade",
-            "White Light",
-            "Void",
-            "Black",
-            "Tatsu",
-            "Mantis"
-          ],
-          "color": "Dark Jade"
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/248250/arcteryx-gamma-lightweight-jacket-mens",
@@ -43651,20 +43634,10 @@
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "list_fallback",
-          "sizes": [
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Dk Stratus",
-            "Black",
-            "Habitat"
-          ],
-          "color": "Habitat"
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/243257/arcteryx-atom-sl-hoody-mens",
@@ -43895,25 +43868,6 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/243366/arcteryx-essent-hirise-utility-6-shorts-womens",
-          "name": "Essent HiRise Utility 6&quot; Shorts - Women's",
-          "image": "https://www.rei.com/media/2beb9467-2b84-4c92-94f8-c2d90b311dec.jpg",
-          "original_price": 62.93,
-          "sale_price": 62.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
           "url": "https://www.rei.com/product/217940/arcteryx-kyanite-lightweight-fleece-hoodie-mens",
           "name": "Kyanite Lightweight Fleece Hoodie - Men's",
           "image": "https://www.rei.com/media/1932d7b0-0a07-48dd-aa23-500c27ec1e79.jpg",
@@ -43933,14 +43887,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/187115/arcteryx-mantis-1-waistpack",
-          "name": "Mantis 1 Waistpack",
-          "image": "https://www.rei.com/media/159c1ae4-cbca-4aa5-af9a-461daa7c5a93.jpg",
-          "original_price": 40.0,
-          "sale_price": 40.0,
+          "url": "https://www.rei.com/product/243366/arcteryx-essent-hirise-utility-6-shorts-womens",
+          "name": "Essent HiRise Utility 6&quot; Shorts - Women's",
+          "image": "https://www.rei.com/media/2beb9467-2b84-4c92-94f8-c2d90b311dec.jpg",
+          "original_price": 62.93,
+          "sale_price": 62.93,
           "currency": "USD",
           "in_stock": true,
-          "gender": "unisex",
+          "gender": "women",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -43971,14 +43925,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/255584/arcteryx-cerium-down-hoody-womens",
-          "name": "Cerium Down Hoody - Women's",
-          "image": "https://www.rei.com/media/02e12932-2c2a-40e9-959a-749d3a05a18e.jpg",
-          "original_price": 329.73,
-          "sale_price": 329.73,
+          "url": "https://www.rei.com/product/187115/arcteryx-mantis-1-waistpack",
+          "name": "Mantis 1 Waistpack",
+          "image": "https://www.rei.com/media/159c1ae4-cbca-4aa5-af9a-461daa7c5a93.jpg",
+          "original_price": 40.0,
+          "sale_price": 40.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
+          "gender": "unisex",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -43998,6 +43952,25 @@
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/255584/arcteryx-cerium-down-hoody-womens",
+          "name": "Cerium Down Hoody - Women's",
+          "image": "https://www.rei.com/media/02e12932-2c2a-40e9-959a-749d3a05a18e.jpg",
+          "original_price": 329.73,
+          "sale_price": 329.73,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -44085,25 +44058,6 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/243367/arcteryx-delta-jacket-womens",
-          "name": "Delta Jacket - Women's",
-          "image": "https://www.rei.com/media/0cfca74d-13da-437a-9749-74ef0a48c59a.jpg",
-          "original_price": 200.0,
-          "sale_price": 139.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 30,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
           "url": "https://www.rei.com/product/235366/arcteryx-kopec-mid-gtx-hiking-boots-mens",
           "name": "Kopec Mid GTX Hiking Boots - Men's",
           "image": "https://www.rei.com/media/e02909fa-e52f-45aa-bab4-89553f459cb2.jpg",
@@ -44132,6 +44086,93 @@
           "in_stock": true,
           "gender": "women",
           "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [
+            "00",
+            "0 Short",
+            "0",
+            "2 Short",
+            "2",
+            "4 Short",
+            "4",
+            "6 Short",
+            "6",
+            "8 Short",
+            "8",
+            "8 Tall",
+            "10 Short",
+            "10",
+            "10 Tall",
+            "12",
+            "12 Tall",
+            "14",
+            "14 Tall",
+            "16",
+            "16 Tall"
+          ],
+          "size_stock": {
+            "00": "in_stock",
+            "0 Short": "in_stock",
+            "0": "in_stock",
+            "2 Short": "in_stock",
+            "2": "in_stock",
+            "4 Short": "in_stock",
+            "4": "in_stock",
+            "6 Short": "in_stock",
+            "6": "in_stock",
+            "8 Short": "in_stock",
+            "8": "in_stock",
+            "8 Tall": "in_stock",
+            "10 Short": "in_stock",
+            "10": "in_stock",
+            "10 Tall": "in_stock",
+            "12": "in_stock",
+            "12 Tall": "in_stock",
+            "14": "in_stock",
+            "14 Tall": "in_stock",
+            "16": "in_stock",
+            "16 Tall": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Dark Jade",
+            "Habitat",
+            "Moondrop"
+          ],
+          "color": "Black"
+        },
+        {
+          "url": "https://www.rei.com/product/242815/arcteryx-norvan-ld-4-trail-running-shoes-womens",
+          "name": "Norvan LD 4 Trail-Running Shoes - Women's",
+          "image": "https://www.rei.com/media/a10c7397-3ce8-468b-b8be-ca24fafbdef2.jpg",
+          "original_price": 170.0,
+          "sale_price": 101.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 40,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/243367/arcteryx-delta-jacket-womens",
+          "name": "Delta Jacket - Women's",
+          "image": "https://www.rei.com/media/0cfca74d-13da-437a-9749-74ef0a48c59a.jpg",
+          "original_price": 200.0,
+          "sale_price": 139.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 30,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -44199,15 +44240,15 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/242815/arcteryx-norvan-ld-4-trail-running-shoes-womens",
-          "name": "Norvan LD 4 Trail-Running Shoes - Women's",
-          "image": "https://www.rei.com/media/a10c7397-3ce8-468b-b8be-ca24fafbdef2.jpg",
-          "original_price": 170.0,
-          "sale_price": 101.83,
+          "url": "https://www.rei.com/product/242918/arcteryx-kragg-cotton-pants-mens",
+          "name": "Kragg Cotton Pants - Men's",
+          "image": "https://www.rei.com/media/206baeba-13ad-4664-ad90-8a478c8dc415.jpg",
+          "original_price": 180.0,
+          "sale_price": 125.93,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
-          "discount_pct": 40,
+          "gender": "men",
+          "discount_pct": 30,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -44218,11 +44259,11 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/242918/arcteryx-kragg-cotton-pants-mens",
-          "name": "Kragg Cotton Pants - Men's",
-          "image": "https://www.rei.com/media/206baeba-13ad-4664-ad90-8a478c8dc415.jpg",
-          "original_price": 180.0,
-          "sale_price": 125.93,
+          "url": "https://www.rei.com/product/249769/arcteryx-konseal-gtx-approach-shoes-mens",
+          "name": "Konseal GTX Approach Shoes - Men's",
+          "image": "https://www.rei.com/media/7d1822d5-7fd0-4d7b-8931-fdde1543eb4c.jpg",
+          "original_price": 220.0,
+          "sale_price": 153.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
@@ -44246,25 +44287,6 @@
           "in_stock": true,
           "gender": "women",
           "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/249769/arcteryx-konseal-gtx-approach-shoes-mens",
-          "name": "Konseal GTX Approach Shoes - Men's",
-          "image": "https://www.rei.com/media/7d1822d5-7fd0-4d7b-8931-fdde1543eb4c.jpg",
-          "original_price": 220.0,
-          "sale_price": 153.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 30,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -44332,25 +44354,6 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/249480/arcteryx-gamma-mx-pants-mens",
-          "name": "Gamma MX Pants - Men's",
-          "image": "https://www.rei.com/media/614e1d1c-77f4-46b9-88f1-ef406efab3b5.jpg",
-          "original_price": 300.0,
-          "sale_price": 300.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
           "url": "https://www.rei.com/product/235315/arcteryx-kyanite-hoody-mens",
           "name": "Kyanite Hoody - Men's",
           "image": "https://www.rei.com/media/7085fcc0-f1a7-411e-a0c9-f58d14932a45.jpg",
@@ -44389,6 +44392,25 @@
           "color": ""
         },
         {
+          "url": "https://www.rei.com/product/249480/arcteryx-gamma-mx-pants-mens",
+          "name": "Gamma MX Pants - Men's",
+          "image": "https://www.rei.com/media/614e1d1c-77f4-46b9-88f1-ef406efab3b5.jpg",
+          "original_price": 300.0,
+          "sale_price": 300.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
           "url": "https://www.rei.com/product/228431/arcteryx-mantis-16-pack",
           "name": "Mantis 16 Pack",
           "image": "https://www.rei.com/media/21165d0b-8163-476f-9fbf-e76e72bc537b.jpg",
@@ -44401,14 +44423,14 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "list_fallback",
+          "price_source_quality": "pdp",
           "sizes": [],
           "size_stock": {},
           "colors": [],
           "color": ""
         }
       ],
-      "refreshed_at": "2026-08-22 13:43:54"
+      "refreshed_at": "2026-08-22 15:00:12"
     },
     "ssense": {
       "name": "SSENSE",
@@ -45046,7 +45068,7 @@
           "region": "US"
         }
       ],
-      "refreshed_at": "2026-08-22 13:47:59"
+      "refreshed_at": "2026-08-22 15:04:24"
     },
     "backcountry": {
       "name": "Backcountry",
@@ -48818,12 +48840,12 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-22 13:04:15"
+      "refreshed_at": "2026-08-22 14:21:14"
     },
     "burton": {
       "name": "Burton",
       "region": "US",
-      "count": 332,
+      "count": 331,
       "items": [
         {
           "source_id": "9100998246657",
@@ -50243,7 +50265,7 @@
           "source_id": "9101008142593",
           "url": "https://www.burton.com/en-us/products/kids-burton-hillslope-jacket-2431310-o",
           "name": "Kids' Burton Hillslope Jacket",
-          "image": "https://www.burton.com/cdn/shop/files/243131009J_4.webp?v=1778458530&width=2100",
+          "image": "https://www.burton.com/cdn/shop/files/2431310EU0_4ML.webp?v=1778458526&width=2100",
           "original_price": 169.95,
           "sale_price": 84.98,
           "currency": "USD",
@@ -50323,7 +50345,6 @@
             "12",
             "13",
             "14",
-            "8.5",
             "9.5",
             "10.5",
             "11.5"
@@ -50337,7 +50358,6 @@
             "12": "in_stock",
             "13": "in_stock",
             "14": "in_stock",
-            "8.5": "in_stock",
             "9.5": "in_stock",
             "10.5": "in_stock",
             "11.5": "in_stock"
@@ -50873,11 +50893,9 @@
           "in_stock": true,
           "gender": "unisex",
           "sizes": [
-            "S",
             "XL"
           ],
           "size_stock": {
-            "S": "in_stock",
             "XL": "in_stock"
           },
           "color": "Deep Emerald, Forest City Streets, Wildcat Floral",
@@ -52225,7 +52243,7 @@
           "source_id": "9105604477185",
           "url": "https://www.burton.com/en-us/products/burton-rewind-camber-snowboard-1985418-o",
           "name": "Burton Rewind Camber Snowboard",
-          "image": "https://www.burton.com/cdn/shop/files/1985418EZM_1.webp?v=1778458487&width=2100",
+          "image": "https://www.burton.com/cdn/shop/files/1985418A03_1.webp?v=1778458487&width=2100",
           "original_price": 529.95,
           "sale_price": 370.97,
           "currency": "USD",
@@ -54099,11 +54117,13 @@
           "gender": "unisex",
           "sizes": [
             "L",
-            "M"
+            "M",
+            "XS"
           ],
           "size_stock": {
             "L": "in_stock",
-            "M": "in_stock"
+            "M": "in_stock",
+            "XS": "in_stock"
           },
           "color": "Imperial Purple / True Black, Soft Sage / Peach Echo",
           "colors": [
@@ -54264,10 +54284,12 @@
           "in_stock": true,
           "gender": "men",
           "sizes": [
+            "L",
             "M",
             "XL"
           ],
           "size_stock": {
+            "L": "in_stock",
             "M": "in_stock",
             "XL": "in_stock"
           },
@@ -56976,34 +56998,6 @@
           "brand": "burton",
           "region": "US",
           "category": "BOARDS",
-          "price_source_quality": "rendered"
-        },
-        {
-          "source_id": "9100999557377",
-          "url": "https://www.burton.com/en-us/products/mens-burton-gore-tex-under-gloves-1035419-o",
-          "name": "Men's Burton GORE-TEX Under Gloves",
-          "image": "https://www.burton.com/cdn/shop/files/1035419A26_1.webp?v=1776133424&width=2100",
-          "original_price": 84.95,
-          "sale_price": 59.47,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "sizes": [
-            "XL"
-          ],
-          "size_stock": {
-            "XL": "in_stock"
-          },
-          "color": "Stout White",
-          "colors": [
-            "Stout White"
-          ],
-          "discount_pct": 30,
-          "dealer": "burton",
-          "dealer_name": "Burton",
-          "brand": "burton",
-          "region": "US",
-          "category": "GLOVES",
           "price_source_quality": "rendered"
         },
         {
@@ -60493,12 +60487,17 @@
           "price_source_quality": "rendered"
         }
       ],
-      "refreshed_at": "2026-08-22 13:04:10"
+      "refreshed_at": "2026-08-22 14:21:09"
     }
   },
-  "total": 1899,
-  "rejected_dealers": {},
+  "total": 1898,
+  "rejected_dealers": {
+    "evo": "incomplete"
+  },
   "fresh_dealers": [
-    "mec"
+    "backcountry",
+    "burton",
+    "rei",
+    "ssense"
   ]
 }
