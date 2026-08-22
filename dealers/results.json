@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-22 21:06:29",
+  "generated_at": "2026-08-22 22:51:32",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -43643,27 +43643,10 @@
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "list_fallback",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock"
-          },
-          "colors": [
-            "Dark Jade",
-            "White Light",
-            "Void",
-            "Black",
-            "Tatsu",
-            "Mantis"
-          ],
-          "color": "Dark Jade"
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
@@ -44464,7 +44447,7 @@
           "color": ""
         }
       ],
-      "refreshed_at": "2026-08-22 21:02:19"
+      "refreshed_at": "2026-08-22 22:47:24"
     },
     "ssense": {
       "name": "SSENSE",
@@ -45102,7 +45085,7 @@
           "region": "US"
         }
       ],
-      "refreshed_at": "2026-08-22 21:06:29"
+      "refreshed_at": "2026-08-22 22:51:32"
     },
     "backcountry": {
       "name": "Backcountry",
@@ -45795,10 +45778,9 @@
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Blue Teal/Chestnut Brown, Summit Taupe, True Black",
+          "color": "Blue Teal/Chestnut Brown, True Black",
           "colors": [
             "Blue Teal/Chestnut Brown",
-            "Summit Taupe",
             "True Black"
           ],
           "discount_pct": 65,
@@ -48850,7 +48832,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-22 20:22:46"
+      "refreshed_at": "2026-08-22 22:06:35"
     },
     "burton": {
       "name": "Burton",
@@ -60491,7 +60473,7 @@
           "price_source_quality": "rendered"
         }
       ],
-      "refreshed_at": "2026-08-22 20:22:40"
+      "refreshed_at": "2026-08-22 22:06:29"
     }
   },
   "total": 1899,
