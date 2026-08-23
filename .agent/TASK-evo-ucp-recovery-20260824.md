@@ -1,4 +1,4 @@
-# TASK: EVO UCP recovery（更新：2026-08-24 04:14 Asia/Taipei）
+# TASK: EVO UCP recovery（更新：2026-08-24 04:46 Asia/Taipei）
 
 ## Why（一句话）
 
@@ -28,13 +28,17 @@
 - 合入后正式 dealer workflow `32660663814` 已完整完成 UCP 抓取与数据库同步：EVO 1469 件、1469/1469 upsert、0 batch errors；最终质量门仅因一个 active SKU `evo:products/286584-burton-fish-3d-splitboard-step-on-splitboard-bindings-2026` 缺图失败，故静态结果及 publication marker 未提交发布。（来源：该 run 完整原始日志）
 - 缺图 SKU 是 `type:custom-bundle`；当前 UCP search/lookup/get_product 与 PDP `.js` 均无商品媒体。实时 UCP 目录中标题精确等于其去掉尾部 `2026` 的兄弟 bundle `286656-...` 提供官方 `variants[].media` 商品图；不是品牌/集合占位图。（来源：本轮只读 UCP/PDP 精确探针）
 - 按生产 `query=Burton` 全分页重新只读验证为 4 页/821 unique handles，目标与兄弟 bundle 均在同一终止目录中；新解析器为目标解析到兄弟的官方 CDN 图，图片 GET 为 `200 image/jpeg`、74,498 bytes。（来源：隔离分支实时 UCP 全分页与 CDN GET，2026-08-24 04:12 Asia/Taipei）
+- PR #33 图片补丁已合入 merge commit `5bcf60f5cd0612280872d609d82b627a64eaf18a`，对应 Vercel production status 为 SUCCESS。（来源：GitHub PR、commit status readback）
+- 第二次正式 dealer workflow `32663840073` 未执行到 EVO 图片同步：UCP 已完成 Arc'teryx 262 与 Burton 721，但 Patagonia 第 1 页单次 HTTP 500 后立即 fail-closed；旧 collection/Camoufox 回退仍为 403/0 件。其余四个 dealer 同步成功，EVO 保留旧快照，最终仍由旧缺图行触发质量失败；commit/publication 步骤均 skipped。（来源：该 run 完整失败日志）
+- 与失败请求相同的 `query=Patagonia`、`limit=250` 只读请求随后返回 HTTP 200/250 件并带下一页 cursor，证明该 500 是当前可恢复的瞬态服务错误。（来源：本轮 action-time 只读 UCP 探针，2026-08-24 04:44 Asia/Taipei）
 
 ## 假设（未验证；验证后移入上区）
 
 - 为 UCP 使用 Shopify 官方公开 profile fixture 可先恢复服务；生产长期应发布 GearDrop 自有、稳定的 JSON profile。
 - Vercel 漏掉 `caacf58` 的原因可能是 Git webhook/部署触发缺口；原因尚未定位。
 - 500ms PDP 节流 + EVO 3600 秒 timeout 的最终组合未再做一次完整 30-40 分钟本地运行；相同全量逻辑已在无额外节流时 1725.9 秒通过，最终组合需由正式 workflow 验收。
-- UCP custom-bundle 的精确同名兄弟图回退已通过本地测试，尚待 PR 检查和第二次正式 workflow 验收。
+- UCP custom-bundle 的精确同名兄弟图回退已通过本地测试，尚待下一次正式 workflow 实际执行验收。
+- UCP 5xx/网络瞬断的有限重试补丁已通过本地测试，尚待 PR 检查和下一次正式 workflow 验收。
 
 ## 验收标准
 
@@ -55,11 +59,13 @@
 - 仓库 Python 全量 `202 tests` 通过；Node 全量 `13 tests` 通过；5 个修改 Python 文件 compile 通过；3 个 refresh workflow YAML parse 通过。
 - 首次合入后的正式 workflow 已证明 UCP 发现、1469-handle PDP 确认和 Supabase 同步成功；当前为新的单 SKU 缺图签名，未重复盲跑。
 - custom-bundle 图片补丁定向 `2 tests`、dealer scraper `37 tests`、仓库 Python `203 tests`、App Node `35 tests` 均通过；5 个 Python 文件 compile、3 个 workflow YAML 与 `git diff --check` 通过。
+- 第二次正式 workflow 保持了完整快照 fail-closed，但暴露 `_post_ucp_json` 仅重试 429、不会重试瞬态 5xx 的可用性缺口；未盲目重复运行。
+- 瞬态重试补丁的 500-then-200、永久 403 不重试与 503 重试耗尽边界测试通过；仓库 Python 全量 `206 tests`、App Node `35 tests`、5 个 Python 文件 compile、3 个 workflow YAML 与 `git diff --check` 通过。
 
 ## 下一步（按序）
 
-1. 为 UCP `variants[].media` 与唯一精确同名 custom-bundle 兄弟图回退补测试并提交独立 PR。
-2. 合入主干并确认代码部署后，只再触发一次正式 dealer workflow。
+1. 为幂等 UCP catalog POST 增加 408/429/5xx 与网络瞬断的有限重试，同时保持 403 和重试耗尽 fail-closed。
+2. 本地回归、独立 PR、主干部署确认后，只再触发一次正式 dealer workflow。
 3. 复核三道质量门、唯一 publication marker 与固定 cohort 的 lifecycle-inconclusive 工件。
 
 ## 死路（试过不行的，附失败原因）
@@ -67,3 +73,4 @@
 - 重跑既有 EVO collection JSON + Camoufox fallback：连续失败且同一 403/0-item 指纹，不能改变来源契约。
 - 直接发布 UCP search/lookup 价格：实测存在 144.99 vs PDP 114.99 的陈旧价，已拒绝。
 - 以新样本替换固定 cohort：违反 exact-sample 证据契约，禁止。
+- 在没有 UCP 5xx 有限重试的情况下盲跑：`32663840073` 已证明单次瞬态 500 会丢弃整份 EVO 快照，已拒绝继续重复。
