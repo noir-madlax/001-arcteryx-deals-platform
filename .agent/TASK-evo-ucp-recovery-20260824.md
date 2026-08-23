@@ -1,4 +1,4 @@
-# TASK: EVO UCP recovery（更新：2026-08-24 03:16 Asia/Taipei）
+# TASK: EVO UCP recovery（更新：2026-08-24 04:14 Asia/Taipei）
 
 ## Why（一句话）
 
@@ -24,12 +24,17 @@
 - 固定 cohort replay 退出 2：`rei:235611, rei:243329, rei:249789` 不再 eligible；六次当前官方直连均为 403。（来源：正式 `tools/audit_price_accuracy.py --sample-file ...` 与两次/URL curl）
 - 公网 Vercel 当前部署 commit 为 `c834c491...`，最新 origin 为 `caacf581...`；公网 `results.json` 仍是 `generated_at=2026-08-23 14:14:51`，EVO `refreshed_at=2026-08-20 18:35:21`。（来源：`vercel inspect`、公网 cache-busted GET、git）
 - automation-5 已通过应用正式更新并独立回读：保留 ACTIVE/hourly/thread 绑定，新增同签名三次且跨两窗口熔断、两轮代码修复预算、`AUDIT_INCONCLUSIVE_LIFECYCLE` 与精确 publication marker 门。（来源：`codex_app__automation_update` 回执及 automation.toml readback，updated_at=1787510386377）
+- PR #32 已通过检查并合入 `origin/main`，merge commit 为 `df4a11eb368d15f4b8a07dd2e16449aa0c5c57fd`，对应 Vercel production deployment 为 SUCCESS。（来源：GitHub PR/check 与 Vercel deployment readback）
+- 合入后正式 dealer workflow `32660663814` 已完整完成 UCP 抓取与数据库同步：EVO 1469 件、1469/1469 upsert、0 batch errors；最终质量门仅因一个 active SKU `evo:products/286584-burton-fish-3d-splitboard-step-on-splitboard-bindings-2026` 缺图失败，故静态结果及 publication marker 未提交发布。（来源：该 run 完整原始日志）
+- 缺图 SKU 是 `type:custom-bundle`；当前 UCP search/lookup/get_product 与 PDP `.js` 均无商品媒体。实时 UCP 目录中标题精确等于其去掉尾部 `2026` 的兄弟 bundle `286656-...` 提供官方 `variants[].media` 商品图；不是品牌/集合占位图。（来源：本轮只读 UCP/PDP 精确探针）
+- 按生产 `query=Burton` 全分页重新只读验证为 4 页/821 unique handles，目标与兄弟 bundle 均在同一终止目录中；新解析器为目标解析到兄弟的官方 CDN 图，图片 GET 为 `200 image/jpeg`、74,498 bytes。（来源：隔离分支实时 UCP 全分页与 CDN GET，2026-08-24 04:12 Asia/Taipei）
 
 ## 假设（未验证；验证后移入上区）
 
 - 为 UCP 使用 Shopify 官方公开 profile fixture 可先恢复服务；生产长期应发布 GearDrop 自有、稳定的 JSON profile。
 - Vercel 漏掉 `caacf58` 的原因可能是 Git webhook/部署触发缺口；原因尚未定位。
 - 500ms PDP 节流 + EVO 3600 秒 timeout 的最终组合未再做一次完整 30-40 分钟本地运行；相同全量逻辑已在无额外节流时 1725.9 秒通过，最终组合需由正式 workflow 验收。
+- UCP custom-bundle 的精确同名兄弟图回退已通过本地测试，尚待 PR 检查和第二次正式 workflow 验收。
 
 ## 验收标准
 
@@ -48,11 +53,13 @@
 - 三条静态刷新 workflow 均生成并等待唯一 publication marker；marker/hash 单元测试通过。
 - automation-5 新状态机已正式更新并从落盘配置独立回读。
 - 仓库 Python 全量 `202 tests` 通过；Node 全量 `13 tests` 通过；5 个修改 Python 文件 compile 通过；3 个 refresh workflow YAML parse 通过。
+- 首次合入后的正式 workflow 已证明 UCP 发现、1469-handle PDP 确认和 Supabase 同步成功；当前为新的单 SKU 缺图签名，未重复盲跑。
+- custom-bundle 图片补丁定向 `2 tests`、dealer scraper `37 tests`、仓库 Python `203 tests`、App Node `35 tests` 均通过；5 个 Python 文件 compile、3 个 workflow YAML 与 `git diff --check` 通过。
 
 ## 下一步（按序）
 
-1. 提交并推送隔离修复分支，等待远端检查。
-2. 合入主干后先确认代码部署，再按正式 dealer workflow 做生产恢复。
+1. 为 UCP `variants[].media` 与唯一精确同名 custom-bundle 兄弟图回退补测试并提交独立 PR。
+2. 合入主干并确认代码部署后，只再触发一次正式 dealer workflow。
 3. 复核三道质量门、唯一 publication marker 与固定 cohort 的 lifecycle-inconclusive 工件。
 
 ## 死路（试过不行的，附失败原因）

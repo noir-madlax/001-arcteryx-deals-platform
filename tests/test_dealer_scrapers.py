@@ -130,11 +130,55 @@ class DealerScraperTests(unittest.TestCase):
         self.assertEqual(items[0]["sale_price"], 120.0)
         self.assertEqual(items[0]["original_price"], 200.0)
         self.assertEqual(items[0]["sizes"], ["M"])
+        self.assertEqual(items[0]["image"], "https://cdn.example/first.jpg")
         self.assertEqual(fetch_pdp.call_count, 2)
         first_args = ucp_call.call_args_list[0].args[2]
         second_args = ucp_call.call_args_list[1].args[2]
         self.assertNotIn("cursor", first_args["catalog"]["pagination"])
         self.assertEqual(second_args["catalog"]["pagination"]["cursor"], "next-page")
+
+    def test_evo_ucp_custom_bundle_uses_unique_exact_yearless_sibling_image(self):
+        scraper = EvoScraper()
+        scraper.MIN_ITEMS_BY_BRAND = {"burton": 2}
+        image_url = "https://cdn.example/burton-fish-bundle.jpg"
+        page = {
+            "products": [{
+                "title": "Burton Fish 3D Splitboard + Step On Splitboard Bindings 2026",
+                "handle": "burton-fish-bundle-2026",
+                "tags": ["type:custom-bundle"],
+            }, {
+                "title": "Burton Fish 3D Splitboard + Step On Splitboard Bindings",
+                "handle": "burton-fish-bundle",
+                "tags": ["type:custom-bundle"],
+                "variants": [{"media": [{"type": "image", "url": image_url}]}],
+            }],
+            "pagination": {"has_next_page": False, "cursor": None},
+        }
+
+        def pdp(handle):
+            return {
+                "available": True,
+                "handle": handle,
+                "vendor": "Burton",
+                "title": handle,
+                "variants": [{
+                    "available": True,
+                    "price": 97643,
+                    "compare_at_price": 154990,
+                }],
+            }
+
+        with patch.dict(os.environ, {"EVO_UCP_INTER_PDP_DELAY_MS": "0"}), patch.object(
+            scraper, "_discover_ucp_endpoint", return_value="https://store.myshopify.com/api/ucp/mcp"
+        ), patch.object(scraper, "_ucp_call", return_value=page), patch.object(
+            scraper, "_fetch_pdp_json", side_effect=pdp
+        ):
+            items, complete = scraper._scrape_ucp()
+
+        self.assertTrue(complete)
+        self.assertEqual(len(items), 2)
+        self.assertEqual(items[0]["image"], image_url)
+        self.assertEqual(items[1]["image"], image_url)
 
     def test_evo_ucp_repeated_cursor_fails_closed_before_pdp_reads(self):
         scraper = EvoScraper()
