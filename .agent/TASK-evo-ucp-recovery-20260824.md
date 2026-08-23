@@ -1,10 +1,12 @@
-# TASK: EVO UCP recovery（更新：2026-08-24 04:46 Asia/Taipei）
+# TASK: EVO UCP recovery（更新：2026-08-24 05:47 Asia/Taipei）
 
 ## Why（一句话）
 
 把持续被 Cloudflare 阻断的 EVO 集合发现链路迁移到官方 UCP Catalog，并修正恢复熔断与公开发布状态，使生产数据和客户可见投影可以被独立、诚实地验收。
 
-## 当前状态：进行中
+## 当前状态：完成
+
+生产抓取、数据库质量、静态发布和客户可见页面均已独立验收通过。原始固定价格 cohort 保持不补样，其终态为 `inconclusive_lifecycle`，不冒充价格准确率通过。
 
 ## 边界
 
@@ -31,14 +33,19 @@
 - PR #33 图片补丁已合入 merge commit `5bcf60f5cd0612280872d609d82b627a64eaf18a`，对应 Vercel production status 为 SUCCESS。（来源：GitHub PR、commit status readback）
 - 第二次正式 dealer workflow `32663840073` 未执行到 EVO 图片同步：UCP 已完成 Arc'teryx 262 与 Burton 721，但 Patagonia 第 1 页单次 HTTP 500 后立即 fail-closed；旧 collection/Camoufox 回退仍为 403/0 件。其余四个 dealer 同步成功，EVO 保留旧快照，最终仍由旧缺图行触发质量失败；commit/publication 步骤均 skipped。（来源：该 run 完整失败日志）
 - 与失败请求相同的 `query=Patagonia`、`limit=250` 只读请求随后返回 HTTP 200/250 件并带下一页 cursor，证明该 500 是当前可恢复的瞬态服务错误。（来源：本轮 action-time 只读 UCP 探针，2026-08-24 04:44 Asia/Taipei）
+- UCP 瞬态重试补丁 PR #34 已合入，merge commit 为 `1e73dfaa2feb054cb8f46ff5c5dc1e04557e5135`；幂等 UCP POST 对 408/429/500/502/503/504、网络异常和畸形 200 做有限重试，永久 403 与重试耗尽继续 fail-closed。（来源：PR #34、合入代码与测试）
+- PR #34 合入后仅触发的一次正式恢复 run `32665516068` 已 `completed/success`：UCP 终止分页得到 Arc'teryx 262、Burton 721、Patagonia 485；EVO 数据库同步 1466/1466、0 batch errors，在线质量门 `OK`，随后写入数据 commit `d32d12ca5be62a1bb7a4b4055e56b6abe3ba4e9a`。（来源：该 run 完整原始日志与 `gh run view`）
+- 该 run 的唯一发布标识为 `github-actions-32665516068-1`；公网第 3 次轮询同时匹配 marker 和本地静态文件 SHA-256 `4920842a313f9c44929b4d7eb239a1d7cd44e09fdc2cdc4ae1c689219beaccec`，Vercel 对数据 commit 的状态为 `success`。（来源：workflow 原始日志、公网 `publication.json` 与 GitHub commit status readback）
+- 收尾独立在线质量门全部退出 0：Outlet `6407` 行 `OK`；MEC/EVO/REI/SSENSE `1743` 行 `OK`；全量 `8625` 行 `OK`，且无 JP region。（来源：三条正式 `tools/check_data_quality.py --online` 命令，2026-08-24 05:45 Asia/Taipei）
+- 公网 `/`、`/data.js`、`/dealers/results.json`、`/publication.json` 均为 HTTP 200；静态 dealer 投影共 2215 件，其中 EVO 1466 件，目标 bundle 的官方图、`1549.9/976.43 USD` 与 `price_source_quality=pdp` 已公开。（来源：四个 cache-busted GET 与 `jq` readback）
+- 在真实客户页面中搜索目标 bundle 后，结果卡和详情页均可见；详情显示 EVO、`$976.43/$1,549.9`、`-37%`，官方 CDN 图实际完成加载且 natural size 为 `1500x1500`。（来源：Codex in-app browser 的真实 fill/click/DOM readback，2026-08-24 05:44 Asia/Taipei）
+- 从最新数据 commit 原样重放固定 cohort 退出 2，并写出 `gate.status=inconclusive_lifecycle`；仍是 `rei:235611, rei:243329, rei:249789` 不再 eligible，未补样、未复活、未宣称 PASS。（来源：`audit_price_accuracy.py --sample-file ... --output /tmp/arcteryx-fixed-cohort-replay-20260824-main.json`，2026-08-24 05:47 Asia/Taipei）
 
 ## 假设（未验证；验证后移入上区）
 
 - 为 UCP 使用 Shopify 官方公开 profile fixture 可先恢复服务；生产长期应发布 GearDrop 自有、稳定的 JSON profile。
 - Vercel 漏掉 `caacf58` 的原因可能是 Git webhook/部署触发缺口；原因尚未定位。
-- 500ms PDP 节流 + EVO 3600 秒 timeout 的最终组合未再做一次完整 30-40 分钟本地运行；相同全量逻辑已在无额外节流时 1725.9 秒通过，最终组合需由正式 workflow 验收。
-- UCP custom-bundle 的精确同名兄弟图回退已通过本地测试，尚待下一次正式 workflow 实际执行验收。
-- UCP 5xx/网络瞬断的有限重试补丁已通过本地测试，尚待 PR 检查和下一次正式 workflow 验收。
+- 最终成功 run 没有实际遇到 UCP transient status，因此生产重试分支没有端到端触发；500-then-200、永久 403 与重试耗尽边界已由本地自动化测试覆盖。
 
 ## 验收标准
 
@@ -61,12 +68,13 @@
 - custom-bundle 图片补丁定向 `2 tests`、dealer scraper `37 tests`、仓库 Python `203 tests`、App Node `35 tests` 均通过；5 个 Python 文件 compile、3 个 workflow YAML 与 `git diff --check` 通过。
 - 第二次正式 workflow 保持了完整快照 fail-closed，但暴露 `_post_ucp_json` 仅重试 429、不会重试瞬态 5xx 的可用性缺口；未盲目重复运行。
 - 瞬态重试补丁的 500-then-200、永久 403 不重试与 503 重试耗尽边界测试通过；仓库 Python 全量 `206 tests`、App Node `35 tests`、5 个 Python 文件 compile、3 个 workflow YAML 与 `git diff --check` 通过。
+- PR #34 合入后，正式 run `32665516068`、精确 publication marker/hash、Vercel production、三组在线质量门、四个公网入口与客户页面搜索/详情交互均通过。
+- 最新 `origin/main` 原样重放固定 cohort，工件明确为 `inconclusive_lifecycle`；该门按既定契约终止，不阻塞已独立证明的抓取/同步/发布恢复。
 
-## 下一步（按序）
+## 后续非阻塞事项
 
-1. 为幂等 UCP catalog POST 增加 408/429/5xx 与网络瞬断的有限重试，同时保持 403 和重试耗尽 fail-closed。
-2. 本地回归、独立 PR、主干部署确认后，只再触发一次正式 dealer workflow。
-3. 复核三道质量门、唯一 publication marker 与固定 cohort 的 lifecycle-inconclusive 工件。
+1. 为 GearDrop 发布自有且稳定的 UCP JSON profile，替代当前 Shopify 官方公开 profile fixture。
+2. automation-5 后续继续轮询既有固定 cohort 的生命周期状态；不得用新样本替换这份历史证据。
 
 ## 死路（试过不行的，附失败原因）
 
