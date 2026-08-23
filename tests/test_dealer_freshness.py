@@ -6,6 +6,7 @@ import unittest
 from contextlib import redirect_stdout
 from datetime import datetime, timezone
 from pathlib import Path
+from unittest.mock import patch
 
 from dealers import merge_partial
 from dealers.supabase_sync import (
@@ -579,6 +580,73 @@ class DealerFreshnessTests(unittest.TestCase):
                 self.assertEqual(merged["dealers"]["mec"]["items"][0]["url"], "new-mec")
                 self.assertEqual(merged["dealers"]["mec"]["refreshed_at"], "2026-07-11 16:00:00")
                 self.assertEqual(merged["dealers"]["evo"]["items"][0]["url"], "old-evo")
+                self.assertEqual(
+                    merged["retained_dealers"], {"evo": "empty"}
+                )
+            finally:
+                os.chdir(previous_cwd)
+
+    def test_merge_preserves_unresolved_rejection_across_other_dealer_refresh(self):
+        previous_cwd = os.getcwd()
+        with tempfile.TemporaryDirectory() as tmp:
+            os.chdir(tmp)
+            try:
+                Path("dealers/_partial").mkdir(parents=True)
+                Path("dealers/results.json").write_text(json.dumps({
+                    "dealers": {
+                        "mec": {"name": "MEC", "count": 1, "items": [{"url": "old-mec"}]},
+                        "evo": {"name": "EVO", "count": 1, "items": [{"url": "old-evo"}]},
+                    },
+                    "rejected_dealers": {"evo": "HTTP 403"},
+                }))
+                Path("dealers/_partial/mec.json").write_text(json.dumps({
+                    "name": "MEC",
+                    "region": "CA",
+                    "count": 1,
+                    "items": [{"url": "new-mec"}],
+                    "crawl_complete": True,
+                    "saved_at": "2026-08-24 02:00:00",
+                }))
+
+                with patch.dict(os.environ, {"PUBLICATION_ID": "github-actions-123"}):
+                    merge_partial.main()
+                merged = json.loads(Path("dealers/results.json").read_text())
+
+                self.assertEqual(merged["publication_id"], "github-actions-123")
+                self.assertEqual(merged["fresh_dealers"], ["mec"])
+                self.assertEqual(merged["rejected_dealers"], {"evo": "HTTP 403"})
+                self.assertEqual(merged["retained_dealers"], {"evo": "HTTP 403"})
+            finally:
+                os.chdir(previous_cwd)
+
+    def test_merge_clears_prior_rejection_only_after_trusted_refresh(self):
+        previous_cwd = os.getcwd()
+        with tempfile.TemporaryDirectory() as tmp:
+            os.chdir(tmp)
+            try:
+                Path("dealers/_partial").mkdir(parents=True)
+                Path("dealers/results.json").write_text(json.dumps({
+                    "dealers": {
+                        "evo": {"name": "EVO", "count": 1, "items": [{"url": "old-evo"}]},
+                    },
+                    "rejected_dealers": {"evo": "HTTP 403"},
+                }))
+                Path("dealers/_partial/evo.json").write_text(json.dumps({
+                    "name": "EVO",
+                    "region": "US",
+                    "count": 1,
+                    "items": [{"url": "new-evo"}],
+                    "crawl_complete": True,
+                    "saved_at": "2026-08-24 02:00:00",
+                }))
+
+                merge_partial.main()
+                merged = json.loads(Path("dealers/results.json").read_text())
+
+                self.assertEqual(merged["rejected_dealers"], {})
+                self.assertEqual(merged["retained_dealers"], {})
+                self.assertEqual(merged["fresh_dealers"], ["evo"])
+                self.assertEqual(merged["dealers"]["evo"]["items"][0]["url"], "new-evo")
             finally:
                 os.chdir(previous_cwd)
 

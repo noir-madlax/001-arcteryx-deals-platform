@@ -828,6 +828,49 @@ def write_step_summary(summary: dict, gate_passed: bool) -> None:
         handle.write("\n".join(lines) + "\n")
 
 
+def write_setup_failure_artifact(args: argparse.Namespace, exc: Exception) -> str:
+    """Persist an explicit non-pass state even when sampling cannot start."""
+    message = str(exc)
+    lifecycle_blocked = bool(
+        args.sample_file and message.startswith("sample rows are no longer eligible:")
+    )
+    status = "inconclusive_lifecycle" if lifecycle_blocked else "setup_failed"
+    result = {
+        "schema_version": 1,
+        "generated_at": now_utc_iso(),
+        "start_time": args.run_start,
+        "origin_sha": args.origin_sha,
+        "sample_seed": None,
+        "sample_counts": None,
+        "source_sample_file": str(args.sample_file) if args.sample_file else None,
+        "gate": {
+            "passed": False,
+            "status": status,
+            "minimum_verified": args.minimum_verified,
+            "maximum_confirmed_wrong": args.maximum_confirmed_wrong,
+        },
+        "setup_error": message,
+        "summary": {
+            "sampled": 0,
+            "verified": 0,
+            "correct": 0,
+            "confirmed_wrong": 0,
+            "unverifiable": 0,
+            "accuracy": None,
+            "by_dealer": {},
+        },
+        "audits": [],
+    }
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(
+        json.dumps(result, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    print(f"ARTIFACT {args.output.resolve()}", flush=True)
+    print(f"AUDIT_GATE {status.upper()}", flush=True)
+    return status
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -858,6 +901,7 @@ def main() -> int:
             sample, seed = sample_rows(rows, args.run_start, args.origin_sha)
     except (AuditSetupError, OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"[audit] setup failed: {exc}", file=sys.stderr)
+        write_setup_failure_artifact(args, exc)
         return 2
 
     sample_counts = dict(
@@ -898,6 +942,7 @@ def main() -> int:
         "source_sample_file": str(args.sample_file) if args.sample_file else None,
         "gate": {
             "passed": gate_passed,
+            "status": "passed" if gate_passed else "failed",
             "minimum_verified": args.minimum_verified,
             "maximum_confirmed_wrong": args.maximum_confirmed_wrong,
         },

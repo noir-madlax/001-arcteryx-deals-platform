@@ -32,6 +32,10 @@ def snapshot_rejection_reason(items: list, partial: dict, previous: dict) -> str
 
 def main():
     out = {"generated_at": time.strftime("%Y-%m-%d %H:%M:%S"), "dealers": {}}
+    publication_id = os.environ.get("PUBLICATION_ID", "").strip()
+    if publication_id:
+        out["publication_id"] = publication_id
+    prior_rejected = {}
     # 用上一轮 results.json 播种：某个 dealer 本轮抓取失败（没产出 partial）时，
     # 保留它上次的数据，避免该 dealer 从静态文件 / supabase_sync 里凭空消失。
     # (Supabase 侧 supabase_sync 对缺失 dealer 本就跳过，靠 14 天 stale buffer 兜底；
@@ -41,12 +45,21 @@ def main():
             prev = json.loads(Path(OUT).read_text())
             for key, block in (prev.get("dealers") or {}).items():
                 out["dealers"][key] = block
+            if isinstance(prev.get("rejected_dealers"), dict):
+                prior_rejected = dict(prev["rejected_dealers"])
             print(f"  (seeded from previous results.json: {', '.join(out['dealers']) or 'none'})")
         except Exception as e:
             print(f"  (could not seed from previous results.json: {e})")
 
     fresh_keys = []
-    rejected = {}
+    # Keep the last unresolved rejection until that exact dealer publishes a
+    # new trusted snapshot. A MEC-only run must not make a retained stale EVO
+    # block look healthy by resetting rejected_dealers to {}.
+    rejected = {
+        key: reason
+        for key, reason in prior_rejected.items()
+        if key in out["dealers"]
+    }
     for path in sorted(glob.glob(f"{PARTIAL_DIR}/*.json")):
         d = json.loads(Path(path).read_text())
         key = KEY_BY_NAME.get(d.get("name"), os.path.basename(path).replace(".json",""))
@@ -67,17 +80,21 @@ def main():
             "items":  items,
             "refreshed_at": d.get("saved_at"),
         }
+        rejected.pop(key, None)
         fresh_keys.append(key)
         print(f"  {key}: {d.get('count')} 件 ({d.get('saved_at')}) [fresh]")
 
     stale_keys = [k for k in out["dealers"] if k not in fresh_keys]
+    retained = {}
     for key in stale_keys:
         block = out["dealers"][key]
+        retained[key] = rejected.get(key) or "not refreshed in this run"
         print(f"  {key}: {block.get('count')} 件 [kept from previous — 本轮无新数据]")
 
     total = sum((b.get("count") or 0) for b in out["dealers"].values())
     out["total"] = total
     out["rejected_dealers"] = rejected
+    out["retained_dealers"] = retained
     # supabase_sync 只允许本轮真实产出非空 partial 的 dealer 更新时间。
     # 缺失/空抓取仍保留静态快照，但不能伪装成本轮新鲜数据。
     out["fresh_dealers"] = fresh_keys

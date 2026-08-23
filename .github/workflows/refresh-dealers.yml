@@ -24,6 +24,7 @@ env:
   SITE_URL: https://001.100app.dev
   REI_ENRICH_DETAILS: "true"
   GITHUB_TOKEN: ${{ github.token }}
+  PUBLICATION_ID: "github-actions-${{ github.run_id }}-${{ github.run_attempt }}"
 
 jobs:
   lease-gate:
@@ -116,7 +117,11 @@ jobs:
           failed_dealers=""
           for dealer in burton backcountry evo rei ssense; do
             echo "[dealers] $dealer"
-            if ! timeout 1800 python -u -m "dealers.$dealer"; then
+            dealer_timeout=1800
+            if [ "$dealer" = "evo" ]; then
+              dealer_timeout=3600
+            fi
+            if ! timeout "$dealer_timeout" python -u -m "dealers.$dealer"; then
               echo "[dealers] $dealer FAILED"
               failed_dealers="$failed_dealers $dealer"
             fi
@@ -133,6 +138,7 @@ jobs:
           python tools/check_data_quality.py --online --dealer burton --dealer backcountry --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
           node tools/audit_product_names.mjs --online --strict-source
           python tools/generate_geo_catalog.py --online
+          python tools/write_publication_marker.py --scope dealers --publication-id "$PUBLICATION_ID"
 
       - name: Optional price alerts
         run: python check_price_alerts.py || echo "price alerts check failed"
@@ -141,7 +147,7 @@ jobs:
         run: |
           git config user.email "bot@arcteryx-deals.local"
           git config user.name "ArcBot"
-          git add dealers/results.json sitemap-products.xml catalog-status.html catalog-status.json
+          git add dealers/results.json sitemap-products.xml catalog-status.html catalog-status.json publication.json
           if git diff --cached --quiet; then
             echo "No dealer data changes to commit"
             exit 0
@@ -152,6 +158,7 @@ jobs:
 
       - name: Verify production freshness
         run: |
+          python tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10
           python tools/check_data_quality.py --online --dealer burton --dealer backcountry --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
           node tools/audit_product_names.mjs --online --strict-source
           curl -fsS https://001.100app.dev/dealers/results.json | python -c 'import json,sys; data=json.load(sys.stdin); print("generated_at", data.get("generated_at")); print({k:v.get("count") for k,v in data.get("dealers",{}).items()})'
