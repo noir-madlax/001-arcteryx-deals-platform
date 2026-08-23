@@ -21,6 +21,7 @@ _CTX.check_hostname = False
 _CTX.verify_mode = ssl.CERT_NONE
 _UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
 _MONEY_RE = re.compile(r"\$([\d,]+(?:\.\d{1,2})?)")
+_UCP_TRANSIENT_STATUSES = {408, 429, 500, 502, 503, 504}
 
 
 class Scraper:
@@ -89,10 +90,11 @@ class Scraper:
         return payload
 
     def _post_ucp_json(self, endpoint: str, payload: dict, retries: int = 2) -> dict | None:
-        """POST one JSON-RPC request with bounded handling for rate limits."""
+        """POST one idempotent catalog request with bounded transient retries."""
         last = None
         self.last_fetch_status = None
         for attempt in range(retries + 1):
+            retry_reason = None
             try:
                 if curl_requests is not None:
                     response = curl_requests.post(
@@ -113,8 +115,12 @@ class Scraper:
                     last = RuntimeError(
                         f"HTTP {response.status_code}: {response.text[:120]}"
                     )
-                    if response.status_code != 429 or attempt >= retries:
+                    if (
+                        response.status_code not in _UCP_TRANSIENT_STATUSES
+                        or attempt >= retries
+                    ):
                         break
+                    retry_reason = f"HTTP {response.status_code}"
                     delay = self._http_retry_delay(
                         getattr(response, "headers", {}), attempt
                     )
@@ -138,12 +144,19 @@ class Scraper:
                 code = getattr(exc, "code", None)
                 if code is not None:
                     self.last_fetch_status = code
-                if code != 429 or attempt >= retries:
+                if (
+                    (code is not None and code not in _UCP_TRANSIENT_STATUSES)
+                    or attempt >= retries
+                ):
                     break
+                retry_reason = (
+                    f"HTTP {code}" if code is not None else type(exc).__name__
+                )
                 delay = self._http_retry_delay(getattr(exc, "headers", {}), attempt)
 
             print(
-                f"[evo] UCP HTTP 429 retry {attempt + 1}/{retries} "
+                f"[evo] UCP transient {retry_reason or 'error'} "
+                f"retry {attempt + 1}/{retries} "
                 f"after {delay:.0f}s",
                 flush=True,
             )

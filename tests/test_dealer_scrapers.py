@@ -212,6 +212,62 @@ class DealerScraperTests(unittest.TestCase):
 
     @patch("dealers.evo.time.sleep")
     @patch("dealers.evo.curl_requests")
+    def test_evo_ucp_retries_transient_500_then_succeeds(self, curl_requests, sleep):
+        first = MagicMock(status_code=500, text="internal error", headers={})
+        second = MagicMock(status_code=200)
+        second.json.return_value = {"result": {"structuredContent": {"products": []}}}
+        curl_requests.post.side_effect = [first, second]
+
+        result = EvoScraper()._post_ucp_json(
+            "https://store.myshopify.com/api/ucp/mcp",
+            {"method": "tools/call"},
+            retries=1,
+        )
+
+        self.assertEqual(result, second.json.return_value)
+        self.assertEqual(curl_requests.post.call_count, 2)
+        sleep.assert_called_once_with(15)
+
+    @patch("dealers.evo.time.sleep")
+    @patch("dealers.evo.curl_requests")
+    def test_evo_ucp_does_not_retry_permanent_403(self, curl_requests, sleep):
+        curl_requests.post.return_value = MagicMock(
+            status_code=403,
+            text="forbidden",
+            headers={},
+        )
+
+        result = EvoScraper()._post_ucp_json(
+            "https://store.myshopify.com/api/ucp/mcp",
+            {"method": "tools/call"},
+            retries=2,
+        )
+
+        self.assertIsNone(result)
+        self.assertEqual(curl_requests.post.call_count, 1)
+        sleep.assert_not_called()
+
+    @patch("dealers.evo.time.sleep")
+    @patch("dealers.evo.curl_requests")
+    def test_evo_ucp_transient_retry_exhaustion_returns_none(self, curl_requests, sleep):
+        curl_requests.post.return_value = MagicMock(
+            status_code=503,
+            text="unavailable",
+            headers={},
+        )
+
+        result = EvoScraper()._post_ucp_json(
+            "https://store.myshopify.com/api/ucp/mcp",
+            {"method": "tools/call"},
+            retries=2,
+        )
+
+        self.assertIsNone(result)
+        self.assertEqual(curl_requests.post.call_count, 3)
+        self.assertEqual([item.args[0] for item in sleep.call_args_list], [15, 30])
+
+    @patch("dealers.evo.time.sleep")
+    @patch("dealers.evo.curl_requests")
     def test_evo_retries_pdp_429_with_bounded_backoff(self, curl_requests, sleep):
         first = MagicMock(status_code=429, text="rate limited", headers={})
         second = MagicMock(status_code=200)
