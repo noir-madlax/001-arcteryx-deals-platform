@@ -2,13 +2,13 @@
   "schema_version": "1.0.0",
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://001.100app.dev/",
-  "snapshot_observed_at": "2026-08-23T06:08:03+00:00",
-  "active_product_urls": 8291,
+  "snapshot_observed_at": "2026-08-23T14:14:51+00:00",
+  "active_product_urls": 8292,
   "brands": [
     {
       "id": "arcteryx",
       "label": "Arc'teryx",
-      "count": 6913
+      "count": 6914
     },
     {
       "id": "burton",
@@ -50,7 +50,7 @@
     {
       "id": "rei",
       "label": "REI",
-      "count": 61
+      "count": 62
     },
     {
       "id": "ssense",
@@ -62,7 +62,7 @@
     {
       "id": "us",
       "label": "美国",
-      "count": 2141
+      "count": 2142
     },
     {
       "id": "at",
@@ -72,6 +72,11 @@
     {
       "id": "be",
       "label": "比利时",
+      "count": 438
+    },
+    {
+      "id": "ca",
+      "label": "加拿大",
       "count": 438
     },
     {
@@ -130,14 +135,9 @@
       "count": 438
     },
     {
-      "id": "ca",
-      "label": "加拿大",
-      "count": 437
-    },
-    {
       "id": "au",
       "label": "澳大利亚",
-      "count": 19
+      "count": 18
     }
   ],
   "measurement_boundary": "Counts describe active GearDrop product URLs at the recorded observation time. They do not prove retailer stock, search indexing, AI mention, citation, or recommendation.",
