@@ -290,6 +290,18 @@ class Scraper:
             discovered[brand] = list(products_by_handle.values())
 
         out = []
+        catalog_images_by_title = defaultdict(set)
+        for products in discovered.values():
+            for product in products:
+                title_key = self._ucp_title_key(product.get("title"))
+                image = self._product_image(product, {})
+                if title_key and image:
+                    catalog_images_by_title[title_key].add(image)
+        unique_catalog_images_by_title = {
+            title: next(iter(images))
+            for title, images in catalog_images_by_title.items()
+            if len(images) == 1
+        }
         try:
             pdp_delay = max(
                 0,
@@ -305,7 +317,10 @@ class Scraper:
                 item = {
                     "url": f"{HOST}/products/{handle}",
                     "name": title,
-                    "image": None,
+                    "image": self._ucp_product_image(
+                        product,
+                        unique_catalog_images_by_title,
+                    ),
                     "currency": "USD",
                     "in_stock": True,
                     "gender": self._resolved_gender("auto", title),
@@ -330,11 +345,46 @@ class Scraper:
         return out, self._meets_brand_minimums(out)
 
     @staticmethod
+    def _ucp_title_key(title: object) -> str:
+        return re.sub(r"\s+", " ", str(title or "")).strip().casefold()
+
+    @classmethod
+    def _ucp_product_image(
+        cls,
+        product: dict,
+        catalog_images_by_title: dict[str, str],
+    ) -> str | None:
+        """Resolve an official catalog image without inventing bundle media.
+
+        EVO custom bundles normally expose variant media through UCP. A small
+        number of year-suffixed bundle records omit it even though a current,
+        otherwise identically titled bundle has the official image. Only that
+        exact and unique sibling is eligible as a fallback.
+        """
+        if image := cls._product_image(product, {}):
+            return image
+
+        tags = {str(tag).strip().casefold() for tag in product.get("tags") or []}
+        if "type:custom-bundle" not in tags:
+            return None
+
+        title_key = cls._ucp_title_key(product.get("title"))
+        sibling_title = re.sub(r"\s+20\d{2}$", "", title_key).strip()
+        if sibling_title == title_key:
+            return None
+        return catalog_images_by_title.get(sibling_title)
+
+    @staticmethod
     def _product_image(product: dict, card: dict) -> str | None:
         def image_url(value) -> str | None:
             if isinstance(value, str):
                 return value or None
             if isinstance(value, dict):
+                media_type = str(
+                    value.get("type") or value.get("media_type") or ""
+                ).casefold()
+                if media_type and media_type != "image":
+                    return None
                 return value.get("src") or value.get("url")
             if isinstance(value, list):
                 for candidate in value:
@@ -344,11 +394,11 @@ class Scraper:
 
         if resolved := image_url(card.get("image")):
             return resolved
-        for key in ("featured_image", "featuredImage", "image", "images"):
+        for key in ("featured_image", "featuredImage", "image", "images", "media"):
             if resolved := image_url(product.get(key)):
                 return resolved
         for variant in product.get("variants") or []:
-            for key in ("featured_image", "featuredImage", "image"):
+            for key in ("featured_image", "featuredImage", "image", "media"):
                 if resolved := image_url(variant.get(key)):
                     return resolved
         return None
