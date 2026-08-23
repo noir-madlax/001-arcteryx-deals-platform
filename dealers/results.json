@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-23 03:53:56",
+  "generated_at": "2026-08-23 05:20:38",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -38884,7 +38884,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 172,
+      "count": 169,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6040-483/arcteryx-verro-20-backpack-unisex",
@@ -39249,29 +39249,6 @@
           },
           "colors": [
             "Black"
-          ],
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6034-838/arcteryx-heliad-15-backpack-unisex",
-          "name": "Arc'teryx Heliad 15 Backpack - Unisex",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/563496_source_1786393288.jpg",
-          "color": "Kasumi, Lt Renegade",
-          "sale_price": 100.0,
-          "original_price": 100.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "One Size"
-          ],
-          "size_stock": {
-            "One Size": "in_stock"
-          },
-          "colors": [
-            "Kasumi",
-            "Lt Renegade"
           ],
           "price_source_quality": "pdp"
         },
@@ -42788,19 +42765,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-621/arcteryx-covert-cardigan-womens",
-          "name": "Arc'teryx Covert Cardigan - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529411_source_1773163242.jpg",
-          "color": "Black",
-          "sale_price": 230.0,
-          "original_price": 230.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6032-659/arcteryx-kopec-mid-gore-tex-hiking-boots-womens",
           "name": "Arc'teryx Kopec Mid Gore-Tex Hiking Boots - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/505298_source_1737886608.jpg",
@@ -42892,19 +42856,6 @@
           "price_source_quality": "list_fallback"
         },
         {
-          "url": "https://www.mec.ca/en/product/6032-948/arcteryx-sylan-gore-tex-running-shoes-mens",
-          "name": "Arc'teryx Sylan Gore-Tex Running Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/484766_source_1732790357.jpg",
-          "color": "Black/Black",
-          "sale_price": 280.0,
-          "original_price": 280.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "price_source_quality": "list_fallback"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6037-504/arcteryx-rho-headband",
           "name": "Arc'teryx Rho Headband",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560594_source_1786104167.png",
@@ -42983,7 +42934,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-22 20:18:54"
+      "refreshed_at": "2026-08-23 05:20:37"
     },
     "rei": {
       "name": "REI",
@@ -60600,14 +60551,9 @@
       "refreshed_at": "2026-08-23 03:08:14"
     }
   },
-  "total": 1905,
-  "rejected_dealers": {
-    "evo": "incomplete"
-  },
+  "total": 1902,
+  "rejected_dealers": {},
   "fresh_dealers": [
-    "backcountry",
-    "burton",
-    "rei",
-    "ssense"
+    "mec"
   ]
 }
