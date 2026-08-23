@@ -1,8 +1,8 @@
-"""EVO (evo.com) Shopify scraper with a Camoufox rendered-page fallback."""
+"""EVO (evo.com) Shopify scraper with UCP and browser fallbacks."""
 from __future__ import annotations
 from .base import discount_pct
 from .brands import BRAND_LABELS, vendor_matches_brand
-import json, urllib.request, ssl, os, re, time
+import json, urllib.parse, urllib.request, ssl, os, re, time
 from collections import Counter, defaultdict
 
 try:
@@ -11,6 +11,11 @@ except Exception:  # pragma: no cover - runtime dependency fallback
     curl_requests = None
 
 HOST = "https://www.evo.com"
+UCP_DISCOVERY_URL = f"{HOST}/.well-known/ucp"
+DEFAULT_UCP_AGENT_PROFILE = (
+    "https://shopify.dev/ucp/agent-profiles/examples/"
+    "2026-04-08/valid-with-capabilities.json"
+)
 _CTX = ssl.create_default_context()
 _CTX.check_hostname = False
 _CTX.verify_mode = ssl.CERT_NONE
@@ -47,6 +52,282 @@ class Scraper:
         self.http_blocked = False
         self.pdp_confirmation_failed = False
         self.last_fetch_status = None
+
+    @staticmethod
+    def _ucp_agent_profile() -> str:
+        return os.environ.get("EVO_UCP_AGENT_PROFILE", DEFAULT_UCP_AGENT_PROFILE)
+
+    @staticmethod
+    def _decode_ucp_result(response: dict | None) -> dict:
+        """Return the structured payload from an MCP tools/call response."""
+        if not isinstance(response, dict):
+            raise ValueError("UCP response is not a JSON object")
+        if response.get("error"):
+            raise ValueError(f"UCP JSON-RPC error: {response['error']}")
+        result = response.get("result")
+        if not isinstance(result, dict) or result.get("isError") is True:
+            raise ValueError("UCP tools/call returned an error result")
+
+        payload = result.get("structuredContent")
+        if not isinstance(payload, dict):
+            for part in result.get("content") or []:
+                if not isinstance(part, dict) or part.get("type") != "text":
+                    continue
+                try:
+                    candidate = json.loads(part.get("text") or "")
+                except (TypeError, ValueError, json.JSONDecodeError):
+                    continue
+                if isinstance(candidate, dict):
+                    payload = candidate
+                    break
+        if not isinstance(payload, dict):
+            raise ValueError("UCP result has no structured catalog payload")
+
+        ucp_status = (payload.get("ucp") or {}).get("status")
+        if ucp_status not in {None, "success"}:
+            raise ValueError(f"UCP catalog status is {ucp_status!r}")
+        return payload
+
+    def _post_ucp_json(self, endpoint: str, payload: dict, retries: int = 2) -> dict | None:
+        """POST one JSON-RPC request with bounded handling for rate limits."""
+        last = None
+        self.last_fetch_status = None
+        for attempt in range(retries + 1):
+            try:
+                if curl_requests is not None:
+                    response = curl_requests.post(
+                        endpoint,
+                        impersonate="chrome124",
+                        timeout=45,
+                        headers={
+                            "accept": "application/json",
+                            "content-type": "application/json",
+                            "origin": HOST,
+                            "referer": f"{HOST}/",
+                        },
+                        json=payload,
+                    )
+                    self.last_fetch_status = response.status_code
+                    if response.status_code == 200:
+                        return response.json()
+                    last = RuntimeError(
+                        f"HTTP {response.status_code}: {response.text[:120]}"
+                    )
+                    if response.status_code != 429 or attempt >= retries:
+                        break
+                    delay = self._http_retry_delay(
+                        getattr(response, "headers", {}), attempt
+                    )
+                else:
+                    request = urllib.request.Request(
+                        endpoint,
+                        data=json.dumps(payload).encode("utf-8"),
+                        headers={
+                            "User-Agent": _UA,
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                            "Origin": HOST,
+                        },
+                        method="POST",
+                    )
+                    with urllib.request.urlopen(request, context=_CTX, timeout=45) as response:
+                        self.last_fetch_status = getattr(response, "status", 200)
+                        return json.loads(response.read())
+            except Exception as exc:
+                last = exc
+                code = getattr(exc, "code", None)
+                if code is not None:
+                    self.last_fetch_status = code
+                if code != 429 or attempt >= retries:
+                    break
+                delay = self._http_retry_delay(getattr(exc, "headers", {}), attempt)
+
+            print(
+                f"[evo] UCP HTTP 429 retry {attempt + 1}/{retries} "
+                f"after {delay:.0f}s",
+                flush=True,
+            )
+            time.sleep(delay)
+        print(f"[evo] UCP POST ERR {endpoint}: {last}", flush=True)
+        return None
+
+    def _discover_ucp_endpoint(self) -> str | None:
+        document = self._fetch_json(UCP_DISCOVERY_URL, retries=1)
+        services = (
+            ((document or {}).get("ucp") or {}).get("services") or {}
+        ).get("dev.ucp.shopping") or []
+        for service in services:
+            if not isinstance(service, dict) or service.get("transport") != "mcp":
+                continue
+            endpoint = service.get("endpoint")
+            parsed = urllib.parse.urlsplit(str(endpoint or ""))
+            hostname = (parsed.hostname or "").lower()
+            if (
+                parsed.scheme == "https"
+                and hostname
+                and (hostname == "www.evo.com" or hostname.endswith(".myshopify.com"))
+            ):
+                return endpoint
+        print("[evo] official UCP discovery has no trusted MCP endpoint", flush=True)
+        return None
+
+    def _ucp_call(self, endpoint: str, tool_name: str, arguments: dict) -> dict:
+        response = self._post_ucp_json(
+            endpoint,
+            {
+                "jsonrpc": "2.0",
+                "id": f"evo-{tool_name}-{time.time_ns()}",
+                "method": "tools/call",
+                "params": {"name": tool_name, "arguments": arguments},
+            },
+        )
+        return self._decode_ucp_result(response)
+
+    @staticmethod
+    def _ucp_title_matches_brand(title: object, brand: str) -> bool:
+        value = str(title or "").strip()
+        if brand == "arcteryx":
+            return bool(re.match(r"^arc[\s-]*[’'`]?teryx(?:\s|$)", value, re.IGNORECASE))
+        return bool(re.match(rf"^{re.escape(BRAND_LABELS[brand])}(?:\s|$)", value, re.IGNORECASE))
+
+    @staticmethod
+    def _ucp_product_handle(product: dict) -> str | None:
+        handle = str(product.get("handle") or "").strip()
+        if not handle:
+            path = urllib.parse.urlsplit(str(product.get("url") or "")).path
+            if "/products/" in path:
+                handle = path.split("/products/", 1)[1].split("/", 1)[0]
+        return handle if re.fullmatch(r"[a-z0-9][a-z0-9-]*", handle) else None
+
+    def _scrape_ucp(self) -> tuple[list[dict], bool]:
+        """Discover complete brand scopes through EVO's official UCP catalog.
+
+        Search results are used only as the product index: live evidence showed
+        that UCP search/lookup prices can lag the current PDP. Every handle is
+        therefore confirmed against product JSON before publication.
+        """
+        endpoint = self._discover_ucp_endpoint()
+        if not endpoint:
+            return [], False
+
+        try:
+            page_size = min(max(int(os.environ.get("EVO_UCP_PAGE_SIZE", "250")), 1), 250)
+            max_pages = min(max(int(os.environ.get("EVO_UCP_MAX_PAGES", "20")), 1), 50)
+        except ValueError:
+            print("[evo] invalid UCP pagination environment", flush=True)
+            return [], False
+
+        discovered: dict[str, list[dict]] = {}
+        for brand in self.MIN_ITEMS_BY_BRAND:
+            cursor = None
+            seen_cursors = set()
+            products_by_handle = {}
+            complete = False
+            for page_number in range(1, max_pages + 1):
+                pagination = {"limit": page_size}
+                if cursor:
+                    pagination["cursor"] = cursor
+                try:
+                    payload = self._ucp_call(
+                        endpoint,
+                        "search_catalog",
+                        {
+                            "meta": {
+                                "ucp-agent": {"profile": self._ucp_agent_profile()}
+                            },
+                            "catalog": {
+                                "query": BRAND_LABELS[brand],
+                                "context": {
+                                    "address_country": "US",
+                                    "language": "en-US",
+                                    "currency": "USD",
+                                },
+                                "filters": {"available": True},
+                                "pagination": pagination,
+                            },
+                        },
+                    )
+                except (TypeError, ValueError) as exc:
+                    print(f"[evo] UCP {brand} page {page_number} failed: {exc}", flush=True)
+                    return [], False
+
+                products = payload.get("products")
+                page = payload.get("pagination")
+                if not isinstance(products, list) or not isinstance(page, dict):
+                    print(f"[evo] UCP {brand} page {page_number} is malformed", flush=True)
+                    return [], False
+                for product in products:
+                    if not isinstance(product, dict) or not self._ucp_title_matches_brand(
+                        product.get("title"), brand
+                    ):
+                        continue
+                    handle = self._ucp_product_handle(product)
+                    if handle:
+                        products_by_handle.setdefault(handle, product)
+
+                has_next_page = page.get("has_next_page")
+                next_cursor = page.get("cursor")
+                print(
+                    f"[evo] UCP {brand} page {page_number}: "
+                    f"{len(products)} results, {len(products_by_handle)} exact products",
+                    flush=True,
+                )
+                if has_next_page is False:
+                    complete = True
+                    break
+                if has_next_page is not True or not isinstance(next_cursor, str) or not next_cursor:
+                    print(f"[evo] UCP {brand} pagination ended without a terminal page", flush=True)
+                    return [], False
+                if next_cursor in seen_cursors:
+                    print(f"[evo] UCP {brand} repeated pagination cursor", flush=True)
+                    return [], False
+                seen_cursors.add(next_cursor)
+                cursor = next_cursor
+
+            if not complete:
+                print(f"[evo] UCP {brand} exceeded {max_pages} pages", flush=True)
+                return [], False
+            discovered[brand] = list(products_by_handle.values())
+
+        out = []
+        try:
+            pdp_delay = max(
+                0,
+                int(os.environ.get("EVO_UCP_INTER_PDP_DELAY_MS", "500")),
+            ) / 1000
+        except ValueError:
+            print("[evo] invalid EVO_UCP_INTER_PDP_DELAY_MS", flush=True)
+            return [], False
+        for brand, products in discovered.items():
+            for product in products:
+                handle = self._ucp_product_handle(product)
+                title = str(product.get("title") or "")
+                item = {
+                    "url": f"{HOST}/products/{handle}",
+                    "name": title,
+                    "image": None,
+                    "currency": "USD",
+                    "in_stock": True,
+                    "gender": self._resolved_gender("auto", title),
+                    "dealer": self.KEY,
+                    "dealer_name": self.NAME,
+                    "brand": brand,
+                    "region": self.REGION,
+                    "category": "",
+                }
+                confirmed = self._confirm_browser_item_with_pdp(item)
+                if self.pdp_confirmation_failed:
+                    print(
+                        "[evo] UCP discovery could not be PDP-confirmed; "
+                        "preserving the previous snapshot",
+                        flush=True,
+                    )
+                    return [], False
+                if confirmed is not None:
+                    out.append(confirmed)
+                if pdp_delay:
+                    time.sleep(pdp_delay)
+        return out, self._meets_brand_minimums(out)
 
     @staticmethod
     def _product_image(product: dict, card: dict) -> str | None:
@@ -659,6 +940,14 @@ class Scraper:
         return out, successful_scopes == len(self.COLLECTIONS)
 
     def scrape(self) -> list[dict]:
+        items, complete = self._scrape_ucp()
+        if complete and items:
+            self.crawl_complete = True
+            return items
+        if self.pdp_confirmation_failed:
+            self.crawl_complete = False
+            return []
+
         items, complete = self._scrape_http()
         if complete and self._meets_brand_minimums(items):
             self.crawl_complete = True

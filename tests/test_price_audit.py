@@ -92,6 +92,44 @@ class PriceAuditTests(unittest.TestCase):
             [item["sku_id"] for item in reversed(rows)],
         )
 
+    def test_main_marks_ineligible_fixed_sample_as_lifecycle_inconclusive(self):
+        rows = [
+            row(f"{dealer}:{index}", dealer)
+            for dealer, count in DEALER_TARGETS.items()
+            for index in range(count)
+        ]
+        artifact = {
+            "sample_seed": 123,
+            "audits": [{"sku_id": item["sku_id"]} for item in rows],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            sample_path = Path(directory) / "source.json"
+            output_path = Path(directory) / "result.json"
+            sample_path.write_text(json.dumps(artifact), encoding="utf-8")
+            with patch.object(audit_module, "load_online_rows", return_value=rows[1:]), patch.object(
+                audit_module.sys,
+                "argv",
+                [
+                    "audit_price_accuracy.py",
+                    "--sample-file",
+                    str(sample_path),
+                    "--output",
+                    str(output_path),
+                    "--run-start",
+                    "2026-08-24T00:00:00Z",
+                    "--origin-sha",
+                    "abc123",
+                ],
+            ):
+                return_code = audit_module.main()
+            result = json.loads(output_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(return_code, 2)
+        self.assertFalse(result["gate"]["passed"])
+        self.assertEqual(result["gate"]["status"], "inconclusive_lifecycle")
+        self.assertIn("sample rows are no longer eligible", result["setup_error"])
+        self.assertEqual(result["audits"], [])
+
     def test_sample_fails_when_a_dealer_cannot_meet_its_quota(self):
         rows = [
             row(f"{dealer}:{index}", dealer)

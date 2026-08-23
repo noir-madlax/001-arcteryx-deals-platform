@@ -1,4 +1,5 @@
 import json
+import os
 import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -15,6 +16,156 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 class DealerScraperTests(unittest.TestCase):
+    def test_evo_ucp_decodes_structured_and_text_results(self):
+        structured = {
+            "result": {
+                "structuredContent": {
+                    "ucp": {"status": "success"},
+                    "products": [],
+                    "pagination": {"has_next_page": False},
+                }
+            }
+        }
+        text_only = {
+            "result": {
+                "content": [{"type": "text", "text": json.dumps({"products": []})}]
+            }
+        }
+
+        self.assertEqual(EvoScraper._decode_ucp_result(structured)["products"], [])
+        self.assertEqual(EvoScraper._decode_ucp_result(text_only)["products"], [])
+
+    def test_evo_ucp_discovers_trusted_mcp_endpoint(self):
+        scraper = EvoScraper()
+        document = {
+            "ucp": {
+                "services": {
+                    "dev.ucp.shopping": [
+                        {"transport": "embedded"},
+                        {
+                            "transport": "mcp",
+                            "endpoint": "https://store-id.myshopify.com/api/ucp/mcp",
+                        },
+                    ]
+                }
+            }
+        }
+
+        with patch.object(scraper, "_fetch_json", return_value=document):
+            endpoint = scraper._discover_ucp_endpoint()
+
+        self.assertEqual(endpoint, "https://store-id.myshopify.com/api/ucp/mcp")
+
+    def test_evo_ucp_paginates_then_confirms_each_product_with_pdp(self):
+        scraper = EvoScraper()
+        scraper.MIN_ITEMS_BY_BRAND = {"patagonia": 2}
+        pages = [
+            {
+                "products": [{
+                    "title": "Patagonia First Jacket - Women's",
+                    "handle": "patagonia-first-jacket-women-s",
+                    "variants": [{
+                        "availability": {"available": False},
+                        "price": {"amount": 5000, "currency": "USD"},
+                        "list_price": {"amount": 20000, "currency": "USD"},
+                        "options": [{"name": "Size", "label": "XS"}],
+                    }, {
+                        "availability": {"available": True},
+                        "price": {"amount": 12000, "currency": "USD"},
+                        "list_price": {"amount": 20000, "currency": "USD"},
+                        "options": [
+                            {"name": "Color", "label": "Black"},
+                            {"name": "Size", "label": "M"},
+                        ],
+                        "media": [{"type": "image", "url": "https://cdn.example/first.jpg"}],
+                    }],
+                }],
+                "pagination": {"has_next_page": True, "cursor": "next-page"},
+            },
+            {
+                "products": [{
+                    "title": "Patagonia Second Jacket - Men's",
+                    "url": "https://www.evo.com/products/patagonia-second-jacket-men-s",
+                    "variants": [{
+                        "availability": {"available": True},
+                        "price": {"amount": 12000, "currency": "USD"},
+                        "list_price": {"amount": 20000, "currency": "USD"},
+                        "options": [
+                            {"name": "Color", "label": "Blue"},
+                            {"name": "Size", "label": "L"},
+                        ],
+                    }],
+                }],
+                "pagination": {"has_next_page": False, "cursor": None},
+            },
+        ]
+
+        def pdp(handle):
+            return {
+                "available": True,
+                "handle": handle,
+                "vendor": "Patagonia",
+                "title": handle.replace("-", " ").title(),
+                "type": "Jackets",
+                "variants": [{
+                    "available": True,
+                    "price": 12000,
+                    "compare_at_price": 20000,
+                    "option1": "Black",
+                    "option2": "M",
+                }],
+            }
+
+        with patch.dict(os.environ, {"EVO_UCP_INTER_PDP_DELAY_MS": "0"}), patch.object(
+            scraper, "_discover_ucp_endpoint", return_value="https://store.myshopify.com/api/ucp/mcp"
+        ), patch.object(scraper, "_ucp_call", side_effect=pages) as ucp_call, patch.object(
+            scraper, "_fetch_pdp_json", side_effect=pdp
+        ) as fetch_pdp:
+            items, complete = scraper._scrape_ucp()
+
+        self.assertTrue(complete)
+        self.assertEqual(len(items), 2)
+        self.assertEqual([item["price_source_quality"] for item in items], ["pdp", "pdp"])
+        self.assertEqual([item["gender"] for item in items], ["women", "men"])
+        self.assertEqual(items[0]["sale_price"], 120.0)
+        self.assertEqual(items[0]["original_price"], 200.0)
+        self.assertEqual(items[0]["sizes"], ["M"])
+        self.assertEqual(fetch_pdp.call_count, 2)
+        first_args = ucp_call.call_args_list[0].args[2]
+        second_args = ucp_call.call_args_list[1].args[2]
+        self.assertNotIn("cursor", first_args["catalog"]["pagination"])
+        self.assertEqual(second_args["catalog"]["pagination"]["cursor"], "next-page")
+
+    def test_evo_ucp_repeated_cursor_fails_closed_before_pdp_reads(self):
+        scraper = EvoScraper()
+        scraper.MIN_ITEMS_BY_BRAND = {"burton": 1}
+        page = {
+            "products": [{"title": "Burton Test Board", "handle": "burton-test-board"}],
+            "pagination": {"has_next_page": True, "cursor": "same"},
+        }
+        with patch.object(
+            scraper, "_discover_ucp_endpoint", return_value="https://store.myshopify.com/api/ucp/mcp"
+        ), patch.object(scraper, "_ucp_call", side_effect=[page, page]), patch.object(
+            scraper, "_fetch_pdp_json"
+        ) as fetch_pdp:
+            items, complete = scraper._scrape_ucp()
+
+        self.assertEqual(items, [])
+        self.assertFalse(complete)
+        fetch_pdp.assert_not_called()
+
+    def test_evo_scrape_prefers_complete_ucp_snapshot(self):
+        scraper = EvoScraper()
+        ucp_items = [{"url": "https://www.evo.com/products/ucp"}]
+        with patch.object(scraper, "_scrape_ucp", return_value=(ucp_items, True)), patch.object(
+            scraper, "_scrape_http"
+        ) as http, patch.object(scraper, "_scrape_browser") as browser:
+            self.assertEqual(scraper.scrape(), ucp_items)
+
+        http.assert_not_called()
+        browser.assert_not_called()
+        self.assertTrue(scraper.crawl_complete)
+
     @patch("dealers.evo.time.sleep")
     @patch("dealers.evo.curl_requests")
     def test_evo_retries_pdp_429_with_bounded_backoff(self, curl_requests, sleep):
@@ -535,7 +686,9 @@ class DealerScraperTests(unittest.TestCase):
         scraper = EvoScraper()
         http_items = [{"url": f"https://www.evo.com/products/http-{i}"} for i in range(50)]
         browser_items = [{"url": f"https://www.evo.com/products/browser-{i}"} for i in range(120)]
-        with patch.object(scraper, "_scrape_http", return_value=(http_items, True)), patch.object(
+        with patch.object(scraper, "_scrape_ucp", return_value=([], False)), patch.object(
+            scraper, "_scrape_http", return_value=(http_items, True)
+        ), patch.object(
             scraper, "_scrape_browser", return_value=(browser_items, True)
         ) as browser:
             self.assertEqual(scraper.scrape(), browser_items)
