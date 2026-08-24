@@ -74,6 +74,7 @@ const dealCardSource = readFileSync(join(root, 'components/DealCard.tsx'), 'utf8
 const filterChipsSource = readFileSync(join(root, 'components/FilterChips.tsx'), 'utf8');
 const watchlistSource = readFileSync(join(root, 'app/(tabs)/watchlist.tsx'), 'utf8');
 const productDetailSource = readFileSync(join(root, 'app/product/[skuId].tsx'), 'utf8');
+const alertModalSource = readFileSync(join(root, 'components/AlertModal.tsx'), 'utf8');
 const priceAlertsSource = readFileSync(join(root, 'lib/priceAlerts.ts'), 'utf8');
 const liveDataVerifierSource = readFileSync(join(root, 'scripts/verify-live-data.ts'), 'utf8');
 const paywallSource = readFileSync(join(root, 'app/paywall.tsx'), 'utf8');
@@ -216,6 +217,11 @@ assert.ok(dealCardSource.includes('formatMoney(product.sale_price'), 'Deal cards
 assert.ok(productDetailSource.includes('formatMoney(currentProduct.sale_price'), 'Product detail must use display-currency formatting');
 assert.ok(watchlistSource.includes('formatMoney(product.sale_price'), 'Watchlist must use display-currency formatting');
 assert.ok(productDetailSource.includes('<AlertModal'), 'Product detail must keep the original-currency alert modal');
+assert.ok(alertModalSource.includes('<KeyboardAvoidingView'), 'Price alert modal must move above the on-screen keyboard');
+assert.ok(
+  alertModalSource.includes("behavior={Platform.OS === 'ios' ? 'padding' : 'height'}"),
+  'Price alert modal must define keyboard avoidance behavior on iOS and Android',
+);
 assert.ok(productDetailSource.includes('await insertPriceAlert'), 'Alert flow must write price_alerts');
 assert.ok(productDetailSource.includes('buildPriceAlertRequest'), 'Alert flow must use the tested price alert request helper');
 assert.ok(productDetailSource.includes('await scheduleTestPriceNotification(name)'), 'Alert flow must exercise local notification chain');

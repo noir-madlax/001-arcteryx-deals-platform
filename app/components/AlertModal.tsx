@@ -1,5 +1,15 @@
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
 import { usePreferences } from '../contexts/PreferencesContext';
 import { cleanName } from '../lib/catalog';
@@ -46,7 +56,10 @@ export function AlertModal({ visible, product, onClose, onSubmit }: Props) {
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-      <View style={styles.backdrop}>
+      <KeyboardAvoidingView
+        style={styles.backdrop}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <View style={styles.card}>
           <Text style={styles.title}>{t('alert.title')}</Text>
           <Text style={styles.sub}>{cleanName(product.full_name || product.model)}</Text>
@@ -63,11 +76,11 @@ export function AlertModal({ visible, product, onClose, onSubmit }: Props) {
               <Text style={styles.secondaryText}>{t('common.cancel')}</Text>
             </Pressable>
             <Pressable style={[styles.button, styles.primary]} onPress={submit} disabled={busy}>
-      {busy ? <ActivityIndicator color={colors.onPill} /> : <Text style={styles.primaryText}>{t('alert.save')}</Text>}
+              {busy ? <ActivityIndicator color={colors.onPill} /> : <Text style={styles.primaryText}>{t('alert.save')}</Text>}
             </Pressable>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
