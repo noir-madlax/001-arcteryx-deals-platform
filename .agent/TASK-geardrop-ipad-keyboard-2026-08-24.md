@@ -1,12 +1,12 @@
-# TASK: GearDrop 1.0 iPad 审核修复与 Build 9 重提（更新：2026-08-24 20:20 Asia/Taipei）
+# TASK: GearDrop 1.0 iPad 审核修复与 Build 9 重提（更新：2026-08-24 20:52 Asia/Taipei）
 
 ## Why（一句话）
 
 在不合入新功能的前提下，修复 Build 8 的 iPad 键盘遮挡，并关闭同一审核基线中发现的筛选长文本与搜索首击问题，生成 Build 9 后重提 1.0。
 
-## 当前状态：Build 9 已上传并由 Apple 处理为 VALID，等待动作时确认后切换版本并重提
+## 当前状态：Build 9 已正式重提，App Store 1.0 为 WAITING_FOR_REVIEW
 
-已在隔离分支 `codex/fix-ios-ipad-keyboard-20260824` 基于当前审核代码分支 `codex/ios-appstore-continue-20260809` 完成最小修复；不触碰主工作树，不合入新功能。用户已于 2026-08-24 授权生成并提交 1.0。EAS Build 9 已完成并上传 Apple；App Store 1.0 仍绑定 Build 8，正式重提尚未执行。
+已在隔离分支 `codex/fix-ios-ipad-keyboard-20260824` 基于当前审核代码分支 `codex/ios-appstore-continue-20260809` 完成最小修复；不触碰主工作树，不合入新功能。用户于 2026-08-24 完成动作时确认后，App Store 1.0 已切换至 Build 9、更新审核备注并正式重提。Apple 官方 API 的全新 JWT 独立回读确认版本与审核单均为 `WAITING_FOR_REVIEW`。
 
 ## 已确认事实
 
@@ -52,13 +52,16 @@
 - 同一 Build 9 IPA 为 30,081,416 bytes，SHA-256 `3bb469d793ab1ce996d1ee43f5b1f68e3c4973aaa05512c3a762e03a4eed9541`；`codesign --verify --deep --strict` 通过，Info.plist 为 `dev.100app.geardrop` / `1.0.0` / `9` / minimum iOS 16.4 / iPhone-only `[1]` / `ITSAppUsesNonExemptEncryption=false`，TeamIdentifier 为 `46H3U4N2U3`。
 - EAS Submit `398d5a2a-8be3-48ac-9872-302973b3b497` 终态 `finished`，目标 ASC App `6790165332`、Build 9、源提交和 fingerprint 均与候选一致；CLI 原文为 `Submitted your app to Apple App Store Connect!`。
 - Apple 官方 API 独立读回 Build 9 资源 `5ef84a54-dbe7-4099-adb2-1a6a1a85a797`：`processingState=VALID`、`buildAudienceType=APP_STORE_ELIGIBLE`、`usesNonExemptEncryption=false`、minimum iOS 16.4。
-- App Store 1.0 资源 `649c58d5-a985-4648-98eb-d21dd66b0b7f` 当前仍绑定 Build 8 `aebe740c-32e7-45aa-8013-002cc1d5c2c6`；精确审核 submission `893d3789-a4ba-4677-b7d9-b00f0fe9e7bb` 为 `UNRESOLVED_ISSUES`。其中 App 版本项为 `REJECTED`，GearDrop Pro 月付、年付、终身及订阅组四项均仍在同一 submission 且为 `READY_FOR_REVIEW`；产品标识分别为 `.monthly`、`.annual`、`.lifetime`。
+- App Store 1.0 资源 `649c58d5-a985-4648-98eb-d21dd66b0b7f` 的 build relationship PATCH 返回 HTTP 204；随后用新 JWT GET 回读为 Build 9 `5ef84a54-dbe7-4099-adb2-1a6a1a85a797`、version `9`、`processingState=VALID`。
+- Review Detail `11374ec4-cd76-47a7-8af8-629d2c8beb9b` 的备注 PATCH 返回 HTTP 200；新备注为 3,411 字符，SHA-256 `250bf14d8f7d30b066b4f5bcb852c0828c57037722df45748fb8bcb06e7fac70`。另一个新 JWT GET 确认全文精确一致；从 `3. Functions and audience` 起的 2,695 字符原有功能与合规说明保持不变。
+- 首次重提请求被 Apple 以 HTTP 409 拒绝，原文为 `Version is not ready to be submitted yet, please try again later.`；请求未改变提交状态。只读核验发现版本审核项仍为 `REJECTED`，而 Build 9、备注及其余四项正常。
+- 按 Apple 未解决问题流程，将唯一被拒且精确关联 App Store 1.0 的审核项标记 `resolved=true`，PATCH 返回 HTTP 200；独立回读确认五个审核项均为 `READY_FOR_REVIEW`，Build 9 与备注未漂移。
+- 对 submission `893d3789-a4ba-4677-b7d9-b00f0fe9e7bb` 再次设置 `submitted=true` 返回 HTTP 200、`state=WAITING_FOR_REVIEW`、`submittedDate=2026-08-24T12:50:36.293Z`。最终全新 JWT 独立回读确认：submission 与 App Store 1.0 均为 `WAITING_FOR_REVIEW`、App 的 Waiting for Review 列表包含该 submission、Build 关系仍为 Build 9、Build 为 `VALID`/`APP_STORE_ELIGIBLE`、五个审核项均保留、审核备注哈希精确一致。
 
 ## 下一步
 
-1. 向用户展示精确对象与审核说明变更，取得动作时确认。
-2. 将 iOS 1.0 的 build relationship 从 Build 8 PATCH 为 Build 9，更新 Review Notes 的修复说明和 Build 引用，逐项独立 GET 回读。
-3. 对 submission `893d3789-a4ba-4677-b7d9-b00f0fe9e7bb` 设置 `submitted=true`，随后用全新 JWT 独立回读 submission、版本、Build 9 与五个审核项终态。
+1. 仅监控 App Review 状态与新消息；不要把 `WAITING_FOR_REVIEW` 表述为已审核通过或已向用户发布。
+2. 若 Apple 再次提出问题，从当前 Build 9 和同一 submission 的实时状态开始只读核验，不合入已暂缓的新功能。
 
 ## 假设清算与未验证项
 
@@ -66,10 +69,11 @@
 - 本机未安装 Apple 审核使用的精确组合 M3 / iPadOS 26.6；精确 26.6 仍未验证，但已分别覆盖精确设备型号与相邻 26.x 系统。
 - 精确 M3 / iPadOS 26.6 仍未验证；当前新候选在 M4 / iOS 26.5 完整复验，原键盘修复另有 M3 / iOS 18.4 证据。
 - `npm run verify` 不是全绿：Expo Doctor 的 8 个补丁版本建议仍为已知未清项；升级依赖会扩大拒审修复范围，本轮明确不处理。
-- Build 9 已写入 EAS 与 App Store Connect，但尚未绑定 App Store 1.0，也尚未重提 App Review。
+- Build 9 已绑定并重提，但 `WAITING_FOR_REVIEW` 只证明进入 Apple 审核队列，不证明审核通过、可发布或客户可见。
 - 线上价格提醒未写入；本地验收只触发空邮箱校验和 Cancel，没有保存提醒。
 
 ## 死路
 
 - Chrome 下载事件等待超时，但文件实际已落到 Downloads；后续以文件 `stat` 和人工查看为准，不重复点击下载。
 - 为本地重拍失败态启动的 Release 构建默认同时编译 arm64 与 x86_64；Apple 原始截图已经是更精确的失败基线，因此终止冗余双架构构建，保留缓存并改用 `ONLY_ACTIVE_ARCH=YES` 构建修复版。
+- 直接对仍含 `REJECTED` 版本项的 `UNRESOLVED_ISSUES` submission 设置 `submitted=true` 返回 HTTP 409。仅更新 build relationship 不会自动执行 App Store Connect 界面的 “Add for Review”；必须先对该精确审核项设置 `resolved=true`，回读全部项目为 `READY_FOR_REVIEW` 后再重提。
