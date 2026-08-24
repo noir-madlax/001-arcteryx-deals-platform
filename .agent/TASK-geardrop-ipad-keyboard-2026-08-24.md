@@ -1,12 +1,12 @@
-# TASK: GearDrop 1.0 iPad 审核修复与 Build 9 重提（更新：2026-08-24 19:55 Asia/Taipei）
+# TASK: GearDrop 1.0 iPad 审核修复与 Build 9 重提（更新：2026-08-24 20:20 Asia/Taipei）
 
 ## Why（一句话）
 
 在不合入新功能的前提下，修复 Build 8 的 iPad 键盘遮挡，并关闭同一审核基线中发现的筛选长文本与搜索首击问题，生成 Build 9 后重提 1.0。
 
-## 当前状态：Build 9 已锁定精确候选并进入 EAS 队列，尚未上传 Apple
+## 当前状态：Build 9 已上传并由 Apple 处理为 VALID，等待动作时确认后切换版本并重提
 
-已在隔离分支 `codex/fix-ios-ipad-keyboard-20260824` 基于当前审核代码分支 `codex/ios-appstore-continue-20260809` 完成最小修复；不触碰主工作树，不合入新功能。用户已于 2026-08-24 授权生成并提交 1.0。EAS Build 9 已创建，App Store Connect 尚未写入。
+已在隔离分支 `codex/fix-ios-ipad-keyboard-20260824` 基于当前审核代码分支 `codex/ios-appstore-continue-20260809` 完成最小修复；不触碰主工作树，不合入新功能。用户已于 2026-08-24 授权生成并提交 1.0。EAS Build 9 已完成并上传 Apple；App Store 1.0 仍绑定 Build 8，正式重提尚未执行。
 
 ## 已确认事实
 
@@ -47,14 +47,18 @@
 - 当前候选 `npm run verify` 已完成单测、配置、Release 资源和 typecheck；Expo Doctor 为 19/20，唯一失败是仓库既有 8 个 Expo SDK 57 补丁版本低于当前建议版本。为保持审核修复最小范围，本轮未升级依赖。
 - Doctor 之后的步骤已单独补跑：实时汇率通过（2026-08-24）、实时目录通过（8,643 products / 88,387 price_history）、iOS export 通过（1,497 modules）。
 - iPad Air 11-inch (M4) / iOS 26.5 当前 Release 候选复验：搜索键盘打开时一次点击 Black Beta Insulated Jacket 即进入详情；邮箱键盘下两个输入框与 Cancel / Save alert 完整可见；德语筛选内容成功滚动到底部性别项，Reset / Done 全程固定可见。新增证据：`build8-candidate-ipad-m4-ios26.5-email-keyboard.png` 与 `build8-candidate-ipad-m4-ios26.5-german-filter-scrolled.png`。
-- EAS production Build 9 已创建：ID `c181dc45-b2c3-4343-91bb-1ca1ddaad6c7`，版本 `1.0.0 (9)`，状态 `IN_QUEUE`；EAS 回读源提交为 `cb0f315c7ac70dc7b7f505b2bc6160073738c22b`、提交信息 `fix(ios): harden review interactions`。
+- EAS production Build 9 已完成：ID `c181dc45-b2c3-4343-91bb-1ca1ddaad6c7`，版本 `1.0.0 (9)`，终态 `FINISHED`；EAS 回读源提交为 `cb0f315c7ac70dc7b7f505b2bc6160073738c22b`、提交信息 `fix(ios): harden review interactions`。
 - EAS 凭据回读：Distribution Certificate 有效至 2027-08-04；Provisioning Profile 状态 active。CLI 因 App Store Connect API Key 缺 Apple Team ID 未完成 Apple 侧在线校验，但复用了现有 Build 8 同一套凭据并成功进入构建队列，未新建或替换证书。
+- 同一 Build 9 IPA 为 30,081,416 bytes，SHA-256 `3bb469d793ab1ce996d1ee43f5b1f68e3c4973aaa05512c3a762e03a4eed9541`；`codesign --verify --deep --strict` 通过，Info.plist 为 `dev.100app.geardrop` / `1.0.0` / `9` / minimum iOS 16.4 / iPhone-only `[1]` / `ITSAppUsesNonExemptEncryption=false`，TeamIdentifier 为 `46H3U4N2U3`。
+- EAS Submit `398d5a2a-8be3-48ac-9872-302973b3b497` 终态 `finished`，目标 ASC App `6790165332`、Build 9、源提交和 fingerprint 均与候选一致；CLI 原文为 `Submitted your app to Apple App Store Connect!`。
+- Apple 官方 API 独立读回 Build 9 资源 `5ef84a54-dbe7-4099-adb2-1a6a1a85a797`：`processingState=VALID`、`buildAudienceType=APP_STORE_ELIGIBLE`、`usesNonExemptEncryption=false`、minimum iOS 16.4。
+- App Store 1.0 资源 `649c58d5-a985-4648-98eb-d21dd66b0b7f` 当前仍绑定 Build 8 `aebe740c-32e7-45aa-8013-002cc1d5c2c6`；精确审核 submission `893d3789-a4ba-4677-b7d9-b00f0fe9e7bb` 为 `UNRESOLVED_ISSUES`。其中 App 版本项为 `REJECTED`，GearDrop Pro 月付、年付、终身及订阅组四项均仍在同一 submission 且为 `READY_FOR_REVIEW`；产品标识分别为 `.monthly`、`.annual`、`.lifetime`。
 
 ## 下一步
 
-1. 等待 EAS production Build 9 完成，下载并核验签名、bundle `dev.100app.geardrop`、版本 `1.0.0` 与 build `9`。
-2. 上传 Apple，确认处理完成并锁定 iOS 1.0 的 Build 9。
-3. 在正式写入审核说明和执行 Resubmit 前，向用户展示精确对象与说明并进行动作时确认；随后独立回读审核状态。
+1. 向用户展示精确对象与审核说明变更，取得动作时确认。
+2. 将 iOS 1.0 的 build relationship 从 Build 8 PATCH 为 Build 9，更新 Review Notes 的修复说明和 Build 引用，逐项独立 GET 回读。
+3. 对 submission `893d3789-a4ba-4677-b7d9-b00f0fe9e7bb` 设置 `submitted=true`，随后用全新 JWT 独立回读 submission、版本、Build 9 与五个审核项终态。
 
 ## 假设清算与未验证项
 
@@ -62,7 +66,8 @@
 - 本机未安装 Apple 审核使用的精确组合 M3 / iPadOS 26.6；精确 26.6 仍未验证，但已分别覆盖精确设备型号与相邻 26.x 系统。
 - 精确 M3 / iPadOS 26.6 仍未验证；当前新候选在 M4 / iOS 26.5 完整复验，原键盘修复另有 M3 / iOS 18.4 证据。
 - `npm run verify` 不是全绿：Expo Doctor 的 8 个补丁版本建议仍为已知未清项；升级依赖会扩大拒审修复范围，本轮明确不处理。
-- EAS 已创建 Build 9；App Store Connect 与线上价格提醒截至本档更新仍未写入。
+- Build 9 已写入 EAS 与 App Store Connect，但尚未绑定 App Store 1.0，也尚未重提 App Review。
+- 线上价格提醒未写入；本地验收只触发空邮箱校验和 Cancel，没有保存提醒。
 
 ## 死路
 
