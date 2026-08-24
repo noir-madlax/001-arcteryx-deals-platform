@@ -2,8 +2,8 @@
   "schema_version": "1.0.0",
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://001.100app.dev/",
-  "snapshot_observed_at": "2026-08-23T23:53:21+00:00",
-  "active_product_urls": 8623,
+  "snapshot_observed_at": "2026-08-24T02:44:52+00:00",
+  "active_product_urls": 8621,
   "brands": [
     {
       "id": "arcteryx",
@@ -13,7 +13,7 @@
     {
       "id": "burton",
       "label": "Burton",
-      "count": 1196
+      "count": 1194
     },
     {
       "id": "patagonia",
@@ -25,17 +25,17 @@
     {
       "id": "arcteryx_outlet",
       "label": "Arc'teryx Outlet",
-      "count": 6407
+      "count": 6409
     },
     {
       "id": "evo",
       "label": "EVO",
-      "count": 1467
+      "count": 1466
     },
     {
       "id": "burton",
       "label": "Burton",
-      "count": 330
+      "count": 329
     },
     {
       "id": "mec",
@@ -50,7 +50,7 @@
     {
       "id": "rei",
       "label": "REI",
-      "count": 64
+      "count": 62
     },
     {
       "id": "ssense",
@@ -62,7 +62,12 @@
     {
       "id": "us",
       "label": "美国",
-      "count": 2489
+      "count": 2486
+    },
+    {
+      "id": "ca",
+      "label": "加拿大",
+      "count": 438
     },
     {
       "id": "at",
@@ -72,11 +77,6 @@
     {
       "id": "be",
       "label": "比利时",
-      "count": 437
-    },
-    {
-      "id": "ca",
-      "label": "加拿大",
       "count": 437
     },
     {
