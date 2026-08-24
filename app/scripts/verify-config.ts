@@ -167,6 +167,10 @@ assert.ok(i18nSource.includes("'zh-Hans'") && i18nSource.includes("'ja'"), 'tran
 assert.ok(dealsSource.includes('useRegion()'), 'Deals must consume the global region context');
 assert.ok(!dealsSource.includes("region: 'us'"), 'Deals must not own a local default region filter');
 assert.ok(dealsSource.includes('numColumns={2}'), 'Deals must render as a 2-column grid');
+assert.ok(
+  dealsSource.includes('keyboardShouldPersistTaps="handled"'),
+  'Deals must let the first product tap through while the search keyboard is open',
+);
 assert.ok(dealsSource.includes('RegionSheet'), 'Deals region selector must live in the title-bar pill sheet');
 assert.ok(dealsSource.includes('<BrandLogo'), 'Deals header must render the GearDrop logo');
 assert.ok(privacySource.includes('<BrandLogo'), 'Privacy screen must render the GearDrop logo');
@@ -174,6 +178,11 @@ assert.ok(!dealsSource.includes('heroSection'), 'Deals must not keep the old sin
 assert.ok(filterChipsSource.includes("t('filters.brand')"), 'Filter sheet must include localized Brand');
 assert.ok(filterChipsSource.includes("t('filters.category')"), 'Filter sheet must include localized Category');
 assert.ok(filterChipsSource.includes("t('filters.gender')"), 'Filter sheet must include localized Gender');
+assert.ok(
+  filterChipsSource.includes('style={styles.filterScroll}') &&
+    filterChipsSource.includes('contentContainerStyle={styles.filterContent}'),
+  'Filter sheet sections must scroll for localized and larger text',
+);
 assert.ok(dealCardSource.includes("from 'expo-image'"), 'DealCard images must use expo-image');
 assert.ok(dealCardSource.includes('aspectRatio: 4 / 5'), 'DealCard image slot must stay 4:5');
 assert.ok(dealCardSource.includes('contentFit="cover"'), 'DealCard images must use cover fit');

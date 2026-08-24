@@ -115,27 +115,33 @@ export function FilterChips({ value, platforms, categories, series: _series, onC
                 <Ionicons name="close" size={20} color={colors.ink} />
               </Pressable>
             </View>
-            <FilterSection
-              title={t('filters.brand')}
-              options={normalizedPlatforms}
-              value={value.platform}
-              getLabel={(option) => (option === 'all' ? t('filters.allBrands') : PLATFORM[option]?.label || option)}
-              onSelect={(platform) => onChange({ platform })}
-            />
-            <FilterSection
-              title={t('filters.category')}
-              options={normalizedCategories}
-              value={value.category}
-              getLabel={(option) => (option === 'all' ? t('filters.allCategories') : categoryLabel(option))}
-              onSelect={(category) => onChange({ category })}
-            />
-            <FilterSection
-              title={t('filters.gender')}
-              options={GENDER_OPTIONS}
-              value={value.gender}
-              getLabel={(option) => (option === 'all' ? t('filters.allGenders') : genderLabel(option))}
-              onSelect={(gender) => onChange({ gender })}
-            />
+            <ScrollView
+              style={styles.filterScroll}
+              contentContainerStyle={styles.filterContent}
+              showsVerticalScrollIndicator
+            >
+              <FilterSection
+                title={t('filters.brand')}
+                options={normalizedPlatforms}
+                value={value.platform}
+                getLabel={(option) => (option === 'all' ? t('filters.allBrands') : PLATFORM[option]?.label || option)}
+                onSelect={(platform) => onChange({ platform })}
+              />
+              <FilterSection
+                title={t('filters.category')}
+                options={normalizedCategories}
+                value={value.category}
+                getLabel={(option) => (option === 'all' ? t('filters.allCategories') : categoryLabel(option))}
+                onSelect={(category) => onChange({ category })}
+              />
+              <FilterSection
+                title={t('filters.gender')}
+                options={GENDER_OPTIONS}
+                value={value.gender}
+                getLabel={(option) => (option === 'all' ? t('filters.allGenders') : genderLabel(option))}
+                onSelect={(gender) => onChange({ gender })}
+              />
+            </ScrollView>
             <View style={styles.sheetActions}>
               <Pressable style={styles.resetButton} onPress={() => onChange({ platform: 'all', category: 'all', gender: 'all', series: 'all' })}>
                 <Text style={styles.resetText}>{t('common.reset')}</Text>
@@ -318,6 +324,13 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: 19,
     fontWeight: '900',
+  },
+  filterScroll: {
+    flexShrink: 1,
+  },
+  filterContent: {
+    gap: 18,
+    paddingBottom: 2,
   },
   closeButton: {
     width: 34,

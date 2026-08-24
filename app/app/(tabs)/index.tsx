@@ -64,6 +64,7 @@ export default function DealsScreen() {
         extraData={listRevision}
         keyExtractor={(item) => item.sku_id}
         numColumns={2}
+        keyboardShouldPersistTaps="handled"
         columnWrapperStyle={styles.columns}
         contentContainerStyle={styles.content}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={reload} tintColor={colors.pill} />}

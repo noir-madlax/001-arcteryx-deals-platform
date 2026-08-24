@@ -1,12 +1,12 @@
-# TASK: GearDrop iPad 键盘避让修复（更新：2026-08-24 18:48 Asia/Taipei）
+# TASK: GearDrop 1.0 iPad 审核修复与 Build 9 重提（更新：2026-08-24 19:55 Asia/Taipei）
 
 ## Why（一句话）
 
-让 App Review 使用 iPad 兼容模式打开 Build 8 的价格提醒弹窗时，邮箱、目标价和操作按钮不会被系统键盘遮挡。
+在不合入新功能的前提下，修复 Build 8 的 iPad 键盘遮挡，并关闭同一审核基线中发现的筛选长文本与搜索首击问题，生成 Build 9 后重提 1.0。
 
-## 当前状态：实现与本地验收完成，未上传/未重提审核
+## 当前状态：1.0 最小候选实现与本地验收完成，待生成 Build 9
 
-已在隔离分支 `codex/fix-ios-ipad-keyboard-20260824` 基于当前审核代码分支 `codex/ios-appstore-continue-20260809` 开工；不触碰主工作树，不上传构建，不重新提交审核。
+已在隔离分支 `codex/fix-ios-ipad-keyboard-20260824` 基于当前审核代码分支 `codex/ios-appstore-continue-20260809` 完成最小修复；不触碰主工作树，不合入新功能。用户已于 2026-08-24 授权生成并提交 1.0，新构建与 App Store Connect 尚未写入。
 
 ## 已确认事实
 
@@ -26,7 +26,9 @@
 1. 原 Apple 复现路径在 iPad 模拟器上打开 Price alert 并分别聚焦邮箱、目标价时，两个输入框和 Cancel / Save alert 均可见、可交互。
 2. 新增机器契约能在移除键盘避让时失败。
 3. `npm test`、`npm run typecheck`、`npm run verify:config` 通过；完整 `npm run verify` 如有外部服务阻塞则单列原文。
-4. 只修改本修复必要的 App 文件与本任务档案；不上传 EAS、不修改 App Store Connect、不重提审核。
+4. 德语等长文本下筛选内容可滚动，Reset / Done 始终可见；搜索键盘打开时一次点击商品卡即可进入详情。
+5. 只修改审核修复必要的 App 文件与本任务档案；不合入新功能。
+6. Build 9 必须来自本隔离分支的精确提交，上传后核验 bundle、版本、build number、签名与 App Store Connect 绑定对象；正式重提前执行动作时确认。
 
 ## 已完成且已验证
 
@@ -35,21 +37,31 @@
 - 已建立隔离工作树和分支，起点为 `54607cc`。
 - 已先在 `verify:config` 增加键盘避让契约；未改组件时按预期失败，原文为 `Price alert modal must move above the on-screen keyboard`。
 - 已用平台明确的 `KeyboardAvoidingView` 承载 Price alert 卡片；`npm run verify:config` 与 `npm run typecheck` 已转绿。
+- 已为 Deals 列表增加 `keyboardShouldPersistTaps="handled"`，搜索键盘打开时首击商品卡即可进入详情。
+- 已把筛选的品牌、品类和性别区放入纵向 `ScrollView`，标题和 Reset / Done 操作区保持固定。
+- 已为上述两条相邻交互增加 `verify:config` 机器契约。
 - Release 模拟器构建成功（`xcodebuild ... ONLY_ACTIVE_ARCH=YES`，exit 0），重新打包 1,497 个 iOS JS 模块。
 - iPad Air 11-inch (M3) / iOS 18.4：分别聚焦邮箱和目标价后，两个输入框与 Cancel / Save alert 均在可视区；空邮箱点击 Save alert 出现本地校验，点击 Cancel 成功关闭弹窗，未发送线上写入。
 - iPad Air 11-inch (M4) / iOS 26.5：同一 Apple 商品与弹窗路径下，邮箱键盘、数字键盘均保持字段和两个操作按钮完整可见。证据：`/private/tmp/geardrop-ipad-keyboard-20260824.5D66ih/evidence/ipad-m4-ios26.5-email-keyboard.png` 与 `ipad-m4-ios26.5-price-keyboard.png`。
-- `npm run verify` 已完成单测（40/40）、配置、Release 资源、typecheck；Expo Doctor 为 19/20，唯一失败是仓库既有 8 个 Expo SDK 57 补丁版本低于当前建议版本。为保持审核修复最小范围，本轮未升级依赖。
-- Doctor 之后的步骤已单独补跑：实时汇率通过（2026-08-24）、实时目录通过（8,644 products / 88,386 price_history）、iOS export 通过（1,497 modules）。
+- 当前候选再次通过 `npm test`（40/40）、`npm run verify:config`、`npm run typecheck`、`git diff --check` 和原生 iOS Release 构建（原文 `** BUILD SUCCEEDED **`）。
+- 当前候选 `npm run verify` 已完成单测、配置、Release 资源和 typecheck；Expo Doctor 为 19/20，唯一失败是仓库既有 8 个 Expo SDK 57 补丁版本低于当前建议版本。为保持审核修复最小范围，本轮未升级依赖。
+- Doctor 之后的步骤已单独补跑：实时汇率通过（2026-08-24）、实时目录通过（8,643 products / 88,387 price_history）、iOS export 通过（1,497 modules）。
+- iPad Air 11-inch (M4) / iOS 26.5 当前 Release 候选复验：搜索键盘打开时一次点击 Black Beta Insulated Jacket 即进入详情；邮箱键盘下两个输入框与 Cancel / Save alert 完整可见；德语筛选内容成功滚动到底部性别项，Reset / Done 全程固定可见。新增证据：`build8-candidate-ipad-m4-ios26.5-email-keyboard.png` 与 `build8-candidate-ipad-m4-ios26.5-german-filter-scrolled.png`。
 
 ## 下一步
 
-1. 用户另行授权后再生成新 Build、上传并重新提交 App Review。
+1. 固化并推送精确候选提交。
+2. 生成 EAS production Build 9，下载并核验签名、bundle `dev.100app.geardrop`、版本 `1.0.0` 与 build `9`。
+3. 上传 Apple，确认处理完成并锁定 iOS 1.0 的 Build 9。
+4. 在正式写入审核说明和执行 Resubmit 前，向用户展示精确对象与说明并进行动作时确认；随后独立回读审核状态。
 
 ## 假设清算与未验证项
 
 - “最小键盘避让足够”已由 M3/iOS 18.4 与 M4/iOS 26.5 两套运行时证据确认，无需增加滚动容器。
 - 本机未安装 Apple 审核使用的精确组合 M3 / iPadOS 26.6；精确 26.6 仍未验证，但已分别覆盖精确设备型号与相邻 26.x 系统。
-- App Store Connect、EAS、线上价格提醒均未写入；本轮只完成代码和本地运行时验收。
+- 精确 M3 / iPadOS 26.6 仍未验证；当前新候选在 M4 / iOS 26.5 完整复验，原键盘修复另有 M3 / iOS 18.4 证据。
+- `npm run verify` 不是全绿：Expo Doctor 的 8 个补丁版本建议仍为已知未清项；升级依赖会扩大拒审修复范围，本轮明确不处理。
+- App Store Connect、EAS、线上价格提醒截至本档更新仍未写入。
 
 ## 死路
 
