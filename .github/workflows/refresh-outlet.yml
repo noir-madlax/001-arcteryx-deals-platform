@@ -21,6 +21,7 @@ concurrency:
 env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+  GITHUB_TOKEN: ${{ github.token }}
   SITE_URL: https://001.100app.dev
   PUBLICATION_ID: "github-actions-${{ github.run_id }}-${{ github.run_attempt }}"
 
@@ -84,7 +85,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
           python -m playwright install --with-deps chromium
-          python -m camoufox fetch
+          python tools/fetch_camoufox.py
 
       - name: Verify required secrets
         run: |

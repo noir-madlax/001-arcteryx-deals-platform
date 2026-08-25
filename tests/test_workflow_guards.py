@@ -30,9 +30,24 @@ class WorkflowGuardTests(unittest.TestCase):
     def test_mec_fallback_installs_camoufox_runtime_before_preflight(self):
         workflow = (ROOT / ".github/workflows/refresh-mec.yml").read_text(encoding="utf-8")
         self.assertLess(
-            workflow.index("python -m camoufox fetch"),
+            workflow.index("python tools/fetch_camoufox.py"),
             workflow.index("python tools/check_mec_browser_runtime.py"),
         )
+
+    def test_workflows_fetch_camoufox_with_authenticated_helper(self):
+        names = (
+            "refresh-outlet.yml",
+            "refresh-dealers.yml",
+            "refresh-mec.yml",
+            "revalidate-dealer-prices.yml",
+            "audit-dealer-prices.yml",
+        )
+        for name in names:
+            workflow = (ROOT / ".github/workflows" / name).read_text(encoding="utf-8")
+            with self.subTest(workflow=name):
+                self.assertIn("GITHUB_TOKEN: ${{ github.token }}", workflow)
+                self.assertIn("python tools/fetch_camoufox.py", workflow)
+                self.assertNotIn("python -m camoufox fetch", workflow)
 
     def test_burton_sources_are_in_primary_and_fallback_dealer_runs(self):
         workflow = (ROOT / ".github/workflows/refresh-dealers.yml").read_text(encoding="utf-8")
