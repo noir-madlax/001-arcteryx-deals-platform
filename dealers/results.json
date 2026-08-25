@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-25 14:27:51",
+  "generated_at": "2026-08-25 15:21:12",
   "dealers": {
     "evo": {
       "name": "EVO",
       "region": "US",
-      "count": 1463,
+      "count": 1465,
       "items": [
         {
           "url": "https://www.evo.com/products/263988-arc-teryx-beta-ar-jacket-men-s",
@@ -2521,6 +2521,42 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/277326-arc-teryx-cerium-vest-women-s",
+          "name": "Arc'teryx Cerium Vest - Women's",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265864.jpg?v=1767739763",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "arcteryx",
+          "region": "US",
+          "category": "Midlayer Vests",
+          "original_price": 300.0,
+          "sale_price": 225.0,
+          "sizes": [
+            "L",
+            "M",
+            "S",
+            "XL",
+            "XS"
+          ],
+          "size_stock": {
+            "L": "in_stock",
+            "M": "in_stock",
+            "S": "in_stock",
+            "XL": "in_stock",
+            "XS": "in_stock"
+          },
+          "color": "Black, Nightscape",
+          "colors": [
+            "Black",
+            "Nightscape"
+          ],
+          "discount_pct": 25,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/255321-arc-teryx-cerium-jacket-men-s",
           "name": "Arc'teryx Cerium Jacket - Men's",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1229235.jpg?v=1767738296",
@@ -2582,42 +2618,6 @@
             "Bliss Grottoflage"
           ],
           "discount_pct": 20,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/277326-arc-teryx-cerium-vest-women-s",
-          "name": "Arc'teryx Cerium Vest - Women's",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1265864.jpg?v=1767739763",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "arcteryx",
-          "region": "US",
-          "category": "Midlayer Vests",
-          "original_price": 300.0,
-          "sale_price": 225.0,
-          "sizes": [
-            "L",
-            "M",
-            "S",
-            "XL",
-            "XS"
-          ],
-          "size_stock": {
-            "L": "in_stock",
-            "M": "in_stock",
-            "S": "in_stock",
-            "XL": "in_stock",
-            "XS": "in_stock"
-          },
-          "color": "Black, Nightscape",
-          "colors": [
-            "Black",
-            "Nightscape"
-          ],
-          "discount_pct": 25,
           "price_source_quality": "pdp"
         },
         {
@@ -11332,6 +11332,42 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/181363-burton-cartel-x-snowboard-bindings",
+          "name": "Burton Cartel X Snowboard Bindings",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1199934.jpg?v=1767737194",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Snowboard Bindings",
+          "original_price": 349.95,
+          "sale_price": 262.46,
+          "sizes": [
+            "L",
+            "M",
+            "S"
+          ],
+          "size_stock": {
+            "L": "in_stock",
+            "M": "in_stock",
+            "S": "in_stock"
+          },
+          "color": "Black, Black/Red, Goldfish Orange",
+          "colors": [
+            "Black",
+            "Black/Red",
+            "Goldfish Orange",
+            "Marbled Stone",
+            "Nightfall/White",
+            "White"
+          ],
+          "discount_pct": 25,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/268510-burton-highshot-x-step-on-snowboard-boots-women-s-2026",
           "name": "Burton Highshot X Step On Snowboard Boots - Women's 2026",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1212767.jpg?v=1767737648",
@@ -11377,66 +11413,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.evo.com/products/181363-burton-cartel-x-snowboard-bindings",
-          "name": "Burton Cartel X Snowboard Bindings",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1199934.jpg?v=1767737194",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "burton",
-          "region": "US",
-          "category": "Snowboard Bindings",
-          "original_price": 349.95,
-          "sale_price": 262.46,
-          "sizes": [
-            "L",
-            "M",
-            "S"
-          ],
-          "size_stock": {
-            "L": "in_stock",
-            "M": "in_stock",
-            "S": "in_stock"
-          },
-          "color": "Black, Goldfish Orange, Marbled Stone",
-          "colors": [
-            "Black",
-            "Goldfish Orange",
-            "Marbled Stone",
-            "Nightfall/White",
-            "White"
-          ],
-          "discount_pct": 25,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/252528-burton-fish-3d-splitboard",
-          "name": "Burton Fish 3D Splitboard",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1109682.jpg?v=1767733391",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "burton",
-          "region": "US",
-          "category": "Splitboards",
-          "original_price": 999.95,
-          "sale_price": 769.99,
-          "sizes": [],
-          "size_stock": {},
-          "color": "146, 151, 156",
-          "colors": [
-            "146",
-            "151",
-            "156"
-          ],
-          "discount_pct": 23,
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.evo.com/products/250111-burton-ak-kimmy-gore-tex-3l-jacket-women-s",
           "name": "Burton AK Kimmy GORE-TEX 3L Jacket - Women's",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1130544.jpg?v=1767734307",
@@ -11476,6 +11452,31 @@
             "True Black"
           ],
           "discount_pct": 61,
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.evo.com/products/252528-burton-fish-3d-splitboard",
+          "name": "Burton Fish 3D Splitboard",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1109682.jpg?v=1767733391",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Splitboards",
+          "original_price": 999.95,
+          "sale_price": 769.99,
+          "sizes": [],
+          "size_stock": {},
+          "color": "146, 151, 156",
+          "colors": [
+            "146",
+            "151",
+            "156"
+          ],
+          "discount_pct": 23,
           "price_source_quality": "pdp"
         },
         {
@@ -12692,6 +12693,7 @@
           "sizes": [
             "L",
             "M",
+            "S",
             "XL",
             "XS",
             "XXL",
@@ -12700,6 +12702,7 @@
           "size_stock": {
             "L": "in_stock",
             "M": "in_stock",
+            "S": "in_stock",
             "XL": "in_stock",
             "XS": "in_stock",
             "XXL": "in_stock",
@@ -14636,48 +14639,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.evo.com/products/250221-burton-midweight-long-neck-top-women-s",
-          "name": "Burton Midweight Long Neck Top - Women's",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1146807.jpg?v=1767735061",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "burton",
-          "region": "US",
-          "category": "Long Underwear Tops",
-          "original_price": 74.95,
-          "sale_price": 39.99,
-          "sizes": [
-            "L",
-            "S",
-            "XL",
-            "XS",
-            "3XL",
-            "XXL",
-            "XXS"
-          ],
-          "size_stock": {
-            "L": "in_stock",
-            "S": "in_stock",
-            "XL": "in_stock",
-            "XS": "in_stock",
-            "3XL": "in_stock",
-            "XXL": "in_stock",
-            "XXS": "in_stock"
-          },
-          "color": "Floral Blur, Graffiti Camo, Nightfall",
-          "colors": [
-            "Floral Blur",
-            "Graffiti Camo",
-            "Nightfall",
-            "True Black"
-          ],
-          "discount_pct": 47,
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.evo.com/products/275978-burton-process-flying-v-snowboard-cartel-est-snowboard-bindings-swath-boa-snowboard-boots-2026",
           "name": "Burton Process Flying V Snowboard + Cartel EST Snowboard Bindings + Swath BOA Snowboard Boots 2026",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1289697.jpg?v=1775569496",
@@ -15075,6 +15036,48 @@
             "True Black"
           ],
           "discount_pct": 43,
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.evo.com/products/250221-burton-midweight-long-neck-top-women-s",
+          "name": "Burton Midweight Long Neck Top - Women's",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1146807.jpg?v=1767735061",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Long Underwear Tops",
+          "original_price": 74.95,
+          "sale_price": 39.99,
+          "sizes": [
+            "L",
+            "S",
+            "XL",
+            "XS",
+            "3XL",
+            "XXL",
+            "XXS"
+          ],
+          "size_stock": {
+            "L": "in_stock",
+            "S": "in_stock",
+            "XL": "in_stock",
+            "XS": "in_stock",
+            "3XL": "in_stock",
+            "XXL": "in_stock",
+            "XXS": "in_stock"
+          },
+          "color": "Floral Blur, Graffiti Camo, Nightfall",
+          "colors": [
+            "Floral Blur",
+            "Graffiti Camo",
+            "Nightfall",
+            "True Black"
+          ],
+          "discount_pct": 47,
           "price_source_quality": "pdp"
         },
         {
@@ -20566,40 +20569,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.evo.com/products/250025-burton-ak-windstopper-oven-trigger-mittens",
-          "name": "Burton AK Windstopper Oven Trigger Mittens",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1213720.jpg?v=1767737684",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "burton",
-          "region": "US",
-          "category": "Ski and Snowboard Mittens",
-          "original_price": 189.95,
-          "sale_price": 79.99,
-          "sizes": [
-            "L",
-            "M",
-            "S",
-            "XL"
-          ],
-          "size_stock": {
-            "L": "in_stock",
-            "M": "in_stock",
-            "S": "in_stock",
-            "XL": "in_stock"
-          },
-          "color": "Soft Sage, True Black",
-          "colors": [
-            "Soft Sage",
-            "True Black"
-          ],
-          "discount_pct": 58,
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.evo.com/products/250179-burton-ascutney-2l-jacket-kids",
           "name": "Burton Ascutney 2L Jacket - Kids'",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1111378.jpg?v=1767733460",
@@ -20631,6 +20600,40 @@
             "True Black"
           ],
           "discount_pct": 0,
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.evo.com/products/250025-burton-ak-windstopper-oven-trigger-mittens",
+          "name": "Burton AK Windstopper Oven Trigger Mittens",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1213720.jpg?v=1767737684",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Ski and Snowboard Mittens",
+          "original_price": 189.95,
+          "sale_price": 79.99,
+          "sizes": [
+            "L",
+            "M",
+            "S",
+            "XL"
+          ],
+          "size_stock": {
+            "L": "in_stock",
+            "M": "in_stock",
+            "S": "in_stock",
+            "XL": "in_stock"
+          },
+          "color": "Soft Sage, True Black",
+          "colors": [
+            "Soft Sage",
+            "True Black"
+          ],
+          "discount_pct": 58,
           "price_source_quality": "pdp"
         },
         {
@@ -21528,6 +21531,33 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/103662-burton-tourist-snowboard-boots",
+          "name": "Burton Tourist Snowboard Boots",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-450831.jpg?v=1767740368",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Snowboard Boots",
+          "original_price": 599.95,
+          "sale_price": 419.96,
+          "sizes": [
+            "12"
+          ],
+          "size_stock": {
+            "12": "in_stock"
+          },
+          "color": "Black",
+          "colors": [
+            "Black"
+          ],
+          "discount_pct": 30,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/288477-burton-family-tree-smooth-operator-snowboard-malavita-snowboard-bindings-2026",
           "name": "Burton Family Tree Smooth Operator Snowboard + Malavita Snowboard Bindings 2026",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1299079.jpg?v=1778703824",
@@ -22260,6 +22290,29 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/274500-burton-process-snowboard-step-on-genesis-est-snowboard-bindings-waverange-x-step-on-snowboard-boots-2026",
+          "name": "Burton Process Snowboard + Step On Genesis EST Snowboard Bindings + Waverange X Step On Snowboard Boots 2026",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1289647.jpg?v=1775569496",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Step-on Packages",
+          "original_price": 1449.85,
+          "sale_price": 983.22,
+          "sizes": [],
+          "size_stock": {},
+          "color": "Default Title",
+          "colors": [
+            "Default Title"
+          ],
+          "discount_pct": 32,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/250305-burton-burke-hood-kids",
           "name": "Burton Burke Hood - Kids'",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1234363.jpg?v=1767738509",
@@ -22289,29 +22342,6 @@
             "True Black"
           ],
           "discount_pct": 40,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/274500-burton-process-snowboard-step-on-genesis-est-snowboard-bindings-waverange-x-step-on-snowboard-boots-2026",
-          "name": "Burton Process Snowboard + Step On Genesis EST Snowboard Bindings + Waverange X Step On Snowboard Boots 2026",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1289647.jpg?v=1775569496",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "burton",
-          "region": "US",
-          "category": "Step-on Packages",
-          "original_price": 1449.85,
-          "sale_price": 983.22,
-          "sizes": [],
-          "size_stock": {},
-          "color": "Default Title",
-          "colors": [
-            "Default Title"
-          ],
-          "discount_pct": 32,
           "price_source_quality": "pdp"
         },
         {
@@ -23616,33 +23646,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.evo.com/products/103662-burton-tourist-snowboard-boots",
-          "name": "Burton Tourist Snowboard Boots",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-450831.jpg?v=1767740368",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "burton",
-          "region": "US",
-          "category": "Snowboard Boots",
-          "original_price": 599.95,
-          "sale_price": 419.96,
-          "sizes": [
-            "12"
-          ],
-          "size_stock": {
-            "12": "in_stock"
-          },
-          "color": "Black",
-          "colors": [
-            "Black"
-          ],
-          "discount_pct": 30,
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.evo.com/products/278864-burton-highshot-step-on-snowboard-boots-flux-ds-step-on-snowboard-bindings-women-s-2026",
           "name": "Burton Highshot Step On Snowboard Boots + Flux DS Step On Snowboard Bindings - Women's 2026",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1247780.jpg?v=1771374527",
@@ -24071,6 +24074,29 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/281095-burton-reserve-2l-jacket-reserve-2l-insulated-pants-women-s",
+          "name": "Burton Reserve 2L Jacket + Reserve 2L Insulated Pants - Women's",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1263849.jpg?v=1771374597",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Outerwear Kits",
+          "original_price": 489.9,
+          "sale_price": 440.91,
+          "sizes": [],
+          "size_stock": {},
+          "color": "Default Title",
+          "colors": [
+            "Default Title"
+          ],
+          "discount_pct": 10,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/250030-burton-profile-mittens",
           "name": "Burton Profile Mittens",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1334636.jpg?v=1786042576",
@@ -24102,29 +24128,6 @@
             "Summit Taupe"
           ],
           "discount_pct": 0,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/281095-burton-reserve-2l-jacket-reserve-2l-insulated-pants-women-s",
-          "name": "Burton Reserve 2L Jacket + Reserve 2L Insulated Pants - Women's",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1263849.jpg?v=1771374597",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "burton",
-          "region": "US",
-          "category": "Outerwear Kits",
-          "original_price": 489.9,
-          "sale_price": 440.91,
-          "sizes": [],
-          "size_stock": {},
-          "color": "Default Title",
-          "colors": [
-            "Default Title"
-          ],
-          "discount_pct": 10,
           "price_source_quality": "pdp"
         },
         {
@@ -24305,29 +24308,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.evo.com/products/276610-burton-highshot-x-step-on-snowboard-boots-step-on-escapade-snowboard-bindings-women-s-2026",
-          "name": "Burton Highshot X Step On Snowboard Boots + Step On Escapade Snowboard Bindings - Women's 2026",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1213389.jpg?v=1771374441",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "burton",
-          "region": "US",
-          "category": "Step-on Packages",
-          "original_price": 899.9,
-          "sale_price": 549.98,
-          "sizes": [],
-          "size_stock": {},
-          "color": "Default Title",
-          "colors": [
-            "Default Title"
-          ],
-          "discount_pct": 39,
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.evo.com/products/250031-burton-profile-gloves",
           "name": "Burton Profile Gloves",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1334640.jpg?v=1786042577",
@@ -24362,6 +24342,29 @@
             "True Black"
           ],
           "discount_pct": 0,
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.evo.com/products/276610-burton-highshot-x-step-on-snowboard-boots-step-on-escapade-snowboard-bindings-women-s-2026",
+          "name": "Burton Highshot X Step On Snowboard Boots + Step On Escapade Snowboard Bindings - Women's 2026",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1213389.jpg?v=1771374441",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Step-on Packages",
+          "original_price": 899.9,
+          "sale_price": 549.98,
+          "sizes": [],
+          "size_stock": {},
+          "color": "Default Title",
+          "colors": [
+            "Default Title"
+          ],
+          "discount_pct": 39,
           "price_source_quality": "pdp"
         },
         {
@@ -27890,6 +27893,29 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/288043-burton-felix-step-on-snowboard-boots-step-on-snowboard-bindings-women-s-2026",
+          "name": "Burton Felix Step On Snowboard Boots + Step On Snowboard Bindings - Women's 2026",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1298679.jpg?v=1778005940",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Step-on Packages",
+          "original_price": 819.9,
+          "sale_price": 529.98,
+          "sizes": [],
+          "size_stock": {},
+          "color": "Default Title",
+          "colors": [
+            "Default Title"
+          ],
+          "discount_pct": 35,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/218094-burton-recycled-kactusbunch-tall-beanie",
           "name": "Burton Recycled Kactusbunch Tall Beanie",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1334695.jpg?v=1786048338",
@@ -29317,6 +29343,29 @@
             "Default Title"
           ],
           "discount_pct": 38,
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.evo.com/products/288471-burton-hideaway-snowboard-step-on-escapade-est-snowboard-bindings-felix-step-on-snowboard-boots-women-s-2026",
+          "name": "Burton Hideaway Snowboard + Step On Escapade EST Snowboard Bindings + Felix Step On Snowboard Boots - Women's 2026",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1299074.jpg?v=1778698695",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "burton",
+          "region": "US",
+          "category": "Step-on Packages",
+          "original_price": 1359.85,
+          "sale_price": 879.94,
+          "sizes": [],
+          "size_stock": {},
+          "color": "Default Title",
+          "colors": [
+            "Default Title"
+          ],
+          "discount_pct": 35,
           "price_source_quality": "pdp"
         },
         {
@@ -32014,6 +32063,41 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/276742-patagonia-cap-cool-daily-shirt-men-s",
+          "name": "Patagonia Capilene® Cool Daily Shirt - Men's",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1261475.jpg?v=1767739594",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "Activewear Tees",
+          "original_price": 49.0,
+          "sale_price": 33.99,
+          "sizes": [
+            "L",
+            "M",
+            "S",
+            "XL"
+          ],
+          "size_stock": {
+            "L": "in_stock",
+            "M": "in_stock",
+            "S": "in_stock",
+            "XL": "in_stock"
+          },
+          "color": "Dyno White, Gem Green-Light Gem Green X-Dye, Shore Blue-Light Shore Blue X-Dye",
+          "colors": [
+            "Dyno White",
+            "Gem Green-Light Gem Green X-Dye",
+            "Shore Blue-Light Shore Blue X-Dye"
+          ],
+          "discount_pct": 31,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/266606-patagonia-downdrift-vest-women-s",
           "name": "Patagonia Downdrift Vest - Women's",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1261047.jpg?v=1767739577",
@@ -32081,41 +32165,6 @@
             "Whole Weave: Weathered Stone"
           ],
           "discount_pct": 30,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/276742-patagonia-cap-cool-daily-shirt-men-s",
-          "name": "Patagonia Capilene® Cool Daily Shirt - Men's",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1261475.jpg?v=1767739594",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "Activewear Tees",
-          "original_price": 49.0,
-          "sale_price": 33.99,
-          "sizes": [
-            "L",
-            "M",
-            "S",
-            "XL"
-          ],
-          "size_stock": {
-            "L": "in_stock",
-            "M": "in_stock",
-            "S": "in_stock",
-            "XL": "in_stock"
-          },
-          "color": "Dyno White, Gem Green-Light Gem Green X-Dye, Shore Blue-Light Shore Blue X-Dye",
-          "colors": [
-            "Dyno White",
-            "Gem Green-Light Gem Green X-Dye",
-            "Shore Blue-Light Shore Blue X-Dye"
-          ],
-          "discount_pct": 31,
           "price_source_quality": "pdp"
         },
         {
@@ -33532,6 +33581,40 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/267178-patagonia-snow-pile-one-piece-infants",
+          "name": "Patagonia Snow Pile One-Piece - Infants'",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211535.jpg?v=1767737595",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "One Piece Suits",
+          "original_price": 219.0,
+          "sale_price": 109.99,
+          "sizes": [
+            "3M-6M",
+            "6M-12M"
+          ],
+          "size_stock": {
+            "3M-6M": "in_stock",
+            "6M-12M": "in_stock"
+          },
+          "color": "Brisk Purple, Dried Vanilla, Ellwood Green",
+          "colors": [
+            "Brisk Purple",
+            "Dried Vanilla",
+            "Ellwood Green",
+            "Forest Being: Sizzle Red",
+            "Sparkle Pink",
+            "Uplift Blue"
+          ],
+          "discount_pct": 50,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/258985-patagonia-terrebonne-shorts-women-s",
           "name": "Patagonia Terrebonne Shorts - Women's",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1170686.jpg?v=1767736091",
@@ -33590,40 +33673,6 @@
             "Weathered Stone"
           ],
           "discount_pct": 0,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/267178-patagonia-snow-pile-one-piece-infants",
-          "name": "Patagonia Snow Pile One-Piece - Infants'",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211535.jpg?v=1767737595",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "One Piece Suits",
-          "original_price": 219.0,
-          "sale_price": 109.99,
-          "sizes": [
-            "3M-6M",
-            "6M-12M"
-          ],
-          "size_stock": {
-            "3M-6M": "in_stock",
-            "6M-12M": "in_stock"
-          },
-          "color": "Brisk Purple, Dried Vanilla, Ellwood Green",
-          "colors": [
-            "Brisk Purple",
-            "Dried Vanilla",
-            "Ellwood Green",
-            "Forest Being: Sizzle Red",
-            "Sparkle Pink",
-            "Uplift Blue"
-          ],
-          "discount_pct": 50,
           "price_source_quality": "pdp"
         },
         {
@@ -36440,6 +36489,39 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/267248-patagonia-everyday-ready-jacket-kids",
+          "name": "Patagonia Everyday Ready Jacket - Kids'",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211656.jpg?v=1767737600",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "Insulated Jackets",
+          "original_price": 179.0,
+          "sale_price": 101.4,
+          "sizes": [
+            "L",
+            "M",
+            "XL"
+          ],
+          "size_stock": {
+            "L": "in_stock",
+            "M": "in_stock",
+            "XL": "in_stock"
+          },
+          "color": "Dried Vanilla, Ellwood Green, New Navy W/New Navy",
+          "colors": [
+            "Dried Vanilla",
+            "Ellwood Green",
+            "New Navy W/New Navy"
+          ],
+          "discount_pct": 43,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/251094-patagonia-insulated-storm-shift-pants-women-s",
           "name": "Patagonia Insulated Storm Shift Pants - Women's",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1238377.jpg?v=1767738684",
@@ -36510,39 +36592,6 @@
             "Graze Green - Light Graze Green X-Dye"
           ],
           "discount_pct": 0,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/267248-patagonia-everyday-ready-jacket-kids",
-          "name": "Patagonia Everyday Ready Jacket - Kids'",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211656.jpg?v=1767737600",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "Insulated Jackets",
-          "original_price": 179.0,
-          "sale_price": 101.4,
-          "sizes": [
-            "L",
-            "M",
-            "XL"
-          ],
-          "size_stock": {
-            "L": "in_stock",
-            "M": "in_stock",
-            "XL": "in_stock"
-          },
-          "color": "Dried Vanilla, Ellwood Green, New Navy W/New Navy",
-          "colors": [
-            "Dried Vanilla",
-            "Ellwood Green",
-            "New Navy W/New Navy"
-          ],
-          "discount_pct": 43,
           "price_source_quality": "pdp"
         },
         {
@@ -38937,6 +38986,40 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/267199-patagonia-retro-x-hoodie-infants",
+          "name": "Patagonia Retro-X Hoodie - Infants'",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1325352.jpg?v=1784600463",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "Midlayer Fleece",
+          "original_price": 109.0,
+          "sale_price": 59.4,
+          "sizes": [
+            "3M-6M",
+            "6M-12M",
+            "12M-18M"
+          ],
+          "size_stock": {
+            "3M-6M": "in_stock",
+            "6M-12M": "in_stock",
+            "12M-18M": "in_stock"
+          },
+          "color": "Current Blue, Natural w/Cover Green, Natural w/Sunlit Pink",
+          "colors": [
+            "Current Blue",
+            "Natural w/Cover Green",
+            "Natural w/Sunlit Pink",
+            "Snowshoe Hare: Natural"
+          ],
+          "discount_pct": 46,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/225371-patagonia-hi-loft-down-sweater-bunting-infants",
           "name": "Patagonia Hi-Loft Down Sweater Bunting - Infants'",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211377.jpg?v=1767737586",
@@ -38977,40 +39060,6 @@
             "Punchy Pink"
           ],
           "discount_pct": 0,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/267199-patagonia-retro-x-hoodie-infants",
-          "name": "Patagonia Retro-X Hoodie - Infants'",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1325352.jpg?v=1784600463",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "Midlayer Fleece",
-          "original_price": 109.0,
-          "sale_price": 59.4,
-          "sizes": [
-            "3M-6M",
-            "6M-12M",
-            "12M-18M"
-          ],
-          "size_stock": {
-            "3M-6M": "in_stock",
-            "6M-12M": "in_stock",
-            "12M-18M": "in_stock"
-          },
-          "color": "Current Blue, Natural w/Cover Green, Natural w/Sunlit Pink",
-          "colors": [
-            "Current Blue",
-            "Natural w/Cover Green",
-            "Natural w/Sunlit Pink",
-            "Snowshoe Hare: Natural"
-          ],
-          "discount_pct": 46,
           "price_source_quality": "pdp"
         },
         {
@@ -39966,33 +40015,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.evo.com/products/156184-patagonia-better-sweaterr-1-4-zip-pullover-fleece",
-          "name": "Patagonia Better Sweater® 1/4 Zip Pullover Fleece",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-869994.jpg?v=1767752049",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "Sweatshirts",
-          "original_price": 139.0,
-          "sale_price": 139.0,
-          "sizes": [
-            "S"
-          ],
-          "size_stock": {
-            "S": "in_stock"
-          },
-          "color": "Stonewash",
-          "colors": [
-            "Stonewash"
-          ],
-          "discount_pct": 0,
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.evo.com/products/251092-patagonia-insulated-storm-shift-jacket-women-s",
           "name": "Patagonia Insulated Storm Shift Jacket - Women's",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1238374.jpg?v=1767738684",
@@ -40027,6 +40049,33 @@
             "Oar Tan"
           ],
           "discount_pct": 42,
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.evo.com/products/156184-patagonia-better-sweaterr-1-4-zip-pullover-fleece",
+          "name": "Patagonia Better Sweater® 1/4 Zip Pullover Fleece",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-869994.jpg?v=1767752049",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "Sweatshirts",
+          "original_price": 139.0,
+          "sale_price": 139.0,
+          "sizes": [
+            "S"
+          ],
+          "size_stock": {
+            "S": "in_stock"
+          },
+          "color": "Stonewash",
+          "colors": [
+            "Stonewash"
+          ],
+          "discount_pct": 0,
           "price_source_quality": "pdp"
         },
         {
@@ -40154,38 +40203,6 @@
             "River River: Potters Red"
           ],
           "discount_pct": 40,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/103037-patagonia-powder-town-beanie",
-          "name": "Patagonia Powder Town Beanie",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1206852.jpg?v=1767737404",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "Beanies",
-          "original_price": 55.0,
-          "sale_price": 29.4,
-          "sizes": [
-            "One Size Fits Most"
-          ],
-          "size_stock": {
-            "One Size Fits Most": "in_stock"
-          },
-          "color": "Hut Tripper Logo: Cinnamon Brown, Hut Tripper Logo: Mako Blue, May Grey",
-          "colors": [
-            "Hut Tripper Logo: Cinnamon Brown",
-            "Hut Tripper Logo: Mako Blue",
-            "May Grey",
-            "Nature's Pace Knit: Dark Natural",
-            "Park Stripe/Viking Blue",
-            "Sizzle Red"
-          ],
-          "discount_pct": 47,
           "price_source_quality": "pdp"
         },
         {
@@ -40579,6 +40596,38 @@
             "Vellum Green"
           ],
           "discount_pct": 40,
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.evo.com/products/103037-patagonia-powder-town-beanie",
+          "name": "Patagonia Powder Town Beanie",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1206852.jpg?v=1767737404",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "Beanies",
+          "original_price": 55.0,
+          "sale_price": 29.4,
+          "sizes": [
+            "One Size Fits Most"
+          ],
+          "size_stock": {
+            "One Size Fits Most": "in_stock"
+          },
+          "color": "Hut Tripper Logo: Cinnamon Brown, Hut Tripper Logo: Mako Blue, May Grey",
+          "colors": [
+            "Hut Tripper Logo: Cinnamon Brown",
+            "Hut Tripper Logo: Mako Blue",
+            "May Grey",
+            "Nature's Pace Knit: Dark Natural",
+            "Park Stripe/Viking Blue",
+            "Sizzle Red"
+          ],
+          "discount_pct": 47,
           "price_source_quality": "pdp"
         },
         {
@@ -42392,40 +42441,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.evo.com/products/266682-patagonia-storm-racer-jacket-women-s",
-          "name": "Patagonia Storm Racer Jacket - Women's",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1271157.jpg?v=1770320662",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "Rain Jackets",
-          "original_price": 315.0,
-          "sale_price": 219.99,
-          "sizes": [
-            "L",
-            "M",
-            "S",
-            "XS"
-          ],
-          "size_stock": {
-            "L": "in_stock",
-            "M": "in_stock",
-            "S": "in_stock",
-            "XS": "in_stock"
-          },
-          "color": "Light Violet, Smolder Blue",
-          "colors": [
-            "Light Violet",
-            "Smolder Blue"
-          ],
-          "discount_pct": 30,
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.evo.com/products/282352-patagonia-r1-jacket-women-s",
           "name": "Patagonia R1 Jacket - Women's",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1313090.jpg?v=1782426211",
@@ -42459,6 +42474,40 @@
             "Black w/Black"
           ],
           "discount_pct": 0,
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.evo.com/products/266682-patagonia-storm-racer-jacket-women-s",
+          "name": "Patagonia Storm Racer Jacket - Women's",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1271157.jpg?v=1770320662",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "Rain Jackets",
+          "original_price": 315.0,
+          "sale_price": 219.99,
+          "sizes": [
+            "L",
+            "M",
+            "S",
+            "XS"
+          ],
+          "size_stock": {
+            "L": "in_stock",
+            "M": "in_stock",
+            "S": "in_stock",
+            "XS": "in_stock"
+          },
+          "color": "Light Violet, Smolder Blue",
+          "colors": [
+            "Light Violet",
+            "Smolder Blue"
+          ],
+          "discount_pct": 30,
           "price_source_quality": "pdp"
         },
         {
@@ -43199,41 +43248,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.evo.com/products/267201-patagonia-nano-puffer-alls-infants",
-          "name": "Patagonia Nano Puffer-Alls - Infants'",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211619.jpg?v=1767737600",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "Overalls",
-          "original_price": 109.0,
-          "sale_price": 59.4,
-          "sizes": [
-            "3M-6M",
-            "6M-12M",
-            "12M-18M"
-          ],
-          "size_stock": {
-            "3M-6M": "in_stock",
-            "6M-12M": "in_stock",
-            "12M-18M": "in_stock"
-          },
-          "color": "Blue Sage, Canopy Green, Cascade Green",
-          "colors": [
-            "Blue Sage",
-            "Canopy Green",
-            "Cascade Green",
-            "New Navy",
-            "Uplift Blue"
-          ],
-          "discount_pct": 46,
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.evo.com/products/251167-patagonia-hi-loft-furry-friends-jacket-infants",
           "name": "Patagonia Hi-Loft Furry Friends Jacket - Infants'",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1110132.jpg?v=1767733408",
@@ -43369,6 +43383,41 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/267201-patagonia-nano-puffer-alls-infants",
+          "name": "Patagonia Nano Puffer-Alls - Infants'",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211619.jpg?v=1767737600",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "Overalls",
+          "original_price": 109.0,
+          "sale_price": 59.4,
+          "sizes": [
+            "3M-6M",
+            "6M-12M",
+            "12M-18M"
+          ],
+          "size_stock": {
+            "3M-6M": "in_stock",
+            "6M-12M": "in_stock",
+            "12M-18M": "in_stock"
+          },
+          "color": "Blue Sage, Canopy Green, Cascade Green",
+          "colors": [
+            "Blue Sage",
+            "Canopy Green",
+            "Cascade Green",
+            "New Navy",
+            "Uplift Blue"
+          ],
+          "discount_pct": 46,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/259152-patagonia-baggies-5in-lined-shorts-kids",
           "name": "Patagonia Baggies 5in - Lined Shorts - Kids'",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1162578.jpg?v=1767735737",
@@ -43404,6 +43453,42 @@
             "Wild Botanist: Tidal Teal"
           ],
           "discount_pct": 36,
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.evo.com/products/240201-patagonia-snow-pile-bibs-toddlers",
+          "name": "Patagonia Snow Pile Bibs - Toddlers'",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211401.jpg?v=1777044892",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "Insulated Pants",
+          "original_price": 159.0,
+          "sale_price": 79.99,
+          "sizes": [
+            "2T",
+            "3T",
+            "4T"
+          ],
+          "size_stock": {
+            "2T": "in_stock",
+            "3T": "in_stock",
+            "4T": "in_stock"
+          },
+          "color": "Brisk Purple, Cascade Green, Dried Vanilla",
+          "colors": [
+            "Brisk Purple",
+            "Cascade Green",
+            "Dried Vanilla",
+            "Orange Peel",
+            "Uplift Blue",
+            "Vivid Apricot"
+          ],
+          "discount_pct": 50,
           "price_source_quality": "pdp"
         },
         {
@@ -43675,42 +43760,6 @@
             "Weathered Stone"
           ],
           "discount_pct": 0,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/240201-patagonia-snow-pile-bibs-toddlers",
-          "name": "Patagonia Snow Pile Bibs - Toddlers'",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1211401.jpg?v=1777044892",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "Insulated Pants",
-          "original_price": 159.0,
-          "sale_price": 79.99,
-          "sizes": [
-            "2T",
-            "3T",
-            "4T"
-          ],
-          "size_stock": {
-            "2T": "in_stock",
-            "3T": "in_stock",
-            "4T": "in_stock"
-          },
-          "color": "Brisk Purple, Cascade Green, Dried Vanilla",
-          "colors": [
-            "Brisk Purple",
-            "Cascade Green",
-            "Dried Vanilla",
-            "Orange Peel",
-            "Uplift Blue",
-            "Vivid Apricot"
-          ],
-          "discount_pct": 50,
           "price_source_quality": "pdp"
         },
         {
@@ -44438,6 +44487,44 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.evo.com/products/251654-patagonia-synch-gloves",
+          "name": "Patagonia Synchilla Gloves",
+          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1311398.jpg?v=1782171256",
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "dealer": "evo",
+          "dealer_name": "EVO",
+          "brand": "patagonia",
+          "region": "US",
+          "category": "Ski and Snowboard Gloves",
+          "original_price": 55.0,
+          "sale_price": 55.0,
+          "sizes": [
+            "L",
+            "M",
+            "S",
+            "XL",
+            "XS"
+          ],
+          "size_stock": {
+            "L": "in_stock",
+            "M": "in_stock",
+            "S": "in_stock",
+            "XL": "in_stock",
+            "XS": "in_stock"
+          },
+          "color": "Black Solid, Forge Grey, Oatmeal Heather",
+          "colors": [
+            "Black Solid",
+            "Forge Grey",
+            "Oatmeal Heather",
+            "Polar Breeze: Sunken Blue"
+          ],
+          "discount_pct": 0,
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.evo.com/products/233590-patagonia-dirt-roamer-liner-bibs-women-s",
           "name": "Patagonia Dirt Roamer Liner Bibs - Women's",
           "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-992281.jpg?v=1767757046",
@@ -44487,44 +44574,6 @@
             "Trailcheck: New Navy"
           ],
           "discount_pct": 31,
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.evo.com/products/251654-patagonia-synch-gloves",
-          "name": "Patagonia Synchilla Gloves",
-          "image": "//cdn.shopify.com/s/files/1/0679/7882/1782/files/product-image-1311398.jpg?v=1782171256",
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "dealer": "evo",
-          "dealer_name": "EVO",
-          "brand": "patagonia",
-          "region": "US",
-          "category": "Ski and Snowboard Gloves",
-          "original_price": 55.0,
-          "sale_price": 55.0,
-          "sizes": [
-            "L",
-            "M",
-            "S",
-            "XL",
-            "XS"
-          ],
-          "size_stock": {
-            "L": "in_stock",
-            "M": "in_stock",
-            "S": "in_stock",
-            "XL": "in_stock",
-            "XS": "in_stock"
-          },
-          "color": "Black Solid, Forge Grey, Oatmeal Heather",
-          "colors": [
-            "Black Solid",
-            "Forge Grey",
-            "Oatmeal Heather",
-            "Polar Breeze: Sunken Blue"
-          ],
-          "discount_pct": 0,
           "price_source_quality": "pdp"
         },
         {
@@ -46654,7 +46703,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-25 11:54:33"
+      "refreshed_at": "2026-08-25 15:00:56"
     },
     "mec": {
       "name": "MEC",
@@ -50820,7 +50869,7 @@
     "rei": {
       "name": "REI",
       "region": "US",
-      "count": 67,
+      "count": 65,
       "items": [
         {
           "url": "https://www.rei.com/product/235146/arcteryx-gamma-mx-hoody-mens",
@@ -50898,45 +50947,6 @@
           "color": "Cosmic Bloom"
         },
         {
-          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
-          "name": "Cerium Down Hoody - Men's",
-          "image": "https://www.rei.com/media/855de972-fc1f-4ae7-81a1-8f588976e3e3.jpg",
-          "original_price": 400.0,
-          "sale_price": 199.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 50,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL",
-            "XXXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock",
-            "XXXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Black Sapphire",
-            "Vitality"
-          ],
-          "color": "Black"
-        },
-        {
           "url": "https://www.rei.com/product/228617/arcteryx-beta-jacket-mens",
           "name": "Beta Jacket - Men's",
           "image": "https://www.rei.com/media/6dccec76-daed-4a70-9058-352b9f5cf7f9.jpg",
@@ -51008,14 +51018,52 @@
           },
           "colors": [
             "Black",
-            "Nucleus/Larch",
             "Dk Stratus/Stratus",
+            "Nucleus/Larch",
             "Fluidity/Vitality",
             "Mantis/Tatsu",
             "Solitude/Void",
             "Lodestar"
           ],
           "color": "Fluidity/Vitality"
+        },
+        {
+          "url": "https://www.rei.com/product/222520/arcteryx-cerium-down-hoody-mens",
+          "name": "Cerium Down Hoody - Men's",
+          "image": "https://www.rei.com/media/855de972-fc1f-4ae7-81a1-8f588976e3e3.jpg",
+          "original_price": 400.0,
+          "sale_price": 400.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL",
+            "XXXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock",
+            "XXXL": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Black Sapphire"
+          ],
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/217942/arcteryx-kyanite-lightweight-fleece-jacket-mens",
@@ -51052,162 +51100,6 @@
             "Fluidity"
           ],
           "color": "Fluidity"
-        },
-        {
-          "url": "https://www.rei.com/product/785251/arcteryx-bird-head-toque-beanie",
-          "name": "Bird Head Toque Beanie",
-          "image": "https://www.rei.com/media/3c5c3384-999d-45ad-9051-2932a7e82f8d.jpg",
-          "original_price": 60.0,
-          "sale_price": 60.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [
-            "Sea Salt/Habitat",
-            "Nucleus/Mongoose",
-            "Mantis/Arctic Silk",
-            "Orca"
-          ],
-          "color": "Sea Salt/Habitat"
-        },
-        {
-          "url": "https://www.rei.com/product/222935/arcteryx-rho-toque-hat",
-          "name": "Rho Toque Hat",
-          "image": "https://www.rei.com/media/49c4226f-a3c5-4a82-ba60-8a7338bffe31.jpg",
-          "original_price": 45.0,
-          "sale_price": 45.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S/M",
-            "L/XL"
-          ],
-          "size_stock": {
-            "S/M": "in_stock",
-            "L/XL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Dark Jade"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/250406/arcteryx-emblem-fleece-crew-mens",
-          "name": "Emblem Fleece Crew - Men's",
-          "image": "https://www.rei.com/media/abfaa86c-533e-4ba6-998f-6067d781cbbb.jpg",
-          "original_price": 120.0,
-          "sale_price": 83.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 30,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Habitat",
-            "Black",
-            "Dark Stratus",
-            "Black Sapphire"
-          ],
-          "color": "Habitat"
-        },
-        {
-          "url": "https://www.rei.com/product/250404/arcteryx-kragg-cotton-lithographica-t-shirt-mens",
-          "name": "Kragg Cotton Lithographica T-Shirt - Men's",
-          "image": "https://www.rei.com/media/69c73d09-47c5-4cc3-b094-29bebc4a9735.jpg",
-          "original_price": 80.0,
-          "sale_price": 59.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 25,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Light Moondrop",
-            "Canvas",
-            "Black",
-            "White Light",
-            "Habitat"
-          ],
-          "color": "Habitat"
-        },
-        {
-          "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
-          "name": "Rho LT Crew Neck Base Layer Top - Men's",
-          "image": "https://www.rei.com/media/33b18ad1-942e-40d5-834b-67bf844a25fa.jpg",
-          "original_price": 100.0,
-          "sale_price": 100.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black Sapphire"
-          ],
-          "color": "Black Sapphire"
         },
         {
           "url": "https://www.rei.com/product/236060/arcteryx-cronin-cotton-pants-mens",
@@ -51256,60 +51148,20 @@
           "color": "Void"
         },
         {
-          "url": "https://www.rei.com/product/249477/arcteryx-gamma-hoody-mens",
-          "name": "Gamma Hoody - Men's",
-          "image": "https://www.rei.com/media/3075c7e3-50e7-4862-8480-963f9044c5ab.jpg",
-          "original_price": 300.0,
-          "sale_price": 179.83,
+          "url": "https://www.rei.com/product/250406/arcteryx-emblem-fleece-crew-mens",
+          "name": "Emblem Fleece Crew - Men's",
+          "image": "https://www.rei.com/media/abfaa86c-533e-4ba6-998f-6067d781cbbb.jpg",
+          "original_price": 120.0,
+          "sale_price": 83.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 40,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Cloud",
-            "Sea Salt",
-            "Forage",
-            "Moon Drop"
-          ],
-          "color": "Cloud"
-        },
-        {
-          "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
-          "name": "Beta SL Jacket - Women's",
-          "image": "https://www.rei.com/media/76400c1d-ce0f-4dc0-b363-f6778b24840b.jpg",
-          "original_price": 500.0,
-          "sale_price": 350.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
           "discount_pct": 30,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "pdp",
           "sizes": [
-            "XS",
             "S",
             "M",
             "L",
@@ -51317,7 +51169,6 @@
             "XXL"
           ],
           "size_stock": {
-            "XS": "in_stock",
             "S": "in_stock",
             "M": "in_stock",
             "L": "in_stock",
@@ -51325,53 +51176,36 @@
             "XXL": "in_stock"
           },
           "colors": [
-            "Pineberry",
+            "Habitat",
             "Black",
-            "Kasumi",
-            "Solitude",
-            "Moondrop"
+            "Dark Stratus",
+            "Black Sapphire"
           ],
-          "color": "Black"
+          "color": "Habitat"
         },
         {
-          "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
-          "name": "Atom Insulated Jacket - Men's",
-          "image": "https://www.rei.com/media/119452de-5e09-4be4-9354-0a1884072ca8.jpg",
-          "original_price": 280.0,
-          "sale_price": 139.83,
+          "url": "https://www.rei.com/product/785251/arcteryx-bird-head-toque-beanie",
+          "name": "Bird Head Toque Beanie",
+          "image": "https://www.rei.com/media/3c5c3384-999d-45ad-9051-2932a7e82f8d.jpg",
+          "original_price": 60.0,
+          "sale_price": 60.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "men",
-          "discount_pct": 50,
+          "gender": "unisex",
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "pdp",
-          "sizes": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "XS": "in_stock",
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
+          "sizes": [],
+          "size_stock": {},
           "colors": [
-            "Black Sapphire",
-            "Black",
-            "Habitat",
-            "Bracken",
-            "Forage",
-            "Soulsonic"
+            "Sea Salt/Habitat",
+            "Nucleus/Mongoose",
+            "Mantis/Arctic Silk",
+            "Orca"
           ],
-          "color": "Black Sapphire"
+          "color": "Sea Salt/Habitat"
         },
         {
           "url": "https://www.rei.com/product/249473/arcteryx-alpha-sv-jacket-mens",
@@ -51413,34 +51247,258 @@
           "color": "Spotlight"
         },
         {
-          "url": "https://www.rei.com/product/237464/arcteryx-cerium-down-hoody-womens",
-          "name": "Cerium Down Hoody - Women's",
-          "image": "https://www.rei.com/media/e091f060-200a-4c21-838b-0c10de027f44.jpg",
-          "original_price": 400.0,
-          "sale_price": 400.0,
+          "url": "https://www.rei.com/product/242917/arcteryx-kragg-sl-cotton-t-shirt-mens",
+          "name": "Kragg SL Cotton T-Shirt - Men's",
+          "image": "https://www.rei.com/media/fd0dd049-2ad0-4371-a7f4-362a6fbc3baa.jpg",
+          "original_price": 60.0,
+          "sale_price": 44.93,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
+          "gender": "men",
+          "discount_pct": 25,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "size_stock": {
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock"
+          },
+          "colors": [
+            "Dark Jade",
+            "White Light",
+            "Void",
+            "Black",
+            "Tatsu",
+            "Mantis"
+          ],
+          "color": "Dark Jade"
+        },
+        {
+          "url": "https://www.rei.com/product/250404/arcteryx-kragg-cotton-lithographica-t-shirt-mens",
+          "name": "Kragg Cotton Lithographica T-Shirt - Men's",
+          "image": "https://www.rei.com/media/69c73d09-47c5-4cc3-b094-29bebc4a9735.jpg",
+          "original_price": 80.0,
+          "sale_price": 59.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 25,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "S",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "S": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Light Moondrop",
+            "Canvas",
+            "Black",
+            "White Light",
+            "Habitat"
+          ],
+          "color": "Habitat"
+        },
+        {
+          "url": "https://www.rei.com/product/249477/arcteryx-gamma-hoody-mens",
+          "name": "Gamma Hoody - Men's",
+          "image": "https://www.rei.com/media/3075c7e3-50e7-4862-8480-963f9044c5ab.jpg",
+          "original_price": 300.0,
+          "sale_price": 179.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 40,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
           "price_source_quality": "pdp",
           "sizes": [
             "XS",
+            "S",
+            "M",
             "L",
-            "XL"
+            "XL",
+            "XXL"
           ],
           "size_stock": {
             "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
             "L": "in_stock",
-            "XL": "in_stock"
+            "XL": "in_stock",
+            "XXL": "in_stock"
           },
           "colors": [
             "Black",
-            "Mongoose"
+            "Cloud",
+            "Sea Salt",
+            "Forage",
+            "Moon Drop"
           ],
-          "color": "Mongoose"
+          "color": "Cloud"
+        },
+        {
+          "url": "https://www.rei.com/product/222393/arcteryx-rho-lt-crew-neck-base-layer-top-mens",
+          "name": "Rho LT Crew Neck Base Layer Top - Men's",
+          "image": "https://www.rei.com/media/33b18ad1-942e-40d5-834b-67bf844a25fa.jpg",
+          "original_price": 100.0,
+          "sale_price": 100.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black Sapphire"
+          ],
+          "color": "Black Sapphire"
+        },
+        {
+          "url": "https://www.rei.com/product/234978/arcteryx-beta-sl-jacket-womens",
+          "name": "Beta SL Jacket - Women's",
+          "image": "https://www.rei.com/media/76400c1d-ce0f-4dc0-b363-f6778b24840b.jpg",
+          "original_price": 500.0,
+          "sale_price": 350.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 30,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Pineberry",
+            "Black",
+            "Kasumi",
+            "Solitude",
+            "Moondrop"
+          ],
+          "color": "Black"
+        },
+        {
+          "url": "https://www.rei.com/product/193584/arcteryx-rho-lt-zip-neck-base-layer-top-mens",
+          "name": "Rho LT Zip-Neck Base Layer Top - Men's",
+          "image": "https://www.rei.com/media/ceec8710-9fa4-4322-920c-5ce5c0f47def.jpg",
+          "original_price": 120.0,
+          "sale_price": 120.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black Sapphire"
+          ],
+          "color": "Black Sapphire"
+        },
+        {
+          "url": "https://www.rei.com/product/243256/arcteryx-atom-insulated-jacket-mens",
+          "name": "Atom Insulated Jacket - Men's",
+          "image": "https://www.rei.com/media/119452de-5e09-4be4-9354-0a1884072ca8.jpg",
+          "original_price": 280.0,
+          "sale_price": 179.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 36,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "pdp",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Black Sapphire",
+            "Black",
+            "Habitat",
+            "Bracken",
+            "Forage"
+          ],
+          "color": "Black Sapphire"
         },
         {
           "url": "https://www.rei.com/product/243257/arcteryx-atom-sl-hoody-mens",
@@ -51483,11 +51541,11 @@
           "color": "Dark Jade"
         },
         {
-          "url": "https://www.rei.com/product/193584/arcteryx-rho-lt-zip-neck-base-layer-top-mens",
-          "name": "Rho LT Zip-Neck Base Layer Top - Men's",
-          "image": "https://www.rei.com/media/ceec8710-9fa4-4322-920c-5ce5c0f47def.jpg",
-          "original_price": 120.0,
-          "sale_price": 120.0,
+          "url": "https://www.rei.com/product/235148/arcteryx-covert-cardigan-mens",
+          "name": "Covert Cardigan - Men's",
+          "image": "https://www.rei.com/media/f456f59a-6bf3-47a3-91aa-694a2e7675f4.jpg",
+          "original_price": 126.93,
+          "sale_price": 126.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
@@ -51495,122 +51553,11 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black Sapphire"
-          ],
-          "color": "Black Sapphire"
-        },
-        {
-          "url": "https://www.rei.com/product/242853/arcteryx-gamma-pants-mens",
-          "name": "Gamma Pants - Men's",
-          "image": "https://www.rei.com/media/4d33a0af-f0c0-479f-9743-1eec555ee069.jpg",
-          "original_price": 200.0,
-          "sale_price": 149.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 25,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "28 IN Waist",
-            "28 Short",
-            "30 IN Waist",
-            "30 Short",
-            "30 Tall",
-            "32 IN Waist",
-            "32 Short",
-            "32 Tall",
-            "34 IN Waist",
-            "34 Short",
-            "34 Tall",
-            "36 IN Waist",
-            "36 Short",
-            "36 Tall",
-            "38 IN Waist",
-            "38 Short",
-            "38 Tall"
-          ],
-          "size_stock": {
-            "28 IN Waist": "in_stock",
-            "28 Short": "in_stock",
-            "30 IN Waist": "in_stock",
-            "30 Short": "in_stock",
-            "30 Tall": "in_stock",
-            "32 IN Waist": "in_stock",
-            "32 Short": "in_stock",
-            "32 Tall": "in_stock",
-            "34 IN Waist": "in_stock",
-            "34 Short": "in_stock",
-            "34 Tall": "in_stock",
-            "36 IN Waist": "in_stock",
-            "36 Short": "in_stock",
-            "36 Tall": "in_stock",
-            "38 IN Waist": "in_stock",
-            "38 Short": "in_stock",
-            "38 Tall": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Cloud",
-            "Black Sapphire",
-            "Rune",
-            "Void"
-          ],
-          "color": "Black"
-        },
-        {
-          "url": "https://www.rei.com/product/242917/arcteryx-kragg-sl-cotton-t-shirt-mens",
-          "name": "Kragg SL Cotton T-Shirt - Men's",
-          "image": "https://www.rei.com/media/fd0dd049-2ad0-4371-a7f4-362a6fbc3baa.jpg",
-          "original_price": 60.0,
-          "sale_price": 44.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 25,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock"
-          },
-          "colors": [
-            "Dark Jade",
-            "White Light",
-            "Void",
-            "Black",
-            "Tatsu",
-            "Mantis"
-          ],
-          "color": "Dark Jade"
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/250403/arcteryx-kragg-cotton-long-sleeve-shirt-mens",
@@ -51625,58 +51572,30 @@
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S",
-            "M",
-            "L",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "M": "in_stock",
-            "L": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "24K Black",
-            "White Light/Black"
-          ],
-          "color": "24k Black"
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
-          "url": "https://www.rei.com/product/235148/arcteryx-covert-cardigan-mens",
-          "name": "Covert Cardigan - Men's",
-          "image": "https://www.rei.com/media/f456f59a-6bf3-47a3-91aa-694a2e7675f4.jpg",
-          "original_price": 180.0,
-          "sale_price": 126.93,
+          "url": "https://www.rei.com/product/242853/arcteryx-gamma-pants-mens",
+          "name": "Gamma Pants - Men's",
+          "image": "https://www.rei.com/media/4d33a0af-f0c0-479f-9743-1eec555ee069.jpg",
+          "original_price": 200.0,
+          "sale_price": 149.93,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 29,
+          "discount_pct": 25,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [
-            "S",
-            "XL",
-            "XXL"
-          ],
-          "size_stock": {
-            "S": "in_stock",
-            "XL": "in_stock",
-            "XXL": "in_stock"
-          },
-          "colors": [
-            "Black Heather Ii",
-            "Cloud Heather/Void",
-            "Habitat Heather",
-            "Dk Stratus Htr/Black Sapphire"
-          ],
-          "color": "Black Heather Ii"
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         },
         {
           "url": "https://www.rei.com/product/248250/arcteryx-gamma-lightweight-jacket-mens",
@@ -51698,34 +51617,15 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/249627/arcteryx-satoro-merino-toque",
-          "name": "Satoro Merino Toque",
-          "image": "https://www.rei.com/media/cd8bc7b9-a6dd-4858-886d-93d941477177.jpg",
-          "original_price": 50.0,
-          "sale_price": 50.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
           "url": "https://www.rei.com/product/236875/arcteryx-clarkia-cotton-wide-leg-pants-womens",
           "name": "Clarkia Cotton Wide-Leg Pants - Women's",
           "image": "https://www.rei.com/media/91efaeb4-8470-42a7-8968-e6c7e689e925.jpg",
           "original_price": 200.0,
-          "sale_price": 134.93,
+          "sale_price": 200.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "women",
-          "discount_pct": 33,
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -51774,6 +51674,25 @@
           "color": ""
         },
         {
+          "url": "https://www.rei.com/product/249627/arcteryx-satoro-merino-toque",
+          "name": "Satoro Merino Toque",
+          "image": "https://www.rei.com/media/cd8bc7b9-a6dd-4858-886d-93d941477177.jpg",
+          "original_price": 50.0,
+          "sale_price": 50.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
           "url": "https://www.rei.com/product/250405/arcteryx-kragg-sl-cotton-bird-word-t-shirt-mens",
           "name": "Kragg SL Cotton Bird Word T-Shirt - Men's",
           "image": "https://www.rei.com/media/8e617eec-e496-476c-84f5-4b6e816321a5.jpg",
@@ -51802,25 +51721,6 @@
           "in_stock": true,
           "gender": "unisex",
           "discount_pct": 30,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "pdp",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/235368/arcteryx-vertex-alpine-approach-shoes-mens",
-          "name": "Vertex Alpine Approach Shoes - Men's",
-          "image": "https://www.rei.com/media/a326bd0d-c727-4ef6-85c3-08e51235578a.jpg",
-          "original_price": 230.0,
-          "sale_price": 230.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -51888,44 +51788,6 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/249631/arcteryx-venta-gloves",
-          "name": "Venta Gloves",
-          "image": "https://www.rei.com/media/5f36b669-1105-48e5-99f7-3a490a9a4a70.jpg",
-          "original_price": 80.0,
-          "sale_price": 80.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/242921/arcteryx-atom-insulated-vest-mens",
-          "name": "Atom Insulated Vest - Men's",
-          "image": "https://www.rei.com/media/51e3ef48-d78e-43b8-a59a-41c26589cb17.jpg",
-          "original_price": 200.0,
-          "sale_price": 200.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
           "url": "https://www.rei.com/product/243326/arcteryx-atom-insulated-vest-womens",
           "name": "Atom Insulated Vest - Women's",
           "image": "https://www.rei.com/media/e1616cf3-9000-4e53-8c47-f6e9d66575c5.jpg",
@@ -51945,30 +51807,11 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/236056/arcteryx-cronin-cotton-overshirt-mens",
-          "name": "Cronin Cotton Overshirt - Men's",
-          "image": "https://www.rei.com/media/51b88734-15e6-4184-96af-293107b8f858.jpg",
-          "original_price": 180.0,
-          "sale_price": 143.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 20,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/243158/arcteryx-bird-word-cap",
-          "name": "Bird Word Cap",
-          "image": "https://www.rei.com/media/1eceb90c-4be5-4d77-80e0-1c713c69a206.jpg",
-          "original_price": 50.0,
-          "sale_price": 50.0,
+          "url": "https://www.rei.com/product/249631/arcteryx-venta-gloves",
+          "name": "Venta Gloves",
+          "image": "https://www.rei.com/media/5f36b669-1105-48e5-99f7-3a490a9a4a70.jpg",
+          "original_price": 80.0,
+          "sale_price": 80.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "unisex",
@@ -51983,14 +51826,33 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/243329/arcteryx-beta-pants-womens",
-          "name": "Beta Pants - Women's",
-          "image": "https://www.rei.com/media/4cea6221-faba-4311-bfff-ca53b5e6d26f.jpg",
-          "original_price": 300.0,
-          "sale_price": 300.0,
+          "url": "https://www.rei.com/product/235368/arcteryx-vertex-alpine-approach-shoes-mens",
+          "name": "Vertex Alpine Approach Shoes - Men's",
+          "image": "https://www.rei.com/media/a326bd0d-c727-4ef6-85c3-08e51235578a.jpg",
+          "original_price": 230.0,
+          "sale_price": 230.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/242921/arcteryx-atom-insulated-vest-mens",
+          "name": "Atom Insulated Vest - Men's",
+          "image": "https://www.rei.com/media/51e3ef48-d78e-43b8-a59a-41c26589cb17.jpg",
+          "original_price": 200.0,
+          "sale_price": 200.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -52040,6 +51902,44 @@
           "color": ""
         },
         {
+          "url": "https://www.rei.com/product/236056/arcteryx-cronin-cotton-overshirt-mens",
+          "name": "Cronin Cotton Overshirt - Men's",
+          "image": "https://www.rei.com/media/51b88734-15e6-4184-96af-293107b8f858.jpg",
+          "original_price": 180.0,
+          "sale_price": 143.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 20,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/243329/arcteryx-beta-pants-womens",
+          "name": "Beta Pants - Women's",
+          "image": "https://www.rei.com/media/4cea6221-faba-4311-bfff-ca53b5e6d26f.jpg",
+          "original_price": 300.0,
+          "sale_price": 300.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
           "url": "https://www.rei.com/product/249480/arcteryx-gamma-mx-pants-mens",
           "name": "Gamma MX Pants - Men's",
           "image": "https://www.rei.com/media/614e1d1c-77f4-46b9-88f1-ef406efab3b5.jpg",
@@ -52059,15 +51959,15 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/235311/arcteryx-proton-insulated-hoody-mens",
-          "name": "Proton Insulated Hoody - Men's",
-          "image": "https://www.rei.com/media/221f0c58-6ae7-4feb-bdc6-74feba5b64cd.jpg",
-          "original_price": 350.0,
-          "sale_price": 199.83,
+          "url": "https://www.rei.com/product/243158/arcteryx-bird-word-cap",
+          "name": "Bird Word Cap",
+          "image": "https://www.rei.com/media/1eceb90c-4be5-4d77-80e0-1c713c69a206.jpg",
+          "original_price": 50.0,
+          "sale_price": 50.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "men",
-          "discount_pct": 43,
+          "gender": "unisex",
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -52095,6 +51995,44 @@
           "size_stock": {},
           "colors": [],
           "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/235311/arcteryx-proton-insulated-hoody-mens",
+          "name": "Proton Insulated Hoody - Men's",
+          "image": "https://www.rei.com/media/221f0c58-6ae7-4feb-bdc6-74feba5b64cd.jpg",
+          "original_price": 350.0,
+          "sale_price": 199.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 43,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "size_stock": {
+            "XS": "in_stock",
+            "S": "in_stock",
+            "M": "in_stock",
+            "L": "in_stock",
+            "XL": "in_stock",
+            "XXL": "in_stock"
+          },
+          "colors": [
+            "Dark Jade/Mongoose",
+            "Black",
+            "Black Sapphire/Dk Stratus",
+            "Sea Salt/Habitat"
+          ],
+          "color": "Black"
         },
         {
           "url": "https://www.rei.com/product/219669/arcteryx-ar-395a-harness-mens",
@@ -52154,63 +52092,6 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/255584/arcteryx-cerium-down-hoody-womens",
-          "name": "Cerium Down Hoody - Women's",
-          "image": "https://www.rei.com/media/02e12932-2c2a-40e9-959a-749d3a05a18e.jpg",
-          "original_price": 329.73,
-          "sale_price": 329.73,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/222631/arcteryx-cerium-down-jacket-mens",
-          "name": "Cerium Down Jacket - Men's",
-          "image": "https://www.rei.com/media/d151527c-5d2c-4726-9536-dba152b4a828.jpg",
-          "original_price": 380.0,
-          "sale_price": 380.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "men",
-          "discount_pct": 0,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/242815/arcteryx-norvan-ld-4-trail-running-shoes-womens",
-          "name": "Norvan LD 4 Trail-Running Shoes - Women's",
-          "image": "https://www.rei.com/media/a10c7397-3ce8-468b-b8be-ca24fafbdef2.jpg",
-          "original_price": 170.0,
-          "sale_price": 101.83,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
-          "discount_pct": 40,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
           "url": "https://www.rei.com/product/228340/arcteryx-mantis-2-waist-pack",
           "name": "Mantis 2 Waist Pack",
           "image": "https://www.rei.com/media/121c81a0-4998-4ef9-b8f4-f930d82a56ab.jpg",
@@ -52230,15 +52111,15 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/249770/arcteryx-konseal-approach-shoes-mens",
-          "name": "Konseal Approach Shoes - Men's",
-          "image": "https://www.rei.com/media/0a87e344-9e09-4e30-8ae9-88de353d77e0.jpg",
-          "original_price": 190.0,
-          "sale_price": 132.93,
+          "url": "https://www.rei.com/product/255584/arcteryx-cerium-down-hoody-womens",
+          "name": "Cerium Down Hoody - Women's",
+          "image": "https://www.rei.com/media/02e12932-2c2a-40e9-959a-749d3a05a18e.jpg",
+          "original_price": 329.73,
+          "sale_price": 329.73,
           "currency": "USD",
           "in_stock": true,
-          "gender": "men",
-          "discount_pct": 30,
+          "gender": "women",
+          "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -52249,11 +52130,11 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/247526/arcteryx-gamma-mx-jacket-mens",
-          "name": "Gamma MX Jacket - Men's",
-          "image": "https://www.rei.com/media/ca51385a-759e-4fc8-ae3e-408b0c3f4b5b.jpg",
-          "original_price": 350.0,
-          "sale_price": 350.0,
+          "url": "https://www.rei.com/product/235314/arcteryx-kyanite-jacket-mens",
+          "name": "Kyanite Jacket - Men's",
+          "image": "https://www.rei.com/media/786877a6-8bf2-4658-92ef-ca26e37c7339.jpg",
+          "original_price": 180.0,
+          "sale_price": 180.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
@@ -52287,15 +52168,72 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/235314/arcteryx-kyanite-jacket-mens",
-          "name": "Kyanite Jacket - Men's",
-          "image": "https://www.rei.com/media/786877a6-8bf2-4658-92ef-ca26e37c7339.jpg",
-          "original_price": 180.0,
-          "sale_price": 180.0,
+          "url": "https://www.rei.com/product/249771/arcteryx-konseal-approach-shoes-womens",
+          "name": "Konseal Approach Shoes - Women's",
+          "image": "https://www.rei.com/media/d6ddf12f-ed40-4ec5-a3a1-b43faf0519f1.jpg",
+          "original_price": 190.0,
+          "sale_price": 132.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 30,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/222631/arcteryx-cerium-down-jacket-mens",
+          "name": "Cerium Down Jacket - Men's",
+          "image": "https://www.rei.com/media/d151527c-5d2c-4726-9536-dba152b4a828.jpg",
+          "original_price": 380.0,
+          "sale_price": 380.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
           "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/247526/arcteryx-gamma-mx-jacket-mens",
+          "name": "Gamma MX Jacket - Men's",
+          "image": "https://www.rei.com/media/ca51385a-759e-4fc8-ae3e-408b0c3f4b5b.jpg",
+          "original_price": 350.0,
+          "sale_price": 350.0,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 0,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/242815/arcteryx-norvan-ld-4-trail-running-shoes-womens",
+          "name": "Norvan LD 4 Trail-Running Shoes - Women's",
+          "image": "https://www.rei.com/media/a10c7397-3ce8-468b-b8be-ca24fafbdef2.jpg",
+          "original_price": 170.0,
+          "sale_price": 101.83,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "women",
+          "discount_pct": 40,
           "dealer": "rei",
           "dealer_name": "REI",
           "region": "US",
@@ -52325,14 +52263,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/249771/arcteryx-konseal-approach-shoes-womens",
-          "name": "Konseal Approach Shoes - Women's",
-          "image": "https://www.rei.com/media/d6ddf12f-ed40-4ec5-a3a1-b43faf0519f1.jpg",
+          "url": "https://www.rei.com/product/249770/arcteryx-konseal-approach-shoes-mens",
+          "name": "Konseal Approach Shoes - Men's",
+          "image": "https://www.rei.com/media/0a87e344-9e09-4e30-8ae9-88de353d77e0.jpg",
           "original_price": 190.0,
           "sale_price": 132.93,
           "currency": "USD",
           "in_stock": true,
-          "gender": "women",
+          "gender": "men",
           "discount_pct": 30,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -52382,14 +52320,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/242854/arcteryx-gamma-sl-9-shorts-mens",
-          "name": "Gamma SL 9&quot; Shorts - Men's",
-          "image": "https://www.rei.com/media/07acb2c2-4dbf-4f4d-ab6c-b999d2ccaa60.jpg",
-          "original_price": 120.0,
-          "sale_price": 120.0,
+          "url": "https://www.rei.com/product/236874/arcteryx-kragg-cotton-bird-crew-t-shirt-womens",
+          "name": "Kragg Cotton Bird Crew T-Shirt - Women's",
+          "image": "https://www.rei.com/media/e3010a5d-59a3-453b-b824-dee9c2103a12.jpg",
+          "original_price": 70.0,
+          "sale_price": 70.0,
           "currency": "USD",
           "in_stock": true,
-          "gender": "men",
+          "gender": "women",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -52420,33 +52358,14 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/249769/arcteryx-konseal-gtx-approach-shoes-mens",
-          "name": "Konseal GTX Approach Shoes - Men's",
-          "image": "https://www.rei.com/media/7d1822d5-7fd0-4d7b-8931-fdde1543eb4c.jpg",
-          "original_price": 220.0,
-          "sale_price": 153.93,
+          "url": "https://www.rei.com/product/242854/arcteryx-gamma-sl-9-shorts-mens",
+          "name": "Gamma SL 9&quot; Shorts - Men's",
+          "image": "https://www.rei.com/media/07acb2c2-4dbf-4f4d-ab6c-b999d2ccaa60.jpg",
+          "original_price": 120.0,
+          "sale_price": 120.0,
           "currency": "USD",
           "in_stock": true,
           "gender": "men",
-          "discount_pct": 30,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
-          "url": "https://www.rei.com/product/236874/arcteryx-kragg-cotton-bird-crew-t-shirt-womens",
-          "name": "Kragg Cotton Bird Crew T-Shirt - Women's",
-          "image": "https://www.rei.com/media/e3010a5d-59a3-453b-b824-dee9c2103a12.jpg",
-          "original_price": 70.0,
-          "sale_price": 70.0,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "women",
           "discount_pct": 0,
           "dealer": "rei",
           "dealer_name": "REI",
@@ -52477,25 +52396,6 @@
           "color": ""
         },
         {
-          "url": "https://www.rei.com/product/243157/arcteryx-sinsolo-bucket-hat",
-          "name": "Sinsolo Bucket Hat",
-          "image": "https://www.rei.com/media/f91a3dba-bb78-431c-814e-353192e79cee.jpg",
-          "original_price": 85.0,
-          "sale_price": 58.93,
-          "currency": "USD",
-          "in_stock": true,
-          "gender": "unisex",
-          "discount_pct": 31,
-          "dealer": "rei",
-          "dealer_name": "REI",
-          "region": "US",
-          "price_source_quality": "list_fallback",
-          "sizes": [],
-          "size_stock": {},
-          "colors": [],
-          "color": ""
-        },
-        {
           "url": "https://www.rei.com/product/242918/arcteryx-kragg-cotton-pants-mens",
           "name": "Kragg Cotton Pants - Men's",
           "image": "https://www.rei.com/media/206baeba-13ad-4664-ad90-8a478c8dc415.jpg",
@@ -52513,9 +52413,47 @@
           "size_stock": {},
           "colors": [],
           "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/249769/arcteryx-konseal-gtx-approach-shoes-mens",
+          "name": "Konseal GTX Approach Shoes - Men's",
+          "image": "https://www.rei.com/media/7d1822d5-7fd0-4d7b-8931-fdde1543eb4c.jpg",
+          "original_price": 220.0,
+          "sale_price": 153.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "men",
+          "discount_pct": 30,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
+        },
+        {
+          "url": "https://www.rei.com/product/243157/arcteryx-sinsolo-bucket-hat",
+          "name": "Sinsolo Bucket Hat",
+          "image": "https://www.rei.com/media/f91a3dba-bb78-431c-814e-353192e79cee.jpg",
+          "original_price": 85.0,
+          "sale_price": 58.93,
+          "currency": "USD",
+          "in_stock": true,
+          "gender": "unisex",
+          "discount_pct": 31,
+          "dealer": "rei",
+          "dealer_name": "REI",
+          "region": "US",
+          "price_source_quality": "list_fallback",
+          "sizes": [],
+          "size_stock": {},
+          "colors": [],
+          "color": ""
         }
       ],
-      "refreshed_at": "2026-08-25 12:10:45"
+      "refreshed_at": "2026-08-25 15:17:16"
     },
     "ssense": {
       "name": "SSENSE",
@@ -53123,7 +53061,7 @@
           "region": "US"
         }
       ],
-      "refreshed_at": "2026-08-25 12:14:59"
+      "refreshed_at": "2026-08-25 15:21:11"
     },
     "backcountry": {
       "name": "Backcountry",
@@ -53481,7 +53419,7 @@
           "source_id": "BURZ9R1",
           "url": "https://www.backcountry.com/burton-step-on-reflex-snowboard-binding-2026-womens",
           "name": "Step On Re:Flex Snowboard Binding - 2027 - Women's",
-          "image": "https://content.backcountry.com/images/items/large/BUR/BURZ9R1/ORACRE.jpg",
+          "image": "https://content.backcountry.com/images/items/large/BUR/BURZ9R1/BLU.jpg",
           "original_price": 279.95,
           "sale_price": 160.0,
           "currency": "USD",
@@ -53489,8 +53427,9 @@
           "gender": "women",
           "sizes": [],
           "size_stock": {},
-          "color": "Orange Cream, Green Voltage, Moondust Purple",
+          "color": "Bluestone, Orange Cream, Green Voltage",
           "colors": [
+            "Bluestone",
             "Orange Cream",
             "Green Voltage",
             "Moondust Purple",
@@ -56819,7 +56758,7 @@
           "price_source_quality": "list_fallback"
         }
       ],
-      "refreshed_at": "2026-08-25 11:26:09"
+      "refreshed_at": "2026-08-25 14:33:02"
     },
     "burton": {
       "name": "Burton",
@@ -58238,7 +58177,7 @@
           "source_id": "9101008142593",
           "url": "https://www.burton.com/en-us/products/kids-burton-hillslope-jacket-2431310-o",
           "name": "Kids' Burton Hillslope Jacket",
-          "image": "https://www.burton.com/cdn/shop/files/243131009J_4.webp?v=1778458530&width=2100",
+          "image": "https://www.burton.com/cdn/shop/files/2431310EU0_4ML.webp?v=1778458526&width=2100",
           "original_price": 169.95,
           "sale_price": 84.98,
           "currency": "USD",
@@ -65487,6 +65426,7 @@
             "9",
             "10",
             "11",
+            "5.5",
             "6.5",
             "7.5",
             "8.5",
@@ -65499,6 +65439,7 @@
             "9": "in_stock",
             "10": "in_stock",
             "11": "in_stock",
+            "5.5": "in_stock",
             "6.5": "in_stock",
             "7.5": "in_stock",
             "8.5": "in_stock",
@@ -68319,20 +68260,20 @@
           "price_source_quality": "rendered"
         }
       ],
-      "refreshed_at": "2026-08-25 11:26:03"
+      "refreshed_at": "2026-08-25 14:32:57"
     }
   },
-  "publication_id": "github-actions-32857286661-1",
+  "publication_id": "github-actions-32859651528-1",
   "total": 2207,
   "rejected_dealers": {},
   "retained_dealers": {
-    "evo": "not refreshed in this run",
-    "rei": "not refreshed in this run",
-    "ssense": "not refreshed in this run",
-    "backcountry": "not refreshed in this run",
-    "burton": "not refreshed in this run"
+    "mec": "not refreshed in this run"
   },
   "fresh_dealers": [
-    "mec"
+    "backcountry",
+    "burton",
+    "evo",
+    "rei",
+    "ssense"
   ]
 }
