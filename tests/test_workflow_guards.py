@@ -34,6 +34,11 @@ class WorkflowGuardTests(unittest.TestCase):
             workflow.index("python tools/check_mec_browser_runtime.py"),
         )
 
+    def test_mec_fallback_allows_full_pdp_enrichment_window(self):
+        workflow = (ROOT / ".github/workflows/refresh-mec.yml").read_text(encoding="utf-8")
+        self.assertIn("timeout-minutes: 120", workflow)
+        self.assertIn("timeout 3600 python -u -m dealers.mec", workflow)
+
     def test_workflows_fetch_camoufox_with_authenticated_helper(self):
         names = (
             "refresh-outlet.yml",
