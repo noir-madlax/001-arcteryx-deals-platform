@@ -15,6 +15,7 @@ else
 fi
 
 GITHUB_REMOTE="git@github.com:noir-madlax/001-arcteryx-deals-platform.git"
+SITE_URL="${SITE_URL:-https://001.100app.dev}"
 
 # ── Telegram notification credentials ──
 # Kept in ~/.arcteryx_secrets (NOT committed to git) so we don't leak tokens.
@@ -128,10 +129,14 @@ for f in .crawl_manifest.json data.js arcteryx_skus.json global_data.json; do
 done
 rm -rf "$TMPDIR"
 
-git add .crawl_manifest.json data.js arcteryx_skus.json global_data.json
+PUBLICATION_ID=$("$PYTHON" -c 'from datetime import datetime, timezone; from uuid import uuid4; print(f"primary-outlet-{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}-{uuid4().hex[:12]}")')
+"$PYTHON" tools/write_publication_marker.py --scope outlet --publication-id "$PUBLICATION_ID" 2>&1 | tee -a "$LOG_FILE"
+git add .crawl_manifest.json data.js arcteryx_skus.json global_data.json publication.json
 if ! git diff --cached --quiet; then
   git commit -m "data: auto update $(date '+%Y-%m-%d %H:%M')"
-  git push origin main 2>&1 | tee -a "$LOG_FILE" || log "git push failed (non-fatal)"
+  git pull --rebase origin main 2>&1 | tee -a "$LOG_FILE"
+  git push origin main 2>&1 | tee -a "$LOG_FILE"
+  "$PYTHON" tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10 2>&1 | tee -a "$LOG_FILE"
 else
   log "No data changes to commit"
 fi

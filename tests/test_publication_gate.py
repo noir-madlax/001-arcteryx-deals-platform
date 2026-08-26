@@ -64,6 +64,32 @@ class PublicationGateTests(unittest.TestCase):
         self.assertIn('if [ "$dealer" = "evo" ]', dealers_workflow)
         self.assertIn("dealer_timeout=3600", dealers_workflow)
 
+    def test_all_primary_static_refresh_scripts_wait_for_exact_publication(self):
+        root = Path(__file__).resolve().parent.parent
+        cases = {
+            "server_run_update.sh": ("outlet", "data.js"),
+            "server_run_dealers.sh": ("dealers", "dealers/results.json"),
+            "server_run_mec.sh": ("mec", "dealers/results.json"),
+        }
+        for name, (scope, static_file) in cases.items():
+            script = (root / name).read_text(encoding="utf-8")
+            with self.subTest(script=name):
+                marker = f"tools/write_publication_marker.py --scope {scope}"
+                wait = "tools/wait_for_publication.py --file publication.json"
+                self.assertIn('SITE_URL="${SITE_URL:-https://001.100app.dev}"', script)
+                self.assertIn(marker, script)
+                self.assertIn(static_file, script)
+                self.assertIn("publication.json", script)
+                self.assertIn(wait, script)
+
+                marker_pos = script.index(marker)
+                commit_pos = script.index("git commit", marker_pos)
+                push_pos = script.index("git push origin main", commit_pos)
+                wait_pos = script.index(wait, push_pos)
+                self.assertLess(marker_pos, commit_pos)
+                self.assertLess(commit_pos, push_pos)
+                self.assertLess(push_pos, wait_pos)
+
 
 if __name__ == "__main__":
     unittest.main()

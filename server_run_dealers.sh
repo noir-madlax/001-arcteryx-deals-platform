@@ -16,6 +16,7 @@ else
 fi
 
 GITHUB_REMOTE="git@github.com:noir-madlax/001-arcteryx-deals-platform.git"
+SITE_URL="${SITE_URL:-https://001.100app.dev}"
 
 if [ -f "$HOME/.arcteryx_secrets" ]; then
   # shellcheck disable=SC1091
@@ -102,12 +103,15 @@ log "git commit + push"
 git config user.email "bot@arcteryx-deals.local"
 git config user.name  "ArcBot"
 git remote set-url origin "$GITHUB_REMOTE"
-git add dealers/results.json
+PUBLICATION_ID=$("$PYTHON" -c 'from datetime import datetime, timezone; from uuid import uuid4; print(f"primary-dealers-{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}-{uuid4().hex[:12]}")')
+"$PYTHON" tools/write_publication_marker.py --scope dealers --publication-id "$PUBLICATION_ID" 2>&1 | tee -a "$LOG"
+git add dealers/results.json publication.json
 if ! git diff --cached --quiet; then
     TS=$(date '+%Y-%m-%d %H:%M')
     git commit -m "data(dealers): auto refresh ${TS}" 2>&1 | tee -a "$LOG"
     git pull --rebase origin main 2>&1 | tee -a "$LOG"
     git push origin main 2>&1 | tee -a "$LOG"
+    "$PYTHON" tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10 2>&1 | tee -a "$LOG"
 else
     log "no changes"
 fi
