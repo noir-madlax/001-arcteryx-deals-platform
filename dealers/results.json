@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-26 07:28:31",
+  "generated_at": "2026-08-26 10:05:08",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -46545,7 +46545,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 163,
+      "count": 165,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6040-483/arcteryx-verro-20-backpack-unisex",
@@ -47350,7 +47350,7 @@
         {
           "url": "https://www.mec.ca/en/product/6037-777/arcteryx-ar-385a-harness-womens",
           "name": "Arc'teryx AR 385a Harness - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/546543_source_1786795298.png",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/546538_source_1786795297.png",
           "color": "Forage/Mantis",
           "sale_price": 200.0,
           "original_price": 200.0,
@@ -48160,34 +48160,7 @@
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "sizes": [
-            "UK 4",
-            "UK 4.5",
-            "UK 5",
-            "UK 5.5",
-            "UK 6",
-            "UK 6.5",
-            "UK 7",
-            "UK 7.5",
-            "UK 8",
-            "UK 8.5"
-          ],
-          "size_stock": {
-            "UK 4": "in_stock",
-            "UK 4.5": "in_stock",
-            "UK 5": "in_stock",
-            "UK 5.5": "in_stock",
-            "UK 6": "in_stock",
-            "UK 6.5": "in_stock",
-            "UK 7": "in_stock",
-            "UK 7.5": "in_stock",
-            "UK 8": "in_stock",
-            "UK 8.5": "in_stock"
-          },
-          "colors": [
-            "Black/Black"
-          ],
-          "price_source_quality": "pdp"
+          "price_source_quality": "list_fallback"
         },
         {
           "url": "https://www.mec.ca/en/product/6030-096/arcteryx-delta-jacket-mens",
@@ -48311,24 +48284,14 @@
           "url": "https://www.mec.ca/en/product/6034-837/arcteryx-granville-25-backpack-unisex",
           "name": "Arc'teryx Granville 25 Backpack - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/534753_source_1758559541.jpg",
-          "color": "Dk Stratus, Mars",
-          "sale_price": 260.0,
-          "original_price": 290.0,
-          "discount_pct": 10,
+          "color": "Mars",
+          "sale_price": 280.0,
+          "original_price": 280.0,
+          "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "sizes": [
-            "One Size"
-          ],
-          "size_stock": {
-            "One Size": "in_stock"
-          },
-          "colors": [
-            "Dk Stratus",
-            "Mars"
-          ],
-          "price_source_quality": "pdp"
+          "price_source_quality": "list_fallback"
         },
         {
           "url": "https://www.mec.ca/en/product/6040-486/arcteryx-alpha-sl-30-backpack-unisex",
@@ -49631,36 +49594,14 @@
           "url": "https://www.mec.ca/en/product/6037-690/arcteryx-beta-jacket-womens",
           "name": "Arc'teryx Beta Jacket - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/519419_source_1787400870.png",
-          "color": "Black, Sea Salt/Arctic Silk",
-          "sale_price": 300.0,
-          "original_price": 520.0,
-          "discount_pct": 42,
+          "color": "Sea Salt/Arctic Silk",
+          "sale_price": 500.0,
+          "original_price": 500.0,
+          "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small",
-            "XX-Small"
-          ],
-          "size_stock": {
-            "XX-Small": "in_stock",
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Sea Salt/Arctic Silk"
-          ],
-          "price_source_quality": "pdp"
+          "price_source_quality": "list_fallback"
         },
         {
           "url": "https://www.mec.ca/en/product/6029-956/arcteryx-beta-coat-womens",
@@ -49791,6 +49732,36 @@
             "34": "in_stock",
             "36": "in_stock",
             "38": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ],
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6030-106/arcteryx-kyanite-hoodie-mens",
+          "name": "Arc'teryx Kyanite Hoodie - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/479886_source_1787682603.png",
+          "color": "Black",
+          "sale_price": 260.0,
+          "original_price": 260.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large"
+          ],
+          "size_stock": {
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock"
           },
           "colors": [
             "Black"
@@ -50100,12 +50071,12 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.mec.ca/en/product/6030-106/arcteryx-kyanite-hoodie-mens",
-          "name": "Arc'teryx Kyanite Hoodie - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/479886_source_1787682603.png",
+          "url": "https://www.mec.ca/en/product/6038-715/arcteryx-rho-lt-hoodie-mens",
+          "name": "Arc'teryx Rho Lt Hoodie - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/529278_source_1776169274.jpg",
           "color": "Black",
-          "sale_price": 260.0,
-          "original_price": 260.0,
+          "sale_price": 150.0,
+          "original_price": 150.0,
           "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
@@ -50114,15 +50085,13 @@
             "Small",
             "Medium",
             "Large",
-            "X-Large",
-            "XX-Large"
+            "X-Large"
           ],
           "size_stock": {
             "Small": "in_stock",
             "Medium": "in_stock",
             "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
+            "X-Large": "in_stock"
           },
           "colors": [
             "Black"
@@ -51216,6 +51185,28 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.mec.ca/en/product/6034-757/arcteryx-rho-neck-gaiter-long",
+          "name": "Arc'teryx Rho Neck Gaiter Long",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/515171_source_1759181711.jpg",
+          "color": "Black",
+          "sale_price": 45.0,
+          "original_price": 60.0,
+          "discount_pct": 25,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "One Size"
+          ],
+          "size_stock": {
+            "One Size": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ],
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
           "name": "Arc'teryx Kopec Mid Gore-Tex Hiking Boots - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/526512_source_1771544469.jpg",
@@ -51712,7 +51703,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-26 07:28:31"
+      "refreshed_at": "2026-08-26 10:05:07"
     },
     "rei": {
       "name": "REI",
@@ -69030,7 +69021,7 @@
       "refreshed_at": "2026-08-26 05:28:25"
     }
   },
-  "total": 2196,
+  "total": 2198,
   "rejected_dealers": {},
   "retained_dealers": {
     "evo": "not refreshed in this run",
