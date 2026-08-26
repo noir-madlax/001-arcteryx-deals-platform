@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-26 15:12:26",
+  "generated_at": "2026-08-26 16:05:10",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -51241,7 +51241,7 @@
           "url": "https://www.mec.ca/en/product/6032-647/arcteryx-kopec-gore-tex-hiking-shoes-womens",
           "name": "Arc'teryx Kopec Gore-Tex Hiking Shoes - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504794_source_1753980942.jpg",
-          "color": "Black/Yukon",
+          "color": "",
           "sale_price": 117.3,
           "original_price": 230.0,
           "discount_pct": 49,
@@ -51284,9 +51284,7 @@
             "UK 8": "in_stock",
             "UK 8.5": "in_stock"
           },
-          "colors": [
-            "Black/Yukon"
-          ],
+          "colors": [],
           "price_source_quality": "pdp"
         },
         {
@@ -51415,7 +51413,7 @@
           "url": "https://www.mec.ca/en/product/6032-652/arcteryx-kopec-gore-tex-hiking-shoes-mens",
           "name": "Arc'teryx Kopec Gore-Tex Hiking Shoes - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/526551_source_1771544535.jpg",
-          "color": "Habitat/Void LT",
+          "color": "Black/Yukon, Habitat/Void LT",
           "sale_price": 138.0,
           "original_price": 230.0,
           "discount_pct": 40,
@@ -51469,6 +51467,7 @@
             "UK 12.5": "in_stock"
           },
           "colors": [
+            "Black/Yukon",
             "Habitat/Void LT"
           ],
           "price_source_quality": "pdp"
@@ -51672,7 +51671,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-26 14:11:17"
+      "refreshed_at": "2026-08-26 16:05:10"
     },
     "rei": {
       "name": "REI",
@@ -68941,17 +68940,16 @@
       "refreshed_at": "2026-08-26 11:16:31"
     }
   },
-  "publication_id": "github-actions-32980355687-1",
   "total": 2192,
   "rejected_dealers": {},
   "retained_dealers": {
-    "mec": "not refreshed in this run",
+    "evo": "not refreshed in this run",
+    "rei": "not refreshed in this run",
     "ssense": "not refreshed in this run",
+    "backcountry": "not refreshed in this run",
     "burton": "not refreshed in this run"
   },
   "fresh_dealers": [
-    "backcountry",
-    "evo",
-    "rei"
+    "mec"
   ]
 }
