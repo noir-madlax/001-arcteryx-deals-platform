@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-26 16:05:10",
+  "generated_at": "2026-08-26 17:37:28",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -46456,7 +46456,7 @@
     "mec": {
       "name": "MEC",
       "region": "CA",
-      "count": 165,
+      "count": 164,
       "items": [
         {
           "url": "https://www.mec.ca/en/product/6040-483/arcteryx-verro-20-backpack-unisex",
@@ -48111,22 +48111,7 @@
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large"
-          ],
-          "size_stock": {
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock"
-          },
-          "colors": [
-            "Black"
-          ],
-          "price_source_quality": "pdp"
+          "price_source_quality": "list_fallback"
         },
         {
           "url": "https://www.mec.ca/en/product/6030-096/arcteryx-delta-jacket-mens",
@@ -48511,9 +48496,9 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.mec.ca/en/product/6032-522/arcteryx-gamma-superlight-short-9-mens",
-          "name": "Arc'teryx Gamma Superlight Short 9\" - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/507607_source_1744881651.jpg",
+          "url": "https://www.mec.ca/en/product/6032-522/arcteryx-gamma-superlight-short-9in-mens",
+          "name": "Arc'teryx Gamma Superlight Short 9in - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/507607_source_1787748159.png",
           "color": "Black, Void",
           "sale_price": 150.0,
           "original_price": 150.0,
@@ -48764,7 +48749,7 @@
           "url": "https://www.mec.ca/en/product/6040-515/arcteryx-emblem-fleece-hoodie-womens",
           "name": "Arc'teryx Emblem Fleece Hoodie - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560656_source_1787595682.png",
-          "color": "Black, Lt Renegade",
+          "color": "Lt Renegade",
           "sale_price": 180.0,
           "original_price": 180.0,
           "discount_pct": 0,
@@ -48786,7 +48771,6 @@
             "X-Large": "in_stock"
           },
           "colors": [
-            "Black",
             "Lt Renegade"
           ],
           "price_source_quality": "pdp"
@@ -48813,42 +48797,6 @@
           "colors": [
             "Black",
             "HABITAT"
-          ],
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6037-623/arcteryx-emblem-fleece-crew-womens",
-          "name": "Arc'teryx Emblem Fleece Crew - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560785_source_1784846221.jpg",
-          "color": "Black, Lt Renegade, Sea Salt",
-          "sale_price": 105.0,
-          "original_price": 150.0,
-          "discount_pct": 30,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small",
-            "XX-Small"
-          ],
-          "size_stock": {
-            "XX-Small": "in_stock",
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Lt Renegade",
-            "Sea Salt"
           ],
           "price_source_quality": "pdp"
         },
@@ -49056,26 +49004,7 @@
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large",
-            "X-Small"
-          ],
-          "size_stock": {
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Black"
-          ],
-          "price_source_quality": "pdp"
+          "price_source_quality": "list_fallback"
         },
         {
           "url": "https://www.mec.ca/en/product/6034-766/arcteryx-konseal-gore-tex-approach-shoes-mens",
@@ -49209,6 +49138,42 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-623/arcteryx-emblem-fleece-crew-womens",
+          "name": "Arc'teryx Emblem Fleece Crew - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/560889_source_1784846228.jpg",
+          "color": "Black, Lt Renegade, Sea Salt",
+          "sale_price": 105.0,
+          "original_price": 150.0,
+          "discount_pct": 30,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large",
+            "X-Small",
+            "XX-Small"
+          ],
+          "size_stock": {
+            "XX-Small": "in_stock",
+            "X-Small": "in_stock",
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock"
+          },
+          "colors": [
+            "Black",
+            "Lt Renegade",
+            "Sea Salt"
+          ],
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6037-526/arcteryx-cormac-crew-long-sleeve-shirt-mens",
           "name": "Arc'teryx Cormac Crew Long Sleeve Shirt - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533868_source_1784846222.jpg",
@@ -49233,34 +49198,6 @@
           },
           "colors": [
             "Black"
-          ],
-          "price_source_quality": "pdp"
-        },
-        {
-          "url": "https://www.mec.ca/en/product/6037-777/arcteryx-ar-385a-harness-womens",
-          "name": "Arc'teryx AR 385a Harness - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/546538_source_1786795297.png",
-          "color": "Forage/Mantis",
-          "sale_price": 200.0,
-          "original_price": 200.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Small"
-          ],
-          "size_stock": {
-            "X-Small": "in_stock",
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock"
-          },
-          "colors": [
-            "Forage/Mantis"
           ],
           "price_source_quality": "pdp"
         },
@@ -49703,36 +49640,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.mec.ca/en/product/6030-106/arcteryx-kyanite-hoodie-mens",
-          "name": "Arc'teryx Kyanite Hoodie - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/479886_source_1787682603.png",
-          "color": "Black",
-          "sale_price": 260.0,
-          "original_price": 260.0,
-          "discount_pct": 0,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "Small",
-            "Medium",
-            "Large",
-            "X-Large",
-            "XX-Large"
-          ],
-          "size_stock": {
-            "Small": "in_stock",
-            "Medium": "in_stock",
-            "Large": "in_stock",
-            "X-Large": "in_stock",
-            "XX-Large": "in_stock"
-          },
-          "colors": [
-            "Black"
-          ],
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6032-528/arcteryx-norvan-downward-logo-short-sleeve-mens",
           "name": "Arc'teryx Norvan Downward Logo Short Sleeve - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/512956_source_1747300621.jpg",
@@ -49793,9 +49700,9 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-636/arcteryx-sinsola-shorts-5-womens",
-          "name": "Arc'teryx Sinsola Shorts 5\" - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533912_source_1778587293.jpg",
+          "url": "https://www.mec.ca/en/product/6037-636/arcteryx-sinsola-shorts-5in-womens",
+          "name": "Arc'teryx Sinsola Shorts 5in - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533912_source_1787748523.png",
           "color": "Black, Dk Stratus",
           "sale_price": 130.0,
           "original_price": 130.0,
@@ -50069,6 +49976,64 @@
           "price_source_quality": "pdp"
         },
         {
+          "url": "https://www.mec.ca/en/product/6037-777/arcteryx-ar-385a-harness-womens",
+          "name": "Arc'teryx AR 385a Harness - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/546543_source_1786795298.png",
+          "color": "Forage/Mantis",
+          "sale_price": 200.0,
+          "original_price": 200.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Small"
+          ],
+          "size_stock": {
+            "X-Small": "in_stock",
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock"
+          },
+          "colors": [
+            "Forage/Mantis"
+          ],
+          "price_source_quality": "pdp"
+        },
+        {
+          "url": "https://www.mec.ca/en/product/6030-106/arcteryx-kyanite-hoodie-mens",
+          "name": "Arc'teryx Kyanite Hoodie - Men's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/479886_source_1787682603.png",
+          "color": "Black",
+          "sale_price": 260.0,
+          "original_price": 260.0,
+          "discount_pct": 0,
+          "dealer": "mec",
+          "dealer_name": "MEC",
+          "region": "CA",
+          "sizes": [
+            "Small",
+            "Medium",
+            "Large",
+            "X-Large",
+            "XX-Large"
+          ],
+          "size_stock": {
+            "Small": "in_stock",
+            "Medium": "in_stock",
+            "Large": "in_stock",
+            "X-Large": "in_stock",
+            "XX-Large": "in_stock"
+          },
+          "colors": [
+            "Black"
+          ],
+          "price_source_quality": "pdp"
+        },
+        {
           "url": "https://www.mec.ca/en/product/6029-804/arcteryx-skaha-harness-womens",
           "name": "Arc'teryx Skaha Harness - Women's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/497417_source_1738404839.jpg",
@@ -50097,9 +50062,9 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.mec.ca/en/product/6037-631/arcteryx-norvan-shorts-5-2-in-1-womens",
-          "name": "Arc'teryx Norvan Shorts 5\" 2-in-1 - Women's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533926_source_1773730231.jpg",
+          "url": "https://www.mec.ca/en/product/6037-631/arcteryx-norvan-shorts-5in-2-in-1-womens",
+          "name": "Arc'teryx Norvan Shorts 5in 2-in-1 - Women's",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533926_source_1787748154.png",
           "color": "Moondrop",
           "sale_price": 150.0,
           "original_price": 150.0,
@@ -50530,7 +50495,7 @@
           "url": "https://www.mec.ca/en/product/6037-538/arcteryx-kragg-sl-cotton-cacodaemon-ss-mens",
           "name": "Arc'teryx Kragg SL Cotton Cacodaemon SS - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/533887_source_1783010154.png",
-          "color": "Black/Moondrop, Habitat/Sea Salt",
+          "color": "Black/Moondrop, Habitat/Sea Salt, Pineberry/Stone Red",
           "sale_price": 63.0,
           "original_price": 90.0,
           "discount_pct": 30,
@@ -50551,7 +50516,8 @@
           },
           "colors": [
             "Black/Moondrop",
-            "Habitat/Sea Salt"
+            "Habitat/Sea Salt",
+            "Pineberry/Stone Red"
           ],
           "price_source_quality": "pdp"
         },
@@ -50775,7 +50741,7 @@
           "url": "https://www.mec.ca/en/product/6032-525/arcteryx-kragg-superlight-cotton-short-sleeve-mens",
           "name": "Arc'teryx Kragg Superlight Cotton Short Sleeve - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/517314_source_1778799969.jpg",
-          "color": "Stone Red, Void",
+          "color": "Dark Jade, Stone Red, Void",
           "sale_price": 39.94,
           "original_price": 80.0,
           "discount_pct": 50,
@@ -50797,6 +50763,7 @@
             "XX-Large": "in_stock"
           },
           "colors": [
+            "Dark Jade",
             "Stone Red",
             "Void"
           ],
@@ -51155,26 +51122,6 @@
           "price_source_quality": "pdp"
         },
         {
-          "url": "https://www.mec.ca/en/product/6034-757/arcteryx-rho-neck-gaiter-long",
-          "name": "Arc'teryx Rho Neck Gaiter Long",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/515171_source_1759181711.jpg",
-          "color": "",
-          "sale_price": 45.0,
-          "original_price": 60.0,
-          "discount_pct": 25,
-          "dealer": "mec",
-          "dealer_name": "MEC",
-          "region": "CA",
-          "sizes": [
-            "One Size"
-          ],
-          "size_stock": {
-            "One Size": "in_stock"
-          },
-          "colors": [],
-          "price_source_quality": "pdp"
-        },
-        {
           "url": "https://www.mec.ca/en/product/6032-657/arcteryx-kopec-mid-gore-tex-hiking-boots-mens",
           "name": "Arc'teryx Kopec Mid Gore-Tex Hiking Boots - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/526512_source_1771544469.jpg",
@@ -51412,7 +51359,7 @@
         {
           "url": "https://www.mec.ca/en/product/6032-652/arcteryx-kopec-gore-tex-hiking-shoes-mens",
           "name": "Arc'teryx Kopec Gore-Tex Hiking Shoes - Men's",
-          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/526551_source_1771544535.jpg",
+          "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/images/stencil/300x300/attribute_rule_images/504815_source_1753980943.jpg",
           "color": "Black/Yukon, Habitat/Void LT",
           "sale_price": 138.0,
           "original_price": 230.0,
@@ -51671,7 +51618,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-26 16:05:10"
+      "refreshed_at": "2026-08-26 17:37:28"
     },
     "rei": {
       "name": "REI",
@@ -68940,7 +68887,8 @@
       "refreshed_at": "2026-08-26 11:16:31"
     }
   },
-  "total": 2192,
+  "publication_id": "github-actions-32994435252-1",
+  "total": 2191,
   "rejected_dealers": {},
   "retained_dealers": {
     "evo": "not refreshed in this run",
