@@ -169,6 +169,51 @@ def requested_sku_ids(value: str | None = None) -> set[str] | None:
         raise ValueError("REVALIDATE_SKU_IDS is limited to 100 exact values")
     return requested
 
+def requested_max_rows_per_dealer(value: str | None = None) -> int | None:
+    """Return the optional per-dealer cohort limit for scheduled rotation."""
+    raw = (
+        os.environ.get("REVALIDATE_MAX_ROWS_PER_DEALER", "")
+        if value is None
+        else value
+    )
+    if not raw.strip():
+        return None
+    try:
+        limit = int(raw)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(
+            "REVALIDATE_MAX_ROWS_PER_DEALER must be a positive integer"
+        ) from exc
+    if limit < 1:
+        raise ValueError(
+            "REVALIDATE_MAX_ROWS_PER_DEALER must be a positive integer"
+        )
+    return limit
+
+def select_oldest_rows_per_dealer(
+    rows,
+    limit: int | None,
+    *,
+    exact_sku_ids: set[str] | None = None,
+):
+    """Select a stable cohort while preserving every exact repair target."""
+    if limit is None or exact_sku_ids is not None:
+        return list(rows)
+    grouped = defaultdict(list)
+    for row in rows:
+        grouped[row.get("dealer")].append(row)
+    selected = []
+    for dealer in sorted(grouped, key=lambda value: str(value or "")):
+        dealer_rows = sorted(
+            grouped[dealer],
+            key=lambda row: (
+                row.get("last_updated") or "",
+                row.get("sku_id") or "",
+            ),
+        )
+        selected.extend(dealer_rows[:limit])
+    return selected
+
 # ── Per-dealer PDP fetchers ──────────────────────────────────────────────
 def fetch_evo_pdp(url: str) -> dict | None:
     """EVO Shopify, 用 /products/<handle>.js (注意 .js 不是 .json)
@@ -769,6 +814,23 @@ def main():
         rows = [row for row in rows if row.get("sku_id") in selected_sku_ids]
         print(
             f"[reval] bounded exact SKU allowlist: {len(selected_sku_ids)}",
+            flush=True,
+        )
+    max_rows_per_dealer = requested_max_rows_per_dealer()
+    rows = select_oldest_rows_per_dealer(
+        rows,
+        max_rows_per_dealer,
+        exact_sku_ids=selected_sku_ids,
+    )
+    if max_rows_per_dealer is not None and selected_sku_ids is None:
+        print(
+            "[reval] bounded oldest-first cohort: "
+            f"maximum {max_rows_per_dealer} rows per dealer",
+            flush=True,
+        )
+    elif max_rows_per_dealer is not None:
+        print(
+            "[reval] exact SKU allowlist takes precedence over scheduled cohort limit",
             flush=True,
         )
     print(f"[reval] loaded {len(rows)} dealer rows", flush=True)

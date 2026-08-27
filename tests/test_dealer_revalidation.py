@@ -20,7 +20,9 @@ from dealers.revalidate import (
     parse_ssense_html,
     quarantine_invalid_price_row,
     requested_dealers,
+    requested_max_rows_per_dealer,
     requested_sku_ids,
+    select_oldest_rows_per_dealer,
     underperforming_dealers,
     update_row,
 )
@@ -223,6 +225,40 @@ class DealerRevalidationTests(unittest.TestCase):
         self.assertIsNone(requested_sku_ids(""))
         with self.assertRaisesRegex(ValueError, "limited to 100"):
             requested_sku_ids(",".join(f"rei:{index}" for index in range(101)))
+
+    def test_scheduled_row_limit_is_optional_and_fail_closed(self):
+        self.assertEqual(requested_max_rows_per_dealer("50"), 50)
+        self.assertIsNone(requested_max_rows_per_dealer(""))
+        for invalid in ("0", "-1", "all"):
+            with self.subTest(value=invalid):
+                with self.assertRaisesRegex(ValueError, "positive integer"):
+                    requested_max_rows_per_dealer(invalid)
+
+    def test_scheduled_cohort_selects_oldest_rows_per_dealer_stably(self):
+        rows = [
+            {"dealer": "evo", "sku_id": "evo:new", "last_updated": "2026-08-27"},
+            {"dealer": "rei", "sku_id": "rei:old", "last_updated": None},
+            {"dealer": "evo", "sku_id": "evo:b", "last_updated": "2026-08-20"},
+            {"dealer": "evo", "sku_id": "evo:a", "last_updated": "2026-08-20"},
+            {"dealer": "rei", "sku_id": "rei:new", "last_updated": "2026-08-27"},
+        ]
+
+        selected = select_oldest_rows_per_dealer(rows, 2)
+
+        self.assertEqual(
+            [row["sku_id"] for row in selected],
+            ["evo:a", "evo:b", "rei:old", "rei:new"],
+        )
+        self.assertEqual(select_oldest_rows_per_dealer(rows, None), rows)
+        exact_rows = rows[:2]
+        self.assertEqual(
+            select_oldest_rows_per_dealer(
+                exact_rows,
+                1,
+                exact_sku_ids={row["sku_id"] for row in exact_rows},
+            ),
+            exact_rows,
+        )
 
     @patch("dealers.revalidate.time.sleep")
     def test_rei_current_buy_box_full_price(self, _sleep):

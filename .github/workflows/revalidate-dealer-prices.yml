@@ -35,6 +35,7 @@ env:
   REI_BROWSER_ROTATE_ROWS: "5"
   REVALIDATE_DEALERS: ${{ inputs.dealers }}
   REVALIDATE_SKU_IDS: ${{ inputs.sku_ids }}
+  REVALIDATE_MAX_ROWS_PER_DEALER: ${{ github.event_name == 'schedule' && '50' || '' }}
 
 jobs:
   revalidate-dealer-prices:

@@ -54,6 +54,17 @@ class WorkflowGuardTests(unittest.TestCase):
                 self.assertIn("python tools/fetch_camoufox.py", workflow)
                 self.assertNotIn("python -m camoufox fetch", workflow)
 
+    def test_scheduled_revalidation_uses_a_bounded_rotating_cohort(self):
+        workflow = (ROOT / ".github/workflows/revalidate-dealer-prices.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "REVALIDATE_MAX_ROWS_PER_DEALER: "
+            "${{ github.event_name == 'schedule' && '50' || '' }}",
+            workflow,
+        )
+        self.assertIn("REVALIDATE_SKU_IDS: ${{ inputs.sku_ids }}", workflow)
+
     def test_burton_sources_are_in_primary_and_fallback_dealer_runs(self):
         workflow = (ROOT / ".github/workflows/refresh-dealers.yml").read_text(encoding="utf-8")
         primary_runner = (ROOT / "server_run_dealers.sh").read_text(encoding="utf-8")
