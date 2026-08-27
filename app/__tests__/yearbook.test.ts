@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import {
   bestYearbookOffers,
+  filterYearbookArchive,
   filterYearbookProducts,
   formatCatalogPrice,
   groupYearbookArchive,
@@ -10,6 +11,7 @@ import {
   normalizeCatalogProduct,
   yearbookBrands,
   yearbookCategories,
+  yearbookFreshnessLabel,
   yearbookYear,
   yearbookYears,
 } from '../lib/yearbook';
@@ -140,6 +142,14 @@ test('normalizes all three official source contracts and Supabase arrays', () =>
   assert.equal(patagonia.currency, 'AUD');
 });
 
+test('rejects null, blank, zero, and negative official prices', () => {
+  assert.equal(normalizeCatalogProduct(arcRow({ list_price: null })), null);
+  assert.equal(normalizeCatalogProduct(arcRow({ list_price: '' })), null);
+  assert.equal(normalizeCatalogProduct(arcRow({ list_price: '   ' })), null);
+  assert.equal(normalizeCatalogProduct(arcRow({ list_price: 0 })), null);
+  assert.equal(normalizeCatalogProduct(arcRow({ list_price: -1 })), null);
+});
+
 test('rejects cross-brand identities, third-party links, inactive rows, and invalid prices', () => {
   assert.equal(normalizeCatalogProduct(burtonRow({ source_url: 'https://www.backcountry.com/burton' })), null);
   assert.equal(normalizeCatalogProduct(burtonRow({ catalog_product_id: 'patagonia:106881' })), null);
@@ -168,6 +178,8 @@ test('filters independently by brand, text, gender, category, and year', () => {
   const products = [arc, burton, patagonia];
 
   assert.deepEqual(filterYearbookProducts(products, { query: 'strata' }).map((item) => item.catalog_product_id), ['patagonia:37996']);
+  assert.deepEqual(filterYearbookProducts(products, { query: "Arc'teryx" }).map((item) => item.catalog_product_id), ['arcteryx:x000009715']);
+  assert.deepEqual(filterYearbookProducts(products, { query: 'Arc teryx' }).map((item) => item.catalog_product_id), ['arcteryx:x000009715']);
   assert.deepEqual(filterYearbookProducts(products, { brand: 'burton' }).map((item) => item.catalog_product_id), ['burton:106881']);
   assert.deepEqual(filterYearbookProducts(products, { gender: 'unisex' }).map((item) => item.catalog_product_id), ['patagonia:37996']);
   assert.deepEqual(filterYearbookProducts(products, { category: 'footwear' }).map((item) => item.catalog_product_id), ['arcteryx:x000009715']);
@@ -177,12 +189,45 @@ test('filters independently by brand, text, gender, category, and year', () => {
   assert.deepEqual(yearbookCategories(products), ['boards', 'caps', 'footwear', 'headwear']);
 });
 
+test('normalizes punctuation and spacing when searching unlinked deal styles', () => {
+  const archive = groupYearbookArchive([
+    deal({
+      sku_id: 'arcteryx-beta-archive',
+      brand: 'arcteryx',
+      model: "Arc'teryx Beta Jacket",
+      full_name: "Arc'teryx Beta Jacket",
+      url: 'https://www.evo.com/products/arcteryx-beta-jacket',
+      official_product_id: null,
+      _brand: 'arcteryx',
+      _platform: 'evo',
+    }),
+  ]);
+
+  assert.equal(filterYearbookArchive(archive, { query: "Arc'teryx" }).length, 1);
+  assert.equal(filterYearbookArchive(archive, { query: 'Arc teryx' }).length, 1);
+});
+
 test('formats single and ranged prices in each source currency', () => {
   const burton = normalizeCatalogProduct(burtonRow());
   const patagonia = normalizeCatalogProduct(patagoniaRow());
   assert.ok(burton && patagonia);
   assert.match(formatCatalogPrice(burton), /699\.95/);
   assert.match(formatCatalogPrice(patagonia), /49\.95.*54\.95/);
+  assert.match(formatCatalogPrice(patagonia, 'de-DE'), /49,95.*54,95/);
+  assert.equal(yearbookFreshnessLabel('2026-08-26T08:00:00Z', 'en-US', Date.parse('2026-08-27T08:00:00Z')), 'yesterday');
+});
+
+test('freshness labels fall back safely when Hermes omits Intl.RelativeTimeFormat', () => {
+  const descriptor = Object.getOwnPropertyDescriptor(Intl, 'RelativeTimeFormat');
+  Object.defineProperty(Intl, 'RelativeTimeFormat', { configurable: true, value: undefined });
+  try {
+    const now = Date.parse('2026-08-27T08:00:00Z');
+    assert.equal(yearbookFreshnessLabel('2026-08-27T08:00:00Z', 'en-US', now), 'today');
+    assert.equal(yearbookFreshnessLabel('2026-08-25T08:00:00Z', 'de-DE', now), 'vor 2 Tagen');
+    assert.equal(yearbookFreshnessLabel('2026-08-24T08:00:00Z', 'zh-CN', now), '3 天前');
+  } finally {
+    if (descriptor) Object.defineProperty(Intl, 'RelativeTimeFormat', descriptor);
+  }
 });
 
 test('links discounted offers by official style id before conservative exact-name fallback', () => {

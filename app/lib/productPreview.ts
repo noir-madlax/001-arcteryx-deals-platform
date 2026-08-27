@@ -1,4 +1,5 @@
-import type { Product } from './types';
+import { visibleProducts } from './catalog';
+import type { Product, ProductRow } from './types';
 
 export const INITIAL_PRODUCT_REGION = 'us';
 export const INITIAL_PRODUCT_LIMIT = 200;
@@ -26,9 +27,7 @@ export function parseProductPreviewCache(raw: string | null, now = Date.now()) {
     ) {
       return [];
     }
-    return value.products.filter(
-      (product) => typeof product?.sku_id === 'string' && Number.isFinite(product?.sale_price),
-    );
+    return visibleProducts(value.products as ProductRow[]);
   } catch {
     return [];
   }

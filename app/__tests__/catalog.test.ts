@@ -59,6 +59,21 @@ test('visibleProducts excludes lifecycle rows that are no longer active', () => 
   assert.equal(visibleProducts([row({ status: null })]).length, 1);
 });
 
+test('normalizes protocol-relative image URLs before native image rendering', () => {
+  const [normalized] = visibleProducts([
+    row({
+      image_url: '//cdn.shopify.com/primary.jpg?v=1',
+      images: ['//cdn.shopify.com/alternate.jpg?v=2', 'https://cdn.example/already-absolute.jpg', '  '],
+    }),
+  ]);
+
+  assert.equal(normalized?.image_url, 'https://cdn.shopify.com/primary.jpg?v=1');
+  assert.deepEqual(normalized?.images, [
+    'https://cdn.shopify.com/alternate.jpg?v=2',
+    'https://cdn.example/already-absolute.jpg',
+  ]);
+});
+
 test('model registry covers current additions and canonical aliases', () => {
   assert.equal(cleanName("Arc'teryx Arcword Short-Sleeve T-Shirt - Women's"), "Arc'Word Short-Sleeve T-Shirt Women's");
   assert.equal(extractSeries("Arc'Word Short-Sleeve T-Shirt Women's"), "Arc'Word");

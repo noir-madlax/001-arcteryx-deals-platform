@@ -1,6 +1,6 @@
-# iPhone 6.3-inch App Store Screenshots
+# Legacy iPhone 6.3-inch Screenshot Evidence
 
-Target device: iPhone 16 Pro, portrait, 1206 x 2622 pixels.
+These iPhone 16 Pro, 1206 x 2622 simulator captures belong to the earlier 1.0 evidence set. They are not valid upload assets for the 1.1 screenshot package.
 
 Capture order:
 
@@ -11,4 +11,4 @@ Capture order:
 5. `05-pro-paywall.png` - only after App Store Connect products and the RevenueCat current offering load real localized StoreKit prices, and sandbox purchase plus restore have passed.
 6. `06-privacy.png` - the in-app privacy policy screen.
 
-Screenshots produced by the local unsigned simulator build are release-readiness evidence. Before upload, re-capture the final set from the same signed/TestFlight candidate used for purchase testing. Do not add device frames, fabricated prices, merchant marks to listing copy, or text claims that are not visible and verified in the candidate build.
+Do not upload or recomposite these images. The 1.1 package uses the 6.9-inch plan in `store-assets/iphone-6.9/README.md` and must be re-captured from the exact signed/TestFlight candidate used for purchase testing.

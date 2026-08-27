@@ -192,6 +192,13 @@ function isStaleOutletProduct(product: ProductRow) {
   return Number.isNaN(stamp) || Date.now() - stamp > MAX_OUTLET_STALE_HOURS * 3600000;
 }
 
+function normalizeImageUrl(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  return trimmed.startsWith('//') ? `https:${trimmed}` : trimmed;
+}
+
 export function isBlockedProduct(product: ProductRow) {
   if (!isSupportedBrandProduct(product)) return true;
   const dealer = product.dealer || platformKey(product);
@@ -221,7 +228,10 @@ export function normalizeProduct(row: ProductRow): Product | null {
     sku_id: row.sku_id,
     sizes: Array.isArray(sizes) ? sizes : [],
     size_stock: sizeStock && typeof sizeStock === 'object' ? sizeStock : {},
-    images: Array.isArray(images) ? images : [],
+    image_url: normalizeImageUrl(row.image_url),
+    images: (Array.isArray(images) ? images : [])
+      .map(normalizeImageUrl)
+      .filter((value): value is string => value !== null),
     original_price: Number(row.original_price || 0),
     sale_price: Number(row.sale_price || 0),
     discount_pct: Number(row.discount_pct || 0),

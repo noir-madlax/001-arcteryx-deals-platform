@@ -1,4 +1,5 @@
 import { productCategory, productName, REGION_LABEL, REGION_OPTIONS } from './catalog';
+import { normalizeSearchText } from './search';
 import type { Product } from './types';
 
 export type DealFilters = {
@@ -33,7 +34,7 @@ export function availableDealRegions(products: Product[]) {
 }
 
 export function filterDeals(products: Product[], region: string, query: string, filters: DealFilters) {
-  const q = query.trim().toLowerCase();
+  const q = normalizeSearchText(query);
   const rows = productsForRegion(products, region).filter((product) => {
     if (filters.brand !== 'all' && product._brand !== filters.brand) return false;
     if (filters.platform !== 'all' && product._platform !== filters.platform) return false;
@@ -44,7 +45,7 @@ export function filterDeals(products: Product[], region: string, query: string, 
     if (filters.category !== 'all' && productCategory(product) !== filters.category) return false;
     if (filters.series !== 'all' && product._series !== filters.series) return false;
     if (q) {
-      const haystack = `${product.brand} ${productName(product)} ${product.full_name || ''} ${product.model || ''} ${product.description || ''} ${product.category || ''}`.toLowerCase();
+      const haystack = normalizeSearchText(`${product._brand} ${product.brand} ${productName(product)} ${product.full_name || ''} ${product.model || ''} ${product.description || ''} ${product.category || ''}`);
       if (!haystack.includes(q)) return false;
     }
     return true;

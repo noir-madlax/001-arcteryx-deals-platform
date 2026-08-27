@@ -51,4 +51,19 @@ test('brand filtering and search work across the multi-brand catalog', () => {
     filterDeals(mixed, 'us', 'burton custom', DEFAULT_DEAL_FILTERS).map((item) => item.sku_id),
     ['burton-custom-us'],
   );
+  const arcteryx = product({
+    sku_id: 'arcteryx-beta-us',
+    brand: 'arcteryx',
+    _brand: 'arcteryx',
+    model: 'Beta Jacket',
+    full_name: "Arc'teryx Beta Jacket",
+  });
+  assert.deepEqual(
+    filterDeals([arcteryx], 'us', "Arc'teryx", DEFAULT_DEAL_FILTERS).map((item) => item.sku_id),
+    ['arcteryx-beta-us'],
+  );
+  assert.deepEqual(
+    filterDeals([arcteryx], 'us', 'Arc teryx', DEFAULT_DEAL_FILTERS).map((item) => item.sku_id),
+    ['arcteryx-beta-us'],
+  );
 });

@@ -6,6 +6,10 @@
 - 证据方法：Apple 官方开发者文档、公开 App Store 商品页、公开 iTunes Search API
 - 限制：公开搜索结果只能作为相关性代理，不能当成关键词搜索量
 
+## 1.1 候选更新（2026-08-27）
+
+Build 10 候选已加入三品牌 Yearbook、确定性实时折扣关联，以及 Outlet／未关联折扣区。未关联只表示无法通过官方款号或唯一规范化名称可靠关联到当前目录款，不代表已经退市。本报告的搜索定位仍作为基线，但第六截图槽已从 Display Preferences 调整为 `yearbook-current-deals`；五语推广文案、描述与版本更新说明也已加入这项可验证能力。最终截图仍必须来自精确签名候选，且三品牌数量声明要由提交前实时目录回读支持。
+
 ## 结论
 
 GearDrop 不应与大型综合优惠 App 拼“优惠券最多”，也不应与单一商家 App 拼交易闭环。最清晰的增长位置是：**户外装备专用的跨地区价格历史与买入判断工具**。
@@ -70,7 +74,9 @@ Apple 说明无预览视频时，搜索结果通常首先展示前 1–3 张截�
 2. 真假低价判断：再回答“为什么值得点开”。
 3. 跨地区价格：最后证明差异化能力。
 
-后续三张展示关注清单、Pro 完整价格历史、地区/币种/语言。旧的隐私页截图属于审核证明，不适合作为主要转化位，下一版本用 Display Preferences 替换。
+后续三张展示关注清单、Pro 完整价格历史和 Yearbook。旧的隐私页截图属于审核证明，不适合作为主要转化位。
+
+提交素材采用 Apple 当前 6.9 英寸槽位的 iPhone 16 Pro Max 竖图（1320×2868），每种语言六张、无 alpha；旧 6.3 英寸模拟器图片只保留为历史证据，不能上传为 1.1 素材。
 
 Apple 允许最多 10 张图，并建议每张突出一个核心利益；完整规则见 [Creating Your Product Page](https://developer.apple.com/app-store/product-page/) 与 [Upload app previews and screenshots](https://developer.apple.com/help/app-store-connect/manage-app-information/upload-app-previews-and-screenshots)。
 

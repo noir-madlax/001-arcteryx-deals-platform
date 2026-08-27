@@ -22,6 +22,19 @@ test('product preview cache round-trips a fresh bounded product list', () => {
   assert.equal(parsed.at(-1)?.sku_id, `preview-${INITIAL_PRODUCT_LIMIT - 1}`);
 });
 
+test('product preview cache re-normalizes protocol-relative image URLs on upgrade', () => {
+  const now = Date.parse('2026-08-27T12:00:00.000Z');
+  const cached = product({
+    image_url: '//cdn.shopify.com/primary.jpg?v=1',
+    images: ['//cdn.shopify.com/alternate.jpg?v=2'],
+  });
+
+  const [normalized] = parseProductPreviewCache(serializeProductPreview([cached], now), now + 1000);
+
+  assert.equal(normalized?.image_url, 'https://cdn.shopify.com/primary.jpg?v=1');
+  assert.deepEqual(normalized?.images, ['https://cdn.shopify.com/alternate.jpg?v=2']);
+});
+
 test('product preview cache rejects expired, future, malformed, and invalid rows', () => {
   const now = Date.parse('2026-08-04T09:00:00.000Z');
   const valid = [product({ sku_id: 'valid-preview' })];

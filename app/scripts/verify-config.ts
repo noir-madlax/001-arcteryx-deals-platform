@@ -37,13 +37,22 @@ type AppConfig = {
 };
 
 type PackageJson = {
+  version: string;
   main: string;
   dependencies: Record<string, string>;
   scripts: Record<string, string>;
 };
 
 type EasJson = {
-  build?: Record<string, unknown>;
+  cli?: {
+    appVersionSource?: string;
+  };
+  build?: {
+    production?: {
+      autoIncrement?: boolean;
+    };
+    simulator?: Record<string, unknown>;
+  };
   submit?: {
     production?: {
       ios?: {
@@ -69,6 +78,13 @@ const iapSource = readFileSync(join(root, 'lib/iap.ts'), 'utf8');
 const i18nSource = readFileSync(join(root, 'lib/i18n.ts'), 'utf8');
 const meSource = readFileSync(join(root, 'app/(tabs)/me.tsx'), 'utf8');
 const dealsSource = readFileSync(join(root, 'app/(tabs)/index.tsx'), 'utf8');
+const tabsLayoutSource = readFileSync(join(root, 'app/(tabs)/_layout.tsx'), 'utf8');
+const yearbookScreenSource = readFileSync(join(root, 'app/(tabs)/yearbook.tsx'), 'utf8');
+const yearbookSource = readFileSync(join(root, 'lib/yearbook.ts'), 'utf8');
+const catalogSource = readFileSync(join(root, 'lib/catalog.ts'), 'utf8');
+const dealsFilterSource = readFileSync(join(root, 'lib/deals.ts'), 'utf8');
+const productPreviewSource = readFileSync(join(root, 'lib/productPreview.ts'), 'utf8');
+const supabaseSource = readFileSync(join(root, 'lib/supabase.ts'), 'utf8');
 const privacySource = readFileSync(join(root, 'app/privacy.tsx'), 'utf8');
 const dealCardSource = readFileSync(join(root, 'components/DealCard.tsx'), 'utf8');
 const filterChipsSource = readFileSync(join(root, 'components/FilterChips.tsx'), 'utf8');
@@ -85,14 +101,15 @@ const expo = appConfig.expo;
 
 assert.equal(expo.name, 'GearDrop');
 assert.equal(expo.slug, 'geardrop');
+assert.equal(expo.version, '1.1.0');
 assert.equal(expo.scheme, 'geardrop');
 assert.equal(expo.userInterfaceStyle, 'automatic');
 assert.equal(expo.locales?.['zh-Hans']?.ios?.CFBundleDisplayName, '值de');
 assert.equal(expo.locales?.['zh-Hans']?.ios?.CFBundleName, '值de');
 assert.equal(expo.locales?.['zh-Hans']?.android?.app_name, '值de');
 assert.equal(expo.ios?.bundleIdentifier, 'dev.100app.geardrop');
-assert.equal(expo.ios?.supportsTablet, false, 'v1 release must remain iPhone-only until iPad UI and screenshots are verified');
-assert.equal(expo.ios?.buildNumber, '9');
+assert.equal(expo.ios?.supportsTablet, false, 'release candidate must remain iPhone-only until iPad UI and screenshots are verified');
+assert.equal(expo.ios?.buildNumber, '10');
 assert.equal(expo.ios?.config?.usesNonExemptEncryption, false);
 assertNoTrademark(expo.name, 'expo.name');
 assertNoTrademark(expo.slug, 'expo.slug');
@@ -128,17 +145,31 @@ assert.equal(splashPlugin[1].resizeMode, 'contain');
 for (const dependency of ['expo', 'expo-router', 'expo-splash-screen', '@supabase/supabase-js', '@react-native-async-storage/async-storage', 'expo-notifications', 'expo-image', 'expo-localization', 'react-native-svg', 'react-native-purchases']) {
   assert.ok(packageJson.dependencies[dependency], `missing dependency ${dependency}`);
 }
+assert.equal(
+  packageJson.dependencies['react-native-reanimated'],
+  '4.5.1',
+  'Expo SDK 57 requires the bundled Reanimated version; an unbounded peer resolves to an incompatible Worklets API',
+);
+assert.equal(
+  packageJson.dependencies['react-native-worklets'],
+  '0.10.1',
+  'Expo SDK 57 expo-modules-core requires Worklets 0.10.x with executeSync',
+);
 
 assert.equal(packageJson.main, 'expo-router/entry');
+assert.equal(packageJson.version, '1.1.0');
 assert.ok(packageJson.scripts.typecheck, 'missing typecheck script');
 assert.ok(packageJson.scripts.doctor, 'missing doctor script');
 assert.ok(packageJson.scripts.test, 'missing test script');
 assert.ok(packageJson.scripts['verify:release-assets'], 'missing release asset verification script');
 assert.ok(packageJson.scripts['verify:store-metadata'], 'missing App Store metadata verification script');
+assert.ok(packageJson.scripts['verify:store-screenshots'], 'missing final App Store screenshot verification script');
 assert.ok(packageJson.scripts['eas:build:ios'], 'missing EAS iOS build script');
 assert.ok(packageJson.scripts['eas:submit:ios'], 'missing EAS iOS submit script');
 assert.ok(easJson.build?.production, 'missing production build profile');
 assert.ok(easJson.build?.simulator, 'missing simulator build profile');
+assert.equal(easJson.cli?.appVersionSource, 'local', 'Build 10 must use the committed local version source');
+assert.equal(easJson.build?.production?.autoIncrement, false, 'production build must not increment committed Build 10');
 assert.ok(easJson.submit?.production?.ios, 'missing production iOS submit profile');
 assert.equal(easJson.submit?.production?.ios?.ascAppId, '6790165332', 'production submit must target the GearDrop App Store Connect record');
 assert.ok(existsSync(join(root, '..', 'privacy.html')), 'missing root privacy.html for App Store privacy policy URL');
@@ -177,6 +208,7 @@ assert.ok(dealsSource.includes('<BrandLogo'), 'Deals header must render the Gear
 assert.ok(privacySource.includes('<BrandLogo'), 'Privacy screen must render the GearDrop logo');
 assert.ok(!dealsSource.includes('heroSection'), 'Deals must not keep the old single-row hero stream');
 assert.ok(filterChipsSource.includes("t('filters.brand')"), 'Filter sheet must include localized Brand');
+assert.ok(filterChipsSource.includes("t('filters.source')"), 'Filter sheet must distinguish merchant Source from product Brand');
 assert.ok(filterChipsSource.includes("t('filters.category')"), 'Filter sheet must include localized Category');
 assert.ok(filterChipsSource.includes("t('filters.gender')"), 'Filter sheet must include localized Gender');
 assert.ok(
@@ -184,6 +216,15 @@ assert.ok(
     filterChipsSource.includes('contentContainerStyle={styles.filterContent}'),
   'Filter sheet sections must scroll for localized and larger text',
 );
+assert.ok(tabsLayoutSource.includes('name="yearbook"') && tabsLayoutSource.includes("t('tabs.yearbook')"), 'tab layout must expose the localized Yearbook route');
+assert.ok(yearbookScreenSource.includes('keyboardShouldPersistTaps="handled"'), 'Yearbook search must preserve first-tap navigation while the keyboard is open');
+assert.ok(yearbookScreenSource.includes('fetchYearbookProducts()'), 'Yearbook screen must load the official catalog through the read-only client');
+assert.ok(yearbookSource.includes("method = 'official_id'") && yearbookSource.includes("method = 'exact_name'"), 'Yearbook deals must use deterministic ID or unique exact-name matching');
+assert.ok(yearbookSource.includes('if (candidates.length === 1)'), 'Yearbook must fail closed on ambiguous normalized-name matches');
+assert.ok(catalogSource.includes("arcteryx: Object.freeze") || catalogSource.includes('BRANDS'), 'catalog must use the shared three-brand registry');
+assert.ok(dealsFilterSource.includes("filters.brand !== 'all'"), 'Deals filtering must support product brand independently from source');
+assert.ok(productPreviewSource.includes("geardrop.product-preview.v2"), 'multi-brand release must invalidate the single-brand preview cache');
+assert.ok(supabaseSource.includes(".from('catalog_products')") && supabaseSource.includes(".eq('status', 'active')"), 'Yearbook client must read only active catalog rows');
 assert.ok(dealCardSource.includes("from 'expo-image'"), 'DealCard images must use expo-image');
 assert.ok(dealCardSource.includes('aspectRatio: 4 / 5'), 'DealCard image slot must stay 4:5');
 assert.ok(dealCardSource.includes('contentFit="cover"'), 'DealCard images must use cover fit');
@@ -244,9 +285,10 @@ assert.ok(!webProductDetail.includes('/rest/v1/price_alerts'), 'website must not
 assert.ok(supportPage.includes('/rest/v1/rpc/submit_support_request'), 'support page must use the validated support RPC');
 assert.ok(supportPage.includes('p_website'), 'support page must include the abuse-control honeypot field');
 assert.ok(liveDataVerifierSource.includes('PLATFORM_REGION_MIN_ROWS'), 'live data verification must gate every required platform/region slice');
+assert.ok(liveDataVerifierSource.includes('YEARBOOK_BRAND_MIN_ROWS'), 'live data verification must gate every Yearbook brand independently');
 assert.ok(!liveDataVerifierSource.includes('products.length >= 5000'), 'live data verification must not use a volatile aggregate catalog floor');
 
 console.log(
-  'config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=9 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=' +
+  'config_ok name=GearDrop version=1.1.0 bundle=dev.100app.geardrop buildNumber=10 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=' +
     [...pluginNames].join(','),
 );

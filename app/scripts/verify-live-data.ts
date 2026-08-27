@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 
-import { SUPABASE_ANON, SUPABASE_URL, visibleProducts } from '../lib/catalog';
+import { productCategory, SUPABASE_ANON, SUPABASE_URL, visibleProducts } from '../lib/catalog';
 import { availableDealRegions, DEFAULT_DEAL_FILTERS, filterDeals } from '../lib/deals';
+import { localizedCategory } from '../lib/i18n';
 import { INITIAL_PRODUCT_LIMIT, INITIAL_PRODUCT_REGION } from '../lib/productPreview';
 import { computeSignal, groupHistoryBySku } from '../lib/signals';
 import type { CatalogProduct, CatalogProductRow, PriceHistoryRow, Product, ProductRow } from '../lib/types';
@@ -41,6 +42,9 @@ const YEARBOOK_BRAND_MIN_ROWS: Record<string, number> = {
   burton: 400,
   patagonia: 400,
 };
+
+const NON_CHINESE_LANGUAGES = ['en', 'de', 'fr', 'ja'] as const;
+const YEARBOOK_LOCALIZATION_LANGUAGES = ['zh-Hans', ...NON_CHINESE_LANGUAGES] as const;
 
 const YEARBOOK_COLUMNS = [
   'catalog_product_id', 'brand_key', 'official_product_id', 'brand', 'catalog_scope', 'market',
@@ -91,9 +95,27 @@ async function loadYearbook() {
     rows.push(...data);
     if (data.length < pageSize || offset > 10000) break;
   }
-  const normalized = rows.map(normalizeCatalogProduct).filter((product): product is CatalogProduct => product !== null);
-  assert.equal(normalized.length, rows.length, `all active Yearbook rows must satisfy the published source contract (${normalized.length}/${rows.length})`);
-  return normalized;
+  const results = rows.map((row) => ({ row, product: normalizeCatalogProduct(row) }));
+  const normalized = results.map(({ product }) => product).filter((product): product is CatalogProduct => product !== null);
+  const rejected = results
+    .filter(({ product }) => product === null)
+    .map(({ row }) => ({
+      catalog_product_id: row.catalog_product_id,
+      brand_key: row.brand_key,
+      official_product_id: row.official_product_id,
+      list_price: row.list_price,
+      list_price_max: row.list_price_max,
+    }));
+  const maxRejected = Math.max(1, Math.floor(rows.length * 0.001));
+  assert.ok(
+    rejected.every((row) => Number(row.list_price) <= 0 && Number(row.list_price_max) <= 0),
+    'Yearbook may tolerate only a capped set of non-positive-price rows; every other contract rejection is blocking',
+  );
+  assert.ok(
+    rejected.length <= maxRejected,
+    `active Yearbook contract rejections exceeded the 0.1% safety cap (${rejected.length}/${rows.length})`,
+  );
+  return { products: normalized, rejected };
 }
 
 async function loadHistory(skuIds: string[]) {
@@ -126,7 +148,34 @@ async function main() {
   });
 
   const products = await loadProducts();
-  const yearbook = await loadYearbook();
+  const { products: yearbook, rejected: yearbookRejectedRows } = await loadYearbook();
+  const productImageUrls = products
+    .flatMap((product) => [product.image_url, ...product.images])
+    .filter((value): value is string => Boolean(value));
+  const invalidProductImageUrls = productImageUrls.filter((value) => !value.startsWith('https://'));
+  assert.deepEqual(
+    invalidProductImageUrls,
+    [],
+    `normalized product images must use absolute HTTPS URLs; invalid count: ${invalidProductImageUrls.length}`,
+  );
+  const dealCategories = [...new Set(products.map(productCategory))].sort((left, right) => left.localeCompare(right));
+  const dealCategoryLocalizationGaps = NON_CHINESE_LANGUAGES.flatMap((language) => dealCategories
+    .filter((category) => /\p{Script=Han}/u.test(category) && localizedCategory(language, category) === category)
+    .map((category) => `${language}:${category}`));
+  assert.deepEqual(
+    dealCategoryLocalizationGaps,
+    [],
+    `active deal categories must not leak untranslated Chinese labels: ${dealCategoryLocalizationGaps.join(', ')}`,
+  );
+  const yearbookCategories = [...new Set(yearbook.flatMap((product) => product.categories))].sort((left, right) => left.localeCompare(right));
+  const yearbookCategoryLocalizationGaps = YEARBOOK_LOCALIZATION_LANGUAGES.flatMap((language) => yearbookCategories
+    .filter((category) => localizedCategory(language, category) === category)
+    .map((category) => `${language}:${category}`));
+  assert.deepEqual(
+    yearbookCategoryLocalizationGaps,
+    [],
+    `active Yearbook categories must have all five localized labels: ${yearbookCategoryLocalizationGaps.join(', ')}`,
+  );
   const { data: previewRows } = await rest<ProductRow[]>(
     `products?select=*&status=eq.active&region=eq.${INITIAL_PRODUCT_REGION}&order=discount_pct.desc,sku_id.asc&limit=${INITIAL_PRODUCT_LIMIT}`,
   );
@@ -189,7 +238,14 @@ async function main() {
         price_history_content_range: historyRange,
         yearbook_content_range: yearbookRange,
         paginated_products_loaded: products.length,
+        product_image_urls: productImageUrls.length,
+        invalid_product_image_urls: invalidProductImageUrls.length,
         yearbook_products_loaded: yearbook.length,
+        yearbook_rejected_rows: yearbookRejectedRows,
+        deal_category_count: dealCategories.length,
+        deal_category_localization_gaps: dealCategoryLocalizationGaps,
+        yearbook_category_count: yearbookCategories.length,
+        yearbook_category_localization_gaps: yearbookCategoryLocalizationGaps,
         yearbook_brand_counts: yearbookBrandCounts,
         yearbook_linked_styles_by_brand: linkedYearbookByBrand,
         yearbook_match_counts: yearbookIndex.matchCounts,

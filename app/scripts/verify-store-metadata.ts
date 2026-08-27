@@ -8,12 +8,15 @@ type LocaleMetadata = {
   promotionalText: string;
   keywords: string;
   description: string;
+  whatsNew: string;
   screenshots: string[];
 };
 
 type StoreMetadataManifest = {
   schemaVersion: number;
   target: string;
+  targetVersion: string;
+  targetBuildNumber: string;
   appId: string;
   bundleId: string;
   primaryLocale: string;
@@ -21,6 +24,7 @@ type StoreMetadataManifest = {
     applyToCurrentReview: boolean;
     requiresFreshAppStoreReadback: boolean;
     requiresFinalBuildScreenshots: boolean;
+    requiresFreshScreenshotSetReadback: boolean;
   };
   shared: {
     category: string;
@@ -29,6 +33,15 @@ type StoreMetadataManifest = {
     termsUrl: string;
   };
   screenshotSources: string[];
+  screenshotTarget: {
+    deviceClass: string;
+    device: string;
+    orientation: string;
+    width: number;
+    height: number;
+    countPerLocale: number;
+    requiresNoAlpha: boolean;
+  };
   locales: Record<string, LocaleMetadata>;
 };
 
@@ -39,7 +52,7 @@ const EXPECTED_SCREENSHOT_SOURCES = [
   'region-comparison',
   'watchlist',
   'pro-price-history',
-  'display-preferences',
+  'yearbook-current-deals',
 ];
 const SUPPORT_URL = 'https://001.100app.dev/support.html';
 const PRIVACY_URL = 'https://001.100app.dev/privacy.html';
@@ -52,6 +65,8 @@ const FORBIDDEN_PUBLIC_TERMS: Array<{ label: string; pattern: RegExp }> = [
   { label: 'Slickdeals', pattern: /\bslickdeals\b/iu },
   { label: 'Backcountry', pattern: /\bbackcountry\b/iu },
   { label: 'REI', pattern: /\brei\b/iu },
+  { label: 'Burton', pattern: /\bburton\b/iu },
+  { label: 'Patagonia', pattern: /\bpatagonia\b/iu },
 ];
 
 function characterCount(value: string) {
@@ -78,18 +93,30 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as StoreMetadata
 
 assert.equal(manifest.schemaVersion, 1);
 assert.equal(manifest.target, 'next-app-version');
+assert.equal(manifest.targetVersion, '1.1.0');
+assert.equal(manifest.targetBuildNumber, '10');
 assert.equal(manifest.appId, '6790165332');
 assert.equal(manifest.bundleId, 'dev.100app.geardrop');
 assert.equal(manifest.primaryLocale, 'en-US');
 assert.equal(manifest.releaseBoundary.applyToCurrentReview, false, 'ASO package must not target the current review');
 assert.equal(manifest.releaseBoundary.requiresFreshAppStoreReadback, true);
 assert.equal(manifest.releaseBoundary.requiresFinalBuildScreenshots, true);
+assert.equal(manifest.releaseBoundary.requiresFreshScreenshotSetReadback, true);
 assert.equal(manifest.shared.category, 'SHOPPING');
 assert.equal(manifest.shared.supportUrl, SUPPORT_URL);
 assert.equal(manifest.shared.privacyPolicyUrl, PRIVACY_URL);
 assert.equal(manifest.shared.termsUrl, TERMS_URL);
 assert.deepEqual(manifest.screenshotSources, EXPECTED_SCREENSHOT_SOURCES);
 assert.equal(new Set(manifest.screenshotSources).size, EXPECTED_SCREENSHOT_SOURCES.length);
+assert.deepEqual(manifest.screenshotTarget, {
+  deviceClass: 'iPhone 6.9-inch',
+  device: 'iPhone 16 Pro Max',
+  orientation: 'portrait',
+  width: 1320,
+  height: 2868,
+  countPerLocale: EXPECTED_SCREENSHOT_SOURCES.length,
+  requiresNoAlpha: true,
+});
 assert.deepEqual(Object.keys(manifest.locales).sort(), [...REQUIRED_LOCALES].sort());
 
 for (const localeKey of REQUIRED_LOCALES) {
@@ -100,6 +127,11 @@ for (const localeKey of REQUIRED_LOCALES) {
   assertCharacterRange(locale.subtitle, 1, 30, `${localeKey}.subtitle`);
   assertCharacterRange(locale.promotionalText, 1, 170, `${localeKey}.promotionalText`);
   assertCharacterRange(locale.description, 1, 4000, `${localeKey}.description`);
+  assertCharacterRange(locale.whatsNew, 1, 4000, `${localeKey}.whatsNew`);
+  assert.ok(
+    !/no longer appear|not in the current|已不在|不在当前|nicht mehr im aktuellen|nicht im aktuellen|absents? du catalogue|現行カタログにない|現行の公式.*にはありません/iu.test(`${locale.description}\n${locale.promotionalText}\n${locale.whatsNew}`),
+    `${localeKey} must not claim unmatched deals are absent from the current official catalog`,
+  );
 
   const keywordBytes = Buffer.byteLength(locale.keywords, 'utf8');
   assert.ok(keywordBytes <= 100, `${localeKey}.keywords must be at most 100 UTF-8 bytes, got ${keywordBytes}`);
@@ -130,6 +162,7 @@ for (const localeKey of REQUIRED_LOCALES) {
     promotionalText: locale.promotionalText,
     keywords: locale.keywords,
     description: locale.description,
+    whatsNew: locale.whatsNew,
     screenshots: locale.screenshots.join('\n'),
   })) {
     assertNoForbiddenTerms(value, `${localeKey}.${field}`);
@@ -138,11 +171,11 @@ for (const localeKey of REQUIRED_LOCALES) {
   console.log(
     `${localeKey} name=${characterCount(locale.name)} subtitle=${characterCount(locale.subtitle)} ` +
       `promo=${characterCount(locale.promotionalText)} description=${characterCount(locale.description)} ` +
-      `keywords=${keywordBytes}B screenshots=${locale.screenshots.length}`,
+      `whatsNew=${characterCount(locale.whatsNew)} keywords=${keywordBytes}B screenshots=${locale.screenshots.length}`,
   );
 }
 
 console.log(
-  `store_metadata_ok target=${manifest.target} locales=${REQUIRED_LOCALES.length} ` +
-    `screenshots=${EXPECTED_SCREENSHOT_SOURCES.length} currentReview=${manifest.releaseBoundary.applyToCurrentReview}`,
+  `store_metadata_ok target=${manifest.targetVersion} build=${manifest.targetBuildNumber} locales=${REQUIRED_LOCALES.length} ` +
+    `screenshots=${EXPECTED_SCREENSHOT_SOURCES.length} display=${manifest.screenshotTarget.deviceClass} currentReview=${manifest.releaseBoundary.applyToCurrentReview}`,
 );

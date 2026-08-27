@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
   FlatList,
@@ -12,20 +12,18 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import type { GestureResponderEvent } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ScreenState } from '../../components/ScreenState';
 import { useProducts } from '../../contexts/ProductsContext';
 import { usePreferences } from '../../contexts/PreferencesContext';
-import { freshnessLabel, PLATFORM } from '../../lib/catalog';
+import { PLATFORM } from '../../lib/catalog';
 import { fetchYearbookProducts } from '../../lib/supabase';
 import { colors, radii, typography } from '../../lib/theme';
 import type { CatalogBrandKey, CatalogGender, CatalogProduct, Product } from '../../lib/types';
 import {
   bestYearbookOffers,
   brandLabel,
-  categoryLabel,
   filterYearbookArchive,
   filterYearbookProducts,
   formatCatalogPrice,
@@ -33,6 +31,7 @@ import {
   indexYearbookDeals,
   yearbookBrands,
   yearbookCategories,
+  yearbookFreshnessLabel,
   yearbookYear,
   yearbookYears,
 } from '../../lib/yearbook';
@@ -47,7 +46,7 @@ type YearbookListItem =
 
 export default function YearbookScreen() {
   const { products: dealProducts, loading: dealsLoading } = useProducts();
-  const { formatNumber, genderLabel, t } = usePreferences();
+  const { categoryLabel, formatNumber, genderLabel, t } = usePreferences();
   const [catalogProducts, setCatalogProducts] = useState<CatalogProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [unavailable, setUnavailable] = useState(false);
@@ -58,24 +57,21 @@ export default function YearbookScreen() {
   const [category, setCategory] = useState('all');
   const [year, setYear] = useState<number | 'all'>('all');
 
-  useEffect(() => {
-    let active = true;
-    fetchYearbookProducts()
-      .then((rows) => {
-        if (!active) return;
-        setCatalogProducts(rows);
-        setUnavailable(false);
-      })
-      .catch(() => {
-        if (active) setUnavailable(true);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-    return () => {
-      active = false;
-    };
+  const loadYearbook = useCallback(async () => {
+    setLoading(true);
+    setUnavailable(false);
+    try {
+      setCatalogProducts(await fetchYearbookProducts());
+    } catch {
+      setUnavailable(true);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    void loadYearbook();
+  }, [loadYearbook]);
 
   const dealIndex = useMemo(
     () => indexYearbookDeals(catalogProducts, dealProducts),
@@ -130,7 +126,14 @@ export default function YearbookScreen() {
     return <ScreenState title={t('yearbook.loadingTitle')} body={t('yearbook.loadingBody')} loading />;
   }
   if (unavailable) {
-    return <ScreenState title={t('yearbook.unavailableTitle')} body={t('yearbook.unavailableBody')} />;
+    return (
+      <ScreenState
+        title={t('yearbook.unavailableTitle')}
+        body={t('yearbook.unavailableBody')}
+        actionLabel={t('yearbook.retry')}
+        onAction={() => void loadYearbook()}
+      />
+    );
   }
   if (!catalogProducts.length) {
     return <ScreenState title={t('yearbook.emptyTitle')} body={t('yearbook.emptyBody')} />;
@@ -242,8 +245,7 @@ function FilterChip({ active, label, onPress }: { active: boolean; label: string
   );
 }
 
-function openDeal(product: Product, event: GestureResponderEvent) {
-  event.stopPropagation();
+function openDeal(product: Product) {
   router.push({ pathname: '/product/[skuId]', params: { skuId: product.sku_id } });
 }
 
@@ -252,7 +254,7 @@ function platformLabel(product: Product) {
 }
 
 function OfferRows({ offers, preferredCurrency }: { offers: Product[]; preferredCurrency?: string }) {
-  const { formatMoney, formatNumber, regionLabel, t } = usePreferences();
+  const { formatMoney, formatNumber, locale, regionLabel, t } = usePreferences();
   const bestOffers = bestYearbookOffers(offers, preferredCurrency);
   if (!bestOffers.length) {
     return (
@@ -269,13 +271,13 @@ function OfferRows({ offers, preferredCurrency }: { offers: Product[]; preferred
         <Text style={styles.offerHeaderMeta}>{t('yearbook.verifiedListings', { count: formatNumber(offers.length) })}</Text>
       </View>
       {bestOffers.slice(0, 3).map((offer) => {
-        const freshness = freshnessLabel(offer.last_updated);
+        const freshness = yearbookFreshnessLabel(offer.last_updated, locale);
         const price = formatMoney(offer.sale_price, offer.currency, offer.symbol);
         return (
           <Pressable
             key={`${offer.currency}:${offer.sku_id}`}
             style={({ pressed }) => [styles.offerRow, pressed && styles.offerRowPressed]}
-            onPress={(event) => openDeal(offer, event)}
+            onPress={() => openDeal(offer)}
             accessibilityRole="button"
             accessibilityLabel={t('yearbook.offerA11y', { platform: platformLabel(offer), price })}
           >
@@ -306,7 +308,7 @@ function OfferRows({ offers, preferredCurrency }: { offers: Product[]; preferred
 }
 
 function YearbookCard({ product, offers }: { product: CatalogProduct; offers: Product[] }) {
-  const { formatNumber, genderLabel, locale, t } = usePreferences();
+  const { categoryLabel, formatNumber, genderLabel, locale, t } = usePreferences();
   const colorPreview = product.color_names.slice(0, 3).join(' · ');
   const categoryPreview = product.categories.slice(0, 4).map(categoryLabel).join(' · ');
   const firstSeen = new Date(product.first_seen_at).toLocaleDateString(locale, {
@@ -316,12 +318,7 @@ function YearbookCard({ product, offers }: { product: CatalogProduct; offers: Pr
   });
   const gender = product.gender === 'kids' ? t('yearbook.kids') : genderLabel(product.gender);
   return (
-    <Pressable
-      style={styles.card}
-      onPress={() => void Linking.openURL(product.source_url)}
-      accessibilityRole="link"
-      accessibilityLabel={t('yearbook.officialA11y', { brand: product.brand, name: product.name })}
-    >
+    <View style={styles.card}>
       <View style={styles.cardTop}>
         <View style={styles.badges}>
           <View style={styles.brandBadge}><Text style={styles.brandText}>{product.brand}</Text></View>
@@ -329,7 +326,7 @@ function YearbookCard({ product, offers }: { product: CatalogProduct; offers: Pr
         </View>
         <View style={styles.listPriceBlock}>
           <Text style={styles.listPriceLabel}>{t('yearbook.officialList')}</Text>
-          <Text style={styles.price}>{formatCatalogPrice(product)}</Text>
+          <Text style={styles.price}>{formatCatalogPrice(product, locale)}</Text>
         </View>
       </View>
       <Text style={styles.productName}>{product.name}</Text>
@@ -343,17 +340,22 @@ function YearbookCard({ product, offers }: { product: CatalogProduct; offers: Pr
       <OfferRows offers={offers} preferredCurrency={product.currency} />
       <View style={styles.cardFooter}>
         <Text style={styles.observed}>{t('yearbook.firstArchived', { date: firstSeen })}</Text>
-        <View style={styles.officialLink}>
+        <Pressable
+          style={({ pressed }) => [styles.officialLink, pressed && styles.offerRowPressed]}
+          onPress={() => void Linking.openURL(product.source_url)}
+          accessibilityRole="link"
+          accessibilityLabel={t('yearbook.officialA11y', { brand: product.brand, name: product.name })}
+        >
           <Text style={styles.officialText}>{t('yearbook.officialPage')}</Text>
           <Ionicons name="open-outline" size={14} color={colors.accent} />
-        </View>
+        </Pressable>
       </View>
-    </Pressable>
+    </View>
   );
 }
 
 function ArchiveCard({ product }: { product: YearbookArchiveStyle }) {
-  const { formatNumber, genderLabel, t } = usePreferences();
+  const { categoryLabel, formatNumber, genderLabel, t } = usePreferences();
   const categoryPreview = product.categories.slice(0, 4).map(categoryLabel).join(' · ');
   const colorPreview = product.colors.slice(0, 3).join(' · ');
   const gender = product.gender === 'kids' ? t('yearbook.kids') : genderLabel(product.gender);

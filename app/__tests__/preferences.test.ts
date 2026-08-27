@@ -25,11 +25,33 @@ test('translations interpolate values and localize catalog labels', () => {
   assert.equal(translate('en', 'brand.name'), 'GearDrop');
   assert.equal(translate('de', 'privacy.title'), 'Datenschutz');
   assert.equal(localizedCategory('ja', '裤装'), 'パンツ');
+  assert.equal(localizedCategory('zh-Hans', 'footwear'), '鞋履');
+  assert.equal(localizedCategory('de', 'footwear'), 'Schuhe');
+  assert.equal(localizedCategory('fr', '滑雪板'), 'Snowboards');
+  assert.equal(localizedCategory('ja', 'binding-parts'), 'バインディングパーツ');
+  assert.equal(localizedCategory('en', 'baselayers'), 'Base Layers');
+  assert.equal(localizedCategory('en', 'l-s-button-down-shirts'), 'Long-Sleeve Button-Down Shirts');
+  assert.equal(localizedCategory('en', 'slings'), 'Sling Bags');
+  assert.equal(localizedCategory('en', 'sun-shirts-rashguards'), 'Sun Shirts & Rashguards');
+  assert.equal(localizedCategory('zh-Hans', 'booties'), '软底鞋');
+  assert.equal(localizedCategory('de', 'water-protective-bags'), 'Schutztaschen für Wasseraktivitäten');
   assert.equal(localizedRegion('zh-Hans', 'fi'), '芬兰');
   assert.equal(localizedRegion('de', 'ie'), 'Irland');
   assert.equal(localizedRegion('fr', 'au'), 'Australie');
   assert.equal(localizedRegion('ja', 'ch'), 'スイス');
   assert.equal(localizedRegion('en', 'xx'), 'XX');
+});
+
+test('all current production deal categories avoid Chinese-label leakage in non-Chinese locales', () => {
+  const activeDealCategories = [
+    '上衣/T恤', '保暖夹克', '其他', '固定器', '夹克/外套', '抓绒/摇粒绒', '排汗内衣', '滑雪板',
+    '硬壳冲锋衣', '背包', '背心', '裙装', '裤装', '西装/西服', '配件', '鞋类',
+  ];
+  for (const language of ['en', 'de', 'fr', 'ja'] as const) {
+    for (const category of activeDealCategories) {
+      assert.notEqual(localizedCategory(language, category), category, `${language}:${category}`);
+    }
+  }
 });
 
 test('every shipped language covers the complete UI message catalog', () => {

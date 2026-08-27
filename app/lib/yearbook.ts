@@ -6,6 +6,7 @@ import type {
   Product,
 } from './types';
 import { productCategory, productName } from './catalog';
+import { normalizeSearchText } from './search';
 
 type BrandRule = {
   label: string;
@@ -109,8 +110,9 @@ function sourceMap(value: Record<string, string> | string | null): Record<string
 }
 
 function finiteNumber(value: number | string | null): number | null {
+  if (value === null || (typeof value === 'string' && !value.trim())) return null;
   const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
 }
 
 function validDate(value: string | null): value is string {
@@ -200,14 +202,14 @@ export function yearbookYear(product: CatalogProduct): number {
 }
 
 export function filterYearbookProducts(products: CatalogProduct[], filters: YearbookFilters): CatalogProduct[] {
-  const query = filters.query?.trim().toLocaleLowerCase() || '';
+  const query = normalizeSearchText(filters.query || '');
   return products.filter((product) => {
     if (filters.brand && filters.brand !== 'all' && product.brand_key !== filters.brand) return false;
     if (filters.gender && filters.gender !== 'all' && product.gender !== filters.gender) return false;
     if (filters.category && filters.category !== 'all' && !product.categories.includes(filters.category)) return false;
     if (filters.year && filters.year !== 'all' && yearbookYear(product) !== filters.year) return false;
     if (!query) return true;
-    return [
+    const searchable = [
       product.name,
       product.brand,
       product.official_product_id,
@@ -215,7 +217,8 @@ export function filterYearbookProducts(products: CatalogProduct[], filters: Year
       ...product.categories,
       ...product.color_names,
       ...product.primary_colors,
-    ].join(' ').toLocaleLowerCase().includes(query);
+    ].join(' ');
+    return normalizeSearchText(searchable).includes(query);
   });
 }
 
@@ -240,8 +243,7 @@ export function brandLabel(value: CatalogBrandKey): string {
   return YEARBOOK_BRAND_RULES[value].label;
 }
 
-export function formatCatalogPrice(product: CatalogProduct): string {
-  const locale = product.country === 'au' ? 'en-AU' : 'en-US';
+export function formatCatalogPrice(product: CatalogProduct, locale = product.country === 'au' ? 'en-AU' : 'en-US'): string {
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: product.currency,
@@ -252,6 +254,29 @@ export function formatCatalogPrice(product: CatalogProduct): string {
   return product.list_price_max > product.list_price
     ? `${minimum}–${formatter.format(product.list_price_max)}`
     : minimum;
+}
+
+export function yearbookFreshnessLabel(lastUpdated: string | null | undefined, locale: string, now = Date.now()): string {
+  if (!lastUpdated) return '';
+  const normalized = lastUpdated.includes('T') ? lastUpdated : lastUpdated.replace(' ', 'T');
+  const zoned = /(?:Z|[+-]\d{2}:?\d{2})$/iu.test(normalized) ? normalized : `${normalized}Z`;
+  const stamp = Date.parse(zoned);
+  if (!Number.isFinite(stamp)) return '';
+  const days = Math.max(0, Math.floor((now - stamp) / 86_400_000));
+  const RelativeTimeFormatter = Intl.RelativeTimeFormat;
+  if (typeof RelativeTimeFormatter === 'function') {
+    try {
+      return new RelativeTimeFormatter(locale, { numeric: 'auto' }).format(-days, 'day');
+    } catch {
+      // Hermes builds can omit or partially implement RelativeTimeFormat.
+    }
+  }
+  const language = locale.toLocaleLowerCase();
+  if (language.startsWith('zh')) return days === 0 ? '今天' : days === 1 ? '昨天' : `${days} 天前`;
+  if (language.startsWith('de')) return days === 0 ? 'heute' : days === 1 ? 'gestern' : `vor ${days} Tagen`;
+  if (language.startsWith('fr')) return days === 0 ? 'aujourd’hui' : days === 1 ? 'hier' : `il y a ${days} jours`;
+  if (language.startsWith('ja')) return days === 0 ? '今日' : days === 1 ? '昨日' : `${days}日前`;
+  return days === 0 ? 'today' : days === 1 ? 'yesterday' : `${days} days ago`;
 }
 
 function isDiscounted(product: Product): boolean {
@@ -444,18 +469,21 @@ export function filterYearbookArchive(
   products: YearbookArchiveStyle[],
   filters: Omit<YearbookFilters, 'year'>,
 ): YearbookArchiveStyle[] {
-  const query = filters.query?.trim().toLocaleLowerCase() || '';
+  const query = normalizeSearchText(filters.query || '');
   return products.filter((product) => {
     if (filters.brand && filters.brand !== 'all' && product.brand_key !== filters.brand) return false;
     if (filters.gender && filters.gender !== 'all' && product.gender !== filters.gender) return false;
     if (filters.category && filters.category !== 'all' && !product.categories.includes(filters.category)) return false;
     if (!query) return true;
-    return [
+    const searchable = [
+      product.brand_key,
+      brandLabel(product.brand_key),
       product.name,
       product.official_product_id || '',
       ...product.categories,
       ...product.colors,
       ...product.offers.map((offer) => offer._platform),
-    ].join(' ').toLocaleLowerCase().includes(query);
+    ].join(' ');
+    return normalizeSearchText(searchable).includes(query);
   });
 }
