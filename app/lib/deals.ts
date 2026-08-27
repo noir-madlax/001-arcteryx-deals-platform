@@ -1,7 +1,8 @@
-import { productCategory, REGION_LABEL, REGION_OPTIONS } from './catalog';
+import { productCategory, productName, REGION_LABEL, REGION_OPTIONS } from './catalog';
 import type { Product } from './types';
 
 export type DealFilters = {
+  brand: string;
   platform: string;
   category: string;
   gender: string;
@@ -10,6 +11,7 @@ export type DealFilters = {
 };
 
 export const DEFAULT_DEAL_FILTERS: DealFilters = {
+  brand: 'all',
   platform: 'all',
   category: 'all',
   gender: 'all',
@@ -33,6 +35,7 @@ export function availableDealRegions(products: Product[]) {
 export function filterDeals(products: Product[], region: string, query: string, filters: DealFilters) {
   const q = query.trim().toLowerCase();
   const rows = productsForRegion(products, region).filter((product) => {
+    if (filters.brand !== 'all' && product._brand !== filters.brand) return false;
     if (filters.platform !== 'all' && product._platform !== filters.platform) return false;
     if (filters.gender !== 'all') {
       const gender = product.gender === 'unknown' ? 'unisex' : product.gender || 'unisex';
@@ -41,7 +44,7 @@ export function filterDeals(products: Product[], region: string, query: string, 
     if (filters.category !== 'all' && productCategory(product) !== filters.category) return false;
     if (filters.series !== 'all' && product._series !== filters.series) return false;
     if (q) {
-      const haystack = `${product.full_name || ''} ${product.model || ''} ${product.description || ''} ${product.category || ''}`.toLowerCase();
+      const haystack = `${product.brand} ${productName(product)} ${product.full_name || ''} ${product.model || ''} ${product.description || ''} ${product.category || ''}`.toLowerCase();
       if (!haystack.includes(q)) return false;
     }
     return true;

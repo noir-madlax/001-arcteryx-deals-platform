@@ -3,10 +3,11 @@ import { useMemo, useState } from 'react';
 import { Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { usePreferences } from '../contexts/PreferencesContext';
-import { CATEGORY_ORDER, PLATFORM, SORT_OPTIONS, GENDER_OPTIONS } from '../lib/catalog';
+import { BRAND, BRAND_OPTIONS, CATEGORY_ORDER, PLATFORM, SORT_OPTIONS, GENDER_OPTIONS } from '../lib/catalog';
 import { colors, radii, typography } from '../lib/theme';
 
 type FilterState = {
+  brand: string;
   platform: string;
   category: string;
   gender: string;
@@ -16,16 +17,22 @@ type FilterState = {
 
 type Props = {
   value: FilterState;
+  brands: string[];
   platforms: string[];
   categories: string[];
   series: string[];
   onChange: (next: Partial<FilterState>) => void;
 };
 
-export function FilterChips({ value, platforms, categories, series: _series, onChange }: Props) {
+export function FilterChips({ value, brands, platforms, categories, series: _series, onChange }: Props) {
   const { categoryLabel, genderLabel, t } = usePreferences();
   const [sortOpen, setSortOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const availableBrands = useMemo(() => new Set(brands), [brands]);
+  const normalizedBrands = useMemo(
+    () => BRAND_OPTIONS.filter((brand) => brand === 'all' || availableBrands.has(brand)),
+    [availableBrands],
+  );
   const normalizedPlatforms = useMemo(
     () => ['all', ...platforms.slice().sort((a, b) => (PLATFORM[a]?.label || a).localeCompare(PLATFORM[b]?.label || b))],
     [platforms],
@@ -48,6 +55,13 @@ export function FilterChips({ value, platforms, categories, series: _series, onC
     [categories],
   );
   const activeFilters = [
+    value.brand !== 'all'
+      ? {
+          key: 'brand',
+          label: BRAND[value.brand as keyof typeof BRAND]?.label || value.brand,
+          clear: () => onChange({ brand: 'all' }),
+        }
+      : null,
     value.platform !== 'all'
       ? {
           key: 'platform',
@@ -122,9 +136,16 @@ export function FilterChips({ value, platforms, categories, series: _series, onC
             >
               <FilterSection
                 title={t('filters.brand')}
+                options={normalizedBrands}
+                value={value.brand}
+                getLabel={(option) => (option === 'all' ? t('filters.allBrands') : BRAND[option as keyof typeof BRAND]?.label || option)}
+                onSelect={(brand) => onChange({ brand })}
+              />
+              <FilterSection
+                title={t('filters.source')}
                 options={normalizedPlatforms}
                 value={value.platform}
-                getLabel={(option) => (option === 'all' ? t('filters.allBrands') : PLATFORM[option]?.label || option)}
+                getLabel={(option) => (option === 'all' ? t('filters.allSources') : PLATFORM[option]?.label || option)}
                 onSelect={(platform) => onChange({ platform })}
               />
               <FilterSection
@@ -143,7 +164,7 @@ export function FilterChips({ value, platforms, categories, series: _series, onC
               />
             </ScrollView>
             <View style={styles.sheetActions}>
-              <Pressable style={styles.resetButton} onPress={() => onChange({ platform: 'all', category: 'all', gender: 'all', series: 'all' })}>
+              <Pressable style={styles.resetButton} onPress={() => onChange({ brand: 'all', platform: 'all', category: 'all', gender: 'all', series: 'all' })}>
                 <Text style={styles.resetText}>{t('common.reset')}</Text>
               </Pressable>
               <Pressable style={styles.doneButton} onPress={() => setFilterOpen(false)}>

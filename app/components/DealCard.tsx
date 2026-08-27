@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { TopoPlaceholder } from './TopoPlaceholder';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { cleanName, freshnessLabel, productCategory, regionFlag, staleDays } from '../lib/catalog';
+import { BRAND, freshnessLabel, productCategory, productName, regionFlag, staleDays } from '../lib/catalog';
 import { colors, radii, typography } from '../lib/theme';
 import type { DealSignal, Product } from '../lib/types';
 
@@ -20,12 +20,13 @@ type Props = {
 
 export function DealCard({ product, signal, saved = false, hero = false, onPress, onToggleSave }: Props) {
   const { categoryLabel, formatMoney, t } = usePreferences();
-  const name = cleanName(product.full_name || product.model);
+  const name = productName(product);
   const imageCandidates = Array.from(new Set([product.image_url, ...product.images].filter(Boolean))) as string[];
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
   const imageUri = imageCandidates.find((uri) => !failedImages[uri]);
   const stale = staleDays(product.last_updated) > 3;
   const category = categoryLabel(productCategory(product));
+  const categoryWithBrand = `${BRAND[product._brand].label} · ${category}`;
   const allTimeLow = signal?.kind === 'all_time_low';
   const signalLabel = stale
     ? t('signal.seen', { when: freshnessLabel(product.last_updated) })
@@ -70,7 +71,7 @@ export function DealCard({ product, signal, saved = false, hero = false, onPress
           </Pressable>
         ) : null}
         <Text style={styles.imageLabel} numberOfLines={1}>
-          {category}
+          {categoryWithBrand}
         </Text>
       </View>
       <View style={styles.body}>

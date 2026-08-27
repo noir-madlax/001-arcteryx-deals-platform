@@ -10,7 +10,7 @@ import { TopoPlaceholder } from '../../components/TopoPlaceholder';
 import { useProducts } from '../../contexts/ProductsContext';
 import { usePreferences } from '../../contexts/PreferencesContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
-import { cleanName, productCategory } from '../../lib/catalog';
+import { BRAND, productCategory, productName } from '../../lib/catalog';
 import { colors, radii, typography } from '../../lib/theme';
 import type { Product, WatchEntry } from '../../lib/types';
 
@@ -44,6 +44,7 @@ export default function WatchlistScreen() {
 
 function WatchRow({ entry, product, onPress, onRemove }: { entry: WatchEntry; product: Product; onPress: () => void; onRemove: () => void }) {
   const { categoryLabel, formatMoney, t } = usePreferences();
+  const category = categoryLabel(productCategory(product));
   const delta = product.sale_price - entry.savedPrice;
   const down = delta < 0;
   const same = Math.abs(delta) < 0.01;
@@ -59,16 +60,16 @@ function WatchRow({ entry, product, onPress, onRemove }: { entry: WatchEntry; pr
   return (
     <Pressable style={styles.row} onPress={onPress}>
       <View style={styles.thumb}>
-        <TopoPlaceholder label={categoryLabel(productCategory(product))} showLabel={false} />
+        <TopoPlaceholder label={category} showLabel={false} />
         {imageUri ? <Image source={{ uri: imageUri }} style={styles.image} contentFit="cover" transition={140} onError={() => setFailedImages((current) => ({ ...current, [imageUri]: true }))} /> : null}
         <Text style={styles.thumbLabel} numberOfLines={1}>
-          {categoryLabel(productCategory(product))}
+          {BRAND[product._brand].label} · {category}
         </Text>
       </View>
       <View style={styles.rowBody}>
         <View style={styles.rowHead}>
           <Text style={styles.name} numberOfLines={1}>
-            {cleanName(product.full_name || product.model)}
+            {productName(product)}
           </Text>
           <Pressable accessibilityRole="button" accessibilityLabel={t('watch.remove')} style={styles.removeButton} onPress={onRemove} hitSlop={10}>
             <Ionicons name="close" size={15} color={colors.faint} />

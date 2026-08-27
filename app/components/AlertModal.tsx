@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import { usePreferences } from '../contexts/PreferencesContext';
-import { cleanName } from '../lib/catalog';
+import { productName } from '../lib/catalog';
 import { colors, radii } from '../lib/theme';
 import type { Product } from '../lib/types';
 
@@ -62,7 +62,7 @@ export function AlertModal({ visible, product, onClose, onSubmit }: Props) {
       >
         <View style={styles.card}>
           <Text style={styles.title}>{t('alert.title')}</Text>
-          <Text style={styles.sub}>{cleanName(product.full_name || product.model)}</Text>
+          <Text style={styles.sub}>{productName(product)}</Text>
           <Text style={styles.current}>{t('alert.currentSuggested', { current: formatMoney(product.sale_price, product.currency, product.symbol), suggested: formatOriginalMoney(suggested, product.currency, product.symbol) })}</Text>
           <Text style={styles.originalNote}>{t('alert.originalCurrency', { currency: product.currency })}</Text>
           <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="you@example.com" autoCapitalize="none" keyboardType="email-address" />

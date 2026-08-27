@@ -40,6 +40,13 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="yearbook"
+        options={{
+          title: t('tabs.yearbook'),
+          tabBarIcon: ({ color, size }) => <Ionicons name="library-outline" color={color} size={size} />,
+        }}
+      />
+      <Tabs.Screen
         name="me"
         options={{
           title: t('tabs.me'),

@@ -121,7 +121,7 @@ export function ProductsProvider({ children }: PropsWithChildren) {
       const byRegion = new Map<string, Product>();
 
       for (const candidate of products) {
-        if (candidate.model !== product.model || candidate.sku_id === product.sku_id || candidate.region === product.region || candidate.sale_price <= 0 || candidate.sale_price >= product.sale_price) {
+        if (candidate._brand !== product._brand || candidate.model !== product.model || candidate.sku_id === product.sku_id || candidate.region === product.region || candidate.sale_price <= 0 || candidate.sale_price >= product.sale_price) {
           continue;
         }
 

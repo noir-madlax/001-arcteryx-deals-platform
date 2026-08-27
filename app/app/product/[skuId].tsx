@@ -14,7 +14,7 @@ import { useProducts } from '../../contexts/ProductsContext';
 import { usePreferences } from '../../contexts/PreferencesContext';
 import { usePro } from '../../contexts/ProContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
-import { cleanName, productCategory, releaseSeason } from '../../lib/catalog';
+import { BRAND, productCategory, productName, releaseSeason } from '../../lib/catalog';
 import { openBuyUrl, scheduleTestPriceNotification, softImpact } from '../../lib/actions';
 import { buildPriceAlertRequest } from '../../lib/priceAlerts';
 import { computeSignal, historyToPoints, recentPoints } from '../../lib/signals';
@@ -75,7 +75,7 @@ export default function ProductDetailScreen() {
   }
 
   const currentProduct = product;
-  const name = cleanName(currentProduct.full_name || currentProduct.model);
+  const name = productName(currentProduct);
   const imageCandidates = Array.from(new Set([currentProduct.image_url, ...currentProduct.images].filter(Boolean))) as string[];
   const visibleImages = imageCandidates.filter((uri) => !failedImages[uri]);
   const galleryImages = visibleImages.length ? visibleImages : ['__placeholder__'];
@@ -132,7 +132,7 @@ export default function ProductDetailScreen() {
         </ScrollView>
 
         <View style={styles.block}>
-          <Text style={styles.category}>{currentCategory}</Text>
+          <Text style={styles.category}>{BRAND[currentProduct._brand].label} · {currentCategory}</Text>
           <Text style={styles.title}>{name}</Text>
           <Text style={styles.meta}>{[currentProduct.color, genderLabel(currentProduct.gender || 'unknown'), regionLabel(currentProduct.region), season].filter(Boolean).join(' · ')}</Text>
         </View>

@@ -30,12 +30,13 @@ export default function DealsScreen() {
   const [signalWindow, setSignalWindow] = useState(INITIAL_SIGNAL_WINDOW);
 
   const regionProducts = useMemo(() => productsForRegion(products, region), [products, region]);
+  const brands = useMemo(() => [...new Set(regionProducts.map((product) => product._brand))], [regionProducts]);
   const categories = useMemo(() => [...new Set(regionProducts.map(productCategory))], [regionProducts]);
   const platforms = useMemo(() => [...new Set(regionProducts.map((product) => product._platform))], [regionProducts]);
   const series = useMemo(() => [...new Set(regionProducts.map((product) => product._series))], [regionProducts]);
   const regionOptions = useMemo(() => availableDealRegions(products), [products]);
   const filtered = useMemo(() => filterDeals(products, region, query, filters), [filters, products, query, region]);
-  const listRevision = `${region}\u001f${searchOpen ? 'open' : 'closed'}\u001f${query}\u001f${filters.platform}\u001f${filters.category}\u001f${filters.gender}\u001f${filters.series}\u001f${filters.sort}`;
+  const listRevision = `${region}\u001f${searchOpen ? 'open' : 'closed'}\u001f${query}\u001f${filters.brand}\u001f${filters.platform}\u001f${filters.category}\u001f${filters.gender}\u001f${filters.series}\u001f${filters.sort}`;
 
   useEffect(() => {
     if (!loading && products.length && region !== 'all' && !regionOptions.includes(region)) {
@@ -87,6 +88,7 @@ export default function DealsScreen() {
               await setRegion(nextRegion);
             }}
             filters={filters}
+            brands={brands}
             categories={categories}
             platforms={platforms}
             series={series}
@@ -140,6 +142,7 @@ function Header({
   regionOptions,
   onRegionChange,
   filters,
+  brands,
   categories,
   platforms,
   series,
@@ -155,6 +158,7 @@ function Header({
   regionOptions: string[];
   onRegionChange: (region: string) => Promise<void>;
   filters: DealFilters;
+  brands: string[];
   categories: string[];
   platforms: string[];
   series: string[];
@@ -199,7 +203,7 @@ function Header({
         </View>
       ) : null}
       <View style={styles.controlsWrap}>
-        <FilterChips value={filters} platforms={platforms} categories={categories} series={series} onChange={onFilterChange} />
+        <FilterChips value={filters} brands={brands} platforms={platforms} categories={categories} series={series} onChange={onFilterChange} />
       </View>
       <Text style={styles.sectionTitle}>{t('deals.biggestDrops')}</Text>
       <RegionSheet

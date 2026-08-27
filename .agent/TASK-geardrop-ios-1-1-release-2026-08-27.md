@@ -4,7 +4,7 @@
 
 在已上线且审核通过的 1.0 / Build 9 基线上，安全整合此前暂缓的下一版本功能与五语商店素材，形成可验证、可审计的 1.1 候选并提交 App Review。
 
-## 当前状态：进行中（已锁定基线与候选范围，尚未修改 App Store Connect）
+## 当前状态：进行中（核心功能已整合并通过定向测试，尚未生成 Build 10，尚未修改 App Store Connect）
 
 已从 `origin/codex/fix-ios-ipad-keyboard-20260824` 的提交 `a4af73a` 创建隔离分支 `codex/ios-1-1-yearbook-20260827`。共享主工作树保留现有未跟踪文件，不在本任务内修改。
 
@@ -16,6 +16,7 @@
 - `codex/ios-next-version-aso-20260814` 的提交 `cad9db9` 包含五语 canonical metadata、6 槽位截图计划和失败关闭校验；明确仅用于下一版本。（来源：`.agent/TASK-geardrop-next-version-aso-2026-08-14.md`、`git show cad9db9`）
 - 分享／深链功能仍无实现，且历史任务记录长期域名授权与 exact-SKU 行为未关闭，本轮不把它列入发布范围。（来源：本会话读取的项目记忆与分支列表）
 - `origin/main` 的 App 代码缺少已上线分支中的 IAP、本地化、品牌资产与发布门；从 main 直接构建会回退已上线能力。（来源：本会话 `git diff codex/fix-ios-ipad-keyboard-20260824..origin/main -- app`）
+- 2026-08-27 实时只读探针：`catalog_products` 有 1,353 个 active 当前款（Arc'teryx 370、Burton 495、Patagonia 488）；`products` 有 8,434 个 active 折扣商品，三品牌均有数据。`products` 当前不存在 `official_product_id` 列，Yearbook 因此使用官方 URL 款号优先、唯一规范化名称兜底的保守关联。（来源：本会话 Supabase REST 回读）
 
 ## 假设
 
@@ -35,14 +36,19 @@
 
 - 已读取长任务协议、项目记忆、两份相关任务档案和分支差异。
 - 已创建干净隔离 worktree `/private/tmp/geardrop-ios-1-1-20260827.iJNZfj/worktree` 与分支 `codex/ios-1-1-yearbook-20260827`，起点 `a4af73a`。
+- 已在 Build 9 架构上整合三品牌规范化、品牌筛选、Yearbook 当前款、确定性实时折扣叠加、Outlet／历史款和五语 UI；保留原有 IAP、本地化、iPhone-only 与审核修复。
+- `npm test`：55/55 通过；`npm run typecheck`：退出码 0。
+- `npm run verify:live-data`：退出码 0；确定性关联当前款 Arc'teryx 143、Burton 186、Patagonia 55，保留 1,278 个未匹配历史款组；没有跨品牌模糊匹配。
 
 ## 下一步
 
-1. 定点读取 Build 9 与 Yearbook 的相关定义和调用方，冻结移植接口与测试契约。
-2. 先移植纯数据层／测试，再接入 Yearbook UI；随后合入 ASO 校验并升级版本号。
-3. 完成全量本地与运行时验收，生成 Build 10 并核验制品。
+1. 合入并更新五语 ASO 校验，升级 `1.1.0` / Build `10`，补强发布配置契约。
+2. 完成全量本地、iOS export、原生 Release 和模拟器关键路径验收。
+3. 生成 Build 10 并核验制品。
 4. 展示精确 App Store 1.1 对象、metadata 与截图差异，取得动作时确认后写入并提审。
 
 ## 死路
 
 - 仓库存在 `.codegraph/`，但本会话未暴露任何 `codegraph_*` MCP 工具；无法按项目约定调用结构索引，后续只对已由提交差异锁定的相关文件做定点读取，不用全仓 grep 重建调用图。
+- 尝试完整 cherry-pick `c55cf6a` 时与现有 iOS/IAP/后端基线产生多文件冲突，已完整 abort；改为只按冻结接口手工移植 App 侧功能。
+- 首次实时 schema 探针尝试查询 `products.official_product_id`，官方 REST 返回 `42703 column does not exist`；没有写入，随后以现有列重新只读验证并将缺列纳入匹配契约。

@@ -26,3 +26,29 @@ test('search and secondary filters still apply within the selected country', () 
   assert.equal(filterDeals(products, 'de', 'gamma', DEFAULT_DEAL_FILTERS).length, 0);
   assert.equal(filterDeals(products, 'de', '', { ...DEFAULT_DEAL_FILTERS, platform: 'mec' }).length, 0);
 });
+
+test('brand filtering and search work across the multi-brand catalog', () => {
+  const mixed = [
+    ...products,
+    product({
+      sku_id: 'burton-custom-us',
+      brand: 'burton',
+      _brand: 'burton',
+      model: 'Burton Custom Camber Snowboard',
+      full_name: 'Burton Custom Camber Snowboard',
+      category: '滑雪板',
+      dealer: 'burton',
+      _platform: 'burton',
+      url: 'https://www.burton.com/en-us/products/custom-camber-snowboard-106881',
+    }),
+  ];
+
+  assert.deepEqual(
+    filterDeals(mixed, 'us', '', { ...DEFAULT_DEAL_FILTERS, brand: 'burton' }).map((item) => item.sku_id),
+    ['burton-custom-us'],
+  );
+  assert.deepEqual(
+    filterDeals(mixed, 'us', 'burton custom', DEFAULT_DEAL_FILTERS).map((item) => item.sku_id),
+    ['burton-custom-us'],
+  );
+});

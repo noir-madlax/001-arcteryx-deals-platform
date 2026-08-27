@@ -1,4 +1,12 @@
 import type { Product, ProductRow } from './types';
+import { extractModelFamily } from './arcteryx-names';
+import {
+  BRANDS,
+  isSupportedBrandProduct,
+  productBrand,
+  productSeries,
+  standardProductName,
+} from './gear-brands';
 
 export const SUPABASE_URL = 'https://bupqagkrcvrezjkdbald.supabase.co';
 export const SUPABASE_ANON =
@@ -45,11 +53,15 @@ export const GENDER_LABEL: Record<string, string> = {
   unknown: 'Unisex',
 };
 
+export const BRAND = BRANDS;
+
 export const PLATFORM: Record<string, { label: string; color: string }> = {
   arcteryx_outlet: { label: "Arc'teryx Outlet", color: '#151513' },
   ssense: { label: 'SSENSE', color: '#151513' },
   mec: { label: 'MEC', color: '#c8102e' },
   evo: { label: 'EVO', color: '#1a1a1a' },
+  burton: { label: 'Burton Outlet', color: '#111111' },
+  patagonia: { label: 'Patagonia Sale', color: '#b7372f' },
   rei: { label: 'REI', color: '#067a46' },
   backcountry: { label: 'Backcountry', color: '#003a70' },
   steepandcheap: { label: 'Steep&Cheap', color: '#d22730' },
@@ -61,7 +73,8 @@ export const PLATFORM: Record<string, { label: string; color: string }> = {
   zalando_lounge: { label: 'Zalando Lounge', color: '#ff6900' },
 };
 
-export const REGION_OPTIONS = ['all', 'us', 'ca', 'gb', 'de', 'fr', 'nl', 'fi', 'ie', 'jp'];
+export const REGION_OPTIONS = ['all', 'us', 'ca', 'gb', 'au', 'de', 'fr', 'nl', 'fi', 'ie', 'jp'];
+export const BRAND_OPTIONS = ['all', 'arcteryx', 'burton', 'patagonia'];
 export const DEFAULT_REGION = 'us';
 export const GENDER_OPTIONS = ['all', 'women', 'men', 'unisex'];
 export const SORT_OPTIONS = ['discount_desc', 'price_asc', 'price_desc', 'recent'];
@@ -72,6 +85,8 @@ export const CATEGORY_ORDER = [
   '卫衣/抓绒',
   '裤装',
   '鞋类',
+  '滑雪板',
+  '固定器',
   '背包',
   '上衣',
   '内衣',
@@ -86,133 +101,21 @@ export function normalizeRegion(value: string | null | undefined) {
   return normalized && (normalized === 'all' || isKnownRegion(normalized)) ? normalized : DEFAULT_REGION;
 }
 
-const GENDER_MARKERS = ["Women's", "Men's", 'Unisex', 'Damen', 'Herren', 'Femme', 'Homme'];
-const NAME_PREFIX_STRIP = /^(?:Der|Die|Das|Veste à capuche|Veste|system_a)\s*/i;
-const BRAND_PREFIX_STRIP = /^Arc'teryx\s+/i;
-const DASHED_GENDER_SUFFIX = /\s+-\s+(?:Men's|Women's|Unisex)$/i;
 const SEASON_LABEL: Record<string, string> = { F: 'Fall/Winter', W: 'Fall/Winter', S: 'Spring/Summer' };
 
-const KNOWN_SERIES = new Set([
-  'Alpha',
-  'Beta',
-  'Gamma',
-  'Delta',
-  'Zeta',
-  'Theta',
-  'Sigma',
-  'Kappa',
-  'Atom',
-  'Cerium',
-  'Proton',
-  'Nuclei',
-  'Thorium',
-  'Rho',
-  'Phasic',
-  'Motus',
-  'Rhomb',
-  'Sabre',
-  'Rush',
-  'Sentinel',
-  'Fissile',
-  'Orsin',
-  'Hadron',
-  'Norvan',
-  'Sylan',
-  'Cormac',
-  'Aerios',
-  'Konseal',
-  'Vertex',
-  'Bora',
-  'Acrux',
-  'Kragg',
-  'Kopec',
-  'Covert',
-  'Incendia',
-  'Incendo',
-  'Patera',
-  'Liatris',
-  'Emaris',
-  'Sonii',
-  'Psiphon',
-  'Emblem',
-  'Palisade',
-  'Kyanite',
-  'Squamish',
-  'Essent',
-  'Taema',
-  'Aestas',
-  'Veilance',
-  'Macai',
-  'Cronin',
-  'Serratus',
-  'Satoro',
-  'Mantis',
-  'Arro',
-  'Brize',
-  'Khard',
-  'Granville',
-  'Index',
-  'Kraft',
-  'Spere',
-  'Blade',
-  'Soria',
-  'Silene',
-  'Ralle',
-  'Lana',
-  'Bird',
-  'Mallow',
-  'Sinsola',
-  'Sinsolo',
-  'Calidum',
-  'Saydi',
-  'Sima',
-  'Rula',
-  'Nia',
-  'Monitor',
-  'Andessa',
-  'Decca',
-  'Entasis',
-  'Ifora',
-  'Align',
-  'Focal',
-  'Therme',
-  'Demlo',
-  'Altus',
-  'Sorin',
-  'Frame',
-  'Indisce',
-  'Asset',
-  'Eave',
-  'Levon',
-  'Voronoi',
-  'Diode',
-  'Ogee',
-  'Conic',
-  'Creston',
-  'Clarkia',
-  'Corbel',
-  'Field',
-  "Arc'Word",
-]);
-
 export function cleanName(raw?: string | null) {
-  if (!raw) return '';
-  let value = raw.trim().replace(NAME_PREFIX_STRIP, '');
-  value = value.replace(BRAND_PREFIX_STRIP, '').replace(DASHED_GENDER_SUFFIX, '');
-  value = value.replace(/^veilance([A-Z])/, 'Veilance $1');
-  for (const marker of GENDER_MARKERS) {
-    const index = value.indexOf(marker);
-    if (index > 0) return value.slice(0, index + marker.length).trim();
-  }
-  // Canonical dealer names can contain intentional mixed-case tokens such as
-  // LiTRIC, SuperLight, StormHood, and DownWord. Treating every lowercase →
-  // uppercase transition as a glued description truncates those product names.
-  return value;
+  return standardProductName(raw);
+}
+
+export function productName(product: Pick<ProductRow, 'brand' | 'dealer' | 'full_name' | 'gender' | 'model' | 'url'>) {
+  return standardProductName(product.full_name || product.model, product);
 }
 
 export function inferCategory(name?: string | null, url?: string | null) {
   const n = (name || '').toLowerCase();
   const u = (url || '').toLowerCase();
+  if (/snowboard|splitboard|powder board/.test(n) || /snowboards?/.test(u)) return '滑雪板';
+  if (/binding/.test(n) || /bindings?/.test(u)) return '固定器';
   if (/veilance/.test(n) || /veilance/.test(u)) return 'Veilance';
   if (/shoe|boot|sandal|kragg|konseal|aerios|bora|acrux|vertex|kopec|norvan\s*sl|sylan/.test(n)) return '鞋类';
   if (/\bpack\b|backpack|bag|mantis|arro|brize|khard|\bindex\b/.test(n)) return '背包';
@@ -248,6 +151,8 @@ export function platformKey(product: Pick<ProductRow, 'dealer' | 'url'>) {
   if (url.includes('ssense.com')) return 'ssense';
   if (url.includes('mec.ca')) return 'mec';
   if (url.includes('evo.com')) return 'evo';
+  if (url.includes('burton.com')) return 'burton';
+  if (url.includes('patagonia.com.au')) return 'patagonia';
   if (url.includes('rei.com')) return 'rei';
   if (url.includes('backcountry')) return 'backcountry';
   if (url.includes('steepandcheap')) return 'steepandcheap';
@@ -270,9 +175,7 @@ export function normalizeTimestamp(ts?: string | null) {
 }
 
 export function extractSeries(cleanedName: string) {
-  if (!cleanedName) return '其他';
-  const first = cleanedName.split(/[\s-]/)[0] || '';
-  return KNOWN_SERIES.has(first) ? first : '其他';
+  return extractModelFamily(cleanedName) || '其他';
 }
 
 function allKnownSizesOutOfStock(product: ProductRow) {
@@ -290,6 +193,7 @@ function isStaleOutletProduct(product: ProductRow) {
 }
 
 export function isBlockedProduct(product: ProductRow) {
+  if (!isSupportedBrandProduct(product)) return true;
   const dealer = product.dealer || platformKey(product);
   if (dealer !== 'arcteryx_outlet') return false;
   const url = (String(product.url || '').split('?')[0] || '').replace(/\/$/, '').toLowerCase();
@@ -309,7 +213,9 @@ export function normalizeProduct(row: ProductRow): Product | null {
   const sizes = parseMaybeJson<string[]>(row.sizes, []);
   const sizeStock = parseMaybeJson<Record<string, string>>(row.size_stock, {});
   const images = parseMaybeJson<string[]>(row.images, []);
-  const name = cleanName(row.full_name || row.model);
+  const name = productName(row);
+  const brand = productBrand(row);
+  if (!brand) return null;
   return {
     ...row,
     sku_id: row.sku_id,
@@ -322,18 +228,23 @@ export function normalizeProduct(row: ProductRow): Product | null {
     symbol: row.symbol || '$',
     currency: row.currency || 'USD',
     region: row.region || 'us',
+    brand,
     last_updated: normalizeTimestamp(row.last_updated),
-    _series: extractSeries(name),
+    _brand: brand,
+    _series: productSeries(name, row) || '其他',
     _platform: platformKey(row),
   };
 }
 
 export function visibleProducts(rows: ProductRow[]) {
-  return rows.filter((row) => !isBlockedProduct(row)).map(normalizeProduct).filter((row): row is Product => Boolean(row));
+  return rows
+    .filter((row) => (!row.status || row.status === 'active') && !isBlockedProduct(row))
+    .map(normalizeProduct)
+    .filter((row): row is Product => Boolean(row));
 }
 
 export function productCategory(product: Product) {
-  return product.category && product.category !== '其他' ? product.category : inferCategory(cleanName(product.full_name || product.model), product.url);
+  return product.category && product.category !== '其他' ? product.category : inferCategory(productName(product), product.url);
 }
 
 export function formatPrice(value?: number | null, symbol = '$') {
