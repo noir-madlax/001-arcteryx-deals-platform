@@ -76,7 +76,7 @@ class PublicationGateTests(unittest.TestCase):
             with self.subTest(script=name):
                 marker = f"tools/write_publication_marker.py --scope {scope}"
                 wait = "tools/wait_for_publication.py --file publication.json"
-                self.assertIn('SITE_URL="${SITE_URL:-https://001.100app.dev}"', script)
+                self.assertIn('SITE_URL="${SITE_URL:-https://geardrop.100app.dev}"', script)
                 self.assertIn(marker, script)
                 self.assertIn(static_file, script)
                 self.assertIn("publication.json", script)

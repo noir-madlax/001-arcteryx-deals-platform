@@ -67,7 +67,7 @@ test.before(async () => {
 
 test('server product page exposes specific canonical Product and Offer facts', () => {
   const html = productEndpoint.renderProductPage(sampleProduct);
-  const canonical = 'https://001.100app.dev/p?sku=evo%3Aproducts%2F218050-burton-lalik-jacket-women-s';
+  const canonical = 'https://geardrop.100app.dev/p?sku=evo%3Aproducts%2F218050-burton-lalik-jacket-women-s';
 
   assert.match(html, /<h1>Burton Lalik Jacket Women&#39;s<\/h1>/);
   assert.ok(html.includes(`<link rel="canonical" href="${canonical}">`));

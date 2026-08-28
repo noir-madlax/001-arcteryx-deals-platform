@@ -20,7 +20,7 @@ from typing import Any, Callable
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL_ORIGIN = "https://001.100app.dev"
+CANONICAL_ORIGIN = "https://geardrop.100app.dev"
 APP_STORE_URL = "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332"
 STATIC_PAGES = {
     "/": {"Organization", "WebSite", "CollectionPage", "SoftwareApplication"},
@@ -299,7 +299,7 @@ class Auditor:
             "'@type': 'Offer'",
             "function updateNotFoundMetadata()",
             "'noindex,follow'",
-            "const PRODUCT_PAGE_BASE = 'https://001.100app.dev/p';",
+            "const PRODUCT_PAGE_BASE = 'https://geardrop.100app.dev/p';",
         ]
         missing = [token for token in required if token not in source]
         self.add(

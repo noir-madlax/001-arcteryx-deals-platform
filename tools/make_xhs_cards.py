@@ -211,7 +211,7 @@ def make_card(item, idx, total, out_path):
 
     # ── 二维码 (右下) ──
     detail_url = item.get("url","")
-    site_url = f"https://001.100app.dev/product-detail.html?url={requests.utils.quote(detail_url)}"
+    site_url = f"https://geardrop.100app.dev/product-detail.html?url={requests.utils.quote(detail_url)}"
     qr = make_qr(site_url, box_size=4)
     img.paste(qr, (W - qr.width - 36, H - qr.height - 36))
     # 二维码下小字
@@ -219,7 +219,7 @@ def make_card(item, idx, total, out_path):
            fill=SUB, font=font(20, "regular"), anchor="mm")
 
     # ── 左下角站点 ──
-    d.text((50, H - 50), "001.100app.dev", fill=GREEN, font=font(28, "semibold"), anchor="lm")
+    d.text((50, H - 50), "geardrop.100app.dev", fill=GREEN, font=font(28, "semibold"), anchor="lm")
     d.text((50, H - 20), "22 国 outlet 实时追价", fill=SUB, font=font(20, "regular"), anchor="lm")
 
     img.save(out_path, "PNG", optimize=True)

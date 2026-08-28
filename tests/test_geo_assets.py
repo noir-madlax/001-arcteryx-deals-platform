@@ -78,7 +78,7 @@ class GeoAssetTests(unittest.TestCase):
         self.assertTrue(
             all(
                 location.startswith(
-                    "https://001.100app.dev/p?sku="
+                    "https://geardrop.100app.dev/p?sku="
                 )
                 for location in locations
             )
@@ -298,7 +298,7 @@ class GeoAssetTests(unittest.TestCase):
             "'@type': 'Offer'",
             "function updateNotFoundMetadata()",
             "'noindex,follow'",
-            "const PRODUCT_PAGE_BASE = 'https://001.100app.dev/p';",
+            "const PRODUCT_PAGE_BASE = 'https://geardrop.100app.dev/p';",
             "setMetaContent('product-meta-robots', 'noindex,follow');",
         )
         for token in required:
@@ -308,11 +308,11 @@ class GeoAssetTests(unittest.TestCase):
         self.assertIn("最终价格、库存、配送和退货条件以销售平台为准", self.detail)
 
     def test_llms_file_is_discovery_aid_not_visibility_claim(self):
-        self.assertIn("Canonical entity: https://001.100app.dev/", self.llms)
+        self.assertIn("Canonical entity: https://geardrop.100app.dev/", self.llms)
         self.assertIn("GearDrop is not a retailer", self.llms)
         self.assertIn("GearDrop is not an official site", self.llms)
         self.assertIn("does not prove AI mention, citation, or recommendation", self.llms)
-        self.assertIn("https://001.100app.dev/methodology.html", self.llms)
+        self.assertIn("https://geardrop.100app.dev/methodology.html", self.llms)
 
     def test_continuous_workflows_refresh_and_audit_geo_assets(self):
         monitor = (ROOT / ".github" / "workflows" / "geo-readiness.yml").read_text(
@@ -369,7 +369,7 @@ class GeoAssetTests(unittest.TestCase):
         self.assertTrue(report["key_file_valid"])
         self.assertFalse(report["credentials_logged"])
         self.assertEqual(
-            report["key_location"], "https://001.100app.dev/indexnow-key.txt"
+            report["key_location"], "https://geardrop.100app.dev/indexnow-key.txt"
         )
         self.assertEqual(
             report["credentials_required"], ["INDEXNOW_KEY", "INDEXNOW_KEY_LOCATION"]
@@ -380,23 +380,23 @@ class GeoAssetTests(unittest.TestCase):
         self.assertRegex(configured_key, r"^[a-f0-9]{64}$")
         self.indexnow_module.validate_key_file(
             configured_key,
-            "https://001.100app.dev/indexnow-key.txt",
+            "https://geardrop.100app.dev/indexnow-key.txt",
             key_file,
         )
         with self.assertRaisesRegex(ValueError, "does not match"):
             self.indexnow_module.validate_key_file(
                 "0" * 64,
-                "https://001.100app.dev/indexnow-key.txt",
+                "https://geardrop.100app.dev/indexnow-key.txt",
                 key_file,
             )
 
         key, location = self.indexnow_module.read_credentials_from_stdin(
             io.StringIO(
-                f"{configured_key}\nhttps://001.100app.dev/indexnow-key.txt\n"
+                f"{configured_key}\nhttps://geardrop.100app.dev/indexnow-key.txt\n"
             )
         )
         self.assertEqual(key, configured_key)
-        self.assertEqual(location, "https://001.100app.dev/indexnow-key.txt")
+        self.assertEqual(location, "https://geardrop.100app.dev/indexnow-key.txt")
         with self.assertRaises(ValueError):
             self.indexnow_module.read_credentials_from_stdin(io.StringIO("\n"))
 
@@ -420,8 +420,8 @@ class GeoAssetTests(unittest.TestCase):
 
         sitemap = """<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://001.100app.dev/recent</loc><lastmod>2026-08-28</lastmod></url>
-  <url><loc>https://001.100app.dev/old</loc><lastmod>2026-08-20</lastmod></url>
+  <url><loc>https://geardrop.100app.dev/recent</loc><lastmod>2026-08-28</lastmod></url>
+  <url><loc>https://geardrop.100app.dev/old</loc><lastmod>2026-08-20</lastmod></url>
 </urlset>
 """
         with tempfile.TemporaryDirectory() as directory:
@@ -430,9 +430,9 @@ class GeoAssetTests(unittest.TestCase):
             urls = self.indexnow_module.collect_recent_urls(
                 [path], since_days=2, today=dt.date(2026, 8, 28)
             )
-        self.assertIn("https://001.100app.dev/", urls)
-        self.assertIn("https://001.100app.dev/recent", urls)
-        self.assertNotIn("https://001.100app.dev/old", urls)
+        self.assertIn("https://geardrop.100app.dev/", urls)
+        self.assertIn("https://geardrop.100app.dev/recent", urls)
+        self.assertNotIn("https://geardrop.100app.dev/old", urls)
 
     def test_internal_audit_data_is_not_deployed(self):
         vercelignore = (ROOT / ".vercelignore").read_text(encoding="utf-8")

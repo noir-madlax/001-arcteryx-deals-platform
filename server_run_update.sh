@@ -15,7 +15,7 @@ else
 fi
 
 GITHUB_REMOTE="git@github.com:wantai-dev/001-arcteryx-deals-platform.git"
-SITE_URL="${SITE_URL:-https://001.100app.dev}"
+SITE_URL="${SITE_URL:-https://geardrop.100app.dev}"
 
 # ── Telegram notification credentials ──
 # Kept in ~/.arcteryx_secrets (NOT committed to git) so we don't leak tokens.

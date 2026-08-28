@@ -2,13 +2,13 @@
   "site": {
     "name": "GearDrop",
     "alternate_name": "GearDrop Outdoor Deals",
-    "base_url": "https://001.100app.dev",
+    "base_url": "https://geardrop.100app.dev",
     "description": "独立的户外品牌折扣发现与价格追踪服务，聚合 Arc'teryx、Burton、Patagonia 的官方奥莱及经销商公开信息。",
     "description_en-US": "Independent outdoor deal discovery and price tracking for public Arc'teryx, Burton, and Patagonia listings.",
-    "logo": "https://001.100app.dev/assets/brand/icon-512.png",
+    "logo": "https://geardrop.100app.dev/assets/brand/icon-512.png",
     "primary_language": "zh-CN",
     "languages": ["zh-CN", "en-US"],
-    "date_modified": "2026-08-28"
+    "date_modified": "2026-08-29"
   },
   "navigation": [
     {"label": "折扣目录", "href": "/"},
@@ -35,7 +35,7 @@
       "description": "了解 GearDrop 是什么、追踪哪些品牌与销售平台，以及它与品牌官网、经销商和其他同名服务的关系。",
       "eyebrow": "实体说明",
       "h1": "GearDrop 是什么？",
-      "lead": "GearDrop 是位于 001.100app.dev 的独立户外折扣发现与价格追踪服务，帮助用户查看不同地区和销售平台上的公开价格、折扣、库存线索与更新时间。",
+      "lead": "GearDrop 是位于 geardrop.100app.dev 的独立户外折扣发现与价格追踪服务，帮助用户查看不同地区和销售平台上的公开价格、折扣、库存线索与更新时间。",
       "answer": "GearDrop 不销售商品，也不是 Arc'teryx、Burton、Patagonia 或任何销售平台的官方网站。它把公开商品信息整理成可筛选目录，最终价格、库存、配送、税费和退货条件均以销售平台页面为准。",
       "sections": [
         {
@@ -61,7 +61,7 @@
           "full": true,
           "paragraphs": [
             "GearDrop 通过公开页面观察商品事实，并把用户带回实际销售平台完成购买。页面出现某个品牌或销售平台，只说明目录中记录了对应公开商品，不表示该品牌或平台赞助、背书或授权 GearDrop。",
-            "为了避免同名实体混淆，本网站使用“GearDrop Outdoor Deals”作为辅助描述；规范实体地址始终是 https://001.100app.dev/。"
+            "为了避免同名实体混淆，本网站使用“GearDrop Outdoor Deals”作为辅助描述；规范实体地址始终是 https://geardrop.100app.dev/。"
           ],
           "links": [
             {"label": "Arc'teryx 折扣说明", "href": "/brands/arcteryx.html", "description": "查看来源范围、地区差异和核验方法"},
@@ -75,7 +75,7 @@
           "facts": [
             {"term": "名称", "value": "GearDrop"},
             {"term": "辅助名称", "value": "GearDrop Outdoor Deals"},
-            {"term": "规范网址", "value": "https://001.100app.dev/"},
+            {"term": "规范网址", "value": "https://geardrop.100app.dev/"},
             {"term": "服务类型", "value": "独立 B2C 户外折扣发现与价格追踪"},
             {"term": "内容语言", "value": "简体中文（zh-CN）与英语（en-US）"},
             {"term": "正式 iOS 页面", "value": "GearDrop: Outdoor Deals，App ID 6790165332"},
@@ -335,7 +335,7 @@
       "description": "What GearDrop is, what it tracks, and how this independent service differs from brands, retailers, rentals, giveaways, and other namesakes.",
       "eyebrow": "Entity profile",
       "h1": "What is GearDrop?",
-      "lead": "GearDrop at 001.100app.dev is an independent outdoor deal discovery and price-tracking service for public listings across retailers and markets.",
+      "lead": "GearDrop at geardrop.100app.dev is an independent outdoor deal discovery and price-tracking service for public listings across retailers and markets.",
       "answer": "GearDrop does not sell products and is not an official website of Arc'teryx, Burton, Patagonia, or any listed retailer. Orders, payments, shipping, returns, and final availability remain with the retailer.",
       "sections": [
         {
@@ -360,7 +360,7 @@
           "facts": [
             {"term": "Name", "value": "GearDrop"},
             {"term": "Alternate name", "value": "GearDrop Outdoor Deals"},
-            {"term": "Canonical website", "value": "https://001.100app.dev/"},
+            {"term": "Canonical website", "value": "https://geardrop.100app.dev/"},
             {"term": "Service type", "value": "Independent B2C outdoor deal discovery and price tracking"},
             {"term": "Official iOS listing", "value": "GearDrop: Outdoor Deals, App ID 6790165332"}
           ],

@@ -174,7 +174,7 @@ def build_report() -> str:
             lines.append(f"  • <b>{disc}%</b> {name} ({region}) — {sym}{sp:g} <s>{sym}{op:g}</s>")
 
     lines.append("")
-    lines.append("🔗 https://001.100app.dev")
+    lines.append("🔗 https://geardrop.100app.dev")
     return "\n".join(lines)
 
 

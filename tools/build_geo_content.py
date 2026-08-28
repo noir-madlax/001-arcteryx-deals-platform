@@ -107,7 +107,7 @@ def organization_node(site: dict[str, Any], language: str = "zh-CN") -> dict[str
         "description": site.get(f"description_{language}", site["description"]),
         "disambiguatingDescription": (
             "Independent outdoor deal discovery and price-tracking service at "
-            "001.100app.dev; not a retailer, rental marketplace, giveaway game, "
+            "geardrop.100app.dev; not a retailer, rental marketplace, giveaway game, "
             "or an official site of the tracked brands."
         ),
         "publishingPrinciples": f"{base_url}/methodology.html",

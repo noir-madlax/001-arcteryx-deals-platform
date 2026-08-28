@@ -6,6 +6,7 @@ import unittest
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+LEGACY_HOST = "001." + "100app.dev"
 
 
 class DirectServerReleaseTests(unittest.TestCase):
@@ -40,6 +41,15 @@ class DirectServerReleaseTests(unittest.TestCase):
 
     def test_operational_templates_keep_scopes_separate(self):
         common = (ROOT / "ops/web/nginx/geardrop-common.conf").read_text()
+        primary = (
+            ROOT / "ops/web/nginx/geardrop.100app.dev-tls.conf"
+        ).read_text()
+        legacy_http = (
+            ROOT / f"ops/web/nginx/{LEGACY_HOST}-http.conf"
+        ).read_text()
+        legacy_tls = (
+            ROOT / f"ops/web/nginx/{LEGACY_HOST}-tls.conf"
+        ).read_text()
         product_unit = (ROOT / "ops/web/systemd/geardrop-product.service").read_text()
         deploy_unit = (ROOT / "ops/web/systemd/geardrop-deploy.service").read_text()
         self.assertIn("root /srv/geardrop/current/static;", common)
@@ -49,7 +59,31 @@ class DirectServerReleaseTests(unittest.TestCase):
         self.assertNotIn("WorkingDirectory=", product_unit)
         self.assertIn("GEARDROP_PRODUCT_PORT=4181", product_unit)
         self.assertIn("User=ec2-user", deploy_unit)
-        self.assertNotIn("/home/ec2-user/arcteryx", common + product_unit + deploy_unit)
+        self.assertIn("server_name geardrop.100app.dev;", primary)
+        self.assertIn(
+            "ssl_certificate /etc/letsencrypt/live/geardrop.100app.dev/fullchain.pem;",
+            primary,
+        )
+        self.assertIn("include /etc/nginx/snippets/geardrop-common.conf;", primary)
+        self.assertIn(
+            "return 308 https://geardrop.100app.dev$request_uri;", primary
+        )
+        self.assertNotIn("https://$host$request_uri", primary)
+        self.assertNotIn(f"server_name {LEGACY_HOST};", primary)
+        for legacy in (legacy_http, legacy_tls):
+            self.assertIn(f"server_name {LEGACY_HOST};", legacy)
+            self.assertIn(
+                "return 308 https://geardrop.100app.dev$request_uri;", legacy
+            )
+            self.assertNotIn(
+                "include /etc/nginx/snippets/geardrop-common.conf;", legacy
+            )
+        self.assertIn("/.well-known/acme-challenge/", legacy_http)
+        self.assertIn("/.well-known/acme-challenge/", legacy_tls)
+        self.assertNotIn(
+            "/home/ec2-user/arcteryx",
+            common + primary + legacy_http + legacy_tls + product_unit + deploy_unit,
+        )
 
 
 if __name__ == "__main__":

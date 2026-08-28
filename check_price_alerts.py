@@ -17,7 +17,7 @@ SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://bupqagkrcvrezjkdbald.supa
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")          # service_role
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")       # 可选
 RESEND_FROM = os.environ.get("RESEND_FROM", "GearDrop <onboarding@resend.dev>")
-SITE_URL = os.environ.get("SITE_URL", "https://001.100app.dev")
+SITE_URL = os.environ.get("SITE_URL", "https://geardrop.100app.dev")
 
 if not SUPABASE_KEY:
     sys.exit("SUPABASE_KEY env required")

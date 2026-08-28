@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const API_DIR = path.dirname(fileURLToPath(import.meta.url));
 
-const SITE_URL = 'https://001.100app.dev';
+const SITE_URL = 'https://geardrop.100app.dev';
 const PRODUCT_FIELDS = [
   'sku_id', 'brand', 'model', 'full_name', 'category', 'color',
   'original_price', 'sale_price', 'discount_pct', 'currency', 'symbol',

@@ -12,7 +12,7 @@ else
 fi
 
 GITHUB_REMOTE="git@github.com:wantai-dev/001-arcteryx-deals-platform.git"
-SITE_URL="${SITE_URL:-https://001.100app.dev}"
+SITE_URL="${SITE_URL:-https://geardrop.100app.dev}"
 
 if [ -f "$HOME/.arcteryx_secrets" ]; then
   # shellcheck disable=SC1091

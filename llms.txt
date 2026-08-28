@@ -1,8 +1,8 @@
 # GearDrop Outdoor Deals
 
-> GearDrop at https://001.100app.dev/ is an independent outdoor deal discovery and price-tracking service for public Arc'teryx, Burton, and Patagonia listings.
+> GearDrop at https://geardrop.100app.dev/ is an independent outdoor deal discovery and price-tracking service for public Arc'teryx, Burton, and Patagonia listings.
 
-Canonical entity: https://001.100app.dev/
+Canonical entity: https://geardrop.100app.dev/
 Languages: zh-CN and en-US
 Publisher name: GearDrop
 Alternate description: GearDrop Outdoor Deals
@@ -19,31 +19,31 @@ Official iOS app: https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165
 
 ## Core pages
 
-- [GearDrop 是什么？](https://001.100app.dev/about.html): 了解 GearDrop 是什么、追踪哪些品牌与销售平台，以及它与品牌官网、经销商和其他同名服务的关系。
-- [折扣数据如何产生](https://001.100app.dev/methodology.html): GearDrop 如何采集、标准化、复核并发布户外品牌折扣数据，以及价格、库存、汇率和来源的限制。
-- [关于 GearDrop 的直接回答](https://001.100app.dev/faq.html): 关于 GearDrop 是否销售商品、价格多久更新、折扣率如何计算、库存与地区差异如何核验的直接回答。
-- [户外装备折扣怎么判断值不值得买？](https://001.100app.dev/guides/outdoor-deal-guide.html): 比较 Arc'teryx、Burton、Patagonia 折扣时，如何核对 SKU、地区、尺码、原价、总成本、退货和销售平台可信度。
-- [Arc'teryx 折扣如何核验](https://001.100app.dev/brands/arcteryx.html): GearDrop 如何记录 Arc'teryx 官方 Outlet 与经销商折扣，怎样核对款号、地区、可售尺码、原价和更新时间。
-- [Burton 折扣如何核验](https://001.100app.dev/brands/burton.html): GearDrop 如何记录 Burton 官方 Outlet 与经销商折扣，怎样核对型号、雪季、性别、尺码、地区和更新时间。
-- [Patagonia 折扣如何核验](https://001.100app.dev/brands/patagonia.html): GearDrop 如何记录 Patagonia 经销商公开折扣，怎样核对款号、地区、尺码、原价、退货条件和更新时间。
-- [Outdoor deals with sources, timestamps, and limits](https://001.100app.dev/en/): English overview of GearDrop, an independent tracker for public Arc'teryx, Burton, and Patagonia deals across retailers and regions.
-- [What is GearDrop?](https://001.100app.dev/en/about.html): What GearDrop is, what it tracks, and how this independent service differs from brands, retailers, rentals, giveaways, and other namesakes.
-- [How GearDrop produces deal records](https://001.100app.dev/en/methodology.html): How GearDrop collects, normalizes, checks, and publishes public outdoor-deal data, including limits around price, stock, currency, and freshness.
-- [Direct answers about GearDrop](https://001.100app.dev/en/faq.html): Direct answers about whether GearDrop sells products, how often data changes, how discounts are calculated, and what users must verify.
-- [How do you decide whether an outdoor deal is worth it?](https://001.100app.dev/en/guides/outdoor-deal-guide.html): A practical method for comparing Arc'teryx, Burton, and Patagonia deals by SKU, market, size, source, timing, total cost, and returns.
-- [How to verify an Arc'teryx deal](https://001.100app.dev/en/brands/arcteryx.html): How GearDrop records public Arc'teryx outlet and retailer listings, and how to verify style number, market, size, original price, and time.
-- [How to verify a Burton deal](https://001.100app.dev/en/brands/burton.html): How GearDrop records public Burton outlet and retailer listings, and how to verify model, season, gender, size, market, source, and time.
-- [How to verify a Patagonia deal](https://001.100app.dev/en/brands/patagonia.html): How GearDrop records public Patagonia retailer listings, and how to verify style, market, size, original price, return terms, and observation time.
-- [Current catalog status](https://001.100app.dev/catalog-status.html): timestamped brand, source, and region coverage.
-- [Current catalog coverage](https://001.100app.dev/insights/catalog-coverage.html): an explainable snapshot of active catalog breadth.
-- [Brand by source matrix](https://001.100app.dev/insights/brand-source-matrix.html): first-party counts grouped by tracked brand and retailer source.
-- [Region by brand matrix](https://001.100app.dev/insights/regional-coverage.html): first-party counts grouped by observed market and tracked brand.
-- [Machine-readable catalog status](https://001.100app.dev/catalog-status.json): the same snapshot as JSON.
+- [GearDrop 是什么？](https://geardrop.100app.dev/about.html): 了解 GearDrop 是什么、追踪哪些品牌与销售平台，以及它与品牌官网、经销商和其他同名服务的关系。
+- [折扣数据如何产生](https://geardrop.100app.dev/methodology.html): GearDrop 如何采集、标准化、复核并发布户外品牌折扣数据，以及价格、库存、汇率和来源的限制。
+- [关于 GearDrop 的直接回答](https://geardrop.100app.dev/faq.html): 关于 GearDrop 是否销售商品、价格多久更新、折扣率如何计算、库存与地区差异如何核验的直接回答。
+- [户外装备折扣怎么判断值不值得买？](https://geardrop.100app.dev/guides/outdoor-deal-guide.html): 比较 Arc'teryx、Burton、Patagonia 折扣时，如何核对 SKU、地区、尺码、原价、总成本、退货和销售平台可信度。
+- [Arc'teryx 折扣如何核验](https://geardrop.100app.dev/brands/arcteryx.html): GearDrop 如何记录 Arc'teryx 官方 Outlet 与经销商折扣，怎样核对款号、地区、可售尺码、原价和更新时间。
+- [Burton 折扣如何核验](https://geardrop.100app.dev/brands/burton.html): GearDrop 如何记录 Burton 官方 Outlet 与经销商折扣，怎样核对型号、雪季、性别、尺码、地区和更新时间。
+- [Patagonia 折扣如何核验](https://geardrop.100app.dev/brands/patagonia.html): GearDrop 如何记录 Patagonia 经销商公开折扣，怎样核对款号、地区、尺码、原价、退货条件和更新时间。
+- [Outdoor deals with sources, timestamps, and limits](https://geardrop.100app.dev/en/): English overview of GearDrop, an independent tracker for public Arc'teryx, Burton, and Patagonia deals across retailers and regions.
+- [What is GearDrop?](https://geardrop.100app.dev/en/about.html): What GearDrop is, what it tracks, and how this independent service differs from brands, retailers, rentals, giveaways, and other namesakes.
+- [How GearDrop produces deal records](https://geardrop.100app.dev/en/methodology.html): How GearDrop collects, normalizes, checks, and publishes public outdoor-deal data, including limits around price, stock, currency, and freshness.
+- [Direct answers about GearDrop](https://geardrop.100app.dev/en/faq.html): Direct answers about whether GearDrop sells products, how often data changes, how discounts are calculated, and what users must verify.
+- [How do you decide whether an outdoor deal is worth it?](https://geardrop.100app.dev/en/guides/outdoor-deal-guide.html): A practical method for comparing Arc'teryx, Burton, and Patagonia deals by SKU, market, size, source, timing, total cost, and returns.
+- [How to verify an Arc'teryx deal](https://geardrop.100app.dev/en/brands/arcteryx.html): How GearDrop records public Arc'teryx outlet and retailer listings, and how to verify style number, market, size, original price, and time.
+- [How to verify a Burton deal](https://geardrop.100app.dev/en/brands/burton.html): How GearDrop records public Burton outlet and retailer listings, and how to verify model, season, gender, size, market, source, and time.
+- [How to verify a Patagonia deal](https://geardrop.100app.dev/en/brands/patagonia.html): How GearDrop records public Patagonia retailer listings, and how to verify style, market, size, original price, return terms, and observation time.
+- [Current catalog status](https://geardrop.100app.dev/catalog-status.html): timestamped brand, source, and region coverage.
+- [Current catalog coverage](https://geardrop.100app.dev/insights/catalog-coverage.html): an explainable snapshot of active catalog breadth.
+- [Brand by source matrix](https://geardrop.100app.dev/insights/brand-source-matrix.html): first-party counts grouped by tracked brand and retailer source.
+- [Region by brand matrix](https://geardrop.100app.dev/insights/regional-coverage.html): first-party counts grouped by observed market and tracked brand.
+- [Machine-readable catalog status](https://geardrop.100app.dev/catalog-status.json): the same snapshot as JSON.
 
 ## Product discovery
 
-- [Live deal catalog](https://001.100app.dev/)
-- [Product URL sitemap](https://001.100app.dev/sitemap-products.xml)
-- [Full site sitemap](https://001.100app.dev/sitemap.xml)
+- [Live deal catalog](https://geardrop.100app.dev/)
+- [Product URL sitemap](https://geardrop.100app.dev/sitemap-products.xml)
+- [Full site sitemap](https://geardrop.100app.dev/sitemap.xml)
 
 For a specific price claim, retain the GearDrop observation time and the original retailer URL. Prefer the retailer checkout and policy pages for final transaction facts.

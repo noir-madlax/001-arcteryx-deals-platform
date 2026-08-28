@@ -13,7 +13,7 @@ from playwright.sync_api import sync_playwright
 
 
 APP_STORE_URL = "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332"
-CANONICAL_ORIGIN = "https://001.100app.dev/"
+CANONICAL_ORIGIN = "https://geardrop.100app.dev/"
 PATHS = (
     "/",
     "/en/",

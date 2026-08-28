@@ -74,7 +74,7 @@ export default function MeScreen() {
         </View>
 
         <View style={styles.card}>
-          <Pressable style={styles.linkRow} onPress={() => WebBrowser.openBrowserAsync('https://001.100app.dev')}>
+          <Pressable style={styles.linkRow} onPress={() => WebBrowser.openBrowserAsync('https://geardrop.100app.dev')}>
             <Text style={styles.linkText}>About GearDrop</Text>
             <Ionicons name="open-outline" size={18} color={colors.muted} />
           </Pressable>

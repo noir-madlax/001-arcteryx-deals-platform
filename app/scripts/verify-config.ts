@@ -90,7 +90,7 @@ assert.ok(easJson.build?.production, 'missing production build profile');
 assert.ok(easJson.build?.simulator, 'missing simulator build profile');
 assert.ok(easJson.submit?.production?.ios, 'missing production iOS submit profile');
 assert.ok(existsSync(join(root, '..', 'privacy.html')), 'missing root privacy.html for App Store privacy policy URL');
-assert.ok(metadata.includes('https://001.100app.dev/privacy.html'), 'metadata missing privacy policy URL');
+assert.ok(metadata.includes('https://geardrop.100app.dev/privacy.html'), 'metadata missing privacy policy URL');
 assert.ok(!/Privacy Policy URL[\s\S]*?TODO/.test(metadata), 'metadata privacy policy URL still has TODO');
 assert.ok(actionsSource.includes('WebBrowser.openBrowserAsync(url)'), 'Buy flow must stay wrapped by openBuyUrl');
 assert.ok(actionsSource.includes("data: { url: '/(tabs)/watchlist' }"), 'local price notification must deep-link to Watchlist');
@@ -109,6 +109,6 @@ assert.ok(priceAlertsSource.includes('/rest/v1/price_alerts'), 'price alert help
 assert.ok(priceAlertsSource.includes("Prefer: 'return=minimal'"), 'price alert insert must not request inserted row data');
 
 console.log(
-  'config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://001.100app.dev/privacy.html plugins=' +
+  'config_ok name=GearDrop bundle=dev.100app.geardrop buildNumber=1 usesNonExemptEncryption=false privacyUrl=https://geardrop.100app.dev/privacy.html plugins=' +
     [...pluginNames].join(','),
 );

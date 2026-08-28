@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SITE_URL: https://001.100app.dev
+  SITE_URL: https://geardrop.100app.dev
 
 jobs:
   geo-readiness:

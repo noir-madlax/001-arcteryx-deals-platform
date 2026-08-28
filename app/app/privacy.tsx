@@ -34,7 +34,7 @@ export default function PrivacyScreen() {
         />
         <PolicyBlock
           title="Contact"
-          body="For data or privacy requests, use the contact channel associated with 001.100app.dev."
+          body="For data or privacy requests, use the contact channel associated with geardrop.100app.dev."
         />
       </ScrollView>
     </SafeAreaView>

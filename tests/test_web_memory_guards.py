@@ -130,7 +130,7 @@ class WebMemoryGuardTests(unittest.TestCase):
         for source in (self.index, self.detail, self.support):
             self.assertIn('/assets/brand/geardrop-logo.png', source)
             self.assertIn('/site.webmanifest', source)
-        self.assertIn('https://001.100app.dev/assets/brand/geardrop-og.png', self.index)
+        self.assertIn('https://geardrop.100app.dev/assets/brand/geardrop-og.png', self.index)
 
     def test_homepage_has_truthful_app_download_guidance(self):
         self.assertIn('id="app-download"', self.index)

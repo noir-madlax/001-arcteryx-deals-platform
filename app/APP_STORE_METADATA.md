@@ -53,15 +53,16 @@ outdoor gear,deals,price tracker,watchlist,markdowns,sale,shopping,hiking,climbi
 ## Support URL
 
 ```text
-https://001.100app.dev
+https://geardrop.100app.dev
 ```
 
 ## Privacy Policy URL
 
-Live and verified:
+Primary-domain target; verify publicly after the DNS cutover before changing
+App Store Connect:
 
 ```text
-https://001.100app.dev/privacy.html
+https://geardrop.100app.dev/privacy.html
 ```
 
 ## Review Notes

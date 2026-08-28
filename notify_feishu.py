@@ -110,7 +110,7 @@ def build_outlet_report() -> str:
         f"SKUs scraped: {len(rows)}",
         f"Average discount: {avg_discount:.0f}%",
         "By region: " + ", ".join(f"{k}:{v}" for k, v in sorted(by_region.items())),
-        "https://001.100app.dev",
+        "https://geardrop.100app.dev",
     ]
     return "\n".join(lines)
 
@@ -155,7 +155,7 @@ def build_dealers_report() -> str:
             currency = item.get("currency") or ""
             lines.append(f"- {disc}% [{dealer}] {name} - {currency}{sale}/{orig}")
     lines.append("")
-    lines.append("https://001.100app.dev")
+    lines.append("https://geardrop.100app.dev")
     return "\n".join(lines)
 
 
@@ -172,7 +172,7 @@ def build_revalidate_report() -> str:
     ]
     if db_count >= 0:
         lines.append(f"DB dealer products: {db_count}")
-    lines.append("https://001.100app.dev")
+    lines.append("https://geardrop.100app.dev")
     return "\n".join(lines)
 
 

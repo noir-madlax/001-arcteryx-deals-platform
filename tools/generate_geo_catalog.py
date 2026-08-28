@@ -24,7 +24,7 @@ if str(ROOT) not in sys.path:
 
 from dealers.source_registry import RETIRED_DEALERS  # noqa: E402
 
-SITE_URL = "https://001.100app.dev"
+SITE_URL = "https://geardrop.100app.dev"
 APP_STORE_URL = "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332"
 PAGE_SIZE = 1000
 MAX_PAGES = 50

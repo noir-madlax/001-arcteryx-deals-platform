@@ -24,7 +24,7 @@ env:
   INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
   INDEXNOW_KEY_LOCATION: ${{ secrets.INDEXNOW_KEY_LOCATION }}
   GITHUB_TOKEN: ${{ github.token }}
-  SITE_URL: https://001.100app.dev
+  SITE_URL: https://geardrop.100app.dev
   PUBLICATION_ID: "github-actions-${{ github.run_id }}-${{ github.run_attempt }}"
 
 jobs:
@@ -132,7 +132,7 @@ jobs:
         run: |
           python tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10
           python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --max-product-age-hours 72 --min-rows 100 --forbid-region jp
-          curl -fsS https://001.100app.dev/data.js | python -c 'import sys; s=sys.stdin.read(); assert "sku_id" in s; print("data.js bytes", len(s), "sku_entries", s.count("\"sku_id\""))'
+          curl -fsS https://geardrop.100app.dev/data.js | python -c 'import sys; s=sys.stdin.read(); assert "sku_id" in s; print("data.js bytes", len(s), "sku_entries", s.count("\"sku_id\""))'
           python tools/notify_indexnow.py --since-days 2 || echo "::warning::IndexNow notification failed or is not configured"
 
       - name: Release Outlet lease

@@ -20,8 +20,8 @@ from typing import Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_URL = "https://001.100app.dev"
-SITE_HOST = "001.100app.dev"
+SITE_URL = "https://geardrop.100app.dev"
+SITE_HOST = "geardrop.100app.dev"
 DEFAULT_ENDPOINT = "https://api.indexnow.org/indexnow"
 MAX_BATCH = 10_000
 DEFAULT_SITEMAPS = (ROOT / "sitemap-products.xml", ROOT / "sitemap-insights.xml")
