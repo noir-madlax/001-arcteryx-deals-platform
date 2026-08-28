@@ -1,12 +1,12 @@
-# TASK: GearDrop 主动收录与 AI 可见度复测闭环（更新：2026-08-28 22:24 Asia/Taipei）
+# TASK: GearDrop 主动收录与 AI 可见度复测闭环（更新：2026-08-28 22:55 Asia/Taipei）
 
 ## Why（一句话）
 
 把已上线的 GearDrop GEO 技术资产从“可抓取”推进到“主动通知、平台可观测、按同一口径复测”，同时保留独立的 iOS 发布边界。
 
-## 当前状态：进行中
+## 当前状态：完成
 
-代码、最新主分支、production、IndexNow、Search Console 与复测调度已闭环；Bing Webmaster 在 in-app Browser 和 Chrome 都没有登录态，Chrome 已停在账号选择窗口等待用户本人登录。
+代码、最新主分支、production、IndexNow、Search Console、Bing Webmaster 站点验证／sitemap 与复测调度均已闭环。Bing 新站点报告仍处于平台声明的最长 48 小时处理窗口；Vercel Git 自动部署重连不在本次已授权范围内，保持为独立后续。
 
 ## 边界
 
@@ -26,12 +26,15 @@
 - 当前会话没有 Search Console 或 Bing Webmaster 专用 connector/API；控制台语义操作需要使用真实浏览器会话。（来源：本会话工具能力查询）
 - Search Console 已有 `https://001.100app.dev/` URL-prefix 属性；`/sitemap.xml` 状态为成功，已发现 `8,431` 个网页，上次读取为 2026-08-21。概览显示 `1` 个网页已编入索引、`8,308` 个未编入索引；数据洞见过去 28 天没有点击，页面没有独立生成式 AI 报告。（来源：本会话新页面 DOM 读回）
 - Search Console 的网页详细报告把全部 `8,308` 个未收录 URL 归为唯一原因“已发现 - 尚未编入索引”；验证状态为“未启动”，首次发现于 2026-08-15，抽样 URL 的“上次抓取日期”均为“不适用”。这证明当前主要瓶颈在 Google 尚未抓取／收录，而不是 sitemap 未提交。由于本次没有完成一个可向 Google 声明已修正的站内问题，未点击“验证修正情况”。（来源：本会话新页面 DOM 读回）
-- Bing Webmaster 在两个已连接浏览器都未登录；没有读取到站点／sitemap 状态，不得推定不存在。（来源：本会话新页面 DOM 读回）
+- 用户完成 Chrome 登录后，Bing Webmaster 的登录后首页明确显示账号内没有站点；本次仅添加 `https://001.100app.dev/`。通过首页公开 `msvalidate.01` meta 验证后，Bing 返回 “Site addition successful”，站点选择器显示 `001.100app.dev/`。（来源：本会话新页面 DOM 读回与公网首页精确 meta 读回）
+- Bing Sitemaps 提交前为 `0 rows`；仅提交现有 `https://001.100app.dev/sitemap.xml` 后，页面返回成功提示并读回 `Known sitemaps=1`、错误 `0`、警告 `0`、状态 `Processing`、已发现 URL `0`、尚无 crawl 日期。（来源：本会话提交前后新页面 DOM 读回）
+- Bing AI Performance Beta 的 3 个月面板当前显示 `Total Citations=0`、`Avg. Cited Pages=0`，数据区间为 2026-05-28 至 2026-08-27；同时站点首页明确提示数据和报告最多需 48 小时处理，因此本值记录为“处理中／暂定零”，不能当成稳定历史基线。（来源：本会话新页面 DOM 读回）
+- Bing IndexNow 页面当前只显示 Get Started 引导，没有展示本次 API 请求回执；本次 IndexNow 成功证据仍是两次 HTTP `200` 的实际 API 回执，不把控制台空白补写成失败或零。（来源：本会话新页面 DOM 读回与实际请求输出）
 - 仓库迁移后 Vercel Git 集成没有给最新主分支提交写入 deployment status，自动部署也未触发；本次已用 production prebuilt 将最新主分支手动上线，但未来自动部署链路仍需在 Vercel 中重新连接迁移后的 GitHub 仓库。该连接会改变持久权限，需单独取得用户确认后执行。（来源：本会话 GitHub commit status、Vercel deployment 列表与 production 读回）
 
 ## 假设（未验证；验证后移入上区）
 
-- 用户完成 Bing 登录后，现有账号是否已包含该站点仍未知；必须从登录后的新页面读回。
+- Bing sitemap 和报告处理完成后的 URL 数、crawl 状态及 AI Performance 是否仍为零尚未知；由第 7/14 天复测从新页面读取。
 - Search Console 当前未显示独立生成式 AI 报告；这只代表本属性当前页面未提供该报告，不能记为零 AI 曝光。
 
 ## 验收标准
@@ -57,14 +60,14 @@
 - Search Console 详细未收录原因已按上区读回；没有把“0 点击”误记为“0 AI 曝光”，也没有在未完成对应修复时启动整批验证。
 - 当前线程自动化 `geardrop-ai-7` 已创建并读回；由于线程只允许一条 heartbeat，使用一条自动化在 2026-09-04 与 2026-09-11 10:00（Asia/Taipei）分别触发第 7/14 天复测，禁止未授权付费 API，并要求区分 `not_measured`、`blocked` 与零提及。
 - 最终手动 production 的公开 key 精确匹配；代表路径和 6 类机器人均为 HTTP 200。前一手动 production 的 deployed readiness 首跑因动态商品分段读取瞬时不一致为 `212/213`；独立完整 curl 证明 canonical、Product JSON-LD 与闭合 HTML 均存在，随后有界复跑为 `213/213`。最新自动数据提交上线后再次复跑为 `213/213`，因此未改产品代码。
+- Bing 验证提交 `2dbffef06d944635ae21f0ab0d4894a71e85cd2e` 落在最新主分支 `1828afc`（SSENSE 下线）之上，只新增首页验证 meta 与对应测试；Python `212/212`、Node `36/36`、`git diff --check` 和 production build 通过。手动 production `dpl_51hpS86XFz4A4cpFnVJKiUSyn9jG` 为 `READY` 并绑定 `001.100app.dev`；公网 meta 精确匹配，6 类机器人均为 HTTP 200，deployed readiness 为 `213/213`。
+- Bing 登录后的站点添加、验证、sitemap 提交与 AI Performance／IndexNow 读回已按上区完成；没有连接 Google 账号、修改 DNS、重复提交 sitemap 或触碰用户凭证。
 
 ## 下一步（按序）
 
-1. 用户本人完成 Chrome 中的 Bing Webmaster 登录。
-2. 登录后从新页面核验是否已有 `001.100app.dev`；仅在缺失时添加站点并提交 `/sitemap.xml`，随后独立读回。
-3. 用户单独确认后，在 Vercel 重新连接迁移后的 GitHub 仓库，并用一个无业务改动的可控提交验证自动 preview／production status 链路；此前不要把本次手动上线当成自动部署已恢复。
-4. 下一轮 Google 优化应先挑选首页、目录页与少量高价值产品页做 URL Inspection／抓取诊断，再决定是否请求收录或增强内部链接／外部权威信号；不得对 `8,308` 个 URL 批量声称“已修正”。
-5. Bing 读回完成后更新本档案为完成并提交；确认共享脏工作树未被本任务修改。
+1. 已安排的第 7/14 天复测从 Bing 新页面重新读取 sitemap crawl／URL 数与 AI Performance，区分 `processing`、稳定零和有引用；不要把本次暂定零固化为长期结论。
+2. 用户单独确认后，在 Vercel 重新连接迁移后的 GitHub 仓库，并用一个无业务改动的可控提交验证自动 preview／production status 链路；此前不要把本次手动上线当成自动部署已恢复。
+3. 下一轮 Google 优化应先挑选首页、目录页与少量高价值产品页做 URL Inspection／抓取诊断，再决定是否请求收录或增强内部链接／外部权威信号；不得对 `8,308` 个 URL 批量声称“已修正”。
 
 ## 死路
 
