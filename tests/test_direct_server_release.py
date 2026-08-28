@@ -22,6 +22,7 @@ class DirectServerReleaseTests(unittest.TestCase):
             self.assertIn("release_commit=", result.stdout)
             self.assertTrue((release / "static/index.html").is_file())
             self.assertTrue((release / "static/en/index.html").is_file())
+            self.assertTrue((release / "static/dealers/results.json").is_file())
             self.assertTrue((release / "static/sitemap-products.xml").is_file())
             self.assertTrue((release / "api/product.mjs").is_file())
             self.assertTrue((release / "ops/web/product-server.mjs").is_file())

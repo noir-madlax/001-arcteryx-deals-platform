@@ -57,6 +57,7 @@ printf '%s\n' "$COMMIT" > "$STAGING/REVISION"
 for required in \
   static/index.html \
   static/data.js \
+  static/dealers/results.json \
   static/product-detail.html \
   static/sitemap-products.xml \
   api/product.mjs \
