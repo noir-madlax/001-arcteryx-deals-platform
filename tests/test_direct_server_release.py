@@ -52,6 +52,7 @@ class DirectServerReleaseTests(unittest.TestCase):
         ).read_text()
         product_unit = (ROOT / "ops/web/systemd/geardrop-product.service").read_text()
         deploy_unit = (ROOT / "ops/web/systemd/geardrop-deploy.service").read_text()
+        deploy_script = (ROOT / "ops/web/deploy-server.sh").read_text()
         self.assertIn("root /srv/geardrop/current/static;", common)
         self.assertIn("location = /p", common)
         self.assertIn("proxy_pass http://127.0.0.1:4181;", common)
@@ -59,6 +60,12 @@ class DirectServerReleaseTests(unittest.TestCase):
         self.assertNotIn("WorkingDirectory=", product_unit)
         self.assertIn("GEARDROP_PRODUCT_PORT=4181", product_unit)
         self.assertIn("User=ec2-user", deploy_unit)
+        self.assertIn(
+            "PRIMARY_ORIGIN=${GEARDROP_PRIMARY_ORIGIN:-https://geardrop.100app.dev}",
+            deploy_script,
+        )
+        self.assertIn('grep -F -m 1 "<loc>$PRIMARY_ORIGIN/"', deploy_script)
+        self.assertNotIn(LEGACY_HOST.replace(".", r"\."), deploy_script)
         self.assertIn("server_name geardrop.100app.dev;", primary)
         self.assertIn(
             "ssl_certificate /etc/letsencrypt/live/geardrop.100app.dev/fullchain.pem;",
@@ -82,7 +89,13 @@ class DirectServerReleaseTests(unittest.TestCase):
         self.assertIn("/.well-known/acme-challenge/", legacy_tls)
         self.assertNotIn(
             "/home/ec2-user/arcteryx",
-            common + primary + legacy_http + legacy_tls + product_unit + deploy_unit,
+            common
+            + primary
+            + legacy_http
+            + legacy_tls
+            + product_unit
+            + deploy_unit
+            + deploy_script,
         )
 
 

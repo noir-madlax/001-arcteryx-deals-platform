@@ -5,6 +5,7 @@ ROOT=${GEARDROP_ROOT:-/srv/geardrop}
 SOURCE=${GEARDROP_SOURCE:-$ROOT/source}
 REMOTE=${GEARDROP_REMOTE:-git@github.com:wantai-dev/001-arcteryx-deals-platform.git}
 BRANCH=${GEARDROP_BRANCH:-main}
+PRIMARY_ORIGIN=${GEARDROP_PRIMARY_ORIGIN:-https://geardrop.100app.dev}
 PRODUCT_SERVICE=${GEARDROP_PRODUCT_SERVICE:-geardrop-product.service}
 PRODUCT_PORT=${GEARDROP_PRODUCT_PORT:-4181}
 SMOKE_PORT=${GEARDROP_SMOKE_PORT:-4281}
@@ -80,10 +81,10 @@ if [ "$INVALID_STATUS" != "404" ]; then
   exit 1
 fi
 
-SAMPLE_LOC=$(grep -m 1 '<loc>https://001\.100app\.dev/' \
+SAMPLE_LOC=$(grep -F -m 1 "<loc>$PRIMARY_ORIGIN/" \
   "$RELEASE/static/sitemap-products.xml" || true)
-SAMPLE_PATH=$(printf '%s\n' "$SAMPLE_LOC" \
-  | sed -n 's#.*<loc>https://001\.100app\.dev\([^<]*\)</loc>.*#\1#p')
+SAMPLE_PATH=${SAMPLE_LOC#*<loc>$PRIMARY_ORIGIN}
+SAMPLE_PATH=${SAMPLE_PATH%%</loc>*}
 if [ -z "$SAMPLE_PATH" ]; then
   echo "Product sitemap did not contain a canonical sample" >&2
   exit 1

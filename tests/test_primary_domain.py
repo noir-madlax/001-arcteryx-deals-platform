@@ -14,8 +14,12 @@ class PrimaryDomainTests(unittest.TestCase):
             [
                 "git",
                 "grep",
+                "-F",
                 "-n",
+                "-e",
                 LEGACY_HOST,
+                "-e",
+                LEGACY_HOST.replace(".", "\\."),
                 "--",
                 ":!.agent/**",
                 ":!geo/audits/**",
