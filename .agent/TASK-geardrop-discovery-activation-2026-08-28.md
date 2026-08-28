@@ -6,7 +6,7 @@
 
 ## 当前状态：进行中
 
-代码、生产、IndexNow、Search Console 与复测调度已闭环；Bing Webmaster 在 in-app Browser 和 Chrome 都没有登录态，Chrome 已停在账号选择窗口等待用户本人登录。
+代码、最新主分支、production、IndexNow、Search Console 与复测调度已闭环；Bing Webmaster 在 in-app Browser 和 Chrome 都没有登录态，Chrome 已停在账号选择窗口等待用户本人登录。
 
 ## 边界
 
@@ -20,7 +20,7 @@
 
 - 隔离分支 `codex/geardrop-discovery-activation-20260828` 起点为 `origin/main` `551e461ef0401239b7e81f155b729a10e350d6fb`。（来源：本会话 `git fetch`、`git worktree add`）
 - AI 可见度第一阶段提交 `5eb4562601beefa401d7fcdb24f5e02fabfaa896` 是当前 `origin/main` 的祖先；随后两次自动数据提交没有覆盖它。（来源：本会话 `git log`、`git merge-base --is-ancestor`）
-- 变更前生产部署为 `dpl_6miN8TjZrk1XWbSLNDxsYFvAGZCY`；本次提交 `14c2b8db24de1f447416f1acb4374a71c8c55ee6` 已快进到 `main`，生产部署 `dpl_2sDJNvTCH3iL49F8cmou1NKLTddb` 为 `READY`。（来源：本会话 `git push`、`git ls-remote`、`vercel inspect`）
+- 变更前生产部署为 `dpl_6miN8TjZrk1XWbSLNDxsYFvAGZCY`；功能提交 `14c2b8db24de1f447416f1acb4374a71c8c55ee6` 与诊断收尾 `517d7a98a2e06fd31acf23dc148c716f416d48f6` 已快进到迁移后的 `wantai-dev/main`。随后自动数据提交 `5b2af33e0dc0acc13f429511424c9eed57211f4d` 以本次提交为祖先并更新客户可见目录。因 ownership transfer 后 Vercel Git status 为空，最终使用最新主分支的 production prebuilt 手动部署；`dpl_AqYcCcnJki7JspXctZzDrMJAtAdD` 为 `READY` 并绑定 `001.100app.dev`。（来源：本会话 `git push`、`git ls-remote`、GitHub API、`vercel inspect`）
 - 仓库只有 `tools/notify_indexnow.py`，没有公开 IndexNow key 文件；Actions secrets／variables 中没有 `INDEXNOW_KEY` 或 `INDEXNOW_KEY_LOCATION`。（来源：本会话 `rg --files`、`gh secret list`、`gh variable list`）
 - 首页有 Google site verification meta；仓库未发现 Bing verification marker。该标记只证明部署资产存在，不能证明控制台属性、sitemap 或报告状态。（来源：`index.html:21` 与本会话字面检查）
 - 当前会话没有 Search Console 或 Bing Webmaster 专用 connector/API；控制台语义操作需要使用真实浏览器会话。（来源：本会话工具能力查询）
@@ -49,16 +49,17 @@
 - 本地验证通过：Python `218` 项、Node `13` 项、`py_compile`、`git diff --check`、Vercel preview build。
 - 曾误让 Vercel CLI 自动创建空项目 `worktree`（`prj_QBOelbDTq8JvGOrM4uBhfz694Jvd`）；只读确认该项目无任何 deployment 后已永久删除，并把隔离 worktree 重新链接至真实项目 `arcteryx-deals-platform`（`prj_xRYhGGeWK40qlv4jEDg3PDbnaAcs`）。
 - Git 集成 preview `dpl_5pmva8HNARdUddVyoT8APgE5yw96` 为 Ready；key 精确匹配，首页、robots 与 sitemap 均为 HTTP 200。生产 key 也精确匹配；11 个代表路径与 GPTBot、ChatGPT-User、OAI-SearchBot、Googlebot、Bingbot、PerplexityBot 访问均为 HTTP 200。
-- 生产 GEO readiness 在显式 `certifi` CA 下为 `213 passed / 0 failed`，产品 sitemap 为 `8,212` 个唯一 URL，`observed_ai_visibility` 保持 `not_measured`。
-- GitHub Secrets 已从不存在变为只按名称可见：`INDEXNOW_KEY`、`INDEXNOW_KEY_LOCATION`；正文未进入输出。真实 IndexNow 请求将 `8,221` 个近期 URL 单批提交并取得 HTTP `200`。
+- 最终生产 GEO readiness 在显式 `certifi` CA 下为 `213 passed / 0 failed`，产品 sitemap 为 `8,169` 个唯一 URL，`observed_ai_visibility` 保持 `not_measured`。
+- GitHub Secrets 已从不存在变为只按名称可见：`INDEXNOW_KEY`、`INDEXNOW_KEY_LOCATION`；正文未进入输出。功能上线后真实 IndexNow 请求将 `8,221` 个近期 URL 单批提交并取得 HTTP `200`；自动数据刷新上线后又对当前 `8,178` 个近期 URL 提交一次并取得 HTTP `200`。
 - Search Console 现有属性／sitemap／索引概览已按上区读回，因 sitemap 已为成功状态，没有重复提交。
 - 当前线程自动化 `geardrop-ai-7` 已创建并读回；由于线程只允许一条 heartbeat，使用一条自动化在 2026-09-04 与 2026-09-11 10:00（Asia/Taipei）分别触发第 7/14 天复测，禁止未授权付费 API，并要求区分 `not_measured`、`blocked` 与零提及。
+- 最终手动 production 的公开 key 精确匹配；代表路径和 6 类机器人均为 HTTP 200。前一手动 production 的 deployed readiness 首跑因动态商品分段读取瞬时不一致为 `212/213`；独立完整 curl 证明 canonical、Product JSON-LD 与闭合 HTML 均存在，随后有界复跑为 `213/213`。最新自动数据提交上线后再次复跑为 `213/213`，因此未改产品代码。
 
 ## 下一步（按序）
 
 1. 用户本人完成 Chrome 中的 Bing Webmaster 登录。
 2. 登录后从新页面核验是否已有 `001.100app.dev`；仅在缺失时添加站点并提交 `/sitemap.xml`，随后独立读回。
-3. 重跑诊断补丁后的完整门、提交第二个最小提交并快进 `main`；确认生产仍 Ready、共享脏工作树未变化。
+3. Bing 读回完成后更新本档案为完成并提交；确认共享脏工作树未被本任务修改。
 
 ## 死路
 
@@ -68,3 +69,4 @@
 - 生产 readiness 首轮因 Python 3.13 未绑定本机 CA 而全部读取失败；显式使用已安装 `certifi` CA 后 `213/213` 通过，与系统 curl 的 HTTPS 200 一致。
 - 第一次真实 IndexNow 请求返回非成功 HTTP 回执，但旧工具只保留了 `HTTPError` 类型，未暴露安全状态码；补充仅输出状态码且不输出正文／凭证的诊断后，有界重试取得 HTTP 200。
 - 调度器只允许当前线程绑定一条 heartbeat；第二条创建被拒绝且没有产生重复，随后把已创建的第一条更新为两次周五触发。
+- 仓库 ownership transfer 后，新提交没有 Vercel Git status，自动部署未发生；preview prebuilt 不能用于 production，被 Vercel 在上传前拒绝且没有产生部署。随后执行 `vercel build --prod` 并用 production prebuilt 成功部署。
