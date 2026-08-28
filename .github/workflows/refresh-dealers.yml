@@ -21,6 +21,8 @@ concurrency:
 env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+  INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+  INDEXNOW_KEY_LOCATION: ${{ secrets.INDEXNOW_KEY_LOCATION }}
   SITE_URL: https://001.100app.dev
   REI_ENRICH_DETAILS: "true"
   GITHUB_TOKEN: ${{ github.token }}
@@ -147,7 +149,7 @@ jobs:
         run: |
           git config user.email "bot@arcteryx-deals.local"
           git config user.name "ArcBot"
-          git add dealers/results.json sitemap-products.xml catalog-status.html catalog-status.json publication.json
+          git add dealers/results.json sitemap-products.xml sitemap-insights.xml catalog-status.html catalog-status.json insights/*.html en/catalog-status.html en/insights/*.html publication.json
           if git diff --cached --quiet; then
             echo "No dealer data changes to commit"
             exit 0
@@ -162,6 +164,7 @@ jobs:
           python tools/check_data_quality.py --online --dealer burton --dealer backcountry --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
           node tools/audit_product_names.mjs --online --strict-source
           curl -fsS https://001.100app.dev/dealers/results.json | python -c 'import json,sys; data=json.load(sys.stdin); print("generated_at", data.get("generated_at")); print({k:v.get("count") for k,v in data.get("dealers",{}).items()})'
+          python tools/notify_indexnow.py --since-days 2 || echo "::warning::IndexNow notification failed or is not configured"
 
       - name: Release Dealers lease
         if: always() && needs.lease-gate.outputs.lease_owned == 'true'

@@ -185,6 +185,7 @@ h1 {
 }
 
 .content-section {
+    min-width: 0;
     margin-bottom: 18px;
     padding: 30px;
     border: 1px solid var(--border);
@@ -229,6 +230,72 @@ h1 {
 
 .fact-list dt { color: var(--text-3); font-size: 13px; }
 .fact-list dd { color: var(--text-2); }
+
+.metric-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+}
+
+.metric-strip div {
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+}
+
+.metric-strip dt {
+    color: var(--text-3);
+    font-size: 12px;
+}
+
+.metric-strip dd {
+    margin: 4px 0 0;
+    color: var(--green);
+    font-family: ui-serif, Georgia, "Songti SC", serif;
+    font-size: clamp(25px, 4vw, 38px);
+    line-height: 1.15;
+}
+
+.data-table-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+}
+
+.table-scroll-hint {
+    margin: -4px 0 12px;
+    color: var(--text-3);
+    font-size: 12px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 11px 13px;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.data-table th:first-child,
+.data-table td:first-child { text-align: left; }
+.data-table thead th { background: var(--surface-soft); color: var(--text-2); font-size: 12px; }
+.data-table tbody th { color: var(--text); font-size: 13px; }
+.data-table tbody td { color: var(--text-2); }
+.data-table tbody tr:last-child th,
+.data-table tbody tr:last-child td { border-bottom: 0; }
 
 .link-list {
     display: grid;
@@ -337,6 +404,8 @@ h1 {
     .fact-list { grid-template-columns: 1fr; }
     .fact-list dt { padding-bottom: 0; border-bottom: 0; }
     .fact-list dd { padding-top: 3px; }
+    .metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .metric-strip div { padding: 15px; }
     .cta-band { align-items: stretch; flex-direction: column; }
     .button { width: 100%; }
 }

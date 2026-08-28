@@ -13,3 +13,14 @@ miniprogram/
 tools/
 xhs_cards/
 project.config.json
+
+# Root-level crawler, deployment, and maintenance sources are not public assets.
+/*.py
+/*.sh
+/*.sql
+/*.md
+/*.log
+/requirements.txt
+/.crawl_manifest.json
+/.sku_progress.json
+/.last_*

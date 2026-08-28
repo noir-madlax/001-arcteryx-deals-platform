@@ -134,10 +134,14 @@ class WebMemoryGuardTests(unittest.TestCase):
 
     def test_homepage_has_truthful_app_download_guidance(self):
         self.assertIn('id="app-download"', self.index)
-        self.assertIn('App Store 即将上线', self.index)
+        self.assertIn('GearDrop 已在 App Store 上线', self.index)
+        self.assertIn(
+            'https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332',
+            self.index,
+        )
         self.assertIn('https://apps.apple.com/us/app/testflight/id899247664', self.index)
-        self.assertIn('已收到 GearDrop 内测邀请', self.index)
-        self.assertNotIn('https://apps.apple.com/app/id6790165332', self.index)
+        self.assertIn('已收到专门内测邀请', self.index)
+        self.assertNotIn('App Store 即将上线', self.index)
 
     def test_detail_purchase_cta_names_the_actual_platform(self):
         self.assertIn(

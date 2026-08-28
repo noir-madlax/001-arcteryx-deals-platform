@@ -18,6 +18,40 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT_PATH = ROOT / "geo" / "site-content.json"
+APP_STORE_URL = "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332"
+
+LOCALE_UI = {
+    "zh-CN": {
+        "skip": "跳到主要内容",
+        "brand_home": "GearDrop 首页",
+        "nav_label": "主要导航",
+        "breadcrumb_label": "面包屑",
+        "updated": "内容更新",
+        "answer_label": "直接回答",
+        "faq_heading": "问题与回答",
+        "footer_label": "页脚导航",
+        "footer_text": "GearDrop 是独立折扣追踪服务，不销售商品，也不代表所列品牌或销售平台。",
+        "about": "关于 GearDrop",
+        "methodology": "数据方法",
+        "faq": "常见问题",
+        "app": "App Store",
+    },
+    "en-US": {
+        "skip": "Skip to main content",
+        "brand_home": "GearDrop home",
+        "nav_label": "Primary navigation",
+        "breadcrumb_label": "Breadcrumb",
+        "updated": "Content reviewed",
+        "answer_label": "Short answer",
+        "faq_heading": "Questions and answers",
+        "footer_label": "Footer navigation",
+        "footer_text": "GearDrop is an independent deal tracker. It does not sell products or represent listed brands or retailers.",
+        "about": "About GearDrop",
+        "methodology": "Methodology",
+        "faq": "FAQ",
+        "app": "App Store",
+    },
+}
 
 
 def esc(value: Any) -> str:
@@ -29,7 +63,39 @@ def public_url(base_url: str, path: str) -> str:
     return f"{base_url.rstrip('/')}{normalized}"
 
 
-def organization_node(site: dict[str, Any]) -> dict[str, Any]:
+def page_language(site: dict[str, Any], page: dict[str, Any]) -> str:
+    return page.get("language", site["primary_language"])
+
+
+def page_canonical_path(page: dict[str, Any]) -> str:
+    return page.get("canonical_path", page["path"])
+
+
+def page_canonical(site: dict[str, Any], page: dict[str, Any]) -> str:
+    return public_url(site["base_url"], page_canonical_path(page))
+
+
+def translation_paths(page: dict[str, Any]) -> tuple[str, str]:
+    language = page.get("language", "zh-CN")
+    if language == "en-US":
+        return page["translation_of"], page_canonical_path(page)
+    return page_canonical_path(page), page["alternate_path"]
+
+
+def render_alternates(site: dict[str, Any], page: dict[str, Any]) -> str:
+    zh_path, en_path = translation_paths(page)
+    zh_url = public_url(site["base_url"], zh_path)
+    en_url = public_url(site["base_url"], en_path)
+    return "\n".join(
+        [
+            f'    <link rel="alternate" hreflang="zh-CN" href="{esc(zh_url)}">',
+            f'    <link rel="alternate" hreflang="en-US" href="{esc(en_url)}">',
+            f'    <link rel="alternate" hreflang="x-default" href="{esc(zh_url)}">',
+        ]
+    )
+
+
+def organization_node(site: dict[str, Any], language: str = "zh-CN") -> dict[str, Any]:
     base_url = site["base_url"].rstrip("/")
     return {
         "@type": "Organization",
@@ -38,13 +104,14 @@ def organization_node(site: dict[str, Any]) -> dict[str, Any]:
         "alternateName": site["alternate_name"],
         "url": f"{base_url}/",
         "logo": {"@type": "ImageObject", "url": site["logo"]},
-        "description": site["description"],
+        "description": site.get(f"description_{language}", site["description"]),
         "disambiguatingDescription": (
             "Independent outdoor deal discovery and price-tracking service at "
             "001.100app.dev; not a retailer, rental marketplace, giveaway game, "
             "or an official site of the tracked brands."
         ),
         "publishingPrinciples": f"{base_url}/methodology.html",
+        "sameAs": [APP_STORE_URL],
     }
 
 
@@ -57,14 +124,29 @@ def website_node(site: dict[str, Any]) -> dict[str, Any]:
         "name": site["name"],
         "alternateName": site["alternate_name"],
         "description": site["description"],
-        "inLanguage": site["primary_language"],
+        "inLanguage": site.get("languages", [site["primary_language"]]),
+        "publisher": {"@id": f"{base_url}/#organization"},
+    }
+
+
+def software_application_node(site: dict[str, Any]) -> dict[str, Any]:
+    base_url = site["base_url"].rstrip("/")
+    return {
+        "@type": "SoftwareApplication",
+        "@id": f"{base_url}/#ios-app",
+        "name": "GearDrop: Outdoor Deals",
+        "operatingSystem": "iOS",
+        "applicationCategory": "ShoppingApplication",
+        "url": APP_STORE_URL,
+        "downloadUrl": APP_STORE_URL,
         "publisher": {"@id": f"{base_url}/#organization"},
     }
 
 
 def page_jsonld(site: dict[str, Any], page: dict[str, Any]) -> dict[str, Any]:
     base_url = site["base_url"].rstrip("/")
-    canonical = public_url(base_url, page["path"])
+    canonical = page_canonical(site, page)
+    language = page_language(site, page)
     breadcrumb_id = f"{canonical}#breadcrumb"
     page_id = f"{canonical}#webpage"
     page_type = page["schema_type"]
@@ -74,7 +156,7 @@ def page_jsonld(site: dict[str, Any], page: dict[str, Any]) -> dict[str, Any]:
         "url": canonical,
         "name": page["title"],
         "description": page["description"],
-        "inLanguage": site["primary_language"],
+        "inLanguage": language,
         "isPartOf": {"@id": f"{base_url}/#website"},
         "publisher": {"@id": f"{base_url}/#organization"},
         "breadcrumb": {"@id": breadcrumb_id},
@@ -130,7 +212,13 @@ def page_jsonld(site: dict[str, Any], page: dict[str, Any]) -> dict[str, Any]:
 
     return {
         "@context": "https://schema.org",
-        "@graph": [organization_node(site), website_node(site), page_node, breadcrumb],
+        "@graph": [
+            organization_node(site, language),
+            website_node(site),
+            software_application_node(site),
+            page_node,
+            breadcrumb,
+        ],
     }
 
 
@@ -199,7 +287,7 @@ def render_section(section: dict[str, Any]) -> str:
     return "\n".join(chunks)
 
 
-def render_faqs(faqs: list[dict[str, str]]) -> str:
+def render_faqs(faqs: list[dict[str, str]], heading: str) -> str:
     if not faqs:
         return ""
     items = []
@@ -217,7 +305,7 @@ def render_faqs(faqs: list[dict[str, str]]) -> str:
         )
     return (
         '<section class="content-section full" aria-labelledby="faq-heading">\n'
-        '<h2 id="faq-heading">问题与回答</h2>\n'
+        f'<h2 id="faq-heading">{esc(heading)}</h2>\n'
         '<div class="faq-list">\n'
         + "\n".join(items)
         + "\n</div>\n</section>"
@@ -228,10 +316,12 @@ def render_page(
     site: dict[str, Any], navigation: list[dict[str, str]], page: dict[str, Any]
 ) -> str:
     base_url = site["base_url"].rstrip("/")
-    canonical = public_url(base_url, page["path"])
+    canonical = page_canonical(site, page)
+    language = page_language(site, page)
+    ui = LOCALE_UI[language]
     jsonld = json.dumps(page_jsonld(site, page), ensure_ascii=False, indent=2)
-    nav = render_navigation(navigation, page["path"])
-    sections = [render_faqs(page.get("faqs", []))]
+    nav = render_navigation(navigation, page_canonical_path(page))
+    sections = [render_faqs(page.get("faqs", []), ui["faq_heading"])]
     sections.extend(render_section(section) for section in page.get("sections", []))
     rendered_sections = "\n".join(item for item in sections if item)
     cta = page.get("cta")
@@ -247,7 +337,7 @@ def render_page(
         </section>"""
 
     return f"""<!DOCTYPE html>
-<html lang="{esc(site['primary_language'])}">
+<html lang="{esc(language)}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -257,14 +347,13 @@ def render_page(
     <meta name="author" content="GearDrop">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
     <link rel="canonical" href="{esc(canonical)}">
-    <link rel="alternate" hreflang="zh-CN" href="{esc(canonical)}">
-    <link rel="alternate" hreflang="x-default" href="{esc(canonical)}">
+{render_alternates(site, page)}
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="GearDrop">
     <meta property="og:title" content="{esc(page['title'])}">
     <meta property="og:description" content="{esc(page['description'])}">
     <meta property="og:url" content="{esc(canonical)}">
-    <meta property="og:locale" content="zh_CN">
+    <meta property="og:locale" content="{esc(language.replace('-', '_'))}">
     <meta property="og:image" content="{esc(base_url)}/assets/brand/geardrop-og.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{esc(page['title'])}">
@@ -279,29 +368,29 @@ def render_page(
     </script>
 </head>
 <body>
-    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <a class="skip-link" href="#main-content">{esc(ui['skip'])}</a>
     <header class="site-header">
         <div class="header-inner">
-            <a class="brand-link" href="/" aria-label="GearDrop 首页">
+            <a class="brand-link" href="/" aria-label="{esc(ui['brand_home'])}">
                 <img class="brand-logo" src="/assets/brand/geardrop-logo.png" alt="GearDrop" width="355" height="76">
             </a>
-            <nav class="site-nav" aria-label="主要导航">
+            <nav class="site-nav" aria-label="{esc(ui['nav_label'])}">
                 {nav}
             </nav>
         </div>
     </header>
     <main class="page-shell" id="main-content">
-        <nav class="breadcrumb" aria-label="面包屑">
+        <nav class="breadcrumb" aria-label="{esc(ui['breadcrumb_label'])}">
             <a href="/">GearDrop</a><span aria-hidden="true">/</span><span>{esc(page['h1'])}</span>
         </nav>
         <header class="hero">
             <div class="eyebrow">{esc(page['eyebrow'])}</div>
             <h1>{esc(page['h1'])}</h1>
             <p class="lead">{esc(page['lead'])}</p>
-            <div class="updated">内容更新：{esc(site['date_modified'])}</div>
+            <div class="updated">{esc(ui['updated'])}: {esc(site['date_modified'])}</div>
         </header>
-        <section class="answer-box" aria-label="直接回答">
-            <strong>直接回答</strong>
+        <section class="answer-box" aria-label="{esc(ui['answer_label'])}">
+            <strong>{esc(ui['answer_label'])}</strong>
             <p>{esc(page['answer'])}</p>
         </section>
         <div class="content-grid">
@@ -310,14 +399,15 @@ def render_page(
 {cta_html}
     </main>
     <footer class="site-footer">
-        <nav class="footer-links" aria-label="页脚导航">
-            <a href="/about.html">关于 GearDrop</a>
-            <a href="/methodology.html">数据方法</a>
-            <a href="/faq.html">常见问题</a>
+        <nav class="footer-links" aria-label="{esc(ui['footer_label'])}">
+            <a href="{esc('/en/about.html' if language == 'en-US' else '/about.html')}">{esc(ui['about'])}</a>
+            <a href="{esc('/en/methodology.html' if language == 'en-US' else '/methodology.html')}">{esc(ui['methodology'])}</a>
+            <a href="{esc('/en/faq.html' if language == 'en-US' else '/faq.html')}">{esc(ui['faq'])}</a>
+            <a href="{APP_STORE_URL}" rel="noopener">{esc(ui['app'])}</a>
             <a href="/support.html">Support</a>
             <a href="/privacy.html">Privacy</a>
         </nav>
-        <div>GearDrop 是独立折扣追踪服务，不销售商品，也不代表所列品牌或销售平台。</div>
+        <div>{esc(ui['footer_text'])}</div>
     </footer>
 </body>
 </html>
@@ -327,7 +417,7 @@ def render_page(
 def render_llms_txt(site: dict[str, Any], pages: list[dict[str, Any]]) -> str:
     base_url = site["base_url"].rstrip("/")
     page_lines = "\n".join(
-        f"- [{page['h1']}]({public_url(base_url, page['path'])}): {page['description']}"
+        f"- [{page['h1']}]({page_canonical(site, page)}): {page['description']}"
         for page in pages
     )
     return f"""# GearDrop Outdoor Deals
@@ -335,9 +425,10 @@ def render_llms_txt(site: dict[str, Any], pages: list[dict[str, Any]]) -> str:
 > GearDrop at {base_url}/ is an independent outdoor deal discovery and price-tracking service for public Arc'teryx, Burton, and Patagonia listings.
 
 Canonical entity: {base_url}/
-Primary language: zh-CN
+Languages: zh-CN and en-US
 Publisher name: GearDrop
 Alternate description: GearDrop Outdoor Deals
+Official iOS app: {APP_STORE_URL}
 
 ## Essential identity and limits
 
@@ -352,6 +443,9 @@ Alternate description: GearDrop Outdoor Deals
 
 {page_lines}
 - [Current catalog status]({base_url}/catalog-status.html): timestamped brand, source, and region coverage.
+- [Current catalog coverage]({base_url}/insights/catalog-coverage.html): an explainable snapshot of active catalog breadth.
+- [Brand by source matrix]({base_url}/insights/brand-source-matrix.html): first-party counts grouped by tracked brand and retailer source.
+- [Region by brand matrix]({base_url}/insights/regional-coverage.html): first-party counts grouped by observed market and tracked brand.
 - [Machine-readable catalog status]({base_url}/catalog-status.json): the same snapshot as JSON.
 
 ## Product discovery
@@ -389,12 +483,11 @@ def render_sitemap_static(site: dict[str, Any], pages: list[dict[str, Any]]) -> 
     lastmod = site["date_modified"]
     entries = [(f"{base_url}/", "daily", "1.0", lastmod)]
     entries.extend(
-        (public_url(base_url, page["path"]), "monthly", "0.8", lastmod)
+        (page_canonical(site, page), "monthly", "0.8", lastmod)
         for page in pages
     )
     entries.extend(
         [
-            (f"{base_url}/catalog-status.html", "daily", "0.8", lastmod),
             (f"{base_url}/support.html", "monthly", "0.5", ""),
             (f"{base_url}/privacy.html", "yearly", "0.3", ""),
         ]
@@ -419,16 +512,16 @@ def render_sitemap_static(site: dict[str, Any], pages: list[dict[str, Any]]) -> 
 
 def render_sitemap_index(site: dict[str, Any]) -> str:
     base_url = site["base_url"].rstrip("/")
-    lastmod = site["date_modified"]
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>{esc(base_url)}/sitemap-static.xml</loc>
-    <lastmod>{esc(lastmod)}</lastmod>
   </sitemap>
   <sitemap>
     <loc>{esc(base_url)}/sitemap-products.xml</loc>
-    <lastmod>{esc(lastmod)}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>{esc(base_url)}/sitemap-insights.xml</loc>
   </sitemap>
 </sitemapindex>
 """
@@ -448,10 +541,15 @@ Sitemap: {base_url}/sitemap.xml
 
 def build_outputs(content: dict[str, Any]) -> dict[Path, str]:
     site = content["site"]
-    pages = content["pages"]
-    navigation = content["navigation"]
+    pages = content["pages"] + content.get("english_pages", [])
     outputs: dict[Path, str] = {}
     for page in pages:
+        language = page_language(site, page)
+        navigation = (
+            content.get("navigation_en", content["navigation"])
+            if language == "en-US"
+            else content["navigation"]
+        )
         outputs[ROOT / page["path"]] = render_page(site, navigation, page)
     outputs[ROOT / "llms.txt"] = render_llms_txt(site, pages)
     outputs[ROOT / "llms-full.txt"] = render_llms_full(site, pages)

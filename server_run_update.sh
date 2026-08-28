@@ -129,14 +129,18 @@ for f in .crawl_manifest.json data.js arcteryx_skus.json global_data.json; do
 done
 rm -rf "$TMPDIR"
 
+log "Step 4a: Regenerate catalog GEO and insight assets"
+"$PYTHON" tools/generate_geo_catalog.py --online 2>&1 | tee -a "$LOG_FILE"
+
 PUBLICATION_ID=$("$PYTHON" -c 'from datetime import datetime, timezone; from uuid import uuid4; print(f"primary-outlet-{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}-{uuid4().hex[:12]}")')
 "$PYTHON" tools/write_publication_marker.py --scope outlet --publication-id "$PUBLICATION_ID" 2>&1 | tee -a "$LOG_FILE"
-git add .crawl_manifest.json data.js arcteryx_skus.json global_data.json publication.json
+git add .crawl_manifest.json data.js arcteryx_skus.json global_data.json publication.json sitemap-products.xml sitemap-insights.xml catalog-status.html catalog-status.json insights/*.html en/catalog-status.html en/insights/*.html
 if ! git diff --cached --quiet; then
   git commit -m "data: auto update $(date '+%Y-%m-%d %H:%M')"
   git pull --rebase origin main 2>&1 | tee -a "$LOG_FILE"
   git push origin main 2>&1 | tee -a "$LOG_FILE"
   "$PYTHON" tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10 2>&1 | tee -a "$LOG_FILE"
+  "$PYTHON" tools/notify_indexnow.py --since-days 2 2>&1 | tee -a "$LOG_FILE" || log "IndexNow notification failed (non-fatal)"
 else
   log "No data changes to commit"
 fi

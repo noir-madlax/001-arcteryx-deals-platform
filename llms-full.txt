@@ -3,9 +3,10 @@
 > GearDrop at https://001.100app.dev/ is an independent outdoor deal discovery and price-tracking service for public Arc'teryx, Burton, and Patagonia listings.
 
 Canonical entity: https://001.100app.dev/
-Primary language: zh-CN
+Languages: zh-CN and en-US
 Publisher name: GearDrop
 Alternate description: GearDrop Outdoor Deals
+Official iOS app: https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332
 
 ## Essential identity and limits
 
@@ -25,7 +26,18 @@ Alternate description: GearDrop Outdoor Deals
 - [Arc'teryx 折扣如何核验](https://001.100app.dev/brands/arcteryx.html): GearDrop 如何记录 Arc'teryx 官方 Outlet 与经销商折扣，怎样核对款号、地区、可售尺码、原价和更新时间。
 - [Burton 折扣如何核验](https://001.100app.dev/brands/burton.html): GearDrop 如何记录 Burton 官方 Outlet 与经销商折扣，怎样核对型号、雪季、性别、尺码、地区和更新时间。
 - [Patagonia 折扣如何核验](https://001.100app.dev/brands/patagonia.html): GearDrop 如何记录 Patagonia 经销商公开折扣，怎样核对款号、地区、尺码、原价、退货条件和更新时间。
+- [Outdoor deals with sources, timestamps, and limits](https://001.100app.dev/en/): English overview of GearDrop, an independent tracker for public Arc'teryx, Burton, and Patagonia deals across retailers and regions.
+- [What is GearDrop?](https://001.100app.dev/en/about.html): What GearDrop is, what it tracks, and how this independent service differs from brands, retailers, rentals, giveaways, and other namesakes.
+- [How GearDrop produces deal records](https://001.100app.dev/en/methodology.html): How GearDrop collects, normalizes, checks, and publishes public outdoor-deal data, including limits around price, stock, currency, and freshness.
+- [Direct answers about GearDrop](https://001.100app.dev/en/faq.html): Direct answers about whether GearDrop sells products, how often data changes, how discounts are calculated, and what users must verify.
+- [How do you decide whether an outdoor deal is worth it?](https://001.100app.dev/en/guides/outdoor-deal-guide.html): A practical method for comparing Arc'teryx, Burton, and Patagonia deals by SKU, market, size, source, timing, total cost, and returns.
+- [How to verify an Arc'teryx deal](https://001.100app.dev/en/brands/arcteryx.html): How GearDrop records public Arc'teryx outlet and retailer listings, and how to verify style number, market, size, original price, and time.
+- [How to verify a Burton deal](https://001.100app.dev/en/brands/burton.html): How GearDrop records public Burton outlet and retailer listings, and how to verify model, season, gender, size, market, source, and time.
+- [How to verify a Patagonia deal](https://001.100app.dev/en/brands/patagonia.html): How GearDrop records public Patagonia retailer listings, and how to verify style, market, size, original price, return terms, and observation time.
 - [Current catalog status](https://001.100app.dev/catalog-status.html): timestamped brand, source, and region coverage.
+- [Current catalog coverage](https://001.100app.dev/insights/catalog-coverage.html): an explainable snapshot of active catalog breadth.
+- [Brand by source matrix](https://001.100app.dev/insights/brand-source-matrix.html): first-party counts grouped by tracked brand and retailer source.
+- [Region by brand matrix](https://001.100app.dev/insights/regional-coverage.html): first-party counts grouped by observed market and tracked brand.
 - [Machine-readable catalog status](https://001.100app.dev/catalog-status.json): the same snapshot as JSON.
 
 ## Product discovery
@@ -187,5 +199,129 @@ GearDrop 商品页保留原始销售链接；目录状态页说明覆盖范围�
 
 #### 相关入口
 
-Last content review: 2026-08-14
+### Outdoor deals with sources, timestamps, and limits
+GearDrop is an independent discovery and price-tracking service. It does not sell products or represent the listed brands and retailers. Confirm the final price, stock, shipping, taxes, and return terms with the retailer before buying.
+
+#### What you can verify
+- Browse current public listings by brand, retailer source, region, category, and discount.
+- Open the original retailer URL and retain the GearDrop observation time for a specific price claim.
+- Review timestamped catalog coverage and first-party coverage matrices before quoting aggregate counts.
+
+#### Start with the evidence
+
+### What is GearDrop?
+GearDrop does not sell products and is not an official website of Arc'teryx, Burton, Patagonia, or any listed retailer. Orders, payments, shipping, returns, and final availability remain with the retailer.
+
+#### What GearDrop provides
+- A searchable catalog of public Arc'teryx, Burton, and Patagonia listings.
+- Retailer source, market, currency, original URL, and observation time where available.
+- An iPhone app for saved products, price history, and price-drop alerts.
+
+#### What GearDrop is not
+- It is not a retailer, rental marketplace, giveaway, or map game.
+- Listing a brand or retailer does not imply sponsorship, endorsement, or authorization.
+- A recorded price or stock signal is not a guarantee of checkout availability.
+
+#### Canonical entity facts
+
+### How GearDrop produces deal records
+Each product record retains an identity, brand, retailer source, market, currency, source URL, and observation time where available. A discount is calculated only when a positive original price is higher than the current price. Always confirm transaction facts with the retailer.
+
+#### Processing flow
+- Read public sources: Source-specific collectors read public brand, outlet, and retailer pages without bypassing login or access controls.
+- Normalize facts: Brand, name, category, market, currency, prices, sizes, source, and timestamps are mapped into a consistent record.
+- Run quality gates: Freshness, minimum volume, URL lifecycle, price relationships, images, and source completeness are checked before publication.
+- Publish with time boundaries: The live database is preferred and static data is a fallback; records retain the latest successful observation time.
+
+#### Discount and comparison limits
+- Discount percentage is rounded from (original price minus current price) divided by original price.
+- Reference currency conversions are not checkout quotes and exclude taxes, shipping, duties, card fees, and returns.
+- Similar product names can refer to different years, genders, colors, sizes, regions, or SKUs.
+- Missing size data does not mean in stock or sold out.
+
+#### Machine-readable evidence
+These surfaces improve discovery and auditability. They do not prove mention, citation, or recommendation by any search or AI system.
+
+### Direct answers about GearDrop
+GearDrop is an independent outdoor deal tracker, not a seller. It records public product facts with source links and observation times; it cannot replace the retailer checkout page.
+
+#### Verify further
+
+Q: Does GearDrop sell products?
+A: No. GearDrop supports discovery, filtering, price history, and alerts. Orders, payment, delivery, and support are handled by the retailer.
+
+Q: Is GearDrop an official Arc'teryx, Burton, or Patagonia site?
+A: No. GearDrop is independent. A public listing does not create sponsorship, endorsement, or authorization.
+
+Q: How current are the prices?
+A: Sources refresh in separate batches, usually several times a day. Use the record's observation time and confirm the current price on the retailer page.
+
+Q: How is discount percentage calculated?
+A: When original price is above current price, GearDrop calculates the difference divided by original price and rounds the result. Member pricing or coupon conditions may use a different basis.
+
+Q: Does missing size data mean a product is available?
+A: No. It only means the source did not provide a reliable size state. Confirm availability with the retailer.
+
+Q: Will structured data or llms.txt make AI systems recommend GearDrop?
+A: No. Those files support discovery and interpretation. Mention, citation, and recommendation require separate controlled measurement.
+
+### How do you decide whether an outdoor deal is worth it?
+Match the SKU or full model, gender, color, and size first. Then verify the original-currency price, source, observation time, shipping region, and return terms. Compare total landed cost, not only the discount rate.
+
+#### Six checks
+- Match product identity: Prefer an official style number or SKU; otherwise compare full name, gender, season, color, and images.
+- Match market and currency: Confirm the sales market, currency, delivery eligibility, and any regional or membership restrictions.
+- Check sellable sizes: A steep discount on unavailable variants is not a generally purchasable price.
+- Check observation time: Use the GearDrop timestamp, then open the source page and cart before buying.
+- Calculate landed cost: Include shipping, taxes, duties, foreign-exchange fees, and potential return cost.
+- Review returns: Check the return window, return address, final-sale rules, and support path.
+
+#### Evidence worth retaining
+A strong price reference keeps the product identity, original and current prices, currency, retailer URL, and observation time together. An undated screenshot or an unqualified 'up to' claim is weaker evidence.
+
+### How to verify an Arc'teryx deal
+Match the official style number or full model, gender, and season first. Then verify market, currency, sellable size, source, and observation time. The retailer controls the final price and stock.
+
+#### Source boundary
+Current coverage can include Arc'teryx Outlet and public retailer pages from SSENSE, MEC, EVO, REI, and other sources that pass data-quality checks.
+
+#### Verify first
+- Official style number or SKU
+- Gender and model year
+- Market, currency, and delivery eligibility
+- Sellable colors and sizes
+- Original price, current price, and observation time
+
+#### Related evidence
+
+### How to verify a Burton deal
+Match the model, season or year, gender, color, and size first. Then verify the retailer source, market, original-currency price, inventory, return conditions, and observation time.
+
+#### Source boundary
+Current coverage can include public Burton, Backcountry, EVO, and other retailer records that pass quality gates. Source identifiers and variants are linked only when product identity is sufficiently clear.
+
+#### Verify first
+- Model, season, or official style number
+- Adult, youth, gender, and size variant
+- Final-sale and return restrictions
+- Market, currency, delivery range, and observation time
+
+#### Related evidence
+
+### How to verify a Patagonia deal
+Match the style number or full model, gender, color, and size. Then verify the sales market, original-currency price, retailer, return policy, and observation time.
+
+#### Source boundary
+Current sources are the public retailers that pass quality gates. The source mix can change, and GearDrop does not force a match between similarly named products without reliable identity evidence.
+
+#### Verify first
+- Official style number or full model
+- Market and original currency
+- Color, size, and actual availability
+- Final-sale and return terms
+- Price, shipping, taxes, and observation time
+
+#### Related evidence
+
+Last content review: 2026-08-28
 Methodology: https://001.100app.dev/methodology.html

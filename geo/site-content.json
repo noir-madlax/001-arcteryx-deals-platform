@@ -4,20 +4,32 @@
     "alternate_name": "GearDrop Outdoor Deals",
     "base_url": "https://001.100app.dev",
     "description": "独立的户外品牌折扣发现与价格追踪服务，聚合 Arc'teryx、Burton、Patagonia 的官方奥莱及经销商公开信息。",
+    "description_en-US": "Independent outdoor deal discovery and price tracking for public Arc'teryx, Burton, and Patagonia listings.",
     "logo": "https://001.100app.dev/assets/brand/icon-512.png",
     "primary_language": "zh-CN",
-    "date_modified": "2026-08-14"
+    "languages": ["zh-CN", "en-US"],
+    "date_modified": "2026-08-28"
   },
   "navigation": [
     {"label": "折扣目录", "href": "/"},
     {"label": "关于", "href": "/about.html"},
     {"label": "数据方法", "href": "/methodology.html"},
     {"label": "常见问题", "href": "/faq.html"},
-    {"label": "选购指南", "href": "/guides/outdoor-deal-guide.html"}
+    {"label": "选购指南", "href": "/guides/outdoor-deal-guide.html"},
+    {"label": "English", "href": "/en/"}
+  ],
+  "navigation_en": [
+    {"label": "Deal catalog", "href": "/"},
+    {"label": "About", "href": "/en/about.html"},
+    {"label": "Methodology", "href": "/en/methodology.html"},
+    {"label": "FAQ", "href": "/en/faq.html"},
+    {"label": "Buying guide", "href": "/en/guides/outdoor-deal-guide.html"},
+    {"label": "中文", "href": "/"}
   ],
   "pages": [
     {
       "path": "about.html",
+      "alternate_path": "en/about.html",
       "schema_type": "AboutPage",
       "title": "关于 GearDrop｜独立户外折扣追踪服务",
       "description": "了解 GearDrop 是什么、追踪哪些品牌与销售平台，以及它与品牌官网、经销商和其他同名服务的关系。",
@@ -65,8 +77,12 @@
             {"term": "辅助名称", "value": "GearDrop Outdoor Deals"},
             {"term": "规范网址", "value": "https://001.100app.dev/"},
             {"term": "服务类型", "value": "独立 B2C 户外折扣发现与价格追踪"},
-            {"term": "当前内容语言", "value": "简体中文（zh-CN）"},
+            {"term": "内容语言", "value": "简体中文（zh-CN）与英语（en-US）"},
+            {"term": "正式 iOS 页面", "value": "GearDrop: Outdoor Deals，App ID 6790165332"},
             {"term": "购买关系", "value": "GearDrop 不销售；购买发生在外部销售平台"}
+          ],
+          "links": [
+            {"label": "GearDrop App Store 正式页面", "href": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332", "description": "查看公开 iOS 版本与兼容性"}
           ],
           "note": "这些事实描述 GearDrop 自身；第三方品牌、价格与库存事实需要同时引用对应销售平台和记录时间。"
         }
@@ -75,6 +91,7 @@
     },
     {
       "path": "methodology.html",
+      "alternate_path": "en/methodology.html",
       "schema_type": "TechArticle",
       "title": "GearDrop 数据方法｜折扣、价格与库存如何记录",
       "description": "GearDrop 如何采集、标准化、复核并发布户外品牌折扣数据，以及价格、库存、汇率和来源的限制。",
@@ -136,6 +153,7 @@
     },
     {
       "path": "faq.html",
+      "alternate_path": "en/faq.html",
       "schema_type": "FAQPage",
       "title": "GearDrop 常见问题｜价格、库存、来源与品牌关系",
       "description": "关于 GearDrop 是否销售商品、价格多久更新、折扣率如何计算、库存与地区差异如何核验的直接回答。",
@@ -169,6 +187,7 @@
     },
     {
       "path": "guides/outdoor-deal-guide.html",
+      "alternate_path": "en/guides/outdoor-deal-guide.html",
       "schema_type": "Article",
       "title": "户外装备折扣怎么判断｜GearDrop 选购与核验指南",
       "description": "比较 Arc'teryx、Burton、Patagonia 折扣时，如何核对 SKU、地区、尺码、原价、总成本、退货和销售平台可信度。",
@@ -218,6 +237,7 @@
     },
     {
       "path": "brands/arcteryx.html",
+      "alternate_path": "en/brands/arcteryx.html",
       "schema_type": "CollectionPage",
       "schema_about": {"type": "Brand", "name": "Arc'teryx", "url": "https://arcteryx.com/"},
       "title": "Arc'teryx 折扣追踪｜GearDrop 来源与核验说明",
@@ -235,6 +255,7 @@
     },
     {
       "path": "brands/burton.html",
+      "alternate_path": "en/brands/burton.html",
       "schema_type": "CollectionPage",
       "schema_about": {"type": "Brand", "name": "Burton", "url": "https://www.burton.com/"},
       "title": "Burton 折扣追踪｜GearDrop 来源与核验说明",
@@ -252,6 +273,7 @@
     },
     {
       "path": "brands/patagonia.html",
+      "alternate_path": "en/brands/patagonia.html",
       "schema_type": "CollectionPage",
       "schema_about": {"type": "Brand", "name": "Patagonia", "url": "https://www.patagonia.com/"},
       "title": "Patagonia 折扣追踪｜GearDrop 来源与核验说明",
@@ -266,6 +288,255 @@
         {"heading": "相关入口", "full": true, "links": [{"label": "筛选 Patagonia 商品", "href": "/?brand=patagonia", "description": "打开实时目录并保留品牌筛选"}, {"label": "查看目录状态", "href": "/catalog-status.html", "description": "查看带时间戳的覆盖数量"}, {"label": "阅读数据方法", "href": "/methodology.html", "description": "理解商品关联和价格边界"}]}
       ],
       "cta": {"title": "查看 Patagonia 当前折扣", "body": "经销商库存变化快，购买前请打开原始页面。", "label": "打开筛选", "href": "/?brand=patagonia"}
+    }
+  ],
+  "english_pages": [
+    {
+      "path": "en/index.html",
+      "canonical_path": "en/",
+      "translation_of": "",
+      "language": "en-US",
+      "schema_type": "WebPage",
+      "title": "GearDrop Outdoor Deals | Independent deal and price tracker",
+      "description": "English overview of GearDrop, an independent tracker for public Arc'teryx, Burton, and Patagonia deals across retailers and regions.",
+      "eyebrow": "English overview",
+      "h1": "Outdoor deals with sources, timestamps, and limits",
+      "lead": "GearDrop organizes public outdoor-product listings into a searchable catalog while keeping the retailer, market, currency, and observation time attached to each record.",
+      "answer": "GearDrop is an independent discovery and price-tracking service. It does not sell products or represent the listed brands and retailers. Confirm the final price, stock, shipping, taxes, and return terms with the retailer before buying.",
+      "sections": [
+        {
+          "heading": "What you can verify",
+          "bullets": [
+            "Browse current public listings by brand, retailer source, region, category, and discount.",
+            "Open the original retailer URL and retain the GearDrop observation time for a specific price claim.",
+            "Review timestamped catalog coverage and first-party coverage matrices before quoting aggregate counts."
+          ]
+        },
+        {
+          "heading": "Start with the evidence",
+          "full": true,
+          "links": [
+            {"label": "Current deal catalog", "href": "/", "description": "Open the live catalog and its filters"},
+            {"label": "Catalog coverage snapshot", "href": "/en/insights/catalog-coverage.html", "description": "See active URL, brand, source, and region counts"},
+            {"label": "Data methodology", "href": "/en/methodology.html", "description": "Understand freshness, discount, stock, and currency limits"},
+            {"label": "Official iPhone app", "href": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332", "description": "Open GearDrop: Outdoor Deals on the App Store"}
+          ],
+          "note": "A crawlable page, sitemap, or structured-data block does not prove that a search or AI system has mentioned, cited, or recommended GearDrop."
+        }
+      ],
+      "cta": {"title": "Browse the current catalog", "body": "Filter first, then verify price and availability on the original retailer page.", "label": "Open catalog", "href": "/"}
+    },
+    {
+      "path": "en/about.html",
+      "translation_of": "about.html",
+      "language": "en-US",
+      "schema_type": "AboutPage",
+      "title": "About GearDrop | Independent outdoor deal tracker",
+      "description": "What GearDrop is, what it tracks, and how this independent service differs from brands, retailers, rentals, giveaways, and other namesakes.",
+      "eyebrow": "Entity profile",
+      "h1": "What is GearDrop?",
+      "lead": "GearDrop at 001.100app.dev is an independent outdoor deal discovery and price-tracking service for public listings across retailers and markets.",
+      "answer": "GearDrop does not sell products and is not an official website of Arc'teryx, Burton, Patagonia, or any listed retailer. Orders, payments, shipping, returns, and final availability remain with the retailer.",
+      "sections": [
+        {
+          "heading": "What GearDrop provides",
+          "bullets": [
+            "A searchable catalog of public Arc'teryx, Burton, and Patagonia listings.",
+            "Retailer source, market, currency, original URL, and observation time where available.",
+            "An iPhone app for saved products, price history, and price-drop alerts."
+          ]
+        },
+        {
+          "heading": "What GearDrop is not",
+          "bullets": [
+            "It is not a retailer, rental marketplace, giveaway, or map game.",
+            "Listing a brand or retailer does not imply sponsorship, endorsement, or authorization.",
+            "A recorded price or stock signal is not a guarantee of checkout availability."
+          ]
+        },
+        {
+          "heading": "Canonical entity facts",
+          "full": true,
+          "facts": [
+            {"term": "Name", "value": "GearDrop"},
+            {"term": "Alternate name", "value": "GearDrop Outdoor Deals"},
+            {"term": "Canonical website", "value": "https://001.100app.dev/"},
+            {"term": "Service type", "value": "Independent B2C outdoor deal discovery and price tracking"},
+            {"term": "Official iOS listing", "value": "GearDrop: Outdoor Deals, App ID 6790165332"}
+          ],
+          "links": [
+            {"label": "Official App Store listing", "href": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332", "description": "The public iOS listing controlled by GearDrop"}
+          ],
+          "note": "These facts identify GearDrop itself. Product, price, and inventory claims also need the retailer source and observation time."
+        }
+      ],
+      "cta": {"title": "Review the current evidence", "body": "Use the timestamped catalog snapshot before quoting coverage.", "label": "Catalog status", "href": "/en/catalog-status.html"}
+    },
+    {
+      "path": "en/methodology.html",
+      "translation_of": "methodology.html",
+      "language": "en-US",
+      "schema_type": "TechArticle",
+      "title": "GearDrop methodology | Prices, discounts, stock, and freshness",
+      "description": "How GearDrop collects, normalizes, checks, and publishes public outdoor-deal data, including limits around price, stock, currency, and freshness.",
+      "eyebrow": "Data methodology",
+      "h1": "How GearDrop produces deal records",
+      "lead": "GearDrop standardizes facts observed on public brand, outlet, and retailer pages without presenting one observation as a permanent price promise.",
+      "answer": "Each product record retains an identity, brand, retailer source, market, currency, source URL, and observation time where available. A discount is calculated only when a positive original price is higher than the current price. Always confirm transaction facts with the retailer.",
+      "sections": [
+        {
+          "heading": "Processing flow",
+          "steps": [
+            {"title": "Read public sources", "body": "Source-specific collectors read public brand, outlet, and retailer pages without bypassing login or access controls."},
+            {"title": "Normalize facts", "body": "Brand, name, category, market, currency, prices, sizes, source, and timestamps are mapped into a consistent record."},
+            {"title": "Run quality gates", "body": "Freshness, minimum volume, URL lifecycle, price relationships, images, and source completeness are checked before publication."},
+            {"title": "Publish with time boundaries", "body": "The live database is preferred and static data is a fallback; records retain the latest successful observation time."}
+          ]
+        },
+        {
+          "heading": "Discount and comparison limits",
+          "full": true,
+          "bullets": [
+            "Discount percentage is rounded from (original price minus current price) divided by original price.",
+            "Reference currency conversions are not checkout quotes and exclude taxes, shipping, duties, card fees, and returns.",
+            "Similar product names can refer to different years, genders, colors, sizes, regions, or SKUs.",
+            "Missing size data does not mean in stock or sold out."
+          ],
+          "note": "If GearDrop conflicts with the retailer, use the retailer checkout and policy pages as the final transaction source."
+        },
+        {
+          "heading": "Machine-readable evidence",
+          "full": true,
+          "links": [
+            {"label": "Catalog status JSON", "href": "/catalog-status.json", "description": "Timestamped counts and first-party coverage matrices"},
+            {"label": "Catalog coverage", "href": "/en/insights/catalog-coverage.html", "description": "Readable interpretation of the same snapshot"},
+            {"label": "Sitemap index", "href": "/sitemap.xml", "description": "Knowledge, data, and product discovery maps"}
+          ],
+          "paragraphs": ["These surfaces improve discovery and auditability. They do not prove mention, citation, or recommendation by any search or AI system."]
+        }
+      ],
+      "cta": {"title": "Apply the same checks to a deal", "body": "Use the buying guide before comparing final value.", "label": "Buying guide", "href": "/en/guides/outdoor-deal-guide.html"}
+    },
+    {
+      "path": "en/faq.html",
+      "translation_of": "faq.html",
+      "language": "en-US",
+      "schema_type": "FAQPage",
+      "title": "GearDrop FAQ | Prices, stock, sources, and brand relationships",
+      "description": "Direct answers about whether GearDrop sells products, how often data changes, how discounts are calculated, and what users must verify.",
+      "eyebrow": "Frequently asked questions",
+      "h1": "Direct answers about GearDrop",
+      "lead": "These answers define GearDrop's own service boundary. A product's live price, stock, shipping, and return terms still come from the retailer.",
+      "answer": "GearDrop is an independent outdoor deal tracker, not a seller. It records public product facts with source links and observation times; it cannot replace the retailer checkout page.",
+      "faqs": [
+        {"question": "Does GearDrop sell products?", "answer": "No. GearDrop supports discovery, filtering, price history, and alerts. Orders, payment, delivery, and support are handled by the retailer."},
+        {"question": "Is GearDrop an official Arc'teryx, Burton, or Patagonia site?", "answer": "No. GearDrop is independent. A public listing does not create sponsorship, endorsement, or authorization."},
+        {"question": "How current are the prices?", "answer": "Sources refresh in separate batches, usually several times a day. Use the record's observation time and confirm the current price on the retailer page."},
+        {"question": "How is discount percentage calculated?", "answer": "When original price is above current price, GearDrop calculates the difference divided by original price and rounds the result. Member pricing or coupon conditions may use a different basis."},
+        {"question": "Does missing size data mean a product is available?", "answer": "No. It only means the source did not provide a reliable size state. Confirm availability with the retailer."},
+        {"question": "Will structured data or llms.txt make AI systems recommend GearDrop?", "answer": "No. Those files support discovery and interpretation. Mention, citation, and recommendation require separate controlled measurement."}
+      ],
+      "sections": [
+        {"heading": "Verify further", "full": true, "links": [
+          {"label": "Methodology", "href": "/en/methodology.html", "description": "Collection, freshness, and comparison limits"},
+          {"label": "Catalog status", "href": "/en/catalog-status.html", "description": "Current timestamped coverage"},
+          {"label": "Support", "href": "/support.html", "description": "Report a reproducible data problem"}
+        ]}
+      ],
+      "cta": {"title": "Find a deal", "body": "Filter the catalog, then verify transaction details with the retailer.", "label": "Open catalog", "href": "/"}
+    },
+    {
+      "path": "en/guides/outdoor-deal-guide.html",
+      "translation_of": "guides/outdoor-deal-guide.html",
+      "language": "en-US",
+      "schema_type": "Article",
+      "title": "How to verify an outdoor deal | GearDrop buying guide",
+      "description": "A practical method for comparing Arc'teryx, Burton, and Patagonia deals by SKU, market, size, source, timing, total cost, and returns.",
+      "eyebrow": "Buying guide",
+      "h1": "How do you decide whether an outdoor deal is worth it?",
+      "lead": "A comparable deal must describe the same product in a clear market and under clear conditions. Discount percentage alone can hide size, tax, delivery, and return costs.",
+      "answer": "Match the SKU or full model, gender, color, and size first. Then verify the original-currency price, source, observation time, shipping region, and return terms. Compare total landed cost, not only the discount rate.",
+      "sections": [
+        {
+          "heading": "Six checks",
+          "steps": [
+            {"title": "Match product identity", "body": "Prefer an official style number or SKU; otherwise compare full name, gender, season, color, and images."},
+            {"title": "Match market and currency", "body": "Confirm the sales market, currency, delivery eligibility, and any regional or membership restrictions."},
+            {"title": "Check sellable sizes", "body": "A steep discount on unavailable variants is not a generally purchasable price."},
+            {"title": "Check observation time", "body": "Use the GearDrop timestamp, then open the source page and cart before buying."},
+            {"title": "Calculate landed cost", "body": "Include shipping, taxes, duties, foreign-exchange fees, and potential return cost."},
+            {"title": "Review returns", "body": "Check the return window, return address, final-sale rules, and support path."
+            }
+          ]
+        },
+        {
+          "heading": "Evidence worth retaining",
+          "full": true,
+          "paragraphs": ["A strong price reference keeps the product identity, original and current prices, currency, retailer URL, and observation time together. An undated screenshot or an unqualified 'up to' claim is weaker evidence."],
+          "links": [
+            {"label": "Brand-source matrix", "href": "/en/insights/brand-source-matrix.html", "description": "See which sources contribute to current brand coverage"},
+            {"label": "Regional coverage", "href": "/en/insights/regional-coverage.html", "description": "See where active catalog records were observed"}
+          ]
+        }
+      ],
+      "cta": {"title": "Use the same checks in the catalog", "body": "Filter by brand, source, region, category, and discount.", "label": "Browse deals", "href": "/?sort=discount_desc"}
+    },
+    {
+      "path": "en/brands/arcteryx.html",
+      "translation_of": "brands/arcteryx.html",
+      "language": "en-US",
+      "schema_type": "CollectionPage",
+      "schema_about": {"type": "Brand", "name": "Arc'teryx", "url": "https://arcteryx.com/"},
+      "title": "Arc'teryx deals | GearDrop source and verification guide",
+      "description": "How GearDrop records public Arc'teryx outlet and retailer listings, and how to verify style number, market, size, original price, and time.",
+      "eyebrow": "Brand deal guide",
+      "h1": "How to verify an Arc'teryx deal",
+      "lead": "GearDrop organizes public Arc'teryx Outlet and retailer deal signals by market, source, and product facts.",
+      "answer": "Match the official style number or full model, gender, and season first. Then verify market, currency, sellable size, source, and observation time. The retailer controls the final price and stock.",
+      "sections": [
+        {"heading": "Source boundary", "paragraphs": ["Current coverage can include Arc'teryx Outlet and public retailer pages from SSENSE, MEC, EVO, REI, and other sources that pass data-quality checks."], "note": "GearDrop is independent; listing Arc'teryx products does not imply brand authorization or endorsement."},
+        {"heading": "Verify first", "bullets": ["Official style number or SKU", "Gender and model year", "Market, currency, and delivery eligibility", "Sellable colors and sizes", "Original price, current price, and observation time"]},
+        {"heading": "Related evidence", "full": true, "links": [{"label": "Filter Arc'teryx", "href": "/?brand=arcteryx", "description": "Open the live catalog with the brand filter"}, {"label": "Brand-source matrix", "href": "/en/insights/brand-source-matrix.html", "description": "Current first-party counts by brand and source"}]}
+      ],
+      "cta": {"title": "Browse current Arc'teryx records", "body": "Filter first, then complete the final check with the retailer.", "label": "Open filter", "href": "/?brand=arcteryx"}
+    },
+    {
+      "path": "en/brands/burton.html",
+      "translation_of": "brands/burton.html",
+      "language": "en-US",
+      "schema_type": "CollectionPage",
+      "schema_about": {"type": "Brand", "name": "Burton", "url": "https://www.burton.com/"},
+      "title": "Burton deals | GearDrop source and verification guide",
+      "description": "How GearDrop records public Burton outlet and retailer listings, and how to verify model, season, gender, size, market, source, and time.",
+      "eyebrow": "Brand deal guide",
+      "h1": "How to verify a Burton deal",
+      "lead": "GearDrop organizes public Burton and retailer deal signals from sources such as Burton, Backcountry, and EVO.",
+      "answer": "Match the model, season or year, gender, color, and size first. Then verify the retailer source, market, original-currency price, inventory, return conditions, and observation time.",
+      "sections": [
+        {"heading": "Source boundary", "paragraphs": ["Current coverage can include public Burton, Backcountry, EVO, and other retailer records that pass quality gates. Source identifiers and variants are linked only when product identity is sufficiently clear."], "note": "GearDrop does not sell Burton products and is not an authorized representative merely because it records public links."},
+        {"heading": "Verify first", "bullets": ["Model, season, or official style number", "Adult, youth, gender, and size variant", "Final-sale and return restrictions", "Market, currency, delivery range, and observation time"]},
+        {"heading": "Related evidence", "full": true, "links": [{"label": "Filter Burton", "href": "/?brand=burton", "description": "Open the live catalog with the brand filter"}, {"label": "Brand-source matrix", "href": "/en/insights/brand-source-matrix.html", "description": "Current first-party counts by brand and source"}]}
+      ],
+      "cta": {"title": "Browse current Burton records", "body": "Match season, size, and market before comparing the deal.", "label": "Open filter", "href": "/?brand=burton"}
+    },
+    {
+      "path": "en/brands/patagonia.html",
+      "translation_of": "brands/patagonia.html",
+      "language": "en-US",
+      "schema_type": "CollectionPage",
+      "schema_about": {"type": "Brand", "name": "Patagonia", "url": "https://www.patagonia.com/"},
+      "title": "Patagonia deals | GearDrop source and verification guide",
+      "description": "How GearDrop records public Patagonia retailer listings, and how to verify style, market, size, original price, return terms, and observation time.",
+      "eyebrow": "Brand deal guide",
+      "h1": "How to verify a Patagonia deal",
+      "lead": "GearDrop records public Patagonia retailer deals only when product identity, price, and lifecycle checks are sufficient.",
+      "answer": "Match the style number or full model, gender, color, and size. Then verify the sales market, original-currency price, retailer, return policy, and observation time.",
+      "sections": [
+        {"heading": "Source boundary", "paragraphs": ["Current sources are the public retailers that pass quality gates. The source mix can change, and GearDrop does not force a match between similarly named products without reliable identity evidence."], "note": "Patagonia identifies the product brand. GearDrop is an independent tracking service, not Patagonia's official website."},
+        {"heading": "Verify first", "bullets": ["Official style number or full model", "Market and original currency", "Color, size, and actual availability", "Final-sale and return terms", "Price, shipping, taxes, and observation time"]},
+        {"heading": "Related evidence", "full": true, "links": [{"label": "Filter Patagonia", "href": "/?brand=patagonia", "description": "Open the live catalog with the brand filter"}, {"label": "Regional coverage", "href": "/en/insights/regional-coverage.html", "description": "Current first-party counts by market and brand"}]}
+      ],
+      "cta": {"title": "Browse current Patagonia records", "body": "Retailer inventory changes quickly; open the source before buying.", "label": "Open filter", "href": "/?brand=patagonia"}
     }
   ]
 }

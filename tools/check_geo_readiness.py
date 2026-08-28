@@ -21,17 +21,44 @@ from typing import Any, Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 CANONICAL_ORIGIN = "https://001.100app.dev"
+APP_STORE_URL = "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332"
 STATIC_PAGES = {
-    "/": {"Organization", "WebSite", "CollectionPage"},
-    "/about.html": {"Organization", "WebSite", "AboutPage"},
-    "/methodology.html": {"Organization", "WebSite", "TechArticle"},
-    "/faq.html": {"Organization", "WebSite", "FAQPage"},
-    "/guides/outdoor-deal-guide.html": {"Organization", "WebSite", "Article"},
-    "/brands/arcteryx.html": {"Organization", "WebSite", "CollectionPage", "Brand"},
-    "/brands/burton.html": {"Organization", "WebSite", "CollectionPage", "Brand"},
-    "/brands/patagonia.html": {"Organization", "WebSite", "CollectionPage", "Brand"},
-    "/catalog-status.html": {"Organization", "Dataset"},
+    "/": {"Organization", "WebSite", "CollectionPage", "SoftwareApplication"},
+    "/about.html": {"Organization", "WebSite", "AboutPage", "SoftwareApplication"},
+    "/methodology.html": {"Organization", "WebSite", "TechArticle", "SoftwareApplication"},
+    "/faq.html": {"Organization", "WebSite", "FAQPage", "SoftwareApplication"},
+    "/guides/outdoor-deal-guide.html": {"Organization", "WebSite", "Article", "SoftwareApplication"},
+    "/brands/arcteryx.html": {"Organization", "WebSite", "CollectionPage", "Brand", "SoftwareApplication"},
+    "/brands/burton.html": {"Organization", "WebSite", "CollectionPage", "Brand", "SoftwareApplication"},
+    "/brands/patagonia.html": {"Organization", "WebSite", "CollectionPage", "Brand", "SoftwareApplication"},
+    "/en/": {"Organization", "WebSite", "WebPage", "SoftwareApplication"},
+    "/en/about.html": {"Organization", "WebSite", "AboutPage", "SoftwareApplication"},
+    "/en/methodology.html": {"Organization", "WebSite", "TechArticle", "SoftwareApplication"},
+    "/en/faq.html": {"Organization", "WebSite", "FAQPage", "SoftwareApplication"},
+    "/en/guides/outdoor-deal-guide.html": {"Organization", "WebSite", "Article", "SoftwareApplication"},
+    "/en/brands/arcteryx.html": {"Organization", "WebSite", "CollectionPage", "Brand", "SoftwareApplication"},
+    "/en/brands/burton.html": {"Organization", "WebSite", "CollectionPage", "Brand", "SoftwareApplication"},
+    "/en/brands/patagonia.html": {"Organization", "WebSite", "CollectionPage", "Brand", "SoftwareApplication"},
+    "/catalog-status.html": {"Organization", "WebPage", "Dataset", "SoftwareApplication"},
+    "/en/catalog-status.html": {"Organization", "WebPage", "Dataset", "SoftwareApplication"},
+    "/insights/catalog-coverage.html": {"Organization", "WebPage", "Dataset", "SoftwareApplication"},
+    "/en/insights/catalog-coverage.html": {"Organization", "WebPage", "Dataset", "SoftwareApplication"},
+    "/insights/brand-source-matrix.html": {"Organization", "WebPage", "Dataset", "SoftwareApplication"},
+    "/en/insights/brand-source-matrix.html": {"Organization", "WebPage", "Dataset", "SoftwareApplication"},
+    "/insights/regional-coverage.html": {"Organization", "WebPage", "Dataset", "SoftwareApplication"},
+    "/en/insights/regional-coverage.html": {"Organization", "WebPage", "Dataset", "SoftwareApplication"},
     "/product-detail.html": {"WebPage"},
+}
+
+DYNAMIC_DATA_PATHS = {
+    "/catalog-status.html",
+    "/en/catalog-status.html",
+    "/insights/catalog-coverage.html",
+    "/en/insights/catalog-coverage.html",
+    "/insights/brand-source-matrix.html",
+    "/en/insights/brand-source-matrix.html",
+    "/insights/regional-coverage.html",
+    "/en/insights/regional-coverage.html",
 }
 
 
@@ -52,6 +79,7 @@ class DocumentParser(HTMLParser):
         self.current_h1: list[str] | None = None
         self.meta: dict[str, str] = {}
         self.canonical = ""
+        self.alternates: dict[str, str] = {}
         self.links: set[str] = set()
         self.jsonld_texts: list[str] = []
         self.current_jsonld: list[str] | None = None
@@ -70,6 +98,8 @@ class DocumentParser(HTMLParser):
                 self.meta[key] = values.get("content", "")
         elif tag == "link" and values.get("rel") == "canonical":
             self.canonical = values.get("href", "")
+        elif tag == "link" and values.get("rel") == "alternate" and values.get("hreflang"):
+            self.alternates[values["hreflang"]] = values.get("href", "")
         elif tag == "a" and values.get("href"):
             self.links.add(values["href"])
         elif tag == "script" and values.get("type") == "application/ld+json":
@@ -146,11 +176,12 @@ class Auditor:
             parser.feed(source)
             self.documents[path] = parser
             slug = "home" if path == "/" else path.strip("/").replace("/", ":")
+            expected_language = "en-US" if path == "/en/" or path.startswith("/en/") else "zh-CN"
             self.add(
                 f"html:{slug}:lang",
-                parser.lang == "zh-CN",
-                f"{path} declares zh-CN",
-                f"{path} html lang was {parser.lang!r}",
+                parser.lang == expected_language,
+                f"{path} declares {expected_language}",
+                f"{path} html lang was {parser.lang!r}; expected {expected_language}",
             )
             self.add(
                 f"html:{slug}:title",
@@ -177,6 +208,24 @@ class Auditor:
                 f"{path} has one H1",
                 f"{path} H1 count={len(parser.h1_parts)} values={parser.h1_parts}",
             )
+            if path != "/product-detail.html":
+                if path in {"/", "/en/"}:
+                    zh_path, en_path = "/", "/en/"
+                elif path.startswith("/en/"):
+                    zh_path, en_path = path.removeprefix("/en"), path
+                else:
+                    zh_path, en_path = path, f"/en{path}"
+                expected_alternates = {
+                    "zh-CN": f"{CANONICAL_ORIGIN}{zh_path}",
+                    "en-US": f"{CANONICAL_ORIGIN}{en_path}",
+                    "x-default": f"{CANONICAL_ORIGIN}{zh_path}",
+                }
+                self.add(
+                    f"html:{slug}:hreflang",
+                    parser.alternates == expected_alternates,
+                    f"{path} has reciprocal zh-CN/en-US/x-default alternates",
+                    f"{path} alternates={parser.alternates}; expected={expected_alternates}",
+                )
 
             parsed_jsonld: list[Any] = []
             invalid_jsonld: list[str] = []
@@ -213,6 +262,11 @@ class Auditor:
             "/brands/burton.html",
             "/brands/patagonia.html",
             "/catalog-status.html",
+            "/insights/catalog-coverage.html",
+            "/insights/brand-source-matrix.html",
+            "/insights/regional-coverage.html",
+            "/en/",
+            APP_STORE_URL,
         }
         missing = expected - home.links
         self.add(
@@ -220,6 +274,17 @@ class Auditor:
             not missing,
             f"Homepage links all {len(expected)} knowledge surfaces",
             f"Homepage missing knowledge links: {sorted(missing)}",
+        )
+
+        home_jsonld = "\n".join(home.jsonld_texts)
+        self.add(
+            "home:official-app-entity",
+            APP_STORE_URL in home.links
+            and APP_STORE_URL in home_jsonld
+            and '"@type": "SoftwareApplication"' in home_jsonld
+            and '"sameAs"' in home_jsonld,
+            "Homepage visibly links the official iOS app and connects it in the entity graph",
+            "Homepage official App Store link or SoftwareApplication/sameAs entity evidence is missing",
         )
 
     def inspect_product_template(self) -> None:
@@ -380,6 +445,7 @@ class Auditor:
         sitemap_index = self.read("/sitemap.xml")
         sitemap_static = self.read("/sitemap-static.xml")
         sitemap_products = self.read("/sitemap-products.xml")
+        sitemap_insights = self.read("/sitemap-insights.xml")
         status_raw = self.read("/catalog-status.json")
         if robots:
             self.add(
@@ -412,6 +478,7 @@ class Auditor:
                 expected = {
                     f"{CANONICAL_ORIGIN}/sitemap-static.xml",
                     f"{CANONICAL_ORIGIN}/sitemap-products.xml",
+                    f"{CANONICAL_ORIGIN}/sitemap-insights.xml",
                 }
                 self.add(
                     "sitemap:index",
@@ -428,7 +495,9 @@ class Auditor:
                 namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
                 locations = {node.text for node in root.findall("sm:url/sm:loc", namespace)}
                 expected = {
-                    f"{CANONICAL_ORIGIN}{path}" for path in STATIC_PAGES if path != "/product-detail.html"
+                    f"{CANONICAL_ORIGIN}{path}"
+                    for path in STATIC_PAGES
+                    if path != "/product-detail.html" and path not in DYNAMIC_DATA_PATHS
                 }
                 missing = expected - locations
                 self.add(
@@ -439,6 +508,21 @@ class Auditor:
                 )
             except ET.ParseError as error:
                 self.checks.append(Check("sitemap:static", "fail", f"Invalid static sitemap: {error}"))
+
+        if sitemap_insights:
+            try:
+                root = ET.fromstring(sitemap_insights)
+                namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+                locations = {node.text for node in root.findall("sm:url/sm:loc", namespace)}
+                expected = {f"{CANONICAL_ORIGIN}{path}" for path in DYNAMIC_DATA_PATHS}
+                self.add(
+                    "sitemap:insights",
+                    locations == expected,
+                    f"Insight sitemap covers all {len(expected)} localized data pages",
+                    f"Insight sitemap locations={sorted(locations)}; expected={sorted(expected)}",
+                )
+            except ET.ParseError as error:
+                self.checks.append(Check("sitemap:insights", "fail", f"Invalid insight sitemap: {error}"))
 
         product_count: int | None = None
         if sitemap_products:
@@ -476,6 +560,19 @@ class Auditor:
                     "Catalog status keeps visibility and inventory claims bounded",
                     "Catalog status measurement boundary is incomplete",
                 )
+                brand_matrix = status.get("brand_platform_matrix", [])
+                region_matrix = status.get("region_brand_matrix", [])
+                brand_total = sum(int(item.get("total", 0)) for item in brand_matrix)
+                region_total = sum(int(item.get("total", 0)) for item in region_matrix)
+                self.add(
+                    "catalog-status:matrices",
+                    bool(brand_matrix)
+                    and bool(region_matrix)
+                    and brand_total == declared
+                    and region_total == declared,
+                    "Catalog JSON exposes reproducible brand-source and region-brand matrices",
+                    f"Catalog matrix totals brand={brand_total}, region={region_total}, declared={declared}",
+                )
             except json.JSONDecodeError as error:
                 self.checks.append(Check("catalog-status:json", "fail", f"Invalid catalog status JSON: {error}"))
 
@@ -491,6 +588,8 @@ class Auditor:
 def local_reader(root: Path) -> Callable[[str], str]:
     def read(path: str) -> str:
         relative = "index.html" if path == "/" else path.lstrip("/")
+        if path != "/" and path.endswith("/"):
+            relative = f"{relative}index.html"
         return (root / relative).read_text(encoding="utf-8")
 
     return read

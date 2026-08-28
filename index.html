@@ -21,6 +21,7 @@
     <meta name="google-site-verification" content="GoBEvIUiMaNTlAIg3Rfg9V8xG1HT79fWCEBml5xWDaI">
     <link rel="canonical" href="https://001.100app.dev/">
     <link rel="alternate" hreflang="zh-CN" href="https://001.100app.dev/">
+    <link rel="alternate" hreflang="en-US" href="https://001.100app.dev/en/">
     <link rel="alternate" hreflang="x-default" href="https://001.100app.dev/">
 
     <!-- Open Graph (Facebook / Telegram / 微信内置浏览器) -->
@@ -55,7 +56,20 @@
                 },
                 "description": "独立的户外品牌折扣发现与价格追踪服务",
                 "disambiguatingDescription": "GearDrop at 001.100app.dev is an independent outdoor deal tracker, not a retailer, rental marketplace, giveaway, or official brand website.",
-                "publishingPrinciples": "https://001.100app.dev/methodology.html"
+                "publishingPrinciples": "https://001.100app.dev/methodology.html",
+                "sameAs": [
+                    "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332"
+                ]
+            },
+            {
+                "@type": "SoftwareApplication",
+                "@id": "https://001.100app.dev/#ios-app",
+                "name": "GearDrop: Outdoor Deals",
+                "operatingSystem": "iOS",
+                "applicationCategory": "ShoppingApplication",
+                "url": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
+                "downloadUrl": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
+                "publisher": { "@id": "https://001.100app.dev/#organization" }
             },
             {
                 "@type": "WebSite",
@@ -210,7 +224,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            min-height: 32px;
+            min-height: 44px;
             padding: 0 11px;
             border-radius: 999px;
             background: #17372f;
@@ -228,7 +242,7 @@
             .brand-logo { width: 118px; }
             .brand-sub { display: none; }
             .header-actions { gap: 8px; }
-            .header-app-link { min-height: 30px; padding-inline: 9px; }
+            .header-app-link { min-height: 44px; padding-inline: 11px; }
             .header-app-link-full { display: none; }
             .header-app-link-short { display: inline; }
             .header-stats { gap: 8px; font-size: 11px; justify-content: flex-end; }
@@ -443,11 +457,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-height: 38px;
+            min-height: 44px;
             padding: 0 14px;
             border-radius: 999px;
             font-size: 11px;
             font-weight: 700;
+            text-decoration: none;
             white-space: nowrap;
         }
         .app-store-status {
@@ -1053,8 +1068,8 @@
             <span class="brand-sub">Global Outdoor Deals</span>
         </div>
         <div class="header-actions">
-            <a class="header-app-link" href="#app-download" aria-label="查看 GearDrop App 下载指引">
-                <span class="header-app-link-full">获取 App</span><span class="header-app-link-short">App</span> ↓
+            <a class="header-app-link" href="https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332" target="_blank" rel="noopener" aria-label="在 App Store 查看 GearDrop">
+                <span class="header-app-link-full">获取 App</span><span class="header-app-link-short">App</span> ↗
             </a>
             <div class="header-stats">
                 <span><strong id="stat-total">—</strong> 件</span>
@@ -1109,10 +1124,10 @@
         <div>
             <div class="app-download-kicker">GearDrop for iPhone</div>
             <h2 id="app-download-title">随身收藏、看价格历史、接收降价提醒</h2>
-            <p>App Store 版本即将上线。已收到 GearDrop 内测邀请的用户，请先安装 TestFlight，再从 Apple 邀请邮件打开 App。</p>
+            <p>GearDrop 已在 App Store 上线。可从正式页面查看版本与兼容性；已收到专门内测邀请的用户仍可使用 TestFlight。</p>
         </div>
         <div class="app-download-actions">
-            <span class="app-store-status" aria-label="GearDrop App Store 版本即将上线">App Store 即将上线</span>
+            <a class="app-store-status" href="https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332" target="_blank" rel="noopener" aria-label="在 App Store 查看 GearDrop">App Store 查看 GearDrop ↗</a>
             <a class="testflight-link" href="https://apps.apple.com/us/app/testflight/id899247664" target="_blank" rel="noopener">已受邀？安装 TestFlight ↗</a>
         </div>
     </section>
@@ -1132,6 +1147,10 @@
             <a href="/guides/outdoor-deal-guide.html">折扣选购指南 →</a>
             <a href="/methodology.html">数据方法与限制 →</a>
             <a href="/catalog-status.html">当前目录状态 →</a>
+            <a href="/insights/catalog-coverage.html">当前目录覆盖数据 →</a>
+            <a href="/insights/brand-source-matrix.html">品牌 × 来源矩阵 →</a>
+            <a href="/insights/regional-coverage.html">地区 × 品牌矩阵 →</a>
+            <a href="/en/" lang="en">English overview →</a>
         </nav>
     </section>
 </div>
@@ -1168,6 +1187,9 @@
         <a href="/faq.html">常见问题</a> ·
         <a href="/guides/outdoor-deal-guide.html">选购指南</a> ·
         <a href="/catalog-status.html">目录状态</a> ·
+        <a href="/insights/catalog-coverage.html">数据洞察</a> ·
+        <a href="/en/" lang="en">English</a> ·
+        <a href="https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332" target="_blank" rel="noopener">App Store</a> ·
         <a href="/support.html">GearDrop Support</a> ·
         <a href="/privacy.html">Privacy Policy</a> ·
         © GearDrop · Non-affiliated

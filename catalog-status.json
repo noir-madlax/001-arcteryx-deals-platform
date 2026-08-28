@@ -1,41 +1,42 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://001.100app.dev/",
-  "snapshot_observed_at": "2026-08-28T01:28:39+00:00",
-  "active_product_urls": 8244,
+  "official_ios_app_url": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
+  "snapshot_observed_at": "2026-08-28T08:34:50+00:00",
+  "active_product_urls": 8204,
   "brands": [
     {
       "id": "arcteryx",
       "label": "Arc'teryx",
-      "count": 6573
+      "count": 6537
     },
     {
       "id": "burton",
       "label": "Burton",
-      "count": 1188
+      "count": 1183
     },
     {
       "id": "patagonia",
       "label": "Patagonia",
-      "count": 483
+      "count": 484
     }
   ],
   "platforms": [
     {
       "id": "arcteryx_outlet",
       "label": "Arc'teryx Outlet",
-      "count": 6042
+      "count": 6008
     },
     {
       "id": "evo",
       "label": "EVO",
-      "count": 1466
+      "count": 1464
     },
     {
       "id": "burton",
       "label": "Burton",
-      "count": 323
+      "count": 322
     },
     {
       "id": "mec",
@@ -45,12 +46,12 @@
     {
       "id": "backcountry",
       "label": "Backcountry",
-      "count": 141
+      "count": 140
     },
     {
       "id": "rei",
       "label": "REI",
-      "count": 66
+      "count": 64
     },
     {
       "id": "ssense",
@@ -62,83 +63,333 @@
     {
       "id": "us",
       "label": "美国",
-      "count": 2451
+      "count": 2445
     },
     {
       "id": "ca",
       "label": "加拿大",
-      "count": 418
-    },
-    {
-      "id": "de",
-      "label": "德国",
-      "count": 413
-    },
-    {
-      "id": "gb",
-      "label": "英国",
-      "count": 413
+      "count": 417
     },
     {
       "id": "at",
       "label": "奥地利",
-      "count": 412
-    },
-    {
-      "id": "be",
-      "label": "比利时",
-      "count": 412
+      "count": 410
     },
     {
       "id": "ch",
       "label": "瑞士",
-      "count": 412
+      "count": 410
     },
     {
-      "id": "dk",
-      "label": "丹麦",
-      "count": 412
+      "id": "de",
+      "label": "德国",
+      "count": 410
     },
     {
       "id": "es",
       "label": "西班牙",
-      "count": 412
-    },
-    {
-      "id": "fi",
-      "label": "芬兰",
-      "count": 412
+      "count": 410
     },
     {
       "id": "fr",
       "label": "法国",
-      "count": 412
-    },
-    {
-      "id": "it",
-      "label": "意大利",
-      "count": 412
-    },
-    {
-      "id": "nl",
-      "label": "荷兰",
-      "count": 412
-    },
-    {
-      "id": "se",
-      "label": "瑞典",
-      "count": 412
+      "count": 410
     },
     {
       "id": "ie",
       "label": "爱尔兰",
-      "count": 411
+      "count": 410
+    },
+    {
+      "id": "it",
+      "label": "意大利",
+      "count": 410
+    },
+    {
+      "id": "se",
+      "label": "瑞典",
+      "count": 410
+    },
+    {
+      "id": "be",
+      "label": "比利时",
+      "count": 409
+    },
+    {
+      "id": "dk",
+      "label": "丹麦",
+      "count": 409
+    },
+    {
+      "id": "fi",
+      "label": "芬兰",
+      "count": 409
+    },
+    {
+      "id": "gb",
+      "label": "英国",
+      "count": 409
+    },
+    {
+      "id": "nl",
+      "label": "荷兰",
+      "count": 409
     },
     {
       "id": "au",
       "label": "澳大利亚",
-      "count": 18
+      "count": 17
     }
+  ],
+  "brand_platform_matrix": [
+    {
+      "brand_id": "arcteryx",
+      "brand": "Arc'teryx",
+      "total": 6537,
+      "platform_counts": {
+        "arcteryx_outlet": 6008,
+        "evo": 259,
+        "burton": 0,
+        "mec": 166,
+        "backcountry": 0,
+        "rei": 64,
+        "ssense": 40
+      }
+    },
+    {
+      "brand_id": "burton",
+      "brand": "Burton",
+      "total": 1183,
+      "platform_counts": {
+        "arcteryx_outlet": 0,
+        "evo": 721,
+        "burton": 322,
+        "mec": 0,
+        "backcountry": 140,
+        "rei": 0,
+        "ssense": 0
+      }
+    },
+    {
+      "brand_id": "patagonia",
+      "brand": "Patagonia",
+      "total": 484,
+      "platform_counts": {
+        "arcteryx_outlet": 0,
+        "evo": 484,
+        "burton": 0,
+        "mec": 0,
+        "backcountry": 0,
+        "rei": 0,
+        "ssense": 0
+      }
+    }
+  ],
+  "region_brand_matrix": [
+    {
+      "region_id": "us",
+      "region": "United States",
+      "total": 2445,
+      "brand_counts": {
+        "arcteryx": 778,
+        "burton": 1183,
+        "patagonia": 484
+      }
+    },
+    {
+      "region_id": "ca",
+      "region": "Canada",
+      "total": 417,
+      "brand_counts": {
+        "arcteryx": 417,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "at",
+      "region": "Austria",
+      "total": 410,
+      "brand_counts": {
+        "arcteryx": 410,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "ch",
+      "region": "Switzerland",
+      "total": 410,
+      "brand_counts": {
+        "arcteryx": 410,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "de",
+      "region": "Germany",
+      "total": 410,
+      "brand_counts": {
+        "arcteryx": 410,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "es",
+      "region": "Spain",
+      "total": 410,
+      "brand_counts": {
+        "arcteryx": 410,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "fr",
+      "region": "France",
+      "total": 410,
+      "brand_counts": {
+        "arcteryx": 410,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "ie",
+      "region": "Ireland",
+      "total": 410,
+      "brand_counts": {
+        "arcteryx": 410,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "it",
+      "region": "Italy",
+      "total": 410,
+      "brand_counts": {
+        "arcteryx": 410,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "se",
+      "region": "Sweden",
+      "total": 410,
+      "brand_counts": {
+        "arcteryx": 410,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "be",
+      "region": "Belgium",
+      "total": 409,
+      "brand_counts": {
+        "arcteryx": 409,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "dk",
+      "region": "Denmark",
+      "total": 409,
+      "brand_counts": {
+        "arcteryx": 409,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "fi",
+      "region": "Finland",
+      "total": 409,
+      "brand_counts": {
+        "arcteryx": 409,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "gb",
+      "region": "United Kingdom",
+      "total": 409,
+      "brand_counts": {
+        "arcteryx": 409,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "nl",
+      "region": "Netherlands",
+      "total": 409,
+      "brand_counts": {
+        "arcteryx": 409,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "au",
+      "region": "Australia",
+      "total": 17,
+      "brand_counts": {
+        "arcteryx": 17,
+        "burton": 0,
+        "patagonia": 0
+      }
+    }
+  ],
+  "matrix_dimensions": {
+    "brand_ids": [
+      "arcteryx",
+      "burton",
+      "patagonia"
+    ],
+    "platform_ids": [
+      "arcteryx_outlet",
+      "evo",
+      "burton",
+      "mec",
+      "backcountry",
+      "rei",
+      "ssense"
+    ],
+    "region_ids": [
+      "us",
+      "ca",
+      "at",
+      "ch",
+      "de",
+      "es",
+      "fr",
+      "ie",
+      "it",
+      "se",
+      "be",
+      "dk",
+      "fi",
+      "gb",
+      "nl",
+      "au"
+    ]
+  },
+  "analysis_urls": [
+    "https://001.100app.dev/catalog-status.html",
+    "https://001.100app.dev/en/catalog-status.html",
+    "https://001.100app.dev/insights/catalog-coverage.html",
+    "https://001.100app.dev/en/insights/catalog-coverage.html",
+    "https://001.100app.dev/insights/brand-source-matrix.html",
+    "https://001.100app.dev/en/insights/brand-source-matrix.html",
+    "https://001.100app.dev/insights/regional-coverage.html",
+    "https://001.100app.dev/en/insights/regional-coverage.html"
   ],
   "measurement_boundary": "Counts describe active GearDrop product URLs at the recorded observation time. They do not prove retailer stock, search indexing, AI mention, citation, or recommendation.",
   "methodology_url": "https://001.100app.dev/methodology.html",

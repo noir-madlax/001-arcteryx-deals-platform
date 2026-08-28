@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#17372F">
-    <title>GearDrop 目录状态｜品牌、平台与地区覆盖快照</title>
-    <meta name="description" content="GearDrop 当前活跃商品 URL、品牌、销售平台和地区覆盖的带时间戳快照，以及该数字不能证明的事项。">
+    <title>GearDrop 目录状态｜品牌、来源与地区覆盖快照</title>
+    <meta name="description" content="GearDrop 当前活跃商品 URL、品牌、销售来源和地区覆盖的带时间戳快照，以及这些数字不能证明的事项。">
     <meta name="author" content="GearDrop">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
     <link rel="canonical" href="https://001.100app.dev/catalog-status.html">
-    <meta property="og:type" content="website">
+    <link rel="alternate" hreflang="zh-CN" href="https://001.100app.dev/catalog-status.html">
+    <link rel="alternate" hreflang="en-US" href="https://001.100app.dev/en/catalog-status.html">
+    <link rel="alternate" hreflang="x-default" href="https://001.100app.dev/catalog-status.html">
+    <meta property="og:type" content="article">
     <meta property="og:site_name" content="GearDrop">
-    <meta property="og:title" content="GearDrop 目录状态">
-    <meta property="og:description" content="带时间戳的品牌、平台与地区覆盖快照。">
+    <meta property="og:title" content="GearDrop 目录状态｜品牌、来源与地区覆盖快照">
+    <meta property="og:description" content="GearDrop 当前活跃商品 URL、品牌、销售来源和地区覆盖的带时间戳快照，以及这些数字不能证明的事项。">
     <meta property="og:url" content="https://001.100app.dev/catalog-status.html">
+    <meta property="og:locale" content="zh_CN">
     <meta property="og:image" content="https://001.100app.dev/assets/brand/geardrop-og.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
@@ -30,24 +34,54 @@
       "alternateName": "GearDrop Outdoor Deals",
       "url": "https://001.100app.dev/",
       "logo": "https://001.100app.dev/assets/brand/icon-512.png",
-      "publishingPrinciples": "https://001.100app.dev/methodology.html"
+      "publishingPrinciples": "https://001.100app.dev/methodology.html",
+      "sameAs": [
+        "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332"
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://001.100app.dev/#ios-app",
+      "name": "GearDrop: Outdoor Deals",
+      "operatingSystem": "iOS",
+      "applicationCategory": "ShoppingApplication",
+      "url": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
+      "downloadUrl": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
+      "publisher": {
+        "@id": "https://001.100app.dev/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://001.100app.dev/catalog-status.html#webpage",
+      "url": "https://001.100app.dev/catalog-status.html",
+      "name": "GearDrop 目录状态｜品牌、来源与地区覆盖快照",
+      "description": "GearDrop 当前活跃商品 URL、品牌、销售来源和地区覆盖的带时间戳快照，以及这些数字不能证明的事项。",
+      "inLanguage": "zh-CN",
+      "dateModified": "2026-08-28",
+      "publisher": {
+        "@id": "https://001.100app.dev/#organization"
+      },
+      "mainEntity": {
+        "@id": "https://001.100app.dev/catalog-status.html#dataset"
+      }
     },
     {
       "@type": "Dataset",
       "@id": "https://001.100app.dev/catalog-status.html#dataset",
-      "name": "GearDrop active catalog coverage snapshot",
+      "name": "GearDrop 目录状态｜品牌、来源与地区覆盖快照",
       "description": "Counts describe active GearDrop product URLs at the recorded observation time. They do not prove retailer stock, search indexing, AI mention, citation, or recommendation.",
       "url": "https://001.100app.dev/catalog-status.html",
       "dateModified": "2026-08-28",
       "creator": {
         "@id": "https://001.100app.dev/#organization"
       },
-      "measurementTechnique": "Public product-page observation and normalized catalog quality gates",
+      "measurementTechnique": "Public product-page observation followed by normalized catalog quality gates and deterministic grouping",
       "variableMeasured": [
         "active product URLs",
         "brand coverage",
-        "platform coverage",
-        "region coverage"
+        "retailer-source coverage",
+        "market coverage"
       ],
       "distribution": {
         "@type": "DataDownload",
@@ -61,51 +95,44 @@
 </head>
 <body>
     <a class="skip-link" href="#main-content">跳到主要内容</a>
-    <header class="site-header">
-        <div class="header-inner">
-            <a class="brand-link" href="/" aria-label="GearDrop 首页"><img class="brand-logo" src="/assets/brand/geardrop-logo.png" alt="GearDrop" width="355" height="76"></a>
-            <nav class="site-nav" aria-label="主要导航"><a href="/">折扣目录</a><a href="/about.html">关于</a><a href="/methodology.html">数据方法</a><a href="/faq.html">常见问题</a><a href="/guides/outdoor-deal-guide.html">选购指南</a></nav>
-        </div>
-    </header>
+    <header class="site-header"><div class="header-inner">
+        <a class="brand-link" href="/" aria-label="GearDrop 首页"><img class="brand-logo" src="/assets/brand/geardrop-logo.png" alt="GearDrop" width="355" height="76"></a>
+        <nav class="site-nav" aria-label="主要导航"><a href="/">折扣目录</a><a href="/about.html">关于</a><a href="/methodology.html">数据方法</a><a href="/faq.html">常见问题</a><a href="/insights/catalog-coverage.html">数据洞察</a><a href="/en/">English</a></nav>
+    </div></header>
     <main class="page-shell" id="main-content">
-        <nav class="breadcrumb" aria-label="面包屑"><a href="/">GearDrop</a><span aria-hidden="true">/</span><span>目录状态</span></nav>
-        <header class="hero">
-            <div class="eyebrow">可复现状态快照</div>
-            <h1>GearDrop 目录状态</h1>
-            <p class="lead">当前 sitemap 中有 8,244 个活跃商品 URL。以下数字来自同一批标准化记录，并绑定最近观察时间。</p>
-            <div class="updated">最近商品观察：2026-08-28T01:28:39+00:00</div>
-        </header>
+        <nav class="breadcrumb" aria-label="面包屑"><a href="/">GearDrop</a><span aria-hidden="true">/</span><span>GearDrop 目录状态</span></nav>
+        <header class="hero"><div class="eyebrow">可复现状态快照</div><h1>GearDrop 目录状态</h1><p class="lead">当前商品 sitemap 有 8,204 个活跃商品 URL，以下数字来自同一批标准化记录。</p><div class="updated">最近商品观察: 2026-08-28T08:34:50+00:00</div></header>
         <section class="answer-box" aria-label="直接回答"><strong>直接回答</strong><p>这些数字说明 GearDrop 当前可发现的目录覆盖，不说明销售平台仍有库存，也不说明搜索引擎已收录或 AI 平台已提及、引用、推荐 GearDrop。</p></section>
         <div class="content-grid">
-            <section class="content-section"><h2>品牌覆盖</h2><dl class="fact-list"><dt>Arc&#x27;teryx</dt><dd>6,573 个商品 URL</dd>
-<dt>Burton</dt><dd>1,188 个商品 URL</dd>
-<dt>Patagonia</dt><dd>483 个商品 URL</dd></dl></section>
-            <section class="content-section"><h2>销售平台覆盖</h2><dl class="fact-list"><dt>Arc&#x27;teryx Outlet</dt><dd>6,042 个商品 URL</dd>
-<dt>EVO</dt><dd>1,466 个商品 URL</dd>
-<dt>Burton</dt><dd>323 个商品 URL</dd>
+        <section class="content-section"><h2>品牌覆盖</h2><dl class="fact-list"><dt>Arc&#x27;teryx</dt><dd>6,537 个商品 URL</dd>
+<dt>Burton</dt><dd>1,183 个商品 URL</dd>
+<dt>Patagonia</dt><dd>484 个商品 URL</dd></dl></section>
+        <section class="content-section"><h2>销售来源覆盖</h2><dl class="fact-list"><dt>Arc&#x27;teryx Outlet</dt><dd>6,008 个商品 URL</dd>
+<dt>EVO</dt><dd>1,464 个商品 URL</dd>
+<dt>Burton</dt><dd>322 个商品 URL</dd>
 <dt>MEC</dt><dd>166 个商品 URL</dd>
-<dt>Backcountry</dt><dd>141 个商品 URL</dd>
-<dt>REI</dt><dd>66 个商品 URL</dd>
+<dt>Backcountry</dt><dd>140 个商品 URL</dd>
+<dt>REI</dt><dd>64 个商品 URL</dd>
 <dt>SSENSE</dt><dd>40 个商品 URL</dd></dl></section>
-            <section class="content-section full"><h2>地区覆盖</h2><dl class="fact-list"><dt>美国</dt><dd>2,451 个商品 URL</dd>
-<dt>加拿大</dt><dd>418 个商品 URL</dd>
-<dt>德国</dt><dd>413 个商品 URL</dd>
-<dt>英国</dt><dd>413 个商品 URL</dd>
-<dt>奥地利</dt><dd>412 个商品 URL</dd>
-<dt>比利时</dt><dd>412 个商品 URL</dd>
-<dt>瑞士</dt><dd>412 个商品 URL</dd>
-<dt>丹麦</dt><dd>412 个商品 URL</dd>
-<dt>西班牙</dt><dd>412 个商品 URL</dd>
-<dt>芬兰</dt><dd>412 个商品 URL</dd>
-<dt>法国</dt><dd>412 个商品 URL</dd>
-<dt>意大利</dt><dd>412 个商品 URL</dd>
-<dt>荷兰</dt><dd>412 个商品 URL</dd>
-<dt>瑞典</dt><dd>412 个商品 URL</dd>
-<dt>爱尔兰</dt><dd>411 个商品 URL</dd>
-<dt>澳大利亚</dt><dd>18 个商品 URL</dd></dl></section>
-            <section class="content-section full"><h2>如何使用这份快照</h2><p>引用数量时同时保留最近观察时间。引用具体商品或价格时，还应保留商品 URL、销售平台 URL、币种与该商品的更新时间。</p><div class="link-list"><a class="link-card" href="/catalog-status.json"><strong>下载同一快照的 JSON →</strong><span>机器可读的计数与测量边界</span></a><a class="link-card" href="/sitemap-products.xml"><strong>查看商品 sitemap →</strong><span>规范商品详情 URL 清单</span></a><a class="link-card" href="/methodology.html"><strong>阅读数据方法 →</strong><span>采集、价格、库存与新鲜度口径</span></a></div></section>
-        </div>
+        <section class="content-section full"><h2>地区覆盖</h2><dl class="fact-list"><dt>美国</dt><dd>2,445 个商品 URL</dd>
+<dt>加拿大</dt><dd>417 个商品 URL</dd>
+<dt>奥地利</dt><dd>410 个商品 URL</dd>
+<dt>瑞士</dt><dd>410 个商品 URL</dd>
+<dt>德国</dt><dd>410 个商品 URL</dd>
+<dt>西班牙</dt><dd>410 个商品 URL</dd>
+<dt>法国</dt><dd>410 个商品 URL</dd>
+<dt>爱尔兰</dt><dd>410 个商品 URL</dd>
+<dt>意大利</dt><dd>410 个商品 URL</dd>
+<dt>瑞典</dt><dd>410 个商品 URL</dd>
+<dt>比利时</dt><dd>409 个商品 URL</dd>
+<dt>丹麦</dt><dd>409 个商品 URL</dd>
+<dt>芬兰</dt><dd>409 个商品 URL</dd>
+<dt>英国</dt><dd>409 个商品 URL</dd>
+<dt>荷兰</dt><dd>409 个商品 URL</dd>
+<dt>澳大利亚</dt><dd>17 个商品 URL</dd></dl></section>
+        <section class="content-section full"><h2>如何使用这份快照</h2><p>引用汇总数量时请同时保留观察时间。引用具体价格时，还应保留商品身份、销售平台 URL、币种与该商品的更新时间。</p><div class="link-list"><a class="link-card" href="/catalog-status.json"><strong>JSON →</strong><span>Machine-readable counts, matrices, and boundaries</span></a><a class="link-card" href="/sitemap-products.xml"><strong>Product sitemap →</strong><span>Canonical product-detail URL list</span></a><a class="link-card" href="/methodology.html"><strong>Methodology →</strong><span>Collection, freshness, and comparison limits</span></a></div></section>
+    </div>
     </main>
-    <footer class="site-footer"><nav class="footer-links" aria-label="页脚导航"><a href="/about.html">关于 GearDrop</a><a href="/methodology.html">数据方法</a><a href="/faq.html">常见问题</a><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a></nav><div>GearDrop 是独立折扣追踪服务；数量与时间边界见本页。</div></footer>
+    <footer class="site-footer"><nav class="footer-links" aria-label="Footer"><a href="/about.html">关于 GearDrop</a><a href="/methodology.html">数据方法</a><a href="/faq.html">常见问题</a><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a><a href="https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332" rel="noopener">App Store</a></nav><div>GearDrop 是独立折扣追踪服务；数量描述已观察目录记录，不保证销售平台库存或 AI 可见度。</div></footer>
 </body>
 </html>

@@ -1,9 +1,11 @@
 import importlib.util
+import datetime as dt
 import http.client
 import json
 import re
 import subprocess
 import sys
+import tempfile
 import unittest
 from unittest import mock
 import xml.etree.ElementTree as ET
@@ -39,11 +41,14 @@ class GeoAssetTests(unittest.TestCase):
         cls.readiness_module = load_module(
             "check_geo_readiness", ROOT / "tools" / "check_geo_readiness.py"
         )
+        cls.indexnow_module = load_module(
+            "notify_indexnow", ROOT / "tools" / "notify_indexnow.py"
+        )
 
     def test_generated_knowledge_pages_match_the_source(self):
         content = json.loads((ROOT / "geo" / "site-content.json").read_text(encoding="utf-8"))
         outputs = self.content_module.build_outputs(content)
-        self.assertGreaterEqual(len(outputs), 12)
+        self.assertGreaterEqual(len(outputs), 20)
         for path, expected in outputs.items():
             self.assertTrue(path.exists(), path)
             self.assertEqual(path.read_text(encoding="utf-8"), expected, path)
@@ -107,6 +112,34 @@ class GeoAssetTests(unittest.TestCase):
         root = ET.fromstring(sitemap)
         namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
         self.assertEqual(root.find("sm:url/sm:loc", namespace).text, url)
+
+    def test_catalog_generator_builds_reproducible_localized_data_pages(self):
+        rows = [
+            {"sku_id": "a-1", "brand": "arcteryx", "dealer": "evo", "region": "us", "status": "active", "last_updated": "2026-08-28T01:00:00+00:00"},
+            {"sku_id": "a-2", "brand": "arcteryx", "dealer": "mec", "region": "ca", "status": "active", "last_updated": "2026-08-28T02:00:00+00:00"},
+            {"sku_id": "b-1", "brand": "burton", "dealer": "evo", "region": "us", "status": "active", "last_updated": "2026-08-28T03:00:00+00:00"},
+        ]
+        outputs = self.catalog_module.build_outputs(rows)
+        summary = json.loads(outputs[ROOT / "catalog-status.json"])
+        self.assertEqual(summary["schema_version"], "1.1.0")
+        self.assertEqual(sum(item["total"] for item in summary["brand_platform_matrix"]), 3)
+        self.assertEqual(sum(item["total"] for item in summary["region_brand_matrix"]), 3)
+        expected = {
+            ROOT / "sitemap-insights.xml",
+            ROOT / "insights" / "catalog-coverage.html",
+            ROOT / "insights" / "brand-source-matrix.html",
+            ROOT / "insights" / "regional-coverage.html",
+            ROOT / "en" / "catalog-status.html",
+            ROOT / "en" / "insights" / "catalog-coverage.html",
+            ROOT / "en" / "insights" / "brand-source-matrix.html",
+            ROOT / "en" / "insights" / "regional-coverage.html",
+        }
+        self.assertTrue(expected <= set(outputs))
+        for path in expected - {ROOT / "sitemap-insights.xml"}:
+            source = outputs[path]
+            self.assertIn("catalog-status.json", source)
+            self.assertIn("hreflang=\"zh-CN\"", source)
+            self.assertIn("hreflang=\"en-US\"", source)
 
     def test_catalog_fetch_retries_incomplete_chunked_responses(self):
         class Response:
@@ -228,8 +261,16 @@ class GeoAssetTests(unittest.TestCase):
             "/brands/burton.html",
             "/brands/patagonia.html",
             "/catalog-status.html",
+            "/insights/catalog-coverage.html",
+            "/insights/brand-source-matrix.html",
+            "/insights/regional-coverage.html",
+            "/en/",
         ):
             self.assertIn(f'href="{path}"', self.index)
+        app_store_url = "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332"
+        self.assertIn(f'href="{app_store_url}"', self.index)
+        self.assertIn('"@type": "SoftwareApplication"', self.index)
+        self.assertIn('"sameAs"', self.index)
         self.assertIn("? `product-detail.html?sku=${encodeURIComponent(p.sku_id)}`", self.index)
         self.assertNotIn("const skuParam = p.sku_id", self.index)
 
@@ -290,6 +331,47 @@ class GeoAssetTests(unittest.TestCase):
             self.assertIn("sitemap-products.xml", workflow, name)
             self.assertIn("catalog-status.html", workflow, name)
             self.assertIn("catalog-status.json", workflow, name)
+            self.assertIn("sitemap-insights.xml", workflow, name)
+            self.assertIn("insights/*.html", workflow, name)
+            self.assertIn("notify_indexnow.py --since-days 2", workflow, name)
+
+        server_runner = (ROOT / "server_run_update.sh").read_text(encoding="utf-8")
+        self.assertIn('"$PYTHON" tools/generate_geo_catalog.py --online', server_runner)
+        self.assertIn("sitemap-insights.xml", server_runner)
+        self.assertIn("insights/*.html", server_runner)
+        self.assertIn("notify_indexnow.py --since-days 2", server_runner)
+
+    def test_indexnow_contract_is_credential_free_and_selects_recent_urls(self):
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "tools" / "notify_indexnow.py"), "--check"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
+        report = json.loads(result.stdout)
+        self.assertTrue(report["valid"])
+        self.assertFalse(report["credentials_logged"])
+        self.assertEqual(
+            report["credentials_required"], ["INDEXNOW_KEY", "INDEXNOW_KEY_LOCATION"]
+        )
+
+        sitemap = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://001.100app.dev/recent</loc><lastmod>2026-08-28</lastmod></url>
+  <url><loc>https://001.100app.dev/old</loc><lastmod>2026-08-20</lastmod></url>
+</urlset>
+"""
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sitemap.xml"
+            path.write_text(sitemap, encoding="utf-8")
+            urls = self.indexnow_module.collect_recent_urls(
+                [path], since_days=2, today=dt.date(2026, 8, 28)
+            )
+        self.assertIn("https://001.100app.dev/", urls)
+        self.assertIn("https://001.100app.dev/recent", urls)
+        self.assertNotIn("https://001.100app.dev/old", urls)
 
     def test_internal_audit_data_is_not_deployed(self):
         vercelignore = (ROOT / ".vercelignore").read_text(encoding="utf-8")
@@ -298,6 +380,10 @@ class GeoAssetTests(unittest.TestCase):
         self.assertIn("/tests/", vercelignore)
         self.assertIn("tools/", vercelignore)
         self.assertIn(".agent/", vercelignore)
+        self.assertIn("/*.py", vercelignore)
+        self.assertIn("/*.sh", vercelignore)
+        self.assertIn("/*.sql", vercelignore)
+        self.assertIn("/.crawl_manifest.json", vercelignore)
 
     def test_gemini_visibility_baseline_contract(self):
         result = subprocess.run(

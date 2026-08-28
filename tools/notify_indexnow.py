@@ -1,0 +1,178 @@
+#!/usr/bin/env python3
+"""Notify IndexNow of recently changed GearDrop URLs without logging credentials."""
+
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import json
+import os
+import re
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Iterable
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SITE_URL = "https://001.100app.dev"
+SITE_HOST = "001.100app.dev"
+DEFAULT_ENDPOINT = "https://api.indexnow.org/indexnow"
+MAX_BATCH = 10_000
+DEFAULT_SITEMAPS = (ROOT / "sitemap-products.xml", ROOT / "sitemap-insights.xml")
+
+
+def parse_lastmod(value: str | None) -> dt.date | None:
+    if not value:
+        return None
+    try:
+        return dt.date.fromisoformat(value[:10])
+    except ValueError:
+        return None
+
+
+def read_sitemap(path: Path) -> list[tuple[str, dt.date | None]]:
+    root = ET.parse(path).getroot()
+    namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    rows: list[tuple[str, dt.date | None]] = []
+    for node in root.findall("sm:url", namespace):
+        location = node.findtext("sm:loc", namespaces=namespace) or ""
+        modified = node.findtext("sm:lastmod", namespaces=namespace)
+        parsed = urllib.parse.urlparse(location)
+        if parsed.scheme != "https" or parsed.netloc != SITE_HOST:
+            raise ValueError(f"Sitemap URL is outside {SITE_HOST}: {location!r}")
+        rows.append((location, parse_lastmod(modified)))
+    return rows
+
+
+def collect_recent_urls(
+    sitemap_paths: Iterable[Path], since_days: int, today: dt.date | None = None
+) -> list[str]:
+    if since_days < 0:
+        raise ValueError("since-days must be zero or greater")
+    observed_today = today or dt.datetime.now(dt.timezone.utc).date()
+    cutoff = observed_today - dt.timedelta(days=since_days)
+    urls = {f"{SITE_URL}/"}
+    for path in sitemap_paths:
+        for location, modified in read_sitemap(path):
+            if modified is None or modified >= cutoff:
+                urls.add(location)
+    return sorted(urls)
+
+
+def validate_credentials(key: str, key_location: str) -> None:
+    if not re.fullmatch(r"[A-Za-z0-9-]{8,128}", key):
+        raise ValueError("INDEXNOW_KEY must contain 8-128 URL-safe alphanumeric or hyphen characters")
+    parsed = urllib.parse.urlparse(key_location)
+    if parsed.scheme != "https" or parsed.netloc != SITE_HOST:
+        raise ValueError(f"INDEXNOW_KEY_LOCATION must be an HTTPS URL on {SITE_HOST}")
+
+
+def submit_batch(
+    urls: list[str], key: str, key_location: str, endpoint: str = DEFAULT_ENDPOINT
+) -> int:
+    payload = json.dumps(
+        {
+            "host": SITE_HOST,
+            "key": key,
+            "keyLocation": key_location,
+            "urlList": urls,
+        }
+    ).encode("utf-8")
+    request = urllib.request.Request(
+        endpoint,
+        data=payload,
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return int(getattr(response, "status", 200))
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--sitemap", action="append", type=Path, help="Local URL sitemap; repeatable")
+    parser.add_argument("--since-days", type=int, default=2, help="Include URLs modified within this many UTC days")
+    parser.add_argument("--endpoint", default=DEFAULT_ENDPOINT, help="IndexNow API endpoint")
+    parser.add_argument("--dry-run", action="store_true", help="Parse and count URLs without credentials or network")
+    parser.add_argument("--check", action="store_true", help="Validate the credential-free tool contract")
+    args = parser.parse_args()
+
+    if args.check:
+        print(
+            json.dumps(
+                {
+                    "valid": True,
+                    "site_host": SITE_HOST,
+                    "endpoint": args.endpoint,
+                    "max_batch_urls": MAX_BATCH,
+                    "credentials_required": ["INDEXNOW_KEY", "INDEXNOW_KEY_LOCATION"],
+                    "credentials_logged": False,
+                },
+                indent=2,
+            )
+        )
+        return 0
+
+    sitemap_paths = tuple(args.sitemap or DEFAULT_SITEMAPS)
+    try:
+        urls = collect_recent_urls(sitemap_paths, args.since_days)
+    except (OSError, ET.ParseError, ValueError) as error:
+        print(json.dumps({"status": "invalid_input", "error": str(error)}), file=sys.stderr)
+        return 1
+
+    if args.dry_run:
+        print(json.dumps({"status": "dry_run", "url_count": len(urls), "batch_count": (len(urls) + MAX_BATCH - 1) // MAX_BATCH}))
+        return 0
+
+    key = os.environ.get("INDEXNOW_KEY", "")
+    key_location = os.environ.get("INDEXNOW_KEY_LOCATION", "")
+    if not key or not key_location:
+        print(
+            json.dumps(
+                {
+                    "status": "skipped_missing_credentials",
+                    "url_count": len(urls),
+                    "required": ["INDEXNOW_KEY", "INDEXNOW_KEY_LOCATION"],
+                }
+            )
+        )
+        return 0
+
+    try:
+        validate_credentials(key, key_location)
+        statuses = [
+            submit_batch(urls[start : start + MAX_BATCH], key, key_location, args.endpoint)
+            for start in range(0, len(urls), MAX_BATCH)
+        ]
+    except (ValueError, urllib.error.URLError, TimeoutError, OSError) as error:
+        print(
+            json.dumps(
+                {
+                    "status": "submission_failed",
+                    "url_count": len(urls),
+                    "error_type": type(error).__name__,
+                }
+            ),
+            file=sys.stderr,
+        )
+        return 1
+
+    print(
+        json.dumps(
+            {
+                "status": "submitted",
+                "url_count": len(urls),
+                "batch_count": len(statuses),
+                "http_statuses": statuses,
+            }
+        )
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
