@@ -3,18 +3,18 @@
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://geardrop.100app.dev/",
   "official_ios_app_url": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
-  "snapshot_observed_at": "2026-08-28T20:22:16+00:00",
-  "active_product_urls": 8174,
+  "snapshot_observed_at": "2026-08-28T23:10:23+00:00",
+  "active_product_urls": 8184,
   "brands": [
     {
       "id": "arcteryx",
       "label": "Arc'teryx",
-      "count": 6482
+      "count": 6490
     },
     {
       "id": "burton",
       "label": "Burton",
-      "count": 1208
+      "count": 1210
     },
     {
       "id": "patagonia",
@@ -31,7 +31,7 @@
     {
       "id": "evo",
       "label": "EVO",
-      "count": 1468
+      "count": 1470
     },
     {
       "id": "burton",
@@ -41,7 +41,7 @@
     {
       "id": "mec",
       "label": "MEC",
-      "count": 209
+      "count": 208
     },
     {
       "id": "backcountry",
@@ -51,19 +51,19 @@
     {
       "id": "rei",
       "label": "REI",
-      "count": 90
+      "count": 99
     }
   ],
   "regions": [
     {
       "id": "us",
       "label": "美国",
-      "count": 2457
+      "count": 2468
     },
     {
       "id": "ca",
       "label": "加拿大",
-      "count": 460
+      "count": 459
     },
     {
       "id": "fi",
@@ -140,23 +140,23 @@
     {
       "brand_id": "arcteryx",
       "brand": "Arc'teryx",
-      "total": 6482,
+      "total": 6490,
       "platform_counts": {
         "arcteryx_outlet": 5923,
         "evo": 260,
         "burton": 0,
-        "mec": 209,
+        "mec": 208,
         "backcountry": 0,
-        "rei": 90
+        "rei": 99
       }
     },
     {
       "brand_id": "burton",
       "brand": "Burton",
-      "total": 1208,
+      "total": 1210,
       "platform_counts": {
         "arcteryx_outlet": 0,
-        "evo": 724,
+        "evo": 726,
         "burton": 344,
         "mec": 0,
         "backcountry": 140,
@@ -181,19 +181,19 @@
     {
       "region_id": "us",
       "region": "United States",
-      "total": 2457,
+      "total": 2468,
       "brand_counts": {
-        "arcteryx": 765,
-        "burton": 1208,
+        "arcteryx": 774,
+        "burton": 1210,
         "patagonia": 484
       }
     },
     {
       "region_id": "ca",
       "region": "Canada",
-      "total": 460,
+      "total": 459,
       "brand_counts": {
-        "arcteryx": 460,
+        "arcteryx": 459,
         "burton": 0,
         "patagonia": 0
       }
