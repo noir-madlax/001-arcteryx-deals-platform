@@ -388,6 +388,24 @@ class GeoAssetTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.indexnow_module.read_credentials_from_stdin(io.StringIO("\n"))
 
+        http_error = self.indexnow_module.urllib.error.HTTPError(
+            "https://api.indexnow.org/indexnow",
+            422,
+            "Unprocessable Entity",
+            {},
+            None,
+        )
+        safe_error = self.indexnow_module.safe_submission_error(http_error, 2)
+        self.assertEqual(
+            safe_error,
+            {
+                "status": "submission_failed",
+                "url_count": 2,
+                "error_type": "HTTPError",
+                "http_status": 422,
+            },
+        )
+
         sitemap = """<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://001.100app.dev/recent</loc><lastmod>2026-08-28</lastmod></url>

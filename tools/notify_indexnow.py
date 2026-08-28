@@ -118,6 +118,18 @@ def submit_batch(
         return int(getattr(response, "status", 200))
 
 
+def safe_submission_error(error: Exception, url_count: int) -> dict[str, object]:
+    """Return actionable diagnostics without response bodies or credentials."""
+    payload: dict[str, object] = {
+        "status": "submission_failed",
+        "url_count": url_count,
+        "error_type": type(error).__name__,
+    }
+    if isinstance(error, urllib.error.HTTPError):
+        payload["http_status"] = int(error.code)
+    return payload
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sitemap", action="append", type=Path, help="Local URL sitemap; repeatable")
@@ -204,16 +216,7 @@ def main() -> int:
             for start in range(0, len(urls), MAX_BATCH)
         ]
     except (ValueError, urllib.error.URLError, TimeoutError, OSError) as error:
-        print(
-            json.dumps(
-                {
-                    "status": "submission_failed",
-                    "url_count": len(urls),
-                    "error_type": type(error).__name__,
-                }
-            ),
-            file=sys.stderr,
-        )
+        print(json.dumps(safe_submission_error(error, len(urls))), file=sys.stderr)
         return 1
 
     print(
