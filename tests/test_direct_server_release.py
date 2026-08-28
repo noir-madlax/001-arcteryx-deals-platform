@@ -45,6 +45,7 @@ class DirectServerReleaseTests(unittest.TestCase):
         self.assertIn("location = /p", common)
         self.assertIn("proxy_pass http://127.0.0.1:4181;", common)
         self.assertIn("DynamicUser=yes", product_unit)
+        self.assertNotIn("WorkingDirectory=", product_unit)
         self.assertIn("GEARDROP_PRODUCT_PORT=4181", product_unit)
         self.assertIn("User=ec2-user", deploy_unit)
         self.assertNotIn("/home/ec2-user/arcteryx", common + product_unit + deploy_unit)

@@ -6,7 +6,6 @@ Wants=network-online.target
 [Service]
 Type=simple
 DynamicUser=yes
-WorkingDirectory=/srv/geardrop/current
 Environment=NODE_ENV=production
 Environment=GEARDROP_PRODUCT_HOST=127.0.0.1
 Environment=GEARDROP_PRODUCT_PORT=4181
