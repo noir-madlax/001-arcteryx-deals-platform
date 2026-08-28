@@ -1,0 +1,36 @@
+# Public files copied into each direct-server release.
+# Keep this allowlist narrow: the repository also contains crawlers, SQL,
+# operational notes, tests, and mobile sources that must never be web roots.
+about.html
+arcteryx-names.js
+assets
+brands
+catalog-status.html
+catalog-status.json
+data.js
+en
+faq.html
+gear-brands.js
+global_data.json
+guides
+h5/data.js
+h5/index.html
+index.html
+indexnow-key.txt
+insights
+llms-full.txt
+llms.txt
+methodology.html
+privacy.html
+product-detail.html
+publication.json
+robots.txt
+site.webmanifest
+sitemap-insights.xml
+sitemap-products.xml
+sitemap-static.xml
+sitemap.xml
+support.html
+unsubscribe.html
+waterfall.html
+web-product-preview.js

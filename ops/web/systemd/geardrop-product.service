@@ -1,0 +1,35 @@
+[Unit]
+Description=GearDrop canonical product page service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+WorkingDirectory=/srv/geardrop/current
+Environment=NODE_ENV=production
+Environment=GEARDROP_PRODUCT_HOST=127.0.0.1
+Environment=GEARDROP_PRODUCT_PORT=4181
+ExecStart=/usr/bin/node /srv/geardrop/current/ops/web/product-server.mjs
+Restart=on-failure
+RestartSec=3s
+TimeoutStopSec=10s
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectSystem=strict
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=yes
+LockPersonality=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target

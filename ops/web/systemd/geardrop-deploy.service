@@ -1,0 +1,15 @@
+[Unit]
+Description=Pull and atomically publish the latest GearDrop main revision
+After=network-online.target geardrop-product.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ec2-user
+Group=ec2-user
+Environment=HOME=/home/ec2-user
+ExecStart=/usr/local/libexec/geardrop-deploy-server
+Nice=10
+IOSchedulingClass=idle
+PrivateTmp=yes
+ProtectHome=read-only

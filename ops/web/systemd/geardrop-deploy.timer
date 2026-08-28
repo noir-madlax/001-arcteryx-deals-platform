@@ -1,0 +1,12 @@
+[Unit]
+Description=Check GearDrop main for a publishable revision
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+RandomizedDelaySec=30s
+Persistent=true
+Unit=geardrop-deploy.service
+
+[Install]
+WantedBy=timers.target
