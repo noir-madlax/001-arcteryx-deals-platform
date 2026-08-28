@@ -3,18 +3,18 @@
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://001.100app.dev/",
   "official_ios_app_url": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
-  "snapshot_observed_at": "2026-08-28T08:34:50+00:00",
-  "active_product_urls": 8204,
+  "snapshot_observed_at": "2026-08-28T13:16:36+00:00",
+  "active_product_urls": 8212,
   "brands": [
     {
       "id": "arcteryx",
       "label": "Arc'teryx",
-      "count": 6537
+      "count": 6541
     },
     {
       "id": "burton",
       "label": "Burton",
-      "count": 1183
+      "count": 1187
     },
     {
       "id": "patagonia",
@@ -26,12 +26,12 @@
     {
       "id": "arcteryx_outlet",
       "label": "Arc'teryx Outlet",
-      "count": 6008
+      "count": 6005
     },
     {
       "id": "evo",
       "label": "EVO",
-      "count": 1464
+      "count": 1468
     },
     {
       "id": "burton",
@@ -41,7 +41,7 @@
     {
       "id": "mec",
       "label": "MEC",
-      "count": 166
+      "count": 167
     },
     {
       "id": "backcountry",
@@ -51,7 +51,7 @@
     {
       "id": "rei",
       "label": "REI",
-      "count": 64
+      "count": 70
     },
     {
       "id": "ssense",
@@ -63,12 +63,12 @@
     {
       "id": "us",
       "label": "美国",
-      "count": 2445
+      "count": 2455
     },
     {
       "id": "ca",
       "label": "加拿大",
-      "count": 417
+      "count": 418
     },
     {
       "id": "at",
@@ -93,11 +93,6 @@
     {
       "id": "fr",
       "label": "法国",
-      "count": 410
-    },
-    {
-      "id": "ie",
-      "label": "爱尔兰",
       "count": 410
     },
     {
@@ -126,14 +121,19 @@
       "count": 409
     },
     {
-      "id": "gb",
-      "label": "英国",
+      "id": "ie",
+      "label": "爱尔兰",
       "count": 409
     },
     {
       "id": "nl",
       "label": "荷兰",
       "count": 409
+    },
+    {
+      "id": "gb",
+      "label": "英国",
+      "count": 407
     },
     {
       "id": "au",
@@ -145,24 +145,24 @@
     {
       "brand_id": "arcteryx",
       "brand": "Arc'teryx",
-      "total": 6537,
+      "total": 6541,
       "platform_counts": {
-        "arcteryx_outlet": 6008,
+        "arcteryx_outlet": 6005,
         "evo": 259,
         "burton": 0,
-        "mec": 166,
+        "mec": 167,
         "backcountry": 0,
-        "rei": 64,
+        "rei": 70,
         "ssense": 40
       }
     },
     {
       "brand_id": "burton",
       "brand": "Burton",
-      "total": 1183,
+      "total": 1187,
       "platform_counts": {
         "arcteryx_outlet": 0,
-        "evo": 721,
+        "evo": 725,
         "burton": 322,
         "mec": 0,
         "backcountry": 140,
@@ -189,19 +189,19 @@
     {
       "region_id": "us",
       "region": "United States",
-      "total": 2445,
+      "total": 2455,
       "brand_counts": {
-        "arcteryx": 778,
-        "burton": 1183,
+        "arcteryx": 784,
+        "burton": 1187,
         "patagonia": 484
       }
     },
     {
       "region_id": "ca",
       "region": "Canada",
-      "total": 417,
+      "total": 418,
       "brand_counts": {
-        "arcteryx": 417,
+        "arcteryx": 418,
         "burton": 0,
         "patagonia": 0
       }
@@ -249,16 +249,6 @@
     {
       "region_id": "fr",
       "region": "France",
-      "total": 410,
-      "brand_counts": {
-        "arcteryx": 410,
-        "burton": 0,
-        "patagonia": 0
-      }
-    },
-    {
-      "region_id": "ie",
-      "region": "Ireland",
       "total": 410,
       "brand_counts": {
         "arcteryx": 410,
@@ -317,8 +307,8 @@
       }
     },
     {
-      "region_id": "gb",
-      "region": "United Kingdom",
+      "region_id": "ie",
+      "region": "Ireland",
       "total": 409,
       "brand_counts": {
         "arcteryx": 409,
@@ -332,6 +322,16 @@
       "total": 409,
       "brand_counts": {
         "arcteryx": 409,
+        "burton": 0,
+        "patagonia": 0
+      }
+    },
+    {
+      "region_id": "gb",
+      "region": "United Kingdom",
+      "total": 407,
+      "brand_counts": {
+        "arcteryx": 407,
         "burton": 0,
         "patagonia": 0
       }
@@ -370,14 +370,14 @@
       "de",
       "es",
       "fr",
-      "ie",
       "it",
       "se",
       "be",
       "dk",
       "fi",
-      "gb",
+      "ie",
       "nl",
+      "gb",
       "au"
     ]
   },
