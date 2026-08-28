@@ -15,7 +15,7 @@ else
   PYTHON="${PYTHON:-python3.12}"
 fi
 
-GITHUB_REMOTE="git@github.com:noir-madlax/001-arcteryx-deals-platform.git"
+GITHUB_REMOTE="git@github.com:wantai-dev/001-arcteryx-deals-platform.git"
 SITE_URL="${SITE_URL:-https://001.100app.dev}"
 
 if [ -f "$HOME/.arcteryx_secrets" ]; then
