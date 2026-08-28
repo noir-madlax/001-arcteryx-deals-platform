@@ -253,6 +253,10 @@ class GeoAssetTests(unittest.TestCase):
             self.index,
             r'<meta name="google-site-verification" content="[A-Za-z0-9_-]+">',
         )
+        self.assertRegex(
+            self.index,
+            r'<meta name="msvalidate\.01" content="[A-F0-9]{32}">',
+        )
         for path in (
             "/about.html",
             "/methodology.html",
