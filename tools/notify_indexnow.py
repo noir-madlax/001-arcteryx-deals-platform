@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hmac
+import io
 import json
 import os
 import re
@@ -23,6 +25,8 @@ SITE_HOST = "001.100app.dev"
 DEFAULT_ENDPOINT = "https://api.indexnow.org/indexnow"
 MAX_BATCH = 10_000
 DEFAULT_SITEMAPS = (ROOT / "sitemap-products.xml", ROOT / "sitemap-insights.xml")
+DEFAULT_KEY_FILE = ROOT / "indexnow-key.txt"
+DEFAULT_KEY_LOCATION = f"{SITE_URL}/indexnow-key.txt"
 
 
 def parse_lastmod(value: str | None) -> dt.date | None:
@@ -71,6 +75,28 @@ def validate_credentials(key: str, key_location: str) -> None:
         raise ValueError(f"INDEXNOW_KEY_LOCATION must be an HTTPS URL on {SITE_HOST}")
 
 
+def validate_key_file(
+    key: str,
+    key_location: str,
+    key_file: Path = DEFAULT_KEY_FILE,
+) -> None:
+    validate_credentials(key, key_location)
+    if key_location != DEFAULT_KEY_LOCATION:
+        raise ValueError(f"INDEXNOW_KEY_LOCATION must equal {DEFAULT_KEY_LOCATION}")
+    hosted_key = key_file.read_text(encoding="utf-8").strip()
+    if not hmac.compare_digest(hosted_key, key):
+        raise ValueError("INDEXNOW_KEY does not match the configured verification file")
+
+
+def read_credentials_from_stdin(stream: io.TextIOBase) -> tuple[str, str]:
+    """Read credentials without placing them in the process command."""
+    key = stream.readline().strip()
+    key_location = stream.readline().strip()
+    if not key or not key_location:
+        raise ValueError("stdin must contain the key and key location on separate lines")
+    return key, key_location
+
+
 def submit_batch(
     urls: list[str], key: str, key_location: str, endpoint: str = DEFAULT_ENDPOINT
 ) -> int:
@@ -99,23 +125,37 @@ def main() -> int:
     parser.add_argument("--endpoint", default=DEFAULT_ENDPOINT, help="IndexNow API endpoint")
     parser.add_argument("--dry-run", action="store_true", help="Parse and count URLs without credentials or network")
     parser.add_argument("--check", action="store_true", help="Validate the credential-free tool contract")
+    parser.add_argument(
+        "--credentials-stdin",
+        action="store_true",
+        help="Read INDEXNOW_KEY and INDEXNOW_KEY_LOCATION from separate stdin lines",
+    )
     args = parser.parse_args()
 
     if args.check:
+        try:
+            configured_key = DEFAULT_KEY_FILE.read_text(encoding="utf-8").strip()
+            validate_key_file(configured_key, DEFAULT_KEY_LOCATION)
+            key_file_valid = True
+        except (OSError, ValueError):
+            key_file_valid = False
         print(
             json.dumps(
                 {
-                    "valid": True,
+                    "valid": key_file_valid,
                     "site_host": SITE_HOST,
                     "endpoint": args.endpoint,
                     "max_batch_urls": MAX_BATCH,
+                    "key_location": DEFAULT_KEY_LOCATION,
+                    "key_file_present": DEFAULT_KEY_FILE.is_file(),
+                    "key_file_valid": key_file_valid,
                     "credentials_required": ["INDEXNOW_KEY", "INDEXNOW_KEY_LOCATION"],
                     "credentials_logged": False,
                 },
                 indent=2,
             )
         )
-        return 0
+        return 0 if key_file_valid else 1
 
     sitemap_paths = tuple(args.sitemap or DEFAULT_SITEMAPS)
     try:
@@ -128,8 +168,23 @@ def main() -> int:
         print(json.dumps({"status": "dry_run", "url_count": len(urls), "batch_count": (len(urls) + MAX_BATCH - 1) // MAX_BATCH}))
         return 0
 
-    key = os.environ.get("INDEXNOW_KEY", "")
-    key_location = os.environ.get("INDEXNOW_KEY_LOCATION", "")
+    try:
+        if args.credentials_stdin:
+            key, key_location = read_credentials_from_stdin(sys.stdin)
+        else:
+            key = os.environ.get("INDEXNOW_KEY", "")
+            key_location = os.environ.get("INDEXNOW_KEY_LOCATION", "")
+    except ValueError as error:
+        print(
+            json.dumps(
+                {
+                    "status": "invalid_credentials_input",
+                    "error_type": type(error).__name__,
+                }
+            ),
+            file=sys.stderr,
+        )
+        return 1
     if not key or not key_location:
         print(
             json.dumps(
@@ -143,7 +198,7 @@ def main() -> int:
         return 0
 
     try:
-        validate_credentials(key, key_location)
+        validate_key_file(key, key_location)
         statuses = [
             submit_batch(urls[start : start + MAX_BATCH], key, key_location, args.endpoint)
             for start in range(0, len(urls), MAX_BATCH)

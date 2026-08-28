@@ -1,6 +1,7 @@
 import importlib.util
 import datetime as dt
 import http.client
+import io
 import json
 import re
 import subprocess
@@ -352,10 +353,40 @@ class GeoAssetTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
         report = json.loads(result.stdout)
         self.assertTrue(report["valid"])
+        self.assertTrue(report["key_file_present"])
+        self.assertTrue(report["key_file_valid"])
         self.assertFalse(report["credentials_logged"])
+        self.assertEqual(
+            report["key_location"], "https://001.100app.dev/indexnow-key.txt"
+        )
         self.assertEqual(
             report["credentials_required"], ["INDEXNOW_KEY", "INDEXNOW_KEY_LOCATION"]
         )
+
+        key_file = ROOT / "indexnow-key.txt"
+        configured_key = key_file.read_text(encoding="utf-8").strip()
+        self.assertRegex(configured_key, r"^[a-f0-9]{64}$")
+        self.indexnow_module.validate_key_file(
+            configured_key,
+            "https://001.100app.dev/indexnow-key.txt",
+            key_file,
+        )
+        with self.assertRaisesRegex(ValueError, "does not match"):
+            self.indexnow_module.validate_key_file(
+                "0" * 64,
+                "https://001.100app.dev/indexnow-key.txt",
+                key_file,
+            )
+
+        key, location = self.indexnow_module.read_credentials_from_stdin(
+            io.StringIO(
+                f"{configured_key}\nhttps://001.100app.dev/indexnow-key.txt\n"
+            )
+        )
+        self.assertEqual(key, configured_key)
+        self.assertEqual(location, "https://001.100app.dev/indexnow-key.txt")
+        with self.assertRaises(ValueError):
+            self.indexnow_module.read_credentials_from_stdin(io.StringIO("\n"))
 
         sitemap = """<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
