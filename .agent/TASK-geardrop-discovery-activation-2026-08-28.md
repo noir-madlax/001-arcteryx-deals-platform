@@ -25,7 +25,9 @@
 - 首页有 Google site verification meta；仓库未发现 Bing verification marker。该标记只证明部署资产存在，不能证明控制台属性、sitemap 或报告状态。（来源：`index.html:21` 与本会话字面检查）
 - 当前会话没有 Search Console 或 Bing Webmaster 专用 connector/API；控制台语义操作需要使用真实浏览器会话。（来源：本会话工具能力查询）
 - Search Console 已有 `https://001.100app.dev/` URL-prefix 属性；`/sitemap.xml` 状态为成功，已发现 `8,431` 个网页，上次读取为 2026-08-21。概览显示 `1` 个网页已编入索引、`8,308` 个未编入索引；数据洞见过去 28 天没有点击，页面没有独立生成式 AI 报告。（来源：本会话新页面 DOM 读回）
+- Search Console 的网页详细报告把全部 `8,308` 个未收录 URL 归为唯一原因“已发现 - 尚未编入索引”；验证状态为“未启动”，首次发现于 2026-08-15，抽样 URL 的“上次抓取日期”均为“不适用”。这证明当前主要瓶颈在 Google 尚未抓取／收录，而不是 sitemap 未提交。由于本次没有完成一个可向 Google 声明已修正的站内问题，未点击“验证修正情况”。（来源：本会话新页面 DOM 读回）
 - Bing Webmaster 在两个已连接浏览器都未登录；没有读取到站点／sitemap 状态，不得推定不存在。（来源：本会话新页面 DOM 读回）
+- 仓库迁移后 Vercel Git 集成没有给最新主分支提交写入 deployment status，自动部署也未触发；本次已用 production prebuilt 将最新主分支手动上线，但未来自动部署链路仍需在 Vercel 中重新连接迁移后的 GitHub 仓库。该连接会改变持久权限，需单独取得用户确认后执行。（来源：本会话 GitHub commit status、Vercel deployment 列表与 production 读回）
 
 ## 假设（未验证；验证后移入上区）
 
@@ -52,6 +54,7 @@
 - 最终生产 GEO readiness 在显式 `certifi` CA 下为 `213 passed / 0 failed`，产品 sitemap 为 `8,169` 个唯一 URL，`observed_ai_visibility` 保持 `not_measured`。
 - GitHub Secrets 已从不存在变为只按名称可见：`INDEXNOW_KEY`、`INDEXNOW_KEY_LOCATION`；正文未进入输出。功能上线后真实 IndexNow 请求将 `8,221` 个近期 URL 单批提交并取得 HTTP `200`；自动数据刷新上线后又对当前 `8,178` 个近期 URL 提交一次并取得 HTTP `200`。
 - Search Console 现有属性／sitemap／索引概览已按上区读回，因 sitemap 已为成功状态，没有重复提交。
+- Search Console 详细未收录原因已按上区读回；没有把“0 点击”误记为“0 AI 曝光”，也没有在未完成对应修复时启动整批验证。
 - 当前线程自动化 `geardrop-ai-7` 已创建并读回；由于线程只允许一条 heartbeat，使用一条自动化在 2026-09-04 与 2026-09-11 10:00（Asia/Taipei）分别触发第 7/14 天复测，禁止未授权付费 API，并要求区分 `not_measured`、`blocked` 与零提及。
 - 最终手动 production 的公开 key 精确匹配；代表路径和 6 类机器人均为 HTTP 200。前一手动 production 的 deployed readiness 首跑因动态商品分段读取瞬时不一致为 `212/213`；独立完整 curl 证明 canonical、Product JSON-LD 与闭合 HTML 均存在，随后有界复跑为 `213/213`。最新自动数据提交上线后再次复跑为 `213/213`，因此未改产品代码。
 
@@ -59,7 +62,9 @@
 
 1. 用户本人完成 Chrome 中的 Bing Webmaster 登录。
 2. 登录后从新页面核验是否已有 `001.100app.dev`；仅在缺失时添加站点并提交 `/sitemap.xml`，随后独立读回。
-3. Bing 读回完成后更新本档案为完成并提交；确认共享脏工作树未被本任务修改。
+3. 用户单独确认后，在 Vercel 重新连接迁移后的 GitHub 仓库，并用一个无业务改动的可控提交验证自动 preview／production status 链路；此前不要把本次手动上线当成自动部署已恢复。
+4. 下一轮 Google 优化应先挑选首页、目录页与少量高价值产品页做 URL Inspection／抓取诊断，再决定是否请求收录或增强内部链接／外部权威信号；不得对 `8,308` 个 URL 批量声称“已修正”。
+5. Bing 读回完成后更新本档案为完成并提交；确认共享脏工作树未被本任务修改。
 
 ## 死路
 
