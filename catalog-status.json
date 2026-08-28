@@ -3,18 +3,18 @@
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://001.100app.dev/",
   "official_ios_app_url": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
-  "snapshot_observed_at": "2026-08-28T14:25:40+00:00",
-  "active_product_urls": 8169,
+  "snapshot_observed_at": "2026-08-28T15:34:45+00:00",
+  "active_product_urls": 8157,
   "brands": [
     {
       "id": "arcteryx",
       "label": "Arc'teryx",
-      "count": 6498
+      "count": 6465
     },
     {
       "id": "burton",
       "label": "Burton",
-      "count": 1187
+      "count": 1208
     },
     {
       "id": "patagonia",
@@ -36,7 +36,7 @@
     {
       "id": "burton",
       "label": "Burton",
-      "count": 323
+      "count": 344
     },
     {
       "id": "mec",
@@ -51,19 +51,14 @@
     {
       "id": "rei",
       "label": "REI",
-      "count": 62
-    },
-    {
-      "id": "ssense",
-      "label": "SSENSE",
-      "count": 40
+      "count": 69
     }
   ],
   "regions": [
     {
       "id": "us",
       "label": "美国",
-      "count": 2448
+      "count": 2436
     },
     {
       "id": "ca",
@@ -145,29 +140,27 @@
     {
       "brand_id": "arcteryx",
       "brand": "Arc'teryx",
-      "total": 6498,
+      "total": 6465,
       "platform_counts": {
         "arcteryx_outlet": 5969,
         "evo": 260,
         "burton": 0,
         "mec": 167,
         "backcountry": 0,
-        "rei": 62,
-        "ssense": 40
+        "rei": 69
       }
     },
     {
       "brand_id": "burton",
       "brand": "Burton",
-      "total": 1187,
+      "total": 1208,
       "platform_counts": {
         "arcteryx_outlet": 0,
         "evo": 724,
-        "burton": 323,
+        "burton": 344,
         "mec": 0,
         "backcountry": 140,
-        "rei": 0,
-        "ssense": 0
+        "rei": 0
       }
     },
     {
@@ -180,8 +173,7 @@
         "burton": 0,
         "mec": 0,
         "backcountry": 0,
-        "rei": 0,
-        "ssense": 0
+        "rei": 0
       }
     }
   ],
@@ -189,10 +181,10 @@
     {
       "region_id": "us",
       "region": "United States",
-      "total": 2448,
+      "total": 2436,
       "brand_counts": {
-        "arcteryx": 777,
-        "burton": 1187,
+        "arcteryx": 744,
+        "burton": 1208,
         "patagonia": 484
       }
     },
@@ -359,8 +351,7 @@
       "burton",
       "mec",
       "backcountry",
-      "rei",
-      "ssense"
+      "rei"
     ],
     "region_ids": [
       "us",
