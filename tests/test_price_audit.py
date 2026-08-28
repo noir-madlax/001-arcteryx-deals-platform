@@ -14,7 +14,6 @@ from tools.audit_price_accuracy import (
     normalize_read,
     sample_rows,
     sample_rows_from_artifact,
-    ssense_needs_browser,
     summarize,
 )
 
@@ -38,11 +37,10 @@ class PriceAuditTests(unittest.TestCase):
     def test_stratified_sample_is_exact_and_reproducible(self):
         rows = []
         counts = {
-            "arcteryx_outlet": 80,
+            "arcteryx_outlet": 90,
             "evo": 20,
             "mec": 20,
             "rei": 20,
-            "ssense": 20,
         }
         for dealer, count in counts.items():
             rows.extend(row(f"{dealer}:{index}", dealer) for index in range(count))
@@ -63,11 +61,10 @@ class PriceAuditTests(unittest.TestCase):
         self.assertEqual(
             by_dealer,
             {
-                "arcteryx_outlet": 60,
+                "arcteryx_outlet": 70,
                 "evo": 10,
                 "mec": 10,
                 "rei": 10,
-                "ssense": 10,
             },
         )
 
@@ -181,19 +178,6 @@ class PriceAuditTests(unittest.TestCase):
         self.assertEqual(
             normalize_read({"_unavailable": True}),
             {"_err": "official_unavailable"},
-        )
-
-    def test_ssense_block_or_flat_price_requires_browser(self):
-        self.assertTrue(ssense_needs_browser({"_err": "http 403"}))
-        self.assertTrue(
-            ssense_needs_browser(
-                {"sale_price": 200.0, "original_price": 200.0, "discount_pct": 0}
-            )
-        )
-        self.assertFalse(
-            ssense_needs_browser(
-                {"sale_price": 160.0, "original_price": 200.0, "discount_pct": 20}
-            )
         )
 
     @patch("tools.audit_price_accuracy.time.sleep")

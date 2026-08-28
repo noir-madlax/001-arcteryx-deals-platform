@@ -296,22 +296,6 @@ class DealerFreshnessTests(unittest.TestCase):
             for i in range(21)
         ] + [
             {
-                "sku_id": f"ssense-{i}",
-                "dealer": "ssense",
-                "status": "active",
-                "sale_price": 100,
-                "original_price": 150,
-                "discount_pct": 33,
-                "currency": "USD",
-                "symbol": "$",
-                "gender": "men",
-                "region": "us",
-                "url": dealer_url("ssense", i),
-                "last_updated": fresh_timestamp(),
-            }
-            for i in range(46)
-        ] + [
-            {
                 "sku_id": f"evo-{i}",
                 "dealer": "evo",
                 "status": "active",
@@ -332,12 +316,12 @@ class DealerFreshnessTests(unittest.TestCase):
             max_age_hours=36,
             max_product_age_hours=72,
             min_rows=50,
-            required_dealers={"evo", "rei", "ssense"},
+            required_dealers={"evo", "rei"},
             forbidden_regions=None,
         )
         self.assertEqual(rc, 1)
 
-    def test_validate_allows_ssense_below_legacy_floor_when_above_source_floor(self):
+    def test_validate_rejects_active_retired_dealer(self):
         rows = [
             {
                 "sku_id": f"ssense-{i}",
@@ -355,17 +339,20 @@ class DealerFreshnessTests(unittest.TestCase):
             }
             for i in range(46)
         ]
-        rc = validate(
-            rows,
-            max_age_hours=36,
-            max_product_age_hours=72,
-            min_rows=50,
-            required_dealers={"ssense"},
-            forbidden_regions=None,
-        )
-        self.assertEqual(rc, 0)
+        output = io.StringIO()
+        with redirect_stdout(output):
+            rc = validate(
+                rows,
+                max_age_hours=36,
+                max_product_age_hours=72,
+                min_rows=1,
+                required_dealers=None,
+                forbidden_regions=None,
+            )
+        self.assertEqual(rc, 1)
+        self.assertIn("retired_dealer_active: 46", output.getvalue())
 
-    def test_validate_still_fails_ssense_when_below_source_floor(self):
+    def test_validate_rejects_retired_dealer_requirement(self):
         rows = [
             {
                 "sku_id": f"ssense-{i}",
@@ -383,15 +370,18 @@ class DealerFreshnessTests(unittest.TestCase):
             }
             for i in range(39)
         ]
-        rc = validate(
-            rows,
-            max_age_hours=36,
-            max_product_age_hours=72,
-            min_rows=50,
-            required_dealers={"ssense"},
-            forbidden_regions=None,
-        )
+        output = io.StringIO()
+        with redirect_stdout(output):
+            rc = validate(
+                rows,
+                max_age_hours=36,
+                max_product_age_hours=72,
+                min_rows=1,
+                required_dealers={"ssense"},
+                forbidden_regions=None,
+            )
         self.assertEqual(rc, 1)
+        self.assertIn("retired_dealer_requested: 1", output.getvalue())
 
     def test_validate_evo_enforces_each_supported_brand_floor(self):
         rows = []
@@ -650,7 +640,7 @@ class DealerFreshnessTests(unittest.TestCase):
             finally:
                 os.chdir(previous_cwd)
 
-    def test_merge_rejects_nonempty_incomplete_partial(self):
+    def test_merge_discards_retired_source_from_previous_and_partial(self):
         previous_cwd = os.getcwd()
         with tempfile.TemporaryDirectory() as tmp:
             os.chdir(tmp)
@@ -668,7 +658,8 @@ class DealerFreshnessTests(unittest.TestCase):
                 merge_partial.main()
                 merged = json.loads(Path("dealers/results.json").read_text())
                 self.assertEqual(merged["fresh_dealers"], [])
-                self.assertEqual(merged["dealers"]["ssense"]["items"][0]["url"], "old")
+                self.assertNotIn("ssense", merged["dealers"])
+                self.assertEqual(merged["retired_dealers"], ["ssense"])
             finally:
                 os.chdir(previous_cwd)
 

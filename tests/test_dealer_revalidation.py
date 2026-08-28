@@ -13,11 +13,9 @@ from dealers.revalidate import (
     fetch_evo_pdp_browser,
     fetch_evo_pdp_browser_with_retry,
     fetch_rei_pdp,
-    fetch_ssense_pdp_browser_with_retry,
     open_camoufox_browser,
     open_mec_revalidation_session,
     parse_evo_browser_snapshot,
-    parse_ssense_html,
     quarantine_invalid_price_row,
     requested_dealers,
     requested_max_rows_per_dealer,
@@ -210,12 +208,14 @@ class DealerRevalidationTests(unittest.TestCase):
 
     def test_requested_dealers_accepts_only_supported_subset(self):
         self.assertEqual(
-            requested_dealers(" REI,mec,ssense "),
-            {"rei", "mec", "ssense"},
+            requested_dealers(" REI,mec,evo "),
+            {"rei", "mec", "evo"},
         )
         self.assertIsNone(requested_dealers(""))
         with self.assertRaisesRegex(ValueError, "unsupported.*outlet"):
             requested_dealers("rei,outlet")
+        with self.assertRaisesRegex(ValueError, "unsupported.*ssense"):
+            requested_dealers("ssense")
 
     def test_requested_sku_ids_builds_bounded_exact_allowlist(self):
         self.assertEqual(
@@ -623,77 +623,6 @@ class DealerRevalidationTests(unittest.TestCase):
 
         self.assertEqual([start for start, _rows in chunks], [0, 30, 60])
         self.assertEqual([len(rows) for _start, rows in chunks], [30, 30, 5])
-
-    def test_ssense_html_extracts_sale_and_original(self):
-        html = """
-        <html><body>
-        <script type="application/ld+json">
-        {"@context":"https://schema.org","@type":"Product","offers":{"price":160,"priceCurrency":"USD"}}
-        </script>
-        <span class="line-through">$200 USD</span>
-        </body></html>
-        """
-
-        result = parse_ssense_html(html)
-
-        self.assertEqual(result, {
-            "sale_price": 160.0,
-            "original_price": 200.0,
-            "discount_pct": 20,
-        })
-
-    def test_ssense_html_prefers_pdp_price_markers_over_page_wide_line_through(self):
-        html = """
-        <html><body>
-        <span class="line-through">$300 USD</span>
-        <script type="application/ld+json">
-        {"@context":"https://schema.org","@type":"Product","offers":{"price":160,"priceCurrency":"USD"}}
-        </script>
-        <span data-test="salePriceText">$160 USD</span>
-        <span data-test="regularPriceText">$220 USD</span>
-        </body></html>
-        """
-
-        result = parse_ssense_html(html)
-
-        self.assertEqual(result, {
-            "sale_price": 160.0,
-            "original_price": 220.0,
-            "discount_pct": 27,
-        })
-
-    @patch("dealers.revalidate.time.sleep")
-    @patch.dict(
-        "os.environ",
-        {
-            "SSENSE_BROWSER_CONFIRM_ATTEMPTS": "2",
-            "SSENSE_BROWSER_RETRY_DELAY_SECONDS": "0",
-        },
-    )
-    def test_ssense_browser_retries_flat_discount_snapshot(self, _sleep):
-        flat = {
-            "sale_price": 80.0,
-            "original_price": 80.0,
-            "discount_pct": 0,
-        }
-        discounted = {
-            "sale_price": 80.0,
-            "original_price": 300.0,
-            "discount_pct": 73,
-        }
-
-        with patch(
-            "dealers.revalidate.fetch_ssense_pdp_browser",
-            side_effect=[flat, discounted],
-        ):
-            result = fetch_ssense_pdp_browser_with_retry(
-                object(),
-                "https://www.ssense.com/en-us/men/product/test",
-                retry_flat=True,
-            )
-
-        self.assertEqual(result, discounted)
-
 
 if __name__ == "__main__":
     unittest.main()

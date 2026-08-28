@@ -247,7 +247,7 @@
       "lead": "GearDrop 汇总 Arc'teryx 官方 Outlet 及公开经销商页面中的折扣线索，并按地区、销售平台和商品属性整理。",
       "answer": "判断 Arc'teryx 折扣时，先确认官方款号或完整型号、性别和年份，再确认地区、币种、可售尺码与更新时间；最终价格和库存以销售平台为准。",
       "sections": [
-        {"heading": "来源边界", "paragraphs": ["目录可能包含 Arc'teryx 官方 Outlet，以及 SSENSE、MEC、EVO、REI 等经销商公开商品。实际来源集合会随抓取质量和商品生命周期变化，以目录当前的销售平台字段为准。"], "note": "“Arc'teryx”是品牌实体；GearDrop 是独立追踪服务，页面收录不代表品牌授权或背书。"},
+        {"heading": "来源边界", "paragraphs": ["目录可能包含 Arc'teryx 官方 Outlet，以及 MEC、EVO、REI 等经销商公开商品。SSENSE 来源已于 2026-08-28 退役，不再抓取或展示；实际来源集合会随抓取质量和商品生命周期变化，以目录当前的销售平台字段为准。"], "note": "“Arc'teryx”是品牌实体；GearDrop 是独立追踪服务，页面收录不代表品牌授权或背书。"},
         {"heading": "优先核对", "bullets": ["官方款号或 SKU 是否一致", "Men's、Women's 或 Unisex 是否一致", "地区、币种和配送范围", "当前可售颜色与尺码，而不是已售罄变体", "原价、现价与最后观察时间"]},
         {"heading": "相关入口", "full": true, "links": [{"label": "筛选 Arc'teryx 商品", "href": "/?brand=arcteryx", "description": "打开实时目录并保留品牌筛选"}, {"label": "查看目录状态", "href": "/catalog-status.html", "description": "查看带时间戳的覆盖数量"}, {"label": "阅读数据方法", "href": "/methodology.html", "description": "理解价格、库存和新鲜度口径"}]}
       ],
@@ -494,7 +494,7 @@
       "lead": "GearDrop organizes public Arc'teryx Outlet and retailer deal signals by market, source, and product facts.",
       "answer": "Match the official style number or full model, gender, and season first. Then verify market, currency, sellable size, source, and observation time. The retailer controls the final price and stock.",
       "sections": [
-        {"heading": "Source boundary", "paragraphs": ["Current coverage can include Arc'teryx Outlet and public retailer pages from SSENSE, MEC, EVO, REI, and other sources that pass data-quality checks."], "note": "GearDrop is independent; listing Arc'teryx products does not imply brand authorization or endorsement."},
+        {"heading": "Source boundary", "paragraphs": ["Current coverage can include Arc'teryx Outlet and public retailer pages from MEC, EVO, REI, and other sources that pass data-quality checks. The SSENSE source was retired on 2026-08-28 and is no longer collected or displayed."], "note": "GearDrop is independent; listing Arc'teryx products does not imply brand authorization or endorsement."},
         {"heading": "Verify first", "bullets": ["Official style number or SKU", "Gender and model year", "Market, currency, and delivery eligibility", "Sellable colors and sizes", "Original price, current price, and observation time"]},
         {"heading": "Related evidence", "full": true, "links": [{"label": "Filter Arc'teryx", "href": "/?brand=arcteryx", "description": "Open the live catalog with the brand filter"}, {"label": "Brand-source matrix", "href": "/en/insights/brand-source-matrix.html", "description": "Current first-party counts by brand and source"}]}
       ],

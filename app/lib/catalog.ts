@@ -60,6 +60,8 @@ export const PLATFORM: Record<string, { label: string; color: string }> = {
   zalando_lounge: { label: 'Zalando Lounge', color: '#ff6900' },
 };
 
+export const RETIRED_DEALERS = new Set(['ssense']);
+
 export const REGION_OPTIONS = ['all', 'us', 'ca', 'gb', 'de', 'fr', 'nl', 'fi', 'ie', 'jp'];
 export const BRAND_OPTIONS = ['all', 'arcteryx', 'burton', 'patagonia'];
 export const GENDER_OPTIONS = ['all', 'women', 'men', 'unisex'];
@@ -167,6 +169,8 @@ function allKnownSizesOutOfStock(product: ProductRow) {
 export function isBlockedProduct(product: ProductRow) {
   if (!isSupportedBrandProduct(product)) return true;
   const dealer = product.dealer || platformKey(product);
+  if (product.status && product.status !== 'active') return true;
+  if (RETIRED_DEALERS.has(dealer)) return true;
   if (dealer !== 'arcteryx_outlet') return false;
   const url = (String(product.url || '').split('?')[0] || '').replace(/\/$/, '').toLowerCase();
   return /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url) || allKnownSizesOutOfStock(product);

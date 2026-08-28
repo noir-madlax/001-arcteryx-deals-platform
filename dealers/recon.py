@@ -1,5 +1,5 @@
 """
-经销商侦察脚本 — 对 13 个 Arc'teryx 经销商做一次性探测：
+经销商侦察脚本 — 对候选 Arc'teryx 经销商做一次性探测：
 1. 用 Fetcher（纯 HTTP）尝试访问候选品牌页
 2. 看 status / 是否被 Cloudflare 拦截 / 页面是否包含 'arcteryx' 字符串
 3. 判定反爬等级：F (Fetcher OK) / S (需 Stealthy) / D (需 Dynamic / Cloudflare)
@@ -49,11 +49,6 @@ DEALERS = [
     ("mec",          "MEC",            "CA", [
         "https://www.mec.ca/en/brands/arcteryx",
         "https://www.mec.ca/en/products?brand=Arc%27teryx",
-    ]),
-    ("ssense",       "SSENSE",         "CA", [
-        "https://www.ssense.com/en-us/men/designers/arcteryx",
-        "https://www.ssense.com/en-us/men/designers/arc-teryx",
-        "https://www.ssense.com/en-us/men/sale/designers/arcteryx",
     ]),
     ("sportsshoes",  "SportsShoes",    "UK", [
         "https://www.sportsshoes.com/brand/ARC/arcteryx",

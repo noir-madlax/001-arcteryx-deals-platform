@@ -5,12 +5,19 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+from pathlib import Path
 from typing import Any
 
 import requests
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from dealers.source_registry import REVALIDATION_DEALERS
+
 SELECT = "sku_id,dealer,original_price,sale_price,discount_pct"
-DEFAULT_DEALERS = ("mec", "evo", "rei", "ssense")
+DEFAULT_DEALERS = tuple(sorted(REVALIDATION_DEALERS))
 
 
 def num(value: Any) -> float | None:
@@ -79,6 +86,11 @@ def main() -> int:
         raise SystemExit("SUPABASE_URL and SUPABASE_KEY are required")
 
     dealers = args.dealer or list(DEFAULT_DEALERS)
+    unsupported = sorted(set(dealers) - REVALIDATION_DEALERS)
+    if unsupported:
+        raise SystemExit(
+            "unsupported or retired dealer(s): " + ", ".join(unsupported)
+        )
     headers = {"apikey": key, "Authorization": f"Bearer {key}", "Accept": "application/json"}
     rows = load_rows(base_url.rstrip("/"), headers, dealers)
 

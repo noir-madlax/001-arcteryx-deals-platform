@@ -121,7 +121,7 @@ class WebMemoryGuardTests(unittest.TestCase):
         self.assertIn("...brandOrder.map(k => ({", self.index)
         self.assertIn("disabled: !brandCounts[k] && state.brand !== k", self.index)
         self.assertIn(
-            "const platformOrder = ['arcteryx_outlet','burton','backcountry','ssense','mec','evo','rei'];",
+            "const platformOrder = ['arcteryx_outlet','burton','backcountry','mec','evo','rei'];",
             self.index,
         )
         self.assertIn("disabled: !platformCounts[k] && state.platform !== k", self.index)

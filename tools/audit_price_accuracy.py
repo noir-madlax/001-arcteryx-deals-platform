@@ -11,7 +11,6 @@ the audit read-only:
 
 * Evo: official Shopify endpoint plus Camoufox PDP confirmation.
 * REI: warmed, humanized Camoufox contexts with bounded rotation.
-* SSENSE: warmed curl_cffi session with Camoufox fallback.
 * MEC: existing curl_cffi/Scrapling read-only session.
 * Arc'teryx Outlet: official structured product data.
 """
@@ -45,8 +44,6 @@ from dealers.revalidate import (  # noqa: E402
     fetch_evo_pdp_browser_with_retry,
     fetch_mec_pdp,
     fetch_rei_pdp,
-    fetch_ssense_pdp,
-    fetch_ssense_pdp_browser_with_retry,
     open_camoufox_browser,
     open_mec_revalidation_session,
 )
@@ -56,6 +53,7 @@ from sku_scraper import (  # noqa: E402
     price_from_variants,
 )
 from tools.check_data_quality import parse_frontend_config  # noqa: E402
+from dealers.source_registry import PRICE_AUDIT_TARGETS  # noqa: E402
 
 
 SELECT = ",".join(
@@ -75,15 +73,7 @@ SELECT = ",".join(
     ]
 )
 
-DEALER_TARGETS = {
-    "arcteryx_outlet": 60,
-    "evo": 10,
-    "mec": 10,
-    "rei": 10,
-    "ssense": 10,
-}
-
-BLOCKED_HTTP_ERRORS = ("http 401", "http 403", "http 429", "cf_stub")
+DEALER_TARGETS = dict(PRICE_AUDIT_TARGETS)
 
 TRANSIENT_AUDIT_ERROR_MARKERS = (
     "browser",
@@ -524,98 +514,11 @@ def read_rei_pass(rows: list[dict]) -> dict[str, dict]:
     return results
 
 
-def ssense_needs_browser(result: dict) -> bool:
-    error = str(result.get("_err") or "")
-    if any(marker in error for marker in BLOCKED_HTTP_ERRORS):
-        return True
-    if result.get("_err"):
-        return True
-    return result.get("original_price") == result.get("sale_price")
-
-
-def read_ssense_browser_rows(rows: list[dict]) -> dict[str, dict]:
-    results: dict[str, dict] = {}
-    rotate_rows = env_int("SSENSE_AUDIT_ROTATE_ROWS", 5, 1)
-    delay = env_float("SSENSE_AUDIT_DELAY_SECONDS", 1.0, 0.0)
-    for chunk in chunks(rows, rotate_rows):
-        try:
-            with open_camoufox_browser() as browser:
-                page, warm_error = warm_page(browser, "https://www.ssense.com/")
-                if page is None:
-                    for row in chunk:
-                        results[row["sku_id"]] = warm_error
-                    continue
-                try:
-                    for row in chunk:
-                        try:
-                            result = normalize_read(
-                                fetch_ssense_pdp_browser_with_retry(
-                                    page,
-                                    row["url"],
-                                    retry_flat=(
-                                        float(row.get("original_price") or 0)
-                                        > float(row.get("sale_price") or 0) + 0.01
-                                    ),
-                                )
-                            )
-                        except Exception as exc:
-                            result = format_error("ssense_browser", exc)
-                        results[row["sku_id"]] = result
-                        print(
-                            f"  ssense browser {len(results)}/{len(rows)}",
-                            flush=True,
-                        )
-                        if delay:
-                            time.sleep(delay)
-                finally:
-                    page.close()
-        except Exception as exc:
-            assign_runtime_error(results, chunk, "ssense_browser", exc)
-    return results
-
-
-def read_ssense_pass(rows: list[dict]) -> dict[str, dict]:
-    from curl_cffi import requests as curl_requests
-
-    session = curl_requests.Session(impersonate="chrome")
-    for _ in range(3):
-        try:
-            if session.get("https://www.ssense.com/", timeout=25).status_code == 200:
-                break
-        except Exception:
-            pass
-        time.sleep(2)
-    time.sleep(1)
-
-    direct: dict[str, dict] = {}
-    browser_rows: list[dict] = []
-    for row in rows:
-        try:
-            result = normalize_read(fetch_ssense_pdp(session, row["url"]))
-        except Exception as exc:
-            result = format_error("ssense_request", exc)
-        direct[row["sku_id"]] = result
-        if ssense_needs_browser(result):
-            browser_rows.append(row)
-
-    if not browser_rows:
-        return direct
-
-    print(
-        f"  ssense direct needs browser for {len(browser_rows)}/{len(rows)}",
-        flush=True,
-    )
-    browser_results = read_ssense_browser_rows(browser_rows)
-    direct.update(browser_results)
-    return direct
-
-
 PASS_READERS: dict[str, Callable[[list[dict]], dict[str, dict]]] = {
     "arcteryx_outlet": read_outlet_pass,
     "evo": read_evo_pass,
     "mec": read_mec_pass,
     "rei": read_rei_pass,
-    "ssense": read_ssense_pass,
 }
 
 

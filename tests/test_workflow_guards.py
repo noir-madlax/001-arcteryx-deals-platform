@@ -65,12 +65,14 @@ class WorkflowGuardTests(unittest.TestCase):
         )
         self.assertIn("REVALIDATE_SKU_IDS: ${{ inputs.sku_ids }}", workflow)
 
-    def test_burton_sources_are_in_primary_and_fallback_dealer_runs(self):
+    def test_active_sources_are_in_primary_and_fallback_dealer_runs(self):
         workflow = (ROOT / ".github/workflows/refresh-dealers.yml").read_text(encoding="utf-8")
         primary_runner = (ROOT / "server_run_dealers.sh").read_text(encoding="utf-8")
         for source in (workflow, primary_runner):
-            self.assertIn("burton backcountry evo rei ssense", source)
+            self.assertIn("burton backcountry evo rei", source)
+            self.assertNotIn("burton backcountry evo rei ssense", source)
             self.assertIn("--dealer burton --dealer backcountry", source)
+            self.assertIn("tools/retire_dealer.py --dealer ssense", source)
 
 
 if __name__ == "__main__":

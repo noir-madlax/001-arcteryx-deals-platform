@@ -158,7 +158,7 @@ GearDrop 商品页保留原始销售链接；目录状态页说明覆盖范围�
 判断 Arc'teryx 折扣时，先确认官方款号或完整型号、性别和年份，再确认地区、币种、可售尺码与更新时间；最终价格和库存以销售平台为准。
 
 #### 来源边界
-目录可能包含 Arc'teryx 官方 Outlet，以及 SSENSE、MEC、EVO、REI 等经销商公开商品。实际来源集合会随抓取质量和商品生命周期变化，以目录当前的销售平台字段为准。
+目录可能包含 Arc'teryx 官方 Outlet，以及 MEC、EVO、REI 等经销商公开商品。SSENSE 来源已于 2026-08-28 退役，不再抓取或展示；实际来源集合会随抓取质量和商品生命周期变化，以目录当前的销售平台字段为准。
 
 #### 优先核对
 - 官方款号或 SKU 是否一致
@@ -283,7 +283,7 @@ A strong price reference keeps the product identity, original and current prices
 Match the official style number or full model, gender, and season first. Then verify market, currency, sellable size, source, and observation time. The retailer controls the final price and stock.
 
 #### Source boundary
-Current coverage can include Arc'teryx Outlet and public retailer pages from SSENSE, MEC, EVO, REI, and other sources that pass data-quality checks.
+Current coverage can include Arc'teryx Outlet and public retailer pages from MEC, EVO, REI, and other sources that pass data-quality checks. The SSENSE source was retired on 2026-08-28 and is no longer collected or displayed.
 
 #### Verify first
 - Official style number or SKU

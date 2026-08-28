@@ -5,8 +5,8 @@ The production crawler uses Supabase leases to keep one writer per scope.
 | Node | Primary role | Schedule |
 |---|---|---|
 | `oci-free-a1` | Outlet plus MEC (MEC is blocked from Lightsail egress) | every 3 hours, MEC offset 60 minutes |
-| `aws-lightsail-us-west-2` | EVO/REI/SSENSE and daily URL revalidation | every 3 hours, offset 90 minutes |
-| GitHub Actions | Outlet and EVO/REI/SSENSE fallback; all-source freshness monitor | runs only when the corresponding primary is stale/failed |
+| `aws-lightsail-us-west-2` | Burton/Backcountry/EVO/REI and daily URL revalidation | every 3 hours, offset 90 minutes |
+| GitHub Actions | Outlet and Burton/Backcountry/EVO/REI fallback; all-source freshness monitor | runs only when the corresponding primary is stale/failed |
 
 Each server wrapper claims `outlet`, `mec`, `dealers`, or `revalidate` before writing.
 An active lease makes overlapping cron or GitHub runs exit without crawling.
@@ -19,6 +19,10 @@ egress was verified with the manual `Diagnose MEC Egress` workflow
 (52/52/24 items on 2026-07-11). `Refresh MEC Data` checks 20 minutes after
 each OCI window and claims the same `mec` lease only when the primary is stale
 or failed.
+
+SSENSE was retired on 2026-08-28. Production jobs run
+`tools/retire_dealer.py --dealer ssense` before dealer sync, preserving rows as
+inactive history while preventing stale data from re-entering public results.
 
 Apply these migrations before enabling the schedules:
 

@@ -92,6 +92,7 @@ async function fetchProduct(sku, fetchImpl = fetch) {
   url.searchParams.set('select', PRODUCT_FIELDS);
   url.searchParams.set('sku_id', `eq.${sku}`);
   url.searchParams.set('status', 'eq.active');
+  url.searchParams.set('dealer', 'neq.ssense');
   url.searchParams.set('limit', '1');
 
   let lastError;

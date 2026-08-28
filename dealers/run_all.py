@@ -3,15 +3,10 @@ from __future__ import annotations
 import importlib, json, time, traceback
 from pathlib import Path
 
-DEALER_KEYS = [
-    "burton",
-    "backcountry",
-    "ssense",
-    "mec",
-    "evo",
-    "rei",
-    # Steep & Cheap 已确认停售 Arc'teryx；Backcountry 这里只抓 Burton sale 集合。
-]
+from dealers.source_registry import ACTIVE_DEALERS
+
+
+DEALER_KEYS = list(ACTIVE_DEALERS)
 
 def main():
     out = {"generated_at": time.strftime("%Y-%m-%d %H:%M:%S"), "dealers": {}}

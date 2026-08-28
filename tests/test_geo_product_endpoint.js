@@ -89,6 +89,7 @@ test('server product endpoint returns cacheable HTML for an active SKU', async (
   global.fetch = async (url, options) => {
     assert.equal(url.searchParams.get('sku_id'), `eq.${sampleProduct.sku_id}`);
     assert.equal(url.searchParams.get('status'), 'eq.active');
+    assert.equal(url.searchParams.get('dealer'), 'neq.ssense');
     assert.equal(options.headers.Accept, 'application/json');
     return { ok: true, json: async () => [sampleProduct] };
   };

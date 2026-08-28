@@ -12,11 +12,10 @@ from tools.prepare_price_audit_sample import (
 
 def artifact_bytes():
     counts = {
-        "arcteryx_outlet": 60,
+        "arcteryx_outlet": 70,
         "evo": 10,
         "mec": 10,
         "rei": 10,
-        "ssense": 10,
     }
     audits = [
         {"sku_id": f"{dealer}:{index}", "dealer": dealer}

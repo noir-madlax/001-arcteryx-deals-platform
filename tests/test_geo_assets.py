@@ -103,6 +103,14 @@ class GeoAssetTests(unittest.TestCase):
                 "last_updated": "2026-08-13T11:00:00+00:00",
             },
             {"sku_id": "inactive", "status": "inactive"},
+            {
+                "sku_id": "ssense:retired",
+                "brand": "arcteryx",
+                "dealer": "ssense",
+                "region": "us",
+                "status": "active",
+                "last_updated": "2026-08-13T12:00:00+00:00",
+            },
         ]
         normalized = self.catalog_module.normalize_rows(rows)
         self.assertEqual(len(normalized), 1)

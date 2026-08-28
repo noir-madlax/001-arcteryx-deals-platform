@@ -15,6 +15,8 @@ const product = index => ({
     sku_id: `preview-${index}`,
     sale_price: 100 + index,
     region: 'us',
+    dealer: 'evo',
+    status: 'active',
 });
 
 test('web preview cache is region-scoped, fresh, and bounded', () => {
@@ -66,6 +68,21 @@ test('web preview cache drops invalid rows before storage and readback', () => {
     const now = 1_800_000_000_000;
     const raw = serializeProductPreviewCache(
         [product(1), { sku_id: '', sale_price: 10 }, { sku_id: 'bad-price', sale_price: '10' }],
+        'us',
+        now,
+    );
+
+    assert.deepEqual(parseProductPreviewCache(raw, 'us', now), [product(1)]);
+});
+
+test('web preview cache drops retired and inactive products', () => {
+    const now = 1_800_000_000_000;
+    const raw = serializeProductPreviewCache(
+        [
+            product(1),
+            { ...product(2), dealer: 'ssense' },
+            { ...product(3), status: 'inactive' },
+        ],
         'us',
         now,
     );

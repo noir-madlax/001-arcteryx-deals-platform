@@ -712,6 +712,8 @@ const allKnownSizesOutOfStock = (p) => {
 const isBlockedProduct = (p) => {
     if (!window.GearBrands.isSupportedBrandProduct(p)) return true;
     const dealer = p.dealer || '';
+    if (p.status && p.status !== 'active') return true;
+    if (dealer === 'ssense') return true;
     const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
     return (!dealer || dealer === 'arcteryx_outlet') &&
         (/outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url)

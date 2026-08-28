@@ -11,21 +11,20 @@ import io
 import json
 import os
 import re
+import sys
 from collections import Counter
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from dealers.source_registry import PRICE_AUDIT_TARGETS
 
 
 MAX_ENCODED_CHARS = 20_000
 MAX_JSON_BYTES = 1_000_000
-EXPECTED_DEALERS = Counter(
-    {
-        "arcteryx_outlet": 60,
-        "evo": 10,
-        "mec": 10,
-        "rei": 10,
-        "ssense": 10,
-    }
-)
+EXPECTED_DEALERS = Counter(PRICE_AUDIT_TARGETS)
 
 
 class SamplePayloadError(ValueError):

@@ -1172,7 +1172,6 @@
 <footer class="site-footer">
     <p>数据每日抓取自
         <a href="https://outlet.arcteryx.com" target="_blank" rel="noopener">Arc'teryx Outlet</a> 及
-        <a href="https://www.ssense.com/en-us/men/designers/arcteryx" target="_blank" rel="noopener">SSENSE</a>、
         <a href="https://www.mec.ca/en/products?brand=Arc%27teryx" target="_blank" rel="noopener">MEC</a>、
         <a href="https://www.evo.com/collections/arcteryx" target="_blank" rel="noopener">EVO Arc'teryx</a>、
         <a href="https://www.evo.com/collections/burton" target="_blank" rel="noopener">EVO Burton</a>、
@@ -1362,6 +1361,8 @@ function allKnownSizesOutOfStock(p) {
 function isBlockedProduct(p) {
     if (!window.GearBrands.isSupportedBrandProduct(p)) return true;
     const dealer = p.dealer || platformKey(p);
+    if (p.status && p.status !== 'active') return true;
+    if (dealer === 'ssense') return true;
     if (dealer !== 'arcteryx_outlet') return false;
     const url = String(p.url || '').split('?')[0].replace(/\/$/, '').toLowerCase();
     return /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url)
@@ -1586,7 +1587,7 @@ const buildCard = (p) => {
         : '';
 
     // Color + sizes on same row, update time pushed to right
-    // Dealer 商品（EVO/REI/SSENSE/MEC）只抓了列表页，尺码/颜色要去原平台详情页查
+    // Dealer 商品（EVO/REI/MEC）部分只抓列表页，尺码/颜色要去原平台详情页查
     const isDealer = p.dealer && p.dealer !== 'arcteryx_outlet';
     const upd = relTime(p.last_updated);
     // 数据超 3 天没刷新 = 标红警示, 提示用户去原平台核对
@@ -1721,7 +1722,7 @@ const initFilters = () => {
     const platformPool = filterExcept('platform');
     const platformCounts = countIn(platformPool, p => p._platform);
     if (state.platform !== 'all' && !platformCounts[state.platform]) platformCounts[state.platform] = 0;
-    const platformOrder = ['arcteryx_outlet','burton','backcountry','ssense','mec','evo','rei'];
+    const platformOrder = ['arcteryx_outlet','burton','backcountry','mec','evo','rei'];
     const platformKeys = [...new Set([...platformOrder, ...Object.keys(platformCounts)])];
     buildSelect('platform-select', [
         { value: 'all', label: '全部平台', count: platformPool.length },
@@ -2051,7 +2052,7 @@ async function init() {
         }
     }
 
-    // dealer 数据 (Burton/Backcountry/SSENSE/MEC/EVO/REI) 现已并入 Supabase products 表 (dealer 列区分)
+    // dealer 数据 (Burton/Backcountry/MEC/EVO/REI) 现已并入 Supabase products 表 (dealer 列区分)
     // 不再 fetch dealers/results.json — 单一数据源 = Supabase
 
     if (authoritativeRowsLoaded) maybeShowNewArrivals();

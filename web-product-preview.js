@@ -17,6 +17,8 @@
         product &&
         typeof product.sku_id === 'string' &&
         product.sku_id.length > 0 &&
+        (!product.status || product.status === 'active') &&
+        String(product.dealer || '').toLowerCase() !== 'ssense' &&
         Number.isFinite(product.sale_price);
 
     function parseProductPreviewCache(raw, region, now = Date.now()) {

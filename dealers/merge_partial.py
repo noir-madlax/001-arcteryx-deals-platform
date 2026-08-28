@@ -2,10 +2,11 @@
 import json, time, os, glob
 from pathlib import Path
 
+from dealers.source_registry import RETIRED_DEALERS
+
 PARTIAL_DIR = "dealers/_partial"
 OUT = "dealers/results.json"
 KEY_BY_NAME = {
-    "SSENSE": "ssense",
     "MEC": "mec",
     "EVO": "evo",
     "REI": "rei",
@@ -44,6 +45,9 @@ def main():
         try:
             prev = json.loads(Path(OUT).read_text())
             for key, block in (prev.get("dealers") or {}).items():
+                if key in RETIRED_DEALERS:
+                    print(f"  {key}: retired source discarded from previous results.json")
+                    continue
                 out["dealers"][key] = block
             if isinstance(prev.get("rejected_dealers"), dict):
                 prior_rejected = dict(prev["rejected_dealers"])
@@ -63,6 +67,9 @@ def main():
     for path in sorted(glob.glob(f"{PARTIAL_DIR}/*.json")):
         d = json.loads(Path(path).read_text())
         key = KEY_BY_NAME.get(d.get("name"), os.path.basename(path).replace(".json",""))
+        if key in RETIRED_DEALERS:
+            print(f"  {key}: retired source partial ignored")
+            continue
         items = d.get("items") or []
         previous = out["dealers"].get(key, {})
         rejection_reason = snapshot_rejection_reason(items, d, previous)
@@ -95,6 +102,7 @@ def main():
     out["total"] = total
     out["rejected_dealers"] = rejected
     out["retained_dealers"] = retained
+    out["retired_dealers"] = sorted(RETIRED_DEALERS)
     # supabase_sync 只允许本轮真实产出非空 partial 的 dealer 更新时间。
     # 缺失/空抓取仍保留静态快照，但不能伪装成本轮新鲜数据。
     out["fresh_dealers"] = fresh_keys

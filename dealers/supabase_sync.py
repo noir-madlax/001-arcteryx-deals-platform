@@ -10,6 +10,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 from dealers.brands import canonical_brand, source_contract_valid
+from dealers.source_registry import RETIRED_DEALERS
 
 ROOT = Path(__file__).resolve().parent.parent
 RESULTS_FILE = ROOT / "dealers" / "results.json"
@@ -263,6 +264,9 @@ def main():
 
     grand_total = 0
     for dkey, info in dealers.items():
+        if dkey in RETIRED_DEALERS:
+            print(f"\n[sync:{dkey}] retired source — refusing snapshot sync")
+            continue
         if fresh_dealers is not None and dkey not in fresh_dealers:
             print(f"\n[sync:{dkey}] kept snapshot — not refreshed in this run; skipping")
             continue

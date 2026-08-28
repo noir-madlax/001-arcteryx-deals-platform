@@ -36,7 +36,7 @@ jobs:
       - id: dealer_quality
         name: Check Dealer Supabase freshness
         continue-on-error: true
-        run: python tools/check_data_quality.py --online --dealer mec --dealer burton --dealer backcountry --dealer evo --dealer rei --dealer ssense --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
+        run: python tools/check_data_quality.py --online --dealer mec --dealer burton --dealer backcountry --dealer evo --dealer rei --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
 
       - id: platform_region_quality
         name: Check platform-region production matrix

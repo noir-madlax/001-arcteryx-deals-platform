@@ -7,7 +7,6 @@ DB 里旧价就僵在那里. 本脚本针对已知 dealer URL 重新拉 PDP 验�
 - EVO    : Shopify /products/{handle}.json (纯 HTTP, 最快)
 - MEC    : curl_cffi (impersonate=chrome), __NEXT_DATA__.product 价格
 - REI    : Camoufox (curl_cffi 在 AWS Lightsail 被 Akamai 拒), data-ui="sale-price"/"full-price"
-- SSENSE : curl_cffi (impersonate=chrome), JSON-LD "@type":"Product" offers.price
 
 更新逻辑:
 - 成功拿到有效价格 → UPDATE sale/orig/disc，并恢复 active 生命周期与 PDP-200 证据
@@ -23,6 +22,8 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from collections import defaultdict
 from pathlib import Path
+
+from dealers.source_registry import REVALIDATION_DEALERS
 
 SB_URL = os.environ.get("SUPABASE_URL", "https://bupqagkrcvrezjkdbald.supabase.co")
 SB_KEY = os.environ.get("SUPABASE_KEY", "")
@@ -147,7 +148,7 @@ def requested_dealers(value: str | None = None) -> set[str] | None:
         for dealer in raw.split(",")
         if dealer.strip()
     }
-    supported = {"evo", "mec", "rei", "ssense"}
+    supported = REVALIDATION_DEALERS
     unknown = sorted(requested - supported)
     if unknown:
         raise ValueError(
@@ -433,7 +434,7 @@ def _rei_variant_price(body: str, url: str) -> tuple[float, float] | None:
 def fetch_rei_pdp(page, url: str) -> dict | None:
     """REI Camoufox PDP. Supports both legacy and current buy-box prices.
     注: curl_cffi 在 AWS Lightsail 上被 Akamai 拒 (全路径返 2.7KB stub),
-    所以 REI 必须用 Camoufox; SSENSE/MEC 不受影响."""
+    所以 REI 必须用 Camoufox；MEC 使用独立的只读会话路径。"""
     try:
         page.goto(url, wait_until="domcontentloaded", timeout=60000)
         time.sleep(2)
@@ -555,130 +556,6 @@ def open_mec_revalidation_session(
                 pass
         raise
 
-def fetch_ssense_pdp(session, url: str) -> dict | None:
-    """SSENSE curl_cffi (impersonate=chrome) PDP. JSON-LD Product schema.
-    URL 必须含 /en-us/ 前缀, 否则 SSENSE 返回 404 fallback (~400KB) 没价格."""
-    # SSENSE JSON-LD url 历史漏 locale 前缀, 兜底注入
-    if "/en-us/" not in url:
-        url = url.replace("/men/product/", "/en-us/men/product/").replace("/women/product/", "/en-us/women/product/")
-    try:
-        r = session.get(url, timeout=25)
-        if r.status_code != 200:
-            return {"_err": f"http {r.status_code}"}
-        body = r.text
-    except Exception as e:
-        return {"_err": _format_error("request", e)}
-    return parse_ssense_html(body)
-
-
-def parse_ssense_html(body: str) -> dict | None:
-    if "Just a moment" in body[:5000]:
-        return {"_err": "cf_stub"}
-    normalized = re.sub(r"\s+", " ", body)
-
-    def _money_text(value: str | None) -> float | None:
-        cleaned = re.sub(r"[^0-9.]", "", value or "")
-        return _num(cleaned)
-
-    def _extract_price_from_marker(marker: str) -> float | None:
-        match = re.search(
-            rf'data-test="{marker}"[^>]*>\s*([^<]+?)\s*</',
-            body,
-            flags=re.I | re.S,
-        )
-        return _money_text(match.group(1)) if match else None
-
-    for m in re.finditer(r'<script[^>]+type="application/ld\+json"[^>]*>\s*(\{[^<]+?\})\s*</script>', body):
-        try:
-            d = json.loads(m.group(1))
-            if d.get("@type") != "Product": continue
-            offer = d.get("offers") or {}
-            sale = _num(offer.get("price"))
-            if not sale: continue
-            marked_sale = _extract_price_from_marker("salePriceText")
-            marked_original = _extract_price_from_marker("regularPriceText")
-            if marked_sale:
-                sale = marked_sale
-            original = marked_original
-            if original is None:
-                mo = re.search(r'line-through[^>]*>\s*([^<]+?)\s*</span>', body)
-                if mo:
-                    original = _money_text(mo.group(1))
-            if not original:
-                text_match = re.search(r'\$([0-9.,]+)\s*USD\s*\$([0-9.,]+)\s*USD', normalized)
-                if text_match:
-                    sale_candidate = _money_text(text_match.group(1))
-                    original_candidate = _money_text(text_match.group(2))
-                    if sale_candidate and original_candidate:
-                        sale = sale_candidate
-                        original = original_candidate
-            original = max(original or sale, sale)
-            return {
-                "sale_price": round(sale, 2),
-                "original_price": round(original, 2),
-                "discount_pct": _disc(original, sale),
-            }
-        except Exception:
-            pass
-    return None
-
-
-def fetch_ssense_pdp_browser(page, url: str) -> dict | None:
-    separator = "&" if "?" in url else "?"
-    request_url = f"{url}{separator}price_revalidate={time.time_ns()}"
-    try:
-        response = page.goto(request_url, wait_until="domcontentloaded", timeout=90000)
-        page.wait_for_timeout(4000)
-    except Exception as e:
-        return {"_err": _format_error("goto", e)}
-    if not response or response.status != 200:
-        return {"_err": f"http {response.status if response else 'unknown'}"}
-    html = page.content()
-    parsed = parse_ssense_html(html)
-    if parsed and parsed.get("original_price", 0) > parsed.get("sale_price", 0):
-        return parsed
-    text = page.evaluate("() => document.body ? document.body.innerText : ''")
-    prices = re.findall(r"\$([0-9.,]+)\s*USD", text or "")
-    if parsed and len(prices) >= 2:
-        sale = _num(prices[0])
-        original = _num(prices[1])
-        if sale and original and original >= sale:
-            return {
-                "sale_price": round(sale, 2),
-                "original_price": round(original, 2),
-                "discount_pct": _disc(original, sale),
-            }
-    return parsed
-
-
-def fetch_ssense_pdp_browser_with_retry(
-    page,
-    url: str,
-    *,
-    retry_flat: bool = False,
-) -> dict | None:
-    """Retry transient SSENSE pages that omit the rendered compare-at price."""
-    attempts = _env_int("SSENSE_BROWSER_CONFIRM_ATTEMPTS", 2, 1)
-    retry_delay = _env_float("SSENSE_BROWSER_RETRY_DELAY_SECONDS", 3.0, 0.0)
-    result = None
-    best_result = None
-    for attempt in range(attempts):
-        try:
-            result = fetch_ssense_pdp_browser(page, url)
-        except Exception as exc:
-            result = {"_err": _format_error("browser", exc)}
-        if result and not result.get("_err"):
-            best_result = (
-                result
-                if best_result is None
-                else _evo_choose_more_informative_price(best_result, result)
-            )
-            if not retry_flat or _price_is_discounted(best_result):
-                return best_result
-        if attempt + 1 < attempts:
-            time.sleep(retry_delay)
-    return best_result or result or {"_err": "empty_browser_confirmation"}
-
 # ── Main runner ──────────────────────────────────────────────────────────
 def load_all_dealer_rows(client):
     rows = []
@@ -794,7 +671,11 @@ def main():
         sys.exit("SUPABASE_KEY required (service_role)")
     from supabase import create_client
     client = create_client(SB_URL, SB_KEY)
-    rows = load_all_dealer_rows(client)
+    rows = [
+        row
+        for row in load_all_dealer_rows(client)
+        if row.get("dealer") in REVALIDATION_DEALERS
+    ]
     selected = requested_dealers()
     if selected is not None:
         rows = [row for row in rows if row.get("dealer") in selected]
@@ -992,61 +873,6 @@ def main():
             print(f"  MEC fetch err: {e}", file=sys.stderr)
         finally:
             _close_context(mec_browser_ctx)
-
-    # ── SSENSE: curl_cffi (Chrome TLS 指纹, 不用浏览器) ──
-    if by_dealer.get("ssense"):
-        print(f"\n[reval] SSENSE ({len(by_dealer['ssense'])}) — curl_cffi", flush=True)
-        try:
-            from curl_cffi import requests as _cffi
-            sn_s = _cffi.Session(impersonate="chrome")
-            for _ in range(3):
-                try:
-                    if sn_s.get("https://www.ssense.com/", timeout=25).status_code == 200: break
-                except Exception: pass
-                time.sleep(2)
-            time.sleep(2)
-            first_row = by_dealer["ssense"][0]
-            probe = fetch_ssense_pdp(sn_s, first_row["url"])
-            use_browser = bool(probe and probe.get("_err") in {"http 403", "cf_stub", "http 401", "http 429"})
-            if use_browser:
-                print("  [ssense] direct HTTP blocked; switching to Camoufox", flush=True)
-                with open_camoufox_browser() as browser:
-                    page = browser.new_page()
-                    page.set_default_navigation_timeout(90000)
-                    for i, r in enumerate(by_dealer["ssense"], 1):
-                        new = fetch_ssense_pdp_browser_with_retry(
-                            page,
-                            r["url"],
-                            retry_flat=(
-                                (r.get("original_price") or 0)
-                                > (r.get("sale_price") or 0) + 0.01
-                            ),
-                        )
-                        if not new: stats["ssense"]["err"] += 1
-                        elif new.get("_unavailable"): stats["ssense"]["unavail"] += 1
-                        elif new.get("_err"): stats["ssense"]["err"] += 1
-                        else:
-                            if update_row(client, r["sku_id"], new, r):
-                                stats["ssense"]["ok"] += 1
-                                if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
-                                    stats["ssense"]["diff"] += 1
-                        if i % 10 == 0: print(f"  ssense {i}/{len(by_dealer['ssense'])}", flush=True)
-                        time.sleep(0.4)
-            else:
-                for i, r in enumerate(by_dealer["ssense"], 1):
-                    new = fetch_ssense_pdp(sn_s, r["url"])
-                    if not new: stats["ssense"]["err"] += 1
-                    elif new.get("_unavailable"): stats["ssense"]["unavail"] += 1
-                    elif new.get("_err"): stats["ssense"]["err"] += 1
-                    else:
-                        if update_row(client, r["sku_id"], new, r):
-                            stats["ssense"]["ok"] += 1
-                            if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
-                                stats["ssense"]["diff"] += 1
-                    if i % 10 == 0: print(f"  ssense {i}/{len(by_dealer['ssense'])}", flush=True)
-                    time.sleep(0.4)
-        except Exception as e:
-            print(f"  SSENSE curl_cffi err: {e}", file=sys.stderr)
 
     print("\n=== REVAL DONE ===")
     for d in sorted(by_dealer):

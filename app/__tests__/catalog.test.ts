@@ -53,6 +53,19 @@ test('visibleProducts fails closed for explicitly unsupported brands', () => {
   assert.deepEqual(visibleProducts([row({ brand: 'marc-jacobs', dealer: 'evo' })]), []);
 });
 
+test('visibleProducts hides retired SSENSE and non-active rows', () => {
+  assert.deepEqual(visibleProducts([
+    row({
+      sku_id: 'ssense:retired',
+      brand: 'arcteryx',
+      dealer: 'ssense',
+      status: 'active',
+      url: 'https://www.ssense.com/en-us/men/product/arcteryx/beta-jacket/1',
+    }),
+    row({ sku_id: 'evo:inactive', dealer: 'evo', status: 'inactive' }),
+  ]), []);
+});
+
 test('model registry covers current additions and canonical aliases', () => {
   assert.equal(cleanName("Arc'teryx Arcword Short-Sleeve T-Shirt - Women's"), "Arc'Word Short-Sleeve T-Shirt Women's");
   assert.equal(extractSeries("Arc'Word Short-Sleeve T-Shirt Women's"), "Arc'Word");

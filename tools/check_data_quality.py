@@ -22,6 +22,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from dealers.brands import canonical_brand, source_contract_valid
+from dealers.source_registry import RETIRED_DEALERS
 
 SELECT = (
     "sku_id,dealer,brand,full_name,model,original_price,sale_price,discount_pct,"
@@ -49,13 +50,6 @@ EXPECTED_CURRENCY = {
     "au": ("AUD", "A$"),
 }
 
-# Source-aware low-water marks calibrated to current official supply. These
-# floors remain fail-closed for material regressions while avoiding false reds
-# when a retailer's live assortment drops below an older static threshold.
-DEALER_MIN_ROWS_OVERRIDE = {
-    "ssense": 40,
-}
-
 # Full runs enforce both the caller-provided aggregate floor and the
 # platform/region floors below. The two checks catch different regressions:
 # a broad catalog contraction and a single collapsed source, respectively.
@@ -69,7 +63,6 @@ PLATFORM_REGION_MIN_ROWS = {
     ("backcountry", "us"): 40,
     ("mec", "ca"): 75,
     ("rei", "us"): 40,
-    ("ssense", "us"): 30,
 }
 
 # A dealer total can stay healthy while one brand silently disappears. These
@@ -247,10 +240,12 @@ def validate(
 
     active_rows = [row for row in rows if (row.get("status") or "active") == "active"]
     if required_dealers:
-        effective_total_min_rows = sum(
-            min(min_rows, DEALER_MIN_ROWS_OVERRIDE.get(dealer, min_rows))
-            for dealer in required_dealers
-        )
+        retired_requested = sorted(required_dealers & RETIRED_DEALERS)
+        if retired_requested:
+            errors["retired_dealer_requested"].extend(
+                {"dealer": dealer} for dealer in retired_requested
+            )
+        effective_total_min_rows = min_rows * len(required_dealers)
         if len(active_rows) < effective_total_min_rows:
             errors["too_few_rows"].append({
                 "row_count": len(active_rows),
@@ -299,6 +294,8 @@ def validate(
                 errors["currency_mismatch"].append({**row, "expected_currency": ccy, "expected_symbol": sym})
 
         status = row.get("status") or "active"
+        if status == "active" and dealer in RETIRED_DEALERS:
+            errors["retired_dealer_active"].append(row)
         image_urls = product_image_urls(row)
         has_image_contract = any(field in row for field in ("image_url", "image", "images"))
         if status == "active" and has_image_contract and not image_urls:
@@ -343,12 +340,13 @@ def validate(
             errors["name_url_gender_mismatch"].append({**row, "expected_gender": ug, "name_gender": ng})
 
         ts = parse_ts(row.get("last_updated"))
-        if ts:
-            timestamps.append(ts)
-            timestamps_by_dealer[row.get("dealer") or "arcteryx_outlet"].append(ts)
-            timestamps_by_platform_region[(dealer, region)].append(ts)
-        else:
-            errors["missing_last_updated"].append(row)
+        if status == "active":
+            if ts:
+                timestamps.append(ts)
+                timestamps_by_dealer[row.get("dealer") or "arcteryx_outlet"].append(ts)
+                timestamps_by_platform_region[(dealer, region)].append(ts)
+            else:
+                errors["missing_last_updated"].append(row)
 
     by_dealer = Counter(row.get("dealer") or "arcteryx_outlet" for row in active_rows)
     by_platform_region = Counter(
@@ -362,7 +360,7 @@ def validate(
     )
     if required_dealers:
         for dealer in sorted(required_dealers):
-            effective_min_rows = min(min_rows, DEALER_MIN_ROWS_OVERRIDE.get(dealer, min_rows))
+            effective_min_rows = min_rows
             if by_dealer.get(dealer, 0) == 0:
                 errors["missing_dealer_rows"].append({"dealer": dealer})
             elif by_dealer.get(dealer, 0) < effective_min_rows:

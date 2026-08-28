@@ -23,6 +23,7 @@ export type ProductRow = {
   last_updated: string | null;
   created_at: string | null;
   dealer: string | null;
+  status?: string | null;
   first_seen: string | null;
 };
 

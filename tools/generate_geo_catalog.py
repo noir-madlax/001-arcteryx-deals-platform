@@ -19,6 +19,11 @@ from typing import Any, Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from dealers.source_registry import RETIRED_DEALERS  # noqa: E402
+
 SITE_URL = "https://001.100app.dev"
 APP_STORE_URL = "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332"
 PAGE_SIZE = 1000
@@ -37,7 +42,6 @@ PLATFORM_LABELS = {
     "evo": "EVO",
     "mec": "MEC",
     "rei": "REI",
-    "ssense": "SSENSE",
 }
 
 REGION_LABELS = {
@@ -168,6 +172,9 @@ def normalize_rows(rows: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
     by_sku: dict[str, dict[str, Any]] = {}
     for row in rows:
         if row.get("status") not in {None, "active"}:
+            continue
+        dealer = str(row.get("dealer") or "arcteryx_outlet").lower()
+        if dealer in RETIRED_DEALERS:
             continue
         sku = str(row.get("sku_id") or "").strip()
         if not sku:

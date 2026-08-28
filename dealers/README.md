@@ -6,7 +6,7 @@
 
 | # | 站点 | 状态 | 抓到件数 | 备注 |
 |---|---|---|---:|---|
-| 1 | **SSENSE** (US) | ✅ 可用 | 26 | StealthySession + solve_cloudflare（Camoufox 单飞过不了 CF）；列表 + 详情页颜色都有，sizes 待补 |
+| 1 | **SSENSE** (US) | ⛔ 已退役 | 0 | 2026-08-28 起停止列表、PDP、价格审计与自动恢复抓取；历史记录保留为 inactive，不再对客户展示 |
 | 2 | **MEC** (CA) | ✅ 可用 | 127 | StealthyFetcher + JSON-LD `productGroupId/hasVariant` 拿到完整 sizes/colors |
 | 3 | **EVO** (US) | ✅ 三品牌入口 | 动态 | Shopify JSON 优先；被 Cloudflare 阻断时，用 Camoufox 逐页渲染 `/collections/arcteryx`、`/collections/burton`、`/collections/patagonia`。每个品牌独立做最低数量与完整分页门禁 |
 | 4 | **Burton Outlet** (US) | ✅ Burton 官网 | 动态 | Shopify JSON 用于核对完整商品 ID/vendor，Camoufox 读取官网折扣引擎实际渲染的成对售价/划线价；跳过 Anon 和原价商品，并要求渲染 ID 集合与目录完全相等、折扣 Burton ≥100 |
@@ -28,7 +28,7 @@
 - `base.py` — DealerScraper 基类（统一 fetch、parse、价格归一化、字典输出）
 - `brands.py` — 三品牌 canonical key、旧数据兼容与来源一致性校验
 - `recon.py` / `recon_stealthy.py` / `recon_v3.py` — 三轮侦察脚本
-- `ssense.py` — SSENSE 抓取器（Fetcher tier）
+- `ssense.py` — 已退役 fail-closed guard；任何直接抓取调用都会拒绝执行
 - `mec.py` — MEC 抓取器（Stealthy tier）
 - `burton.py` — Burton 官网 Outlet 目录对账 + 渲染折扣价抓取器
 - `backcountry.py` — Backcountry Burton sale Product GraphQL 抓取器
@@ -46,7 +46,6 @@ pip3 install --user "scrapling[fetchers]"
 python3 -m dealers.run_all
 
 # 单站调试
-python3 -m dealers.ssense
 python3 -m dealers.mec
 python3 -m dealers.evo
 python3 -m dealers.burton
