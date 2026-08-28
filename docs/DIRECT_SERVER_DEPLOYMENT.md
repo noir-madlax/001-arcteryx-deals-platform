@@ -27,9 +27,9 @@ copied into it.
 2. Build the exact approved commit with
    `ops/web/build-release.sh /srv/geardrop/releases/<commit> <commit>`, then
    point `/srv/geardrop/current` to it.
-3. Install the product service, Nginx shared snippet, and HTTP-only virtual
-   host. Apply the persistent SELinux `httpd_sys_content_t` label to
-   `/srv/geardrop` and verify `nginx -t`.
+3. Install and enable the product service, then install the Nginx shared
+   snippet and HTTP-only virtual host. Apply the persistent SELinux
+   `httpd_sys_content_t` label to `/srv/geardrop` and verify `nginx -t`.
 4. Validate HTTP with an explicit `Host: 001.100app.dev` before changing DNS.
 5. Obtain a certificate, install the TLS virtual host, and validate with
    `curl --resolve` before moving the production DNS record.
