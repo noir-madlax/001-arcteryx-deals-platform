@@ -3,13 +3,13 @@
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://geardrop.100app.dev/",
   "official_ios_app_url": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
-  "snapshot_observed_at": "2026-08-29T04:50:44+00:00",
-  "active_product_urls": 8166,
+  "snapshot_observed_at": "2026-08-29T04:52:54+00:00",
+  "active_product_urls": 8167,
   "brands": [
     {
       "id": "arcteryx",
       "label": "Arc'teryx",
-      "count": 6473
+      "count": 6474
     },
     {
       "id": "burton",
@@ -26,7 +26,7 @@
     {
       "id": "arcteryx_outlet",
       "label": "Arc'teryx Outlet",
-      "count": 5909
+      "count": 5910
     },
     {
       "id": "evo",
@@ -133,16 +133,16 @@
     {
       "id": "au",
       "label": "澳大利亚",
-      "count": 17
+      "count": 18
     }
   ],
   "brand_platform_matrix": [
     {
       "brand_id": "arcteryx",
       "brand": "Arc'teryx",
-      "total": 6473,
+      "total": 6474,
       "platform_counts": {
-        "arcteryx_outlet": 5909,
+        "arcteryx_outlet": 5910,
         "evo": 259,
         "burton": 0,
         "mec": 208,
@@ -331,9 +331,9 @@
     {
       "region_id": "au",
       "region": "Australia",
-      "total": 17,
+      "total": 18,
       "brand_counts": {
-        "arcteryx": 17,
+        "arcteryx": 18,
         "burton": 0,
         "patagonia": 0
       }
