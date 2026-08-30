@@ -17,9 +17,10 @@ function.
 
 The public root is built from `ops/web/public-files.txt`. Repository source,
 SQL, tests, task notes, mobile code, Git metadata, and credentials are not
-copied into it. The release builder also creates deterministic gzip sidecars
-for public text files of at least 1 KiB. The shared Nginx snippet serves those
-sidecars only when the client advertises gzip support and adds
+copied into it. The release builder also creates timestamp-free gzip sidecars
+for public text files of at least 1 KiB; repeated builds are byte-reproducible
+within the same gzip toolchain. The shared Nginx snippet serves those sidecars
+only when the client advertises gzip support and adds
 `Vary: Accept-Encoding`; unencoded responses remain available.
 
 ## Primary and legacy domains

@@ -83,10 +83,10 @@ if ! command -v gzip >/dev/null 2>&1; then
   exit 1
 fi
 
-# Generate deterministic gzip sidecars for text assets. `-n` strips the source
-# name and timestamp so the same Git revision always produces identical bytes.
-# Keep the 1 KiB threshold aligned with Nginx's serving policy; smaller files do
-# not recover the extra filesystem entry and response negotiation overhead.
+# Generate timestamp-free gzip sidecars for text assets. `-n` strips the source
+# name and timestamp so repeated builds with the same gzip toolchain are byte
+# reproducible. Keep the 1 KiB threshold aligned with Nginx's serving policy;
+# smaller files do not recover the extra filesystem entry and negotiation cost.
 COMPRESSED_FILES=0
 while IFS= read -r -d '' asset; do
   gzip -n -9 -c "$asset" > "$asset.gz"
