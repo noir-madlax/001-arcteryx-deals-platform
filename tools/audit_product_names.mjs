@@ -110,12 +110,16 @@ function parseArgs(argv) {
   return args;
 }
 
-function publicCatalogConfig() {
-  const source = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-  const url = source.match(/const SUPABASE_URL\s*=\s*'([^']+)'/)?.[1];
-  const anon = source.match(/const SUPABASE_ANON\s*=\s*'([^']+)'/)?.[1];
-  if (!url || !anon) throw new Error('public catalog config not found');
-  return { url, anon };
+export function publicCatalogConfig(root = ROOT) {
+  for (const filename of ['index.html', 'product-detail.html']) {
+    const configPath = path.join(root, filename);
+    if (!fs.existsSync(configPath)) continue;
+    const source = fs.readFileSync(configPath, 'utf8');
+    const url = source.match(/const SUPABASE_URL\s*=\s*'([^']+)'/)?.[1];
+    const anon = source.match(/const SUPABASE_ANON\s*=\s*'([^']+)'/)?.[1];
+    if (url && anon) return { url, anon };
+  }
+  throw new Error('public catalog config not found');
 }
 
 async function fetchOnlineRows() {

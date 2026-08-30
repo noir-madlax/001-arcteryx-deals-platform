@@ -17,7 +17,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-INDEX_FILE = ROOT / "index.html"
+FRONTEND_CONFIG_FILES = (
+    ROOT / "index.html",
+    ROOT / "product-detail.html",
+)
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
@@ -77,12 +80,16 @@ PLATFORM_BRAND_MIN_ROWS = {
 
 
 def parse_frontend_config() -> tuple[str, str]:
-    html = INDEX_FILE.read_text(encoding="utf-8")
-    url = re.search(r"const SUPABASE_URL\s*=\s*'([^']+)'", html)
-    anon = re.search(r"const SUPABASE_ANON\s*=\s*'([^']+)'", html)
-    if not url or not anon:
-        raise SystemExit("Could not parse Supabase config from index.html")
-    return url.group(1), anon.group(1)
+    for path in FRONTEND_CONFIG_FILES:
+        try:
+            html = path.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            continue
+        url = re.search(r"const SUPABASE_URL\s*=\s*'([^']+)'", html)
+        anon = re.search(r"const SUPABASE_ANON\s*=\s*'([^']+)'", html)
+        if url and anon:
+            return url.group(1), anon.group(1)
+    raise SystemExit("Could not parse Supabase config from public catalog templates")
 
 
 def load_online_rows() -> list[dict]:

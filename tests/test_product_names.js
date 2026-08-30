@@ -1,4 +1,7 @@
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const test = require('node:test');
 
 const {
@@ -68,6 +71,24 @@ test('shared brand runtime normalizes Burton and Patagonia without Arc naming ru
   assert.equal(isSupportedBrandProduct({ brand: 'burton', dealer: 'burton', url: 'https://www.burton.com/en-us/products/custom-camber' }), true);
   assert.equal(isSupportedBrandProduct({ brand: 'burton', dealer: 'backcountry', url: 'https://www.backcountry.com/burton-custom-camber' }), true);
   assert.equal(isSupportedBrandProduct({ brand: 'patagonia', dealer: 'backcountry', url: 'https://www.backcountry.com/burton-custom-camber' }), false);
+});
+
+test('online name audit config falls back to product detail', async () => {
+  const { publicCatalogConfig } = await import('../tools/audit_product_names.mjs');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'geardrop-name-config-'));
+  try {
+    fs.writeFileSync(path.join(root, 'index.html'), '<html>server catalog</html>');
+    fs.writeFileSync(
+      path.join(root, 'product-detail.html'),
+      "const SUPABASE_URL = 'https://example.supabase.co';\nconst SUPABASE_ANON = 'public-anon';\n",
+    );
+    assert.deepEqual(publicCatalogConfig(root), {
+      url: 'https://example.supabase.co',
+      anon: 'public-anon',
+    });
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test('Arc name audit skips supported non-Arc rows without treating them as contamination', async () => {

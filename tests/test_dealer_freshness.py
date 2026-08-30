@@ -23,6 +23,7 @@ from tools.check_data_quality import (
     EXPECTED_CURRENCY,
     PLATFORM_BRAND_MIN_ROWS,
     PLATFORM_REGION_MIN_ROWS,
+    parse_frontend_config,
     product_freshness_timestamp,
     validate,
 )
@@ -55,6 +56,26 @@ def quality_brand(dealer: str, index: int) -> str:
 
 
 class DealerFreshnessTests(unittest.TestCase):
+    def test_frontend_config_falls_back_to_product_detail(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = root / "index.html"
+            detail = root / "product-detail.html"
+            index.write_text("<html>server catalog</html>", encoding="utf-8")
+            detail.write_text(
+                "const SUPABASE_URL = 'https://example.supabase.co';\n"
+                "const SUPABASE_ANON = 'public-anon';\n",
+                encoding="utf-8",
+            )
+            with patch(
+                "tools.check_data_quality.FRONTEND_CONFIG_FILES",
+                (index, detail),
+            ):
+                self.assertEqual(
+                    parse_frontend_config(),
+                    ("https://example.supabase.co", "public-anon"),
+                )
+
     def test_sync_preflight_rejects_non_arcteryx_ssense_items(self):
         self.assertTrue(is_expected_dealer_item(
             {"url": "https://www.ssense.com/en-us/men/product/arcteryx/beta-jacket/1"},
