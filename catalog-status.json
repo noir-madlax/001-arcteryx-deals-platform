@@ -3,30 +3,30 @@
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://geardrop.100app.dev/",
   "official_ios_app_url": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
-  "snapshot_observed_at": "2026-08-30T10:28:23+00:00",
-  "active_product_urls": 8112,
+  "snapshot_observed_at": "2026-08-30T11:39:35+00:00",
+  "active_product_urls": 8100,
   "brands": [
     {
       "id": "arcteryx",
       "label": "Arc'teryx",
-      "count": 6432
+      "count": 6420
     },
     {
       "id": "burton",
       "label": "Burton",
-      "count": 1199
+      "count": 1198
     },
     {
       "id": "patagonia",
       "label": "Patagonia",
-      "count": 481
+      "count": 482
     }
   ],
   "platforms": [
     {
       "id": "arcteryx_outlet",
       "label": "Arc'teryx Outlet",
-      "count": 5831
+      "count": 5818
     },
     {
       "id": "evo",
@@ -51,14 +51,14 @@
     {
       "id": "rei",
       "label": "REI",
-      "count": 135
+      "count": 136
     }
   ],
   "regions": [
     {
       "id": "us",
       "label": "美国",
-      "count": 2487
+      "count": 2488
     },
     {
       "id": "ca",
@@ -68,67 +68,67 @@
     {
       "id": "at",
       "label": "奥地利",
-      "count": 396
+      "count": 395
     },
     {
       "id": "be",
       "label": "比利时",
-      "count": 396
+      "count": 395
     },
     {
       "id": "ch",
       "label": "瑞士",
-      "count": 396
+      "count": 395
     },
     {
       "id": "de",
       "label": "德国",
-      "count": 396
+      "count": 395
     },
     {
       "id": "dk",
       "label": "丹麦",
-      "count": 396
+      "count": 395
     },
     {
       "id": "es",
       "label": "西班牙",
-      "count": 396
+      "count": 395
     },
     {
       "id": "fi",
       "label": "芬兰",
-      "count": 396
+      "count": 395
     },
     {
       "id": "fr",
       "label": "法国",
-      "count": 396
+      "count": 395
     },
     {
       "id": "gb",
       "label": "英国",
-      "count": 396
+      "count": 395
     },
     {
       "id": "ie",
       "label": "爱尔兰",
-      "count": 396
+      "count": 395
     },
     {
       "id": "it",
       "label": "意大利",
-      "count": 396
+      "count": 395
     },
     {
       "id": "nl",
       "label": "荷兰",
-      "count": 396
+      "count": 395
     },
     {
       "id": "se",
       "label": "瑞典",
-      "count": 396
+      "count": 395
     },
     {
       "id": "au",
@@ -140,23 +140,23 @@
     {
       "brand_id": "arcteryx",
       "brand": "Arc'teryx",
-      "total": 6432,
+      "total": 6420,
       "platform_counts": {
-        "arcteryx_outlet": 5831,
+        "arcteryx_outlet": 5818,
         "evo": 257,
         "burton": 0,
         "mec": 209,
         "backcountry": 0,
-        "rei": 135
+        "rei": 136
       }
     },
     {
       "brand_id": "burton",
       "brand": "Burton",
-      "total": 1199,
+      "total": 1198,
       "platform_counts": {
         "arcteryx_outlet": 0,
-        "evo": 728,
+        "evo": 727,
         "burton": 330,
         "mec": 0,
         "backcountry": 141,
@@ -166,10 +166,10 @@
     {
       "brand_id": "patagonia",
       "brand": "Patagonia",
-      "total": 481,
+      "total": 482,
       "platform_counts": {
         "arcteryx_outlet": 0,
-        "evo": 481,
+        "evo": 482,
         "burton": 0,
         "mec": 0,
         "backcountry": 0,
@@ -181,11 +181,11 @@
     {
       "region_id": "us",
       "region": "United States",
-      "total": 2487,
+      "total": 2488,
       "brand_counts": {
-        "arcteryx": 807,
-        "burton": 1199,
-        "patagonia": 481
+        "arcteryx": 808,
+        "burton": 1198,
+        "patagonia": 482
       }
     },
     {
@@ -201,9 +201,9 @@
     {
       "region_id": "at",
       "region": "Austria",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -211,9 +211,9 @@
     {
       "region_id": "be",
       "region": "Belgium",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -221,9 +221,9 @@
     {
       "region_id": "ch",
       "region": "Switzerland",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -231,9 +231,9 @@
     {
       "region_id": "de",
       "region": "Germany",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -241,9 +241,9 @@
     {
       "region_id": "dk",
       "region": "Denmark",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -251,9 +251,9 @@
     {
       "region_id": "es",
       "region": "Spain",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -261,9 +261,9 @@
     {
       "region_id": "fi",
       "region": "Finland",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -271,9 +271,9 @@
     {
       "region_id": "fr",
       "region": "France",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -281,9 +281,9 @@
     {
       "region_id": "gb",
       "region": "United Kingdom",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -291,9 +291,9 @@
     {
       "region_id": "ie",
       "region": "Ireland",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -301,9 +301,9 @@
     {
       "region_id": "it",
       "region": "Italy",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -311,9 +311,9 @@
     {
       "region_id": "nl",
       "region": "Netherlands",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
@@ -321,9 +321,9 @@
     {
       "region_id": "se",
       "region": "Sweden",
-      "total": 396,
+      "total": 395,
       "brand_counts": {
-        "arcteryx": 396,
+        "arcteryx": 395,
         "burton": 0,
         "patagonia": 0
       }
