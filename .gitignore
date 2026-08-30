@@ -23,6 +23,22 @@ temp_images/
 *.tmp
 
 # 大数据文件（爬虫每次会重新生成）
+/.crawl_manifest.json
+/.last_run_start
+/.last_sync
+/.sku_progress.json
+/arcteryx_skus.json
+/data.js
+/h5/data.js
+/dealers/results.json
+/publication.json
+/sitemap-products.xml
+/sitemap-insights.xml
+/catalog-status.html
+/catalog-status.json
+/insights/*.html
+/en/catalog-status.html
+/en/insights/*.html
 global_data.json
 *_backup_*.json
 cleaned_data.json

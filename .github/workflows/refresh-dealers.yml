@@ -12,7 +12,7 @@ on:
         default: false
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: arcteryx-production-refresh-writes
@@ -26,7 +26,6 @@ env:
   SITE_URL: https://geardrop.100app.dev
   REI_ENRICH_DETAILS: "true"
   GITHUB_TOKEN: ${{ github.token }}
-  PUBLICATION_ID: "github-actions-${{ github.run_id }}-${{ github.run_attempt }}"
 
 jobs:
   lease-gate:
@@ -111,9 +110,11 @@ jobs:
           python tools/sync_arcteryx_names.py --check
           node --test tests/test_product_names.js
 
+      - name: Hydrate current production dealer seed
+        run: python tools/hydrate_runtime_snapshot.py --site-url "$SITE_URL" --dataset dealers --output dealers/results.json
+
       - name: Refresh dealer scrape and sync
         run: |
-          git pull --ff-only origin main
           python tools/retire_dealer.py --dealer ssense
           mkdir -p dealers/_partial
           rm -f dealers/_partial/*.json
@@ -134,38 +135,24 @@ jobs:
           # buffer 兜底，不删存量行）。不再因单个 dealer 失败就整体拒绝发布。
           python -m dealers.merge_partial
           python -u -m dealers.supabase_sync
+          echo "SYNC_COMPLETED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
           if [ -n "$failed_dealers" ]; then
             echo "::warning::dealer scrape failed for:$failed_dealers — 已发布其余 dealer；下面的每 dealer 新鲜度门决定 build 状态"
           fi
           # 真正的守门员：每个 dealer 必须存在且最新数据 <=36h（REI 失败 >36h 才让 build 红）。
           python tools/check_data_quality.py --online --dealer burton --dealer backcountry --dealer evo --dealer rei --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
           node tools/audit_product_names.mjs --online --strict-source
-          python tools/generate_geo_catalog.py --online
-          python tools/write_publication_marker.py --scope dealers --publication-id "$PUBLICATION_ID"
 
       - name: Optional price alerts
         run: python check_price_alerts.py || echo "price alerts check failed"
 
-      - name: Commit refreshed dealer static data
-        run: |
-          git config user.email "bot@arcteryx-deals.local"
-          git config user.name "ArcBot"
-          git add dealers/results.json sitemap-products.xml sitemap-insights.xml catalog-status.html catalog-status.json insights/*.html en/catalog-status.html en/insights/*.html publication.json
-          if git diff --cached --quiet; then
-            echo "No dealer data changes to commit"
-            exit 0
-          fi
-          git commit -m "data(dealers): auto refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git pull --rebase origin main
-          git push origin main
-
       - name: Verify production freshness
         run: |
-          python tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10
+          python tools/wait_for_data_release.py --site-url "$SITE_URL" --after "$SYNC_COMPLETED_AT" --timeout-seconds 1800 --interval-seconds 10
           python tools/check_data_quality.py --online --dealer burton --dealer backcountry --dealer evo --dealer rei --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
           node tools/audit_product_names.mjs --online --strict-source
-          curl -fsS https://geardrop.100app.dev/dealers/results.json | python -c 'import json,sys; data=json.load(sys.stdin); print("generated_at", data.get("generated_at")); print({k:v.get("count") for k,v in data.get("dealers",{}).items()})'
-          python tools/notify_indexnow.py --since-days 2 || echo "::warning::IndexNow notification failed or is not configured"
+          curl -fsS "$SITE_URL/dealers/results.json" | python -c 'import json,sys; data=json.load(sys.stdin); print("generated_at", data.get("generated_at")); print({k:v.get("count") for k,v in data.get("dealers",{}).items()})'
+          python tools/notify_indexnow.py --sitemap-url "$SITE_URL/sitemap-products.xml" --sitemap-url "$SITE_URL/sitemap-insights.xml" --since-days 2 || echo "::warning::IndexNow notification failed or is not configured"
 
       - name: Release Dealers lease
         if: always() && needs.lease-gate.outputs.lease_owned == 'true'

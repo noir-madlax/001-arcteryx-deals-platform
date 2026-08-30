@@ -31,7 +31,6 @@ class GeoAssetTests(unittest.TestCase):
         cls.index = (ROOT / "index.html").read_text(encoding="utf-8")
         cls.detail = (ROOT / "product-detail.html").read_text(encoding="utf-8")
         cls.llms = (ROOT / "llms.txt").read_text(encoding="utf-8")
-        cls.catalog_status = json.loads((ROOT / "catalog-status.json").read_text(encoding="utf-8"))
         cls.audit_dir = ROOT / "geo" / "audits" / "2026-08-14-baseline"
         cls.catalog_module = load_module(
             "generate_geo_catalog", ROOT / "tools" / "generate_geo_catalog.py"
@@ -55,34 +54,51 @@ class GeoAssetTests(unittest.TestCase):
             self.assertEqual(path.read_text(encoding="utf-8"), expected, path)
 
     def test_local_geo_readiness_contract_passes(self):
-        result = subprocess.run(
-            [sys.executable, str(ROOT / "tools" / "check_geo_readiness.py")],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
+        rows = [
+            {"sku_id": "a-1", "brand": "arcteryx", "dealer": "evo", "region": "us", "status": "active", "last_updated": "2026-08-31T01:00:00+00:00"},
+            {"sku_id": "a-2", "brand": "arcteryx", "dealer": "mec", "region": "ca", "status": "active", "last_updated": "2026-08-31T02:00:00+00:00"},
+            {"sku_id": "b-1", "brand": "burton", "dealer": "evo", "region": "us", "status": "active", "last_updated": "2026-08-31T03:00:00+00:00"},
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            dynamic_root = Path(directory)
+            for path, value in self.catalog_module.build_outputs(
+                rows, output_root=dynamic_root
+            ).items():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(value, encoding="utf-8")
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "tools" / "check_geo_readiness.py"),
+                    "--dynamic-root",
+                    str(dynamic_root),
+                    "--min-products",
+                    "3",
+                ],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
         self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
         report = json.loads(result.stdout)
         self.assertEqual(report["summary"]["failed"], 0)
         self.assertGreaterEqual(report["summary"]["passed"], 80)
         self.assertEqual(report["observed_ai_visibility"], "not_measured")
 
-    def test_product_sitemap_matches_timestamped_catalog_status(self):
-        tree = ET.parse(ROOT / "sitemap-products.xml")
-        namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-        locations = [node.text for node in tree.findall("sm:url/sm:loc", namespace)]
-        self.assertEqual(len(locations), self.catalog_status["active_product_urls"])
-        self.assertGreaterEqual(len(locations), 5000)
-        self.assertEqual(len(locations), len(set(locations)))
-        self.assertTrue(
-            all(
-                location.startswith(
-                    "https://geardrop.100app.dev/p?sku="
-                )
-                for location in locations
-            )
-        )
+    def test_catalog_snapshots_are_not_part_of_the_code_release(self):
+        manifest = (ROOT / "ops" / "web" / "public-files.txt").read_text()
+        ignored = (ROOT / ".gitignore").read_text()
+        for path in (
+            "data.js",
+            "global_data.json",
+            "dealers/results.json",
+            "sitemap-products.xml",
+            "catalog-status.json",
+        ):
+            with self.subTest(path=path):
+                self.assertNotIn(f"\n{path}\n", f"\n{manifest}")
+        self.assertIn("global_data.json", ignored)
 
     def test_catalog_generator_encodes_sku_and_deduplicates_latest_row(self):
         rows = [
@@ -321,7 +337,8 @@ class GeoAssetTests(unittest.TestCase):
         self.assertIn("schedule:", monitor)
         self.assertIn("permissions:\n  contents: read", monitor)
         self.assertIn("build_geo_content.py --check", monitor)
-        self.assertIn("generate_geo_catalog.py --online --check", monitor)
+        self.assertIn("generate_geo_catalog.py --online --output-dir", monitor)
+        self.assertIn("--dynamic-root", monitor)
         self.assertIn("check_geo_readiness.py --base-url", monitor)
         self.assertIn("Observed AI visibility remains not_measured", monitor)
 
@@ -340,19 +357,20 @@ class GeoAssetTests(unittest.TestCase):
 
         for name in ("refresh-outlet.yml", "refresh-dealers.yml", "refresh-mec.yml"):
             workflow = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
-            self.assertIn("python tools/generate_geo_catalog.py --online", workflow, name)
-            self.assertIn("sitemap-products.xml", workflow, name)
-            self.assertIn("catalog-status.html", workflow, name)
-            self.assertIn("catalog-status.json", workflow, name)
-            self.assertIn("sitemap-insights.xml", workflow, name)
-            self.assertIn("insights/*.html", workflow, name)
-            self.assertIn("notify_indexnow.py --since-days 2", workflow, name)
+            self.assertIn("permissions:\n  contents: read", workflow, name)
+            self.assertIn("tools/wait_for_data_release.py", workflow, name)
+            self.assertIn("tools/hydrate_runtime_snapshot.py", workflow, name)
+            self.assertNotIn("tools/generate_geo_catalog.py", workflow, name)
+            self.assertNotIn("git push origin main", workflow, name)
+            self.assertIn("notify_indexnow.py --sitemap-url", workflow, name)
+            self.assertIn("--since-days 2", workflow, name)
 
         server_runner = (ROOT / "server_run_update.sh").read_text(encoding="utf-8")
-        self.assertIn('"$PYTHON" tools/generate_geo_catalog.py --online', server_runner)
-        self.assertIn("sitemap-insights.xml", server_runner)
-        self.assertIn("insights/*.html", server_runner)
-        self.assertIn("notify_indexnow.py --since-days 2", server_runner)
+        self.assertNotIn("tools/generate_geo_catalog.py", server_runner)
+        self.assertNotIn("git push origin main", server_runner)
+        self.assertIn("tools/wait_for_data_release.py", server_runner)
+        self.assertIn("notify_indexnow.py --sitemap-url", server_runner)
+        self.assertIn("--since-days 2", server_runner)
 
     def test_indexnow_contract_is_credential_free_and_selects_recent_urls(self):
         result = subprocess.run(
@@ -374,6 +392,34 @@ class GeoAssetTests(unittest.TestCase):
         self.assertEqual(
             report["credentials_required"], ["INDEXNOW_KEY", "INDEXNOW_KEY_LOCATION"]
         )
+
+    def test_indexnow_accepts_only_primary_origin_remote_sitemaps(self):
+        payload = b'''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://geardrop.100app.dev/p?sku=one</loc><lastmod>2026-08-31</lastmod></url>
+</urlset>'''
+
+        class Response:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, traceback):
+                return False
+
+            def read(self, _limit):
+                return payload
+
+        with mock.patch.object(
+            self.indexnow_module.urllib.request, "urlopen", return_value=Response()
+        ):
+            rows = self.indexnow_module.read_sitemap(
+                "https://geardrop.100app.dev/sitemap-products.xml"
+            )
+        self.assertEqual(rows[0][0], "https://geardrop.100app.dev/p?sku=one")
+        with self.assertRaises(ValueError):
+            self.indexnow_module.read_sitemap(
+                "https://attacker.invalid/sitemap-products.xml"
+            )
 
         key_file = ROOT / "indexnow-key.txt"
         configured_key = key_file.read_text(encoding="utf-8").strip()

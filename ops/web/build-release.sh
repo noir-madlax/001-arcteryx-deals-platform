@@ -56,10 +56,8 @@ printf '%s\n' "$COMMIT" > "$STAGING/REVISION"
 
 for required in \
   static/index.html \
-  static/data.js \
-  static/dealers/results.json \
   static/product-detail.html \
-  static/sitemap-products.xml \
+  static/sitemap.xml \
   api/catalog.mjs \
   api/product.mjs \
   ops/web/product-server.mjs; do
@@ -100,9 +98,7 @@ done < <(find "$STAGING/static" -type f \( \
 
 for required_compressed in \
   static/index.html.gz \
-  static/data.js.gz \
-  static/dealers/results.json.gz \
-  static/sitemap-products.xml.gz; do
+  static/product-detail.html.gz; do
   if [ ! -s "$STAGING/$required_compressed" ]; then
     echo "Release is missing required compressed file: $required_compressed" >&2
     exit 1

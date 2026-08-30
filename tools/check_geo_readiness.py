@@ -60,6 +60,11 @@ DYNAMIC_DATA_PATHS = {
     "/insights/regional-coverage.html",
     "/en/insights/regional-coverage.html",
 }
+DYNAMIC_FILE_PATHS = DYNAMIC_DATA_PATHS | {
+    "/catalog-status.json",
+    "/sitemap-products.xml",
+    "/sitemap-insights.xml",
+}
 
 
 @dataclass
@@ -595,6 +600,16 @@ def local_reader(root: Path) -> Callable[[str], str]:
     return read
 
 
+def layered_local_reader(root: Path, dynamic_root: Path) -> Callable[[str], str]:
+    static = local_reader(root)
+    dynamic = local_reader(dynamic_root)
+
+    def read(path: str) -> str:
+        return dynamic(path) if path in DYNAMIC_FILE_PATHS else static(path)
+
+    return read
+
+
 def url_reader(base_url: str) -> Callable[[str], str]:
     origin = base_url.rstrip("/")
     cache: dict[str, str] = {}
@@ -646,18 +661,31 @@ def main() -> int:
     source = parser.add_mutually_exclusive_group()
     source.add_argument("--root", type=Path, default=None, help="Audit a local site root")
     source.add_argument("--base-url", help="Audit a deployed HTTP origin")
+    parser.add_argument(
+        "--dynamic-root",
+        type=Path,
+        help="Read generated catalog pages and sitemaps from this local data release",
+    )
     parser.add_argument("--min-products", type=int, default=5000)
     parser.add_argument("--output", type=Path, help="Write the structured audit report")
     args = parser.parse_args()
+    if args.base_url and args.dynamic_root:
+        parser.error("--dynamic-root is only valid for a local audit")
 
     root = (args.root or ROOT).resolve()
-    reader = url_reader(args.base_url) if args.base_url else local_reader(root)
+    if args.base_url:
+        reader = url_reader(args.base_url)
+    elif args.dynamic_root:
+        reader = layered_local_reader(root, args.dynamic_root.resolve())
+    else:
+        reader = local_reader(root)
     checks = Auditor(reader, args.min_products, deployed=bool(args.base_url)).run()
     failed = [check for check in checks if check.status == "fail"]
     report = {
         "schema_version": "1.0.0",
         "checked_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "target": args.base_url or str(root),
+        "dynamic_root": str(args.dynamic_root.resolve()) if args.dynamic_root else None,
         "measurement": "owned_surface_geo_readiness",
         "observed_ai_visibility": "not_measured",
         "summary": {"passed": len(checks) - len(failed), "failed": len(failed), "total": len(checks)},

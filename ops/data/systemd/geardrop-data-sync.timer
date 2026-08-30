@@ -3,7 +3,7 @@ Description=Refresh the GearDrop versioned data release
 
 [Timer]
 OnBootSec=3min
-OnUnitActiveSec=15min
+OnUnitActiveSec=5min
 RandomizedDelaySec=60s
 Persistent=true
 Unit=geardrop-data-sync.service

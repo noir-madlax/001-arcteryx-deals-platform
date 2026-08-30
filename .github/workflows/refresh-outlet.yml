@@ -12,7 +12,7 @@ on:
         default: false
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: arcteryx-production-refresh-writes
@@ -25,7 +25,6 @@ env:
   INDEXNOW_KEY_LOCATION: ${{ secrets.INDEXNOW_KEY_LOCATION }}
   GITHUB_TOKEN: ${{ github.token }}
   SITE_URL: https://geardrop.100app.dev
-  PUBLICATION_ID: "github-actions-${{ github.run_id }}-${{ github.run_attempt }}"
 
 jobs:
   lease-gate:
@@ -97,9 +96,11 @@ jobs:
       - name: Verify lifecycle safety rules
         run: python -m unittest discover -s tests -v
 
+      - name: Hydrate current production catalog seed
+        run: python tools/hydrate_runtime_snapshot.py --site-url "$SITE_URL" --dataset catalog --output global_data.json
+
       - name: Refresh Outlet scrape and sync
         run: |
-          git pull --ff-only origin main
           date -u '+%Y-%m-%d %H:%M:%S' > .last_run_start
           python -u global_scraper.py --redirect-timeout 3 --redirect-workers 50
           python -u sku_scraper.py --reset --update-data
@@ -107,33 +108,19 @@ jobs:
           python -u tools/check_product_urls.py --status active --stored-http-status 404 --stored-http-status 410 --max-rows 500
           python -u tools/check_product_urls.py --status missing --max-rows 500
           python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --max-product-age-hours 72 --min-rows 100 --forbid-region jp
-          python tools/generate_geo_catalog.py --online
-          python tools/write_publication_marker.py --scope outlet --publication-id "$PUBLICATION_ID"
+          echo "SYNC_COMPLETED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
 
       - name: Optional notifications
         run: |
           python check_price_alerts.py || echo "price alerts check failed"
           python notify_telegram.py || echo "telegram notification failed"
 
-      - name: Commit refreshed static data
-        run: |
-          git config user.email "bot@arcteryx-deals.local"
-          git config user.name "ArcBot"
-          git add .last_sync .crawl_manifest.json .sku_progress.json arcteryx_skus.json global_data.json data.js h5/data.js sitemap-products.xml sitemap-insights.xml catalog-status.html catalog-status.json insights/*.html en/catalog-status.html en/insights/*.html publication.json
-          if git diff --cached --quiet; then
-            echo "No Outlet data changes to commit"
-            exit 0
-          fi
-          git commit -m "data: auto outlet refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git pull --rebase origin main
-          git push origin main
-
       - name: Verify production freshness
         run: |
-          python tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10
+          python tools/wait_for_data_release.py --site-url "$SITE_URL" --after "$SYNC_COMPLETED_AT" --timeout-seconds 1800 --interval-seconds 10
           python tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --max-product-age-hours 72 --min-rows 100 --forbid-region jp
-          curl -fsS https://geardrop.100app.dev/data.js | python -c 'import sys; s=sys.stdin.read(); assert "sku_id" in s; print("data.js bytes", len(s), "sku_entries", s.count("\"sku_id\""))'
-          python tools/notify_indexnow.py --since-days 2 || echo "::warning::IndexNow notification failed or is not configured"
+          curl -fsS "$SITE_URL/api/catalog?region=us&limit=1" | python -c 'import json,sys; value=json.load(sys.stdin); assert value["rows"] and value["data_revision"]; print("catalog_revision", value["data_revision"])'
+          python tools/notify_indexnow.py --sitemap-url "$SITE_URL/sitemap-products.xml" --sitemap-url "$SITE_URL/sitemap-insights.xml" --since-days 2 || echo "::warning::IndexNow notification failed or is not configured"
 
       - name: Release Outlet lease
         if: always() && needs.lease-gate.outputs.lease_owned == 'true'

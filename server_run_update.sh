@@ -83,6 +83,9 @@ if [ "$lease_result" != "true" ]; then
 fi
 LEASE_ACQUIRED=true
 
+log "Step 0a: Hydrate current production catalog seed"
+"$PYTHON" tools/hydrate_runtime_snapshot.py --site-url "$SITE_URL" --dataset catalog --output global_data.json 2>&1 | tee -a "$LOG_FILE"
+
 # 1. Refresh product list
 log "Step 1: Global scraper (product list)"
 $PYTHON global_scraper.py 2>&1 | tee -a "$LOG_FILE"
@@ -104,46 +107,16 @@ $PYTHON tools/check_product_urls.py --status missing --max-rows 500 2>&1 | tee -
 # 3c. Hard quality gate: do not treat stale or inconsistent data as healthy
 log "Step 3c: Data quality check"
 $PYTHON tools/check_data_quality.py --online --dealer arcteryx_outlet --max-age-hours 36 --max-product-age-hours 72 --min-rows 100 --forbid-region jp 2>&1 | tee -a "$LOG_FILE"
+SYNC_COMPLETED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
-# 4. Push data files to GitHub (backup + Vercel static fallback)
-log "Step 4: GitHub sync + push"
-git config user.email "bot@arcteryx-deals.local"
-git config user.name  "ArcBot"
-git remote set-url origin "$GITHUB_REMOTE"
-
-TMPDIR=$(mktemp -d)
-for f in .crawl_manifest.json data.js arcteryx_skus.json global_data.json; do
-  [ -f "$f" ] && cp "$f" "$TMPDIR/$f"
-done
-
-git fetch origin main 2>&1 | tee -a "$LOG_FILE"
-# Discard any local tracked changes + switch to clean main (data files are in TMPDIR)
-git reset --hard HEAD 2>&1 | tee -a "$LOG_FILE" || true
-git checkout -B main origin/main 2>&1 | tee -a "$LOG_FILE"
-git reset --hard origin/main 2>&1 | tee -a "$LOG_FILE"
-# Remove untracked files that would conflict (but preserve state files)
-git clean -fd -e .crawl_manifest.json -e .last_run_start -e .last_sync -e .sku_progress.json -e update.log -e update_global.log -e dealers.log -e dealers/_partial -e .arcteryx_secrets 2>&1 | tee -a "$LOG_FILE" || true
-
-for f in .crawl_manifest.json data.js arcteryx_skus.json global_data.json; do
-  [ -f "$TMPDIR/$f" ] && cp "$TMPDIR/$f" "$f"
-done
-rm -rf "$TMPDIR"
-
-log "Step 4a: Regenerate catalog GEO and insight assets"
-"$PYTHON" tools/generate_geo_catalog.py --online 2>&1 | tee -a "$LOG_FILE"
-
-PUBLICATION_ID=$("$PYTHON" -c 'from datetime import datetime, timezone; from uuid import uuid4; print(f"primary-outlet-{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}-{uuid4().hex[:12]}")')
-"$PYTHON" tools/write_publication_marker.py --scope outlet --publication-id "$PUBLICATION_ID" 2>&1 | tee -a "$LOG_FILE"
-git add .crawl_manifest.json data.js arcteryx_skus.json global_data.json publication.json sitemap-products.xml sitemap-insights.xml catalog-status.html catalog-status.json insights/*.html en/catalog-status.html en/insights/*.html
-if ! git diff --cached --quiet; then
-  git commit -m "data: auto update $(date '+%Y-%m-%d %H:%M')"
-  git pull --rebase origin main 2>&1 | tee -a "$LOG_FILE"
-  git push origin main 2>&1 | tee -a "$LOG_FILE"
-  "$PYTHON" tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10 2>&1 | tee -a "$LOG_FILE"
-  "$PYTHON" tools/notify_indexnow.py --since-days 2 2>&1 | tee -a "$LOG_FILE" || log "IndexNow notification failed (non-fatal)"
-else
-  log "No data changes to commit"
+# 4. The crawler writes Supabase only. The data service builds an immutable
+# snapshot and atomically switches /srv/geardrop/data/current.
+log "Step 4: Publish versioned data release"
+if ! sudo -n systemctl start geardrop-data-sync.service; then
+  log "Could not trigger data sync directly; waiting for the five-minute timer"
 fi
+"$PYTHON" tools/wait_for_data_release.py --site-url "$SITE_URL" --after "$SYNC_COMPLETED_AT" --timeout-seconds 1800 --interval-seconds 10 2>&1 | tee -a "$LOG_FILE"
+"$PYTHON" tools/notify_indexnow.py --sitemap-url "$SITE_URL/sitemap-products.xml" --sitemap-url "$SITE_URL/sitemap-insights.xml" --since-days 2 2>&1 | tee -a "$LOG_FILE" || log "IndexNow notification failed (non-fatal)"
 
 # 5. 检查降价提醒订阅 (price_alerts) 并发邮件
 log "Step 5: Price alerts check"

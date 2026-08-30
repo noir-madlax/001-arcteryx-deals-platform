@@ -33,14 +33,14 @@ jobs:
         run: python tools/build_geo_content.py --check
 
       - id: catalog_assets
-        name: Verify catalog sitemap and coverage snapshot
+        name: Build isolated catalog sitemap and coverage snapshot
         continue-on-error: true
-        run: python tools/generate_geo_catalog.py --online --check
+        run: python tools/generate_geo_catalog.py --online --output-dir "$RUNNER_TEMP/geardrop-data"
 
       - id: repository_contract
         name: Audit repository GEO contract
         continue-on-error: true
-        run: python tools/check_geo_readiness.py --output geo-readiness-repository.json
+        run: python tools/check_geo_readiness.py --dynamic-root "$RUNNER_TEMP/geardrop-data" --output geo-readiness-repository.json
 
       - id: production_contract
         name: Audit production GEO contract

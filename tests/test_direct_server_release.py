@@ -25,8 +25,10 @@ class DirectServerReleaseTests(unittest.TestCase):
             self.assertIn("compressed_files=", result.stdout)
             self.assertTrue((release / "static/index.html").is_file())
             self.assertTrue((release / "static/en/index.html").is_file())
-            self.assertTrue((release / "static/dealers/results.json").is_file())
-            self.assertTrue((release / "static/sitemap-products.xml").is_file())
+            self.assertTrue((release / "static/sitemap.xml").is_file())
+            self.assertFalse((release / "static/data.js").exists())
+            self.assertFalse((release / "static/dealers/results.json").exists())
+            self.assertFalse((release / "static/sitemap-products.xml").exists())
             self.assertTrue((release / "api/product.mjs").is_file())
             self.assertTrue((release / "api/catalog.mjs").is_file())
             self.assertTrue((release / "ops/web/product-server.mjs").is_file())
@@ -45,13 +47,7 @@ class DirectServerReleaseTests(unittest.TestCase):
             compressed_paths = sorted((release / "static").rglob("*.gz"))
             self.assertTrue(compressed_paths)
             self.assertTrue((release / "static/index.html.gz").is_file())
-            self.assertTrue((release / "static/data.js.gz").is_file())
-            self.assertTrue(
-                (release / "static/dealers/results.json.gz").is_file()
-            )
-            self.assertTrue(
-                (release / "static/sitemap-products.xml.gz").is_file()
-            )
+            self.assertTrue((release / "static/product-detail.html.gz").is_file())
             for compressed in compressed_paths:
                 source = compressed.with_suffix("")
                 self.assertTrue(source.is_file(), compressed)
@@ -107,6 +103,10 @@ class DirectServerReleaseTests(unittest.TestCase):
         )
         self.assertIn("location = /p", common)
         self.assertIn("location = /api/catalog", common)
+        self.assertIn("location = /data-status.json", common)
+        self.assertIn("/srv/geardrop/data/current/public", common)
+        self.assertIn("data-manifest\\.json", common)
+        self.assertEqual(common.count("proxy_hide_header X-Content-Type-Options;"), 2)
         self.assertIn("proxy_pass http://127.0.0.1:4181;", common)
         self.assertIn('Strict-Transport-Security "max-age=86400"', common)
         self.assertIn("Content-Security-Policy-Report-Only", common)
@@ -120,7 +120,8 @@ class DirectServerReleaseTests(unittest.TestCase):
             "PRIMARY_ORIGIN=${GEARDROP_PRIMARY_ORIGIN:-https://geardrop.100app.dev}",
             deploy_script,
         )
-        self.assertIn('grep -F -m 1 "<loc>$PRIMARY_ORIGIN/"', deploy_script)
+        self.assertIn("encodeURIComponent(value.rows[0].sku_id)", deploy_script)
+        self.assertNotIn("static/sitemap-products.xml", deploy_script)
         self.assertNotIn(LEGACY_HOST.replace(".", r"\."), deploy_script)
         self.assertIn("server_name geardrop.100app.dev;", primary)
         self.assertIn(

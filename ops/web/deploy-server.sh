@@ -86,18 +86,19 @@ CATALOG_STATUS=$(curl --max-time 60 -sS -o "$TMP_BODY" -w '%{http_code}' \
 if [ "$CATALOG_STATUS" != "200" ] || ! /usr/bin/node -e '
   const fs = require("fs");
   const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
-  if (!Array.isArray(value.rows) || value.rows.length > 1 || !value.data_revision) process.exit(1);
+  if (!Array.isArray(value.rows) || value.rows.length !== 1 || !value.rows[0].sku_id || !value.data_revision) process.exit(1);
 ' "$TMP_BODY"; then
   echo "Candidate catalog smoke failed: status=$CATALOG_STATUS" >&2
   exit 1
 fi
 
-SAMPLE_LOC=$(grep -F -m 1 "<loc>$PRIMARY_ORIGIN/" \
-  "$RELEASE/static/sitemap-products.xml" || true)
-SAMPLE_PATH=${SAMPLE_LOC#*<loc>$PRIMARY_ORIGIN}
-SAMPLE_PATH=${SAMPLE_PATH%%</loc>*}
+SAMPLE_PATH=$(/usr/bin/node -e '
+  const fs = require("fs");
+  const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+  process.stdout.write(`/p?sku=${encodeURIComponent(value.rows[0].sku_id)}`);
+' "$TMP_BODY")
 if [ -z "$SAMPLE_PATH" ]; then
-  echo "Product sitemap did not contain a canonical sample" >&2
+  echo "Catalog API did not provide a product sample" >&2
   exit 1
 fi
 SAMPLE_STATUS=$(curl -sS -o "$TMP_BODY" -w '%{http_code}' \

@@ -104,6 +104,21 @@ function sha256(filename) {
   return crypto.createHash('sha256').update(fs.readFileSync(filename)).digest('hex');
 }
 
+function artifactRevision(data) {
+  const contractFiles = [
+    fileURLToPath(import.meta.url),
+    path.join(REPO_ROOT, 'api', 'catalog.mjs'),
+    path.join(REPO_ROOT, 'tools', 'generate_geo_catalog.py'),
+    path.join(REPO_ROOT, 'product-detail.html'),
+  ];
+  const digest = crypto.createHash('sha256');
+  digest.update(`data:${data}\n`);
+  for (const filename of contractFiles.sort()) {
+    digest.update(`${path.relative(REPO_ROOT, filename)}:${sha256(filename)}\n`);
+  }
+  return digest.digest('hex').slice(0, 20);
+}
+
 function listFiles(directory, relative = '') {
   const values = [];
   for (const entry of fs.readdirSync(path.join(directory, relative), { withFileTypes: true })) {
@@ -133,14 +148,17 @@ async function main() {
   if (!rows.length) throw new Error('Refusing to publish an empty catalog');
   const publicRows = rows.map(publicProduct);
   const revision = dataRevision(rows);
+  const artifact = artifactRevision(revision);
   const code = codeRevision();
   const generatedAt = new Date().toISOString();
   const compactJson = JSON.stringify(publicRows);
+  const outletRows = publicRows.filter((product) => product.dealer === 'arcteryx_outlet');
+  const outletJson = JSON.stringify(outletRows);
 
   writeFile(path.join(publicRoot, 'data.js'), `const PRODUCTS = ${compactJson};\n`);
   fs.mkdirSync(path.join(publicRoot, 'h5'));
   fs.linkSync(path.join(publicRoot, 'data.js'), path.join(publicRoot, 'h5', 'data.js'));
-  writeFile(path.join(publicRoot, 'global_data.json'), `${compactJson}\n`);
+  writeFile(path.join(publicRoot, 'global_data.json'), `${outletJson}\n`);
   writeFile(
     path.join(publicRoot, 'dealers', 'results.json'),
     `${JSON.stringify(buildDealerSnapshot(publicRows, generatedAt), null, 2)}\n`,
@@ -168,6 +186,7 @@ async function main() {
     generated_at: generatedAt,
     code_revision: code,
     data_revision: revision,
+    artifact_revision: artifact,
     active_products: publicRows.length,
     snapshot_observed_at: publicRows.reduce(
       (latest, product) => String(product.last_updated || '') > latest ? String(product.last_updated) : latest,
@@ -185,6 +204,7 @@ async function main() {
   writeFile(path.join(output, 'MANIFEST.json'), `${JSON.stringify(manifest, null, 2)}\n`);
   writeFile(path.join(publicRoot, 'data-manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
   writeFile(path.join(output, 'DATA_REVISION'), `${revision}\n`);
+  writeFile(path.join(output, 'ARTIFACT_REVISION'), `${artifact}\n`);
   writeFile(path.join(output, 'CODE_REVISION'), `${code}\n`);
 
   for (const required of [
@@ -198,7 +218,10 @@ async function main() {
     }
   }
 
-  console.log(`data_revision=${revision} code_revision=${code} rows=${publicRows.length} files=${files.length}`);
+  console.log(
+    `data_revision=${revision} artifact_revision=${artifact} code_revision=${code} `
+    + `rows=${publicRows.length} outlet_rows=${outletRows.length} files=${files.length}`,
+  );
 }
 
 main().catch((error) => {

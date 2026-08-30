@@ -13,7 +13,7 @@ on:
         default: false
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: arcteryx-production-refresh-writes
@@ -26,7 +26,6 @@ env:
   INDEXNOW_KEY_LOCATION: ${{ secrets.INDEXNOW_KEY_LOCATION }}
   GITHUB_TOKEN: ${{ github.token }}
   SITE_URL: https://geardrop.100app.dev
-  PUBLICATION_ID: "github-actions-${{ github.run_id }}-${{ github.run_attempt }}"
 
 jobs:
   lease-gate:
@@ -97,37 +96,25 @@ jobs:
       - name: Verify MEC fallback browser runtime
         run: python tools/check_mec_browser_runtime.py
 
+      - name: Hydrate current production dealer seed
+        run: python tools/hydrate_runtime_snapshot.py --site-url "$SITE_URL" --dataset dealers --output dealers/results.json
+
       - name: Refresh MEC scrape and sync
         run: |
-          git pull --ff-only origin main
           mkdir -p dealers/_partial
           rm -f dealers/_partial/*.json
           timeout 3600 python -u -m dealers.mec
           python tools/check_mec_partial.py
           python -m dealers.merge_partial
           python -u -m dealers.supabase_sync
+          echo "SYNC_COMPLETED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
           python tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
-          python tools/generate_geo_catalog.py --online
-          python tools/write_publication_marker.py --scope mec --publication-id "$PUBLICATION_ID"
-
-      - name: Commit refreshed MEC static data
-        run: |
-          git config user.email "bot@arcteryx-deals.local"
-          git config user.name "ArcBot"
-          git add dealers/results.json sitemap-products.xml sitemap-insights.xml catalog-status.html catalog-status.json insights/*.html en/catalog-status.html en/insights/*.html publication.json
-          if git diff --cached --quiet; then
-            echo "No MEC data changes to commit"
-            exit 0
-          fi
-          git commit -m "data(mec): GitHub fallback refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git pull --rebase origin main
-          git push origin main
 
       - name: Verify production freshness
         run: |
-          python tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10
+          python tools/wait_for_data_release.py --site-url "$SITE_URL" --after "$SYNC_COMPLETED_AT" --timeout-seconds 1800 --interval-seconds 10
           python tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --max-product-age-hours 72 --min-rows 50
-          python tools/notify_indexnow.py --since-days 2 || echo "::warning::IndexNow notification failed or is not configured"
+          python tools/notify_indexnow.py --sitemap-url "$SITE_URL/sitemap-products.xml" --sitemap-url "$SITE_URL/sitemap-insights.xml" --since-days 2 || echo "::warning::IndexNow notification failed or is not configured"
 
       - name: Release MEC lease
         if: always() && needs.lease-gate.outputs.lease_owned == 'true'

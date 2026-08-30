@@ -63,6 +63,9 @@ if [ "$lease_result" != "true" ]; then
 fi
 LEASE_ACQUIRED=true
 
+log "hydrate current production dealer seed"
+"$PYTHON" tools/hydrate_runtime_snapshot.py --site-url "$SITE_URL" --dataset dealers --output dealers/results.json 2>&1 | tee -a "$LOG"
+
 mkdir -p dealers/_partial
 rm -f dealers/_partial/*.json
 log "scrape → dealers.mec"
@@ -77,22 +80,11 @@ log "sync → Supabase"
 "$PYTHON" -m dealers.supabase_sync 2>&1 | tee -a "$LOG"
 log "data quality check"
 "$PYTHON" tools/check_data_quality.py --online --dealer mec --max-age-hours 36 --max-product-age-hours 72 --min-rows 50 2>&1 | tee -a "$LOG"
+SYNC_COMPLETED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
-log "git commit + push"
-git config user.email "bot@arcteryx-deals.local"
-git config user.name "ArcBot"
-PUBLICATION_ID=$("$PYTHON" -c 'from datetime import datetime, timezone; from uuid import uuid4; print(f"primary-mec-{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}-{uuid4().hex[:12]}")')
-"$PYTHON" tools/write_publication_marker.py --scope mec --publication-id "$PUBLICATION_ID" 2>&1 | tee -a "$LOG"
-git add dealers/results.json publication.json
-if ! git diff --cached --quiet; then
-  TS=$(date '+%Y-%m-%d %H:%M')
-  git commit -m "data(mec): auto refresh ${TS}" 2>&1 | tee -a "$LOG"
-  git pull --rebase origin main 2>&1 | tee -a "$LOG"
-  git push origin main 2>&1 | tee -a "$LOG"
-  "$PYTHON" tools/wait_for_publication.py --file publication.json --url "$SITE_URL/publication.json" --timeout-seconds 1800 --interval-seconds 10 2>&1 | tee -a "$LOG"
-else
-  log "no changes"
-fi
+log "wait for versioned data release"
+"$PYTHON" tools/wait_for_data_release.py --site-url "$SITE_URL" --after "$SYNC_COMPLETED_AT" --timeout-seconds 1800 --interval-seconds 10 2>&1 | tee -a "$LOG"
+"$PYTHON" tools/notify_indexnow.py --sitemap-url "$SITE_URL/sitemap-products.xml" --sitemap-url "$SITE_URL/sitemap-insights.xml" --since-days 2 2>&1 | tee -a "$LOG" || log "IndexNow notification failed (non-fatal)"
 
 "$PYTHON" notify_feishu.py --mode dealers 2>&1 | tee -a "$LOG" || log "feishu notification failed (non-fatal)"
 log "===== MEC END ====="

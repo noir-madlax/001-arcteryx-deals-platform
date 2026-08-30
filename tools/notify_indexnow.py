@@ -24,6 +24,7 @@ SITE_URL = "https://geardrop.100app.dev"
 SITE_HOST = "geardrop.100app.dev"
 DEFAULT_ENDPOINT = "https://api.indexnow.org/indexnow"
 MAX_BATCH = 10_000
+MAX_SITEMAP_BYTES = 16 * 1024 * 1024
 DEFAULT_SITEMAPS = (ROOT / "sitemap-products.xml", ROOT / "sitemap-insights.xml")
 DEFAULT_KEY_FILE = ROOT / "indexnow-key.txt"
 DEFAULT_KEY_LOCATION = f"{SITE_URL}/indexnow-key.txt"
@@ -38,8 +39,26 @@ def parse_lastmod(value: str | None) -> dt.date | None:
         return None
 
 
-def read_sitemap(path: Path) -> list[tuple[str, dt.date | None]]:
-    root = ET.parse(path).getroot()
+def read_sitemap(source: Path | str) -> list[tuple[str, dt.date | None]]:
+    if isinstance(source, Path):
+        root = ET.parse(source).getroot()
+    else:
+        parsed_source = urllib.parse.urlparse(source)
+        if parsed_source.scheme != "https" or parsed_source.netloc != SITE_HOST:
+            raise ValueError(f"Remote sitemap must be hosted on {SITE_HOST}: {source!r}")
+        request = urllib.request.Request(
+            source,
+            headers={
+                "Accept": "application/xml,text/xml",
+                "Accept-Encoding": "identity",
+                "User-Agent": "GearDrop-IndexNow/1.0",
+            },
+        )
+        with urllib.request.urlopen(request, timeout=30) as response:
+            payload = response.read(MAX_SITEMAP_BYTES + 1)
+        if not payload or len(payload) > MAX_SITEMAP_BYTES:
+            raise ValueError(f"Remote sitemap size is outside the accepted range: {len(payload)}")
+        root = ET.fromstring(payload)
     namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     rows: list[tuple[str, dt.date | None]] = []
     for node in root.findall("sm:url", namespace):
@@ -53,7 +72,7 @@ def read_sitemap(path: Path) -> list[tuple[str, dt.date | None]]:
 
 
 def collect_recent_urls(
-    sitemap_paths: Iterable[Path], since_days: int, today: dt.date | None = None
+    sitemap_paths: Iterable[Path | str], since_days: int, today: dt.date | None = None
 ) -> list[str]:
     if since_days < 0:
         raise ValueError("since-days must be zero or greater")
@@ -133,6 +152,11 @@ def safe_submission_error(error: Exception, url_count: int) -> dict[str, object]
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sitemap", action="append", type=Path, help="Local URL sitemap; repeatable")
+    parser.add_argument(
+        "--sitemap-url",
+        action="append",
+        help=f"HTTPS URL sitemap hosted on {SITE_HOST}; repeatable",
+    )
     parser.add_argument("--since-days", type=int, default=2, help="Include URLs modified within this many UTC days")
     parser.add_argument("--endpoint", default=DEFAULT_ENDPOINT, help="IndexNow API endpoint")
     parser.add_argument("--dry-run", action="store_true", help="Parse and count URLs without credentials or network")
@@ -169,7 +193,9 @@ def main() -> int:
         )
         return 0 if key_file_valid else 1
 
-    sitemap_paths = tuple(args.sitemap or DEFAULT_SITEMAPS)
+    sitemap_paths = tuple(args.sitemap or ()) + tuple(args.sitemap_url or ())
+    if not sitemap_paths:
+        sitemap_paths = DEFAULT_SITEMAPS
     try:
         urls = collect_recent_urls(sitemap_paths, args.since_days)
     except (OSError, ET.ParseError, ValueError) as error:
