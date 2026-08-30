@@ -64,6 +64,11 @@ else
   STAGING=""
 fi
 
+# mktemp creates the staging root as 0700. The release contains only public
+# snapshots and receipts, so make directories traversable and files readable
+# before Nginx can switch to it.
+chmod -R u=rwX,go=rX "$RELEASE"
+
 for required in \
   public/data.js \
   public/data.js.gz \

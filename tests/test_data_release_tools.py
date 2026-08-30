@@ -9,6 +9,11 @@ from tools.wait_for_data_release import parse_timestamp, release_match
 
 
 class DataReleaseToolTests(unittest.TestCase):
+    def test_data_sync_makes_public_release_traversable(self):
+        root = Path(__file__).resolve().parents[1]
+        script = (root / "ops" / "data" / "sync-data-release.sh").read_text()
+        self.assertIn('chmod -R u=rwX,go=rX "$RELEASE"', script)
+
     def test_catalog_and_dealer_snapshots_fail_closed(self):
         self.assertEqual(validate_snapshot("catalog", [{"sku_id": "sku-1"}]), 1)
         self.assertEqual(
