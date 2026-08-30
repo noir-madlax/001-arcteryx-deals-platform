@@ -117,8 +117,6 @@
 
     <link rel="preconnect" href="https://images-dynamic-arcteryx.imgix.net" crossorigin>
     <link rel="preconnect" href="https://images.arcteryx.com" crossorigin>
-    <link rel="preconnect" href="https://bupqagkrcvrezjkdbald.supabase.co" crossorigin>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="arcteryx-names.js"></script>
     <script src="gear-brands.js"></script>
     <script src="web-product-preview.js"></script>
@@ -274,10 +272,14 @@
         .filter-count .reset-link {
             color: var(--text-3);
             font-size: 11px;
-            padding: 2px 6px;
+            min-height: 44px;
+            padding: 0 9px;
             border: 1px solid var(--border);
             border-radius: 999px;
             transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .filter-count .reset-link:hover { border-color: var(--text); color: var(--text); }
         .catalog-status { color: var(--accent); }
@@ -312,8 +314,8 @@
         }
         .search input {
             width: 100%;
-            height: 34px;
-            padding: 0 34px 0 34px;
+            height: 44px;
+            padding: 0 48px 0 36px;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 999px;
@@ -336,9 +338,9 @@
         }
         .search-icon { left: 11px; }
         .search-clear {
-            right: 7px;
-            width: 20px;
-            height: 20px;
+            right: 0;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             justify-content: center;
             cursor: pointer;
@@ -368,7 +370,7 @@
         .filter-select {
             flex: 1;
             min-width: 0;
-            height: 30px;
+            height: 44px;
             padding: 0 22px 0 9px;
             background: var(--surface);
             border: 1px solid var(--border);
@@ -586,7 +588,7 @@
         .pager[hidden] { display: none; }
         .pager-btn {
             min-width: 86px;
-            min-height: 40px;
+            min-height: 44px;
             padding: 9px 16px;
             border: 1px solid var(--border);
             border-radius: var(--r-sm);
@@ -947,8 +949,8 @@
             position: absolute;
             top: 14px;
             right: 14px;
-            width: 28px;
-            height: 28px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: var(--surface);
             display: flex;
@@ -974,13 +976,13 @@
             .na-head { padding: 12px 14px 8px; }
             .na-title { font-size: 14px; }
             .na-meta { font-size: 10.5px; }
-            .na-close { top: 8px; right: 8px; width: 24px; height: 24px; font-size: 16px; }
+            .na-close { top: 6px; right: 6px; width: 44px; height: 44px; font-size: 18px; }
             .na-name { font-size: 11px; -webkit-line-clamp: 2; }
             .na-sale { font-size: 12px; }
             .na-orig { font-size: 10px; }
             .na-disc { font-size: 9px; padding: 0 4px; }
             .na-foot { padding: 8px 14px 10px; font-size: 11px; }
-            .na-cta { padding: 6px 10px; font-size: 11px; }
+            .na-cta { padding: 0 12px; font-size: 11px; }
         }
         @media (max-width: 380px) {
             .na-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1044,18 +1046,23 @@
             cursor: pointer;
             background: none;
             border: none;
-            padding: 4px 8px;
+            min-height: 44px;
+            padding: 0 10px;
             font: inherit;
         }
         .na-skip:hover { color: var(--text); }
         .na-cta {
             background: var(--text);
             color: var(--surface);
-            padding: 8px 14px;
+            min-height: 44px;
+            padding: 0 14px;
             border-radius: var(--r-sm);
             font-size: 12px;
             font-weight: 500;
             transition: background 0.15s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .na-cta:hover { background: #000; }
     </style>
@@ -1216,10 +1223,6 @@
 
 <script>
 'use strict';
-
-// ── Supabase config ──────────────────────────────────────────────────────────
-const SUPABASE_URL  = 'https://bupqagkrcvrezjkdbald.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cHFhZ2tyY3ZyZXpqa2RiYWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDU1NTMsImV4cCI6MjA5MjAyMTU1M30.oszdUJIEKMCvpD9XFzTYTCYXj078uwjzFx84tfStfRU';
 
 const RATES = {
     USD: 7.25, EUR: 7.85, GBP: 9.15, CAD: 5.30,
@@ -1441,9 +1444,29 @@ const normTs = (ts) => {
 // ── Filtering & rendering ──
 let products = [];
 const PAGE_SIZE = 60;
-let filteredProducts = [];
 let currentPage = 1;
 let catalogPhase = 'loading';
+let catalogMeta = {
+    total: 0,
+    page_count: 1,
+    average_discount: 0,
+    facets: {},
+    catalog: { total: 0, max_discount: 0, last_updated: '' },
+};
+let catalogRequestSequence = 0;
+let catalogController = null;
+let newArrivalsShown = false;
+const catalogPageCache = new Map();
+
+const decorate = p => ({
+    ...p,
+    last_updated: normTs(p.last_updated),
+    sizes:      Array.isArray(p.sizes)      ? p.sizes      : parseMaybeJson(p.sizes, []),
+    size_stock: typeof p.size_stock === 'object' ? p.size_stock : parseMaybeJson(p.size_stock, {}),
+    _brand:     p._brand || brandKey(p),
+    _series:    p._series || extractSeries(productName(p), p),
+    _platform:  p._platform || platformKey(p),
+});
 
 const filterProducts = () => {
     const q = state.q.trim().toLowerCase();
@@ -1645,7 +1668,7 @@ const buildSelect = (selectId, options, key) => {
             state[key] = el.value;
             el.classList.toggle('active', el.value !== 'all');
             writeURL();
-            render();
+            void loadCatalog({ resetPage: true });
         });
         el.dataset.bound = '1';
     }
@@ -1674,9 +1697,9 @@ const filterExcept = (exclude) => {
 };
 
 const computeStats = () => {
-    const total = products.length;
-    const maxDisc = Math.max(...products.map(p => p.discount_pct || 0));
-    const lastUpdated = products.map(p => p.last_updated).filter(Boolean).sort().pop() || '';
+    const total = Number(catalogMeta.catalog?.total) || 0;
+    const maxDisc = Number(catalogMeta.catalog?.max_discount) || 0;
+    const lastUpdated = normTs(catalogMeta.catalog?.last_updated || '');
     const fmtUpdated = (() => {
         if (!lastUpdated) return '—';
         const [datePart, timePart] = lastUpdated.split(' ');
@@ -1697,7 +1720,7 @@ const countBy = (key) => {
 
 // Each facet's counts are computed from products filtered by ALL OTHER active facets,
 // so picking a region immediately updates the category/series/gender counts.
-const initFilters = () => {
+const initFiltersLegacy = () => {
     const countIn = (arr, fn) => {
         const m = {};
         for (const p of arr) { const k = fn(p); if (k == null) continue; m[k] = (m[k] || 0) + 1; }
@@ -1799,55 +1822,137 @@ const initFilters = () => {
     ], 'series');
 };
 
+const initFilters = () => {
+    const readFacet = key => {
+        const value = catalogMeta.facets?.[key];
+        return value && typeof value === 'object'
+            ? { total: Number(value.total) || 0, counts: value.counts || {} }
+            : { total: 0, counts: {} };
+    };
+
+    const brandFacet = readFacet('brand');
+    const brandOrder = ['arcteryx', 'burton', 'patagonia'];
+    buildSelect('brand-select', [
+        { value: 'all', label: '全部品牌', count: brandFacet.total },
+        ...brandOrder.map(key => ({
+            value: key,
+            label: BRAND[key]?.label || key,
+            count: Number(brandFacet.counts[key]) || 0,
+            disabled: !brandFacet.counts[key] && state.brand !== key,
+        })),
+    ], 'brand');
+
+    const platformFacet = readFacet('platform');
+    const platformOrder = ['arcteryx_outlet','burton','backcountry','mec','evo','rei'];
+    const platformKeys = [...new Set([...platformOrder, ...Object.keys(platformFacet.counts)])];
+    buildSelect('platform-select', [
+        { value: 'all', label: '全部平台', count: platformFacet.total },
+        ...platformKeys.map(key => ({
+            value: key,
+            label: PLATFORM[key]?.label || key,
+            count: Number(platformFacet.counts[key]) || 0,
+            disabled: !platformFacet.counts[key] && state.platform !== key,
+        })),
+    ], 'platform');
+
+    const regionFacet = readFacet('region');
+    const regionOrder = ['us', 'ca', 'gb', 'au', 'de', 'fr', 'nl', 'se', 'at', 'ch', 'jp', 'it', 'es', 'dk', 'be'];
+    const regionKeys = new Set(Object.keys(regionFacet.counts));
+    if (state.region !== 'all') regionKeys.add(state.region);
+    const presentRegions = [...regionKeys].sort((left, right) => {
+        const leftIndex = regionOrder.indexOf(left);
+        const rightIndex = regionOrder.indexOf(right);
+        return (leftIndex === -1 ? 99 : leftIndex) - (rightIndex === -1 ? 99 : rightIndex);
+    });
+    buildSelect('region-select', [
+        { value: 'all', label: '全部地区', count: regionFacet.total },
+        ...presentRegions.map(region => ({
+            value: region,
+            label: `${REGION_FLAG[region] || ''} ${REGION_LABEL[region] || region.toUpperCase()}`,
+            count: Number(regionFacet.counts[region]) || 0,
+        })),
+    ], 'region');
+
+    const genderFacet = readFacet('gender');
+    buildSelect('gender-select', [
+        { value: 'all', label: '不限性别', count: genderFacet.total },
+        ...['women', 'men', 'unknown']
+            .filter(gender => genderFacet.counts[gender] || state.gender === gender)
+            .map(gender => ({
+                value: gender,
+                label: GENDER_LABEL[gender],
+                count: Number(genderFacet.counts[gender]) || 0,
+            })),
+    ], 'gender');
+
+    const categoryFacet = readFacet('category');
+    const categoryOrder = ['冲锋衣','保暖羽绒','卫衣/抓绒','裤装','鞋类','滑雪板','固定器','背包','上衣','内衣','手套','帽子','Veilance','其他'];
+    const categories = Object.entries(categoryFacet.counts).sort((left, right) => {
+        const leftIndex = categoryOrder.indexOf(left[0]);
+        const rightIndex = categoryOrder.indexOf(right[0]);
+        if (leftIndex !== -1 && rightIndex !== -1) return leftIndex - rightIndex;
+        if (leftIndex !== -1) return -1;
+        if (rightIndex !== -1) return 1;
+        return Number(right[1]) - Number(left[1]);
+    });
+    if (state.category !== 'all' && !categoryFacet.counts[state.category]) {
+        categories.push([state.category, 0]);
+    }
+    buildSelect('category-select', [
+        { value: 'all', label: '全部品类', count: categoryFacet.total },
+        ...categories.map(([category, count]) => ({ value: category, label: category, count: Number(count) || 0 })),
+    ], 'category');
+
+    const seriesFacet = readFacet('series');
+    const series = Object.entries(seriesFacet.counts).sort((left, right) => {
+        if (left[0] === '其他') return 1;
+        if (right[0] === '其他') return -1;
+        return left[0].localeCompare(right[0], 'en', { sensitivity: 'base' });
+    });
+    if (state.series !== 'all' && !seriesFacet.counts[state.series]) series.push([state.series, 0]);
+    buildSelect('series-select', [
+        { value: 'all', label: '全部系列', count: seriesFacet.total },
+        ...series.map(([value, count]) => ({ value, label: value, count: Number(count) || 0 })),
+    ], 'series');
+};
+
 const renderPage = () => {
     const grid = document.getElementById('grid');
     const pager = document.getElementById('pager');
-    const pageCount = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
-    currentPage = Math.min(Math.max(currentPage, 1), pageCount);
+    const total = Number(catalogMeta.total) || 0;
+    const pageCount = Math.max(1, Number(catalogMeta.page_count) || 1);
+    currentPage = Math.min(Math.max(Number(catalogMeta.page) || currentPage, 1), pageCount);
     const start = (currentPage - 1) * PAGE_SIZE;
-    const pageProducts = filteredProducts.slice(start, start + PAGE_SIZE);
+    const pageProducts = products;
 
-    if (!pageProducts.length && catalogPhase === 'preview') {
-        grid.innerHTML = `<div class="empty"><p style="color:var(--text-3);font-size:14px">正在搜索完整目录…</p></div>`;
-    } else if (!pageProducts.length) {
+    if (!pageProducts.length) {
         grid.innerHTML = `<div class="empty"><h3>没有符合条件的商品</h3><p>试试调整筛选或清除条件</p></div>`;
     } else {
         grid.innerHTML = pageProducts.map(buildCard).join('');
     }
-    document.getElementById('result-count').textContent = filteredProducts.length;
-    const avg = filteredProducts.length
-        ? Math.round(filteredProducts.reduce((sum, p) => sum + (p.discount_pct || 0), 0) / filteredProducts.length)
-        : 0;
+    document.getElementById('result-count').textContent = total;
+    const avg = Number(catalogMeta.average_discount) || 0;
     document.getElementById('result-avg').textContent = '−' + avg + '%';
 
-    pager.hidden = filteredProducts.length <= PAGE_SIZE;
+    pager.hidden = total <= PAGE_SIZE;
     document.getElementById('page-prev').disabled = currentPage <= 1;
     document.getElementById('page-next').disabled = currentPage >= pageCount;
-    document.getElementById('page-status').textContent = filteredProducts.length
-        ? `第 ${currentPage} / ${pageCount} 页 · ${start + 1}-${Math.min(start + PAGE_SIZE, filteredProducts.length)} 件`
+    document.getElementById('page-status').textContent = total
+        ? `第 ${currentPage} / ${pageCount} 页 · ${start + 1}-${Math.min(start + pageProducts.length, total)} 件`
         : '';
 };
 
 const render = () => {
-    currentPage = 1;
-    initFilters();
-    filteredProducts = sortProducts(filterProducts());
-    renderPage();
-    // Sync filter select values + active styling
-    [['brand-select','brand'],['platform-select','platform'],['region-select','region'],['gender-select','gender'],['category-select','category'],['series-select','series']]
-        .forEach(([id, key]) => {
-            const el = document.getElementById(id);
-            if (el) { el.value = state[key]; el.classList.toggle('active', state[key] !== 'all'); }
-        });
+    void loadCatalog({ resetPage: true });
 };
 
 const initPager = () => {
     const changePage = (delta) => {
-        const pageCount = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
+        const pageCount = Math.max(1, Number(catalogMeta.page_count) || 1);
         const nextPage = Math.min(Math.max(currentPage + delta, 1), pageCount);
         if (nextPage === currentPage) return;
         currentPage = nextPage;
-        renderPage();
+        void loadCatalog();
         document.getElementById('filter-bar').scrollIntoView({ block: 'start' });
     };
     document.getElementById('page-prev').addEventListener('click', () => changePage(-1));
@@ -1918,14 +2023,162 @@ const setCatalogPhase = (phase, label = '') => {
     document.getElementById('catalog-status').textContent = label;
 };
 
-const showProducts = (rows, phase, label = '') => {
-    if (!rows.length) return false;
-    products = rows;
-    setCatalogPhase(phase, label);
-    computeStats();
-    render();
-    return true;
+const isDefaultCatalogView = () =>
+    !state.q &&
+    state.brand === 'all' &&
+    state.platform === 'all' &&
+    state.gender === 'all' &&
+    state.category === 'all' &&
+    state.series === 'all' &&
+    state.sort === 'discount_desc' &&
+    currentPage === 1;
+
+const localMidnightIso = () => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
 };
+
+const buildCatalogURL = page => {
+    const params = new URLSearchParams({
+        page: String(page),
+        limit: String(PAGE_SIZE),
+        since: localMidnightIso(),
+    });
+    for (const key of ['brand', 'platform', 'region', 'gender', 'category', 'series']) {
+        if (state[key] && state[key] !== 'all') params.set(key, state[key]);
+    }
+    if (state.q.trim()) params.set('q', state.q.trim());
+    if (state.sort !== 'discount_desc') params.set('sort', state.sort);
+    return `/api/catalog?${params.toString()}`;
+};
+
+const rememberCatalogPage = (url, payload) => {
+    catalogPageCache.delete(url);
+    catalogPageCache.set(url, { savedAt: Date.now(), payload });
+    while (catalogPageCache.size > 3) {
+        catalogPageCache.delete(catalogPageCache.keys().next().value);
+    }
+};
+
+async function fetchCatalogPayload(url, signal) {
+    const cached = catalogPageCache.get(url);
+    if (cached && Date.now() - cached.savedAt < 60_000) return cached.payload;
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+        credentials: 'same-origin',
+        signal,
+    });
+    if (!response.ok) throw new Error(`Catalog API returned HTTP ${response.status}`);
+    const payload = await response.json();
+    if (!payload || !Array.isArray(payload.rows) || !payload.facets || !payload.catalog) {
+        throw new Error('Catalog API returned an invalid response');
+    }
+    rememberCatalogPage(url, payload);
+    return payload;
+}
+
+function fallbackCatalogMeta(rows) {
+    const count = getter => {
+        const counts = {};
+        for (const product of rows) {
+            const value = getter(product);
+            if (value == null || value === '') continue;
+            counts[value] = (counts[value] || 0) + 1;
+        }
+        return { total: rows.length, counts };
+    };
+    const maxDiscount = rows.reduce((maximum, product) => Math.max(maximum, Number(product.discount_pct) || 0), 0);
+    const lastUpdated = rows.map(product => product.last_updated || '').sort().pop() || '';
+    const averageDiscount = rows.length
+        ? Math.round(rows.reduce((sum, product) => sum + (Number(product.discount_pct) || 0), 0) / rows.length)
+        : 0;
+    return {
+        page: 1,
+        page_count: 1,
+        page_size: PAGE_SIZE,
+        total: rows.length,
+        average_discount: averageDiscount,
+        stale: true,
+        facets: {
+            brand: count(product => product._brand || brandKey(product)),
+            platform: count(product => product._platform || platformKey(product)),
+            region: count(product => product.region),
+            gender: count(product => product.gender),
+            category: count(product => product._category || ((product.category && product.category !== '其他') ? product.category : inferCategory(productName(product), product.url))),
+            series: count(product => product._series || extractSeries(productName(product), product)),
+        },
+        catalog: { total: rows.length, max_discount: maxDiscount, last_updated: lastUpdated },
+        new_arrivals: { count: 0, rows: [], suppressed: false },
+    };
+}
+
+async function loadCatalog({ resetPage = false } = {}) {
+    if (resetPage) currentPage = 1;
+    const sequence = ++catalogRequestSequence;
+    if (catalogController) catalogController.abort();
+    catalogController = new AbortController();
+    const url = buildCatalogURL(currentPage);
+    setCatalogPhase('loading', products.length ? '· 正在更新' : '· 正在载入');
+
+    try {
+        const payload = await fetchCatalogPayload(url, catalogController.signal);
+        if (sequence !== catalogRequestSequence) return;
+        products = visibleProducts(payload.rows).map(decorate);
+        catalogMeta = payload;
+        currentPage = Number(payload.page) || currentPage;
+        setCatalogPhase(payload.stale ? 'stale' : 'complete', payload.stale ? '· 延迟数据' : '');
+        computeStats();
+        initFilters();
+        renderPage();
+
+        if (isDefaultCatalogView()) {
+            try {
+                localStorage.setItem(
+                    productPreviewCacheKey(state.region),
+                    serializeProductPreviewCache(payload.rows, state.region),
+                );
+            } catch (_) {}
+        }
+
+        maybeShowNewArrivals(payload.new_arrivals);
+        if (currentPage < Number(payload.page_count || 1)) {
+            const nextUrl = buildCatalogURL(currentPage + 1);
+            setTimeout(() => { void fetchCatalogPayload(nextUrl).catch(() => {}); }, 0);
+        }
+    } catch (error) {
+        if (error?.name === 'AbortError' || sequence !== catalogRequestSequence) return;
+        console.warn('Catalog API load failed:', error);
+        if (products.length) {
+            setCatalogPhase('stale', '· 暂时离线');
+            return;
+        }
+
+        let cachedRows = [];
+        if (isDefaultCatalogView()) {
+            try {
+                cachedRows = parseProductPreviewCache(
+                    localStorage.getItem(productPreviewCacheKey(state.region)),
+                    state.region,
+                ).slice(0, PAGE_SIZE).map(decorate);
+            } catch (_) {}
+        }
+        if (cachedRows.length) {
+            products = visibleProducts(cachedRows);
+            catalogMeta = fallbackCatalogMeta(products);
+            setCatalogPhase('preview-only', '· 缓存预览');
+            computeStats();
+            initFilters();
+            renderPage();
+            return;
+        }
+
+        setCatalogPhase('error', '· 加载失败');
+        document.getElementById('grid').innerHTML =
+            `<div class="empty"><h3>暂时无法加载商品</h3><p>请稍后刷新重试</p></div>`;
+        document.getElementById('pager').hidden = true;
+    }
+}
 
 async function init() {
     readURL();
@@ -1933,130 +2186,11 @@ async function init() {
     initSort();
     initReset();
     initPager();
-
-    // Show loading skeleton
+    try { localStorage.removeItem('products_cache_v1'); } catch (_) {}
     document.getElementById('grid').innerHTML =
         `<div class="empty"><p style="color:var(--text-3);font-size:14px">加载数据中…</p></div>`;
     setCatalogPhase('loading', '· 正在载入');
-
-    // 旧版完整表缓存会制造多份大对象；只保留与 App 同量级的 200 件预览。
-    try { localStorage.removeItem('products_cache_v1'); } catch (_) {}
-    const LIST_COLUMNS = [
-        'sku_id', 'brand', 'model', 'full_name', 'description', 'category', 'color',
-        'original_price', 'sale_price', 'discount_pct', 'currency', 'symbol',
-        'gender', 'image_url', 'region', 'url', 'dealer', 'last_updated',
-        'first_seen', 'status', 'last_seen_at', 'url_http_status', 'sizes', 'size_stock',
-    ].join(',');
-    const decorate = p => ({
-        ...p,
-        last_updated: normTs(p.last_updated),
-        sizes:      Array.isArray(p.sizes)      ? p.sizes      : (p.sizes      ? JSON.parse(p.sizes)      : []),
-        size_stock: typeof p.size_stock === 'object' ? p.size_stock : (p.size_stock ? JSON.parse(p.size_stock) : {}),
-        _brand:     brandKey(p),
-        _series:    extractSeries(productName(p), p),
-        _platform:  platformKey(p),
-    });
-
-    const previewRegion = state.region === 'all' ? 'all' : state.region;
-    const previewCacheKey = productPreviewCacheKey(previewRegion);
-    let previewShown = false;
-    try {
-        const cachedRows = parseProductPreviewCache(
-            localStorage.getItem(previewCacheKey),
-            previewRegion,
-        );
-        previewShown = showProducts(
-            visibleProducts(cachedRows).map(decorate),
-            'preview',
-            '· 正在补全',
-        );
-    } catch (_) {
-        // Storage failures must never block the live catalog.
-    }
-
-    let authoritativeRowsLoaded = false;
-    try {
-        const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-        try {
-            let previewQuery = db
-                .from('products')
-                .select(LIST_COLUMNS)
-                .order('discount_pct', { ascending: false })
-                .order('sku_id', { ascending: true })
-                .limit(PRODUCT_PREVIEW_LIMIT);
-            if (previewRegion !== 'all') previewQuery = previewQuery.eq('region', previewRegion);
-            const { data: previewData, error: previewError } = await previewQuery;
-            if (previewError) throw previewError;
-            const previewRows = visibleProducts(previewData || []);
-            if (previewRows.length) {
-                previewShown = showProducts(
-                    previewRows.map(decorate),
-                    'preview',
-                    '· 正在补全',
-                );
-                try {
-                    localStorage.setItem(
-                        previewCacheKey,
-                        serializeProductPreviewCache(previewRows, previewRegion),
-                    );
-                } catch (_) {
-                    // A cache write failure must not affect live results.
-                }
-            }
-        } catch (previewError) {
-            console.warn('Startup preview load failed; continuing with the full catalog:', previewError);
-        }
-
-        const PAGE = 1000;
-        const loadedProducts = [];
-        for (let offset = 0; ; offset += PAGE) {
-            const { data, error } = await db
-                .from('products')
-                .select(LIST_COLUMNS)
-                .order('sku_id', { ascending: true })
-                .range(offset, offset + PAGE - 1);
-            if (error) throw error;
-            if (!data || !data.length) break;
-            loadedProducts.push(...visibleProducts(data).map(decorate));
-            if (!previewShown) {
-                previewShown = showProducts(
-                    loadedProducts,
-                    'preview',
-                    '· 正在补全',
-                );
-            }
-            if (data.length < PAGE) break;
-            if (offset > 50000) break; // safety
-        }
-        authoritativeRowsLoaded = showProducts(loadedProducts, 'complete');
-    } catch (e) {
-        console.warn('Supabase load failed, falling back to data.js:', e);
-        // Graceful fallback: load data.js dynamically
-        await new Promise((res, rej) => {
-            const s = document.createElement('script');
-            s.src = 'data.js';
-            s.onload = res;
-            s.onerror = rej;
-            document.head.appendChild(s);
-        }).catch(() => {});
-        const fallbackRows = (typeof PRODUCTS !== 'undefined' ? PRODUCTS : [])
-            .filter(p => !isBlockedProduct(p))
-            .map(decorate);
-        authoritativeRowsLoaded = showProducts(fallbackRows, 'fallback', '· 离线数据');
-        if (!authoritativeRowsLoaded && previewShown) {
-            setCatalogPhase('preview-only', '· 预览数据');
-        } else if (!authoritativeRowsLoaded) {
-            setCatalogPhase('error', '· 加载失败');
-            document.getElementById('grid').innerHTML =
-                `<div class="empty"><h3>暂时无法加载商品</h3><p>请稍后刷新重试</p></div>`;
-        }
-    }
-
-    // dealer 数据 (Burton/Backcountry/MEC/EVO/REI) 现已并入 Supabase products 表 (dealer 列区分)
-    // 不再 fetch dealers/results.json — 单一数据源 = Supabase
-
-    if (authoritativeRowsLoaded) maybeShowNewArrivals();
+    await loadCatalog();
 }
 
 // ── 今日上新弹窗 ──────────────────────────────────────────────────────────
@@ -2067,39 +2201,30 @@ function todayKey() {
            String(d.getMonth() + 1).padStart(2, '0') + '-' +
            String(d.getDate()).padStart(2, '0');
 }
-function maybeShowNewArrivals() {
+function maybeShowNewArrivals(newArrivals) {
+    if (newArrivalsShown) return;
     const today = todayKey();
     try {
         if (localStorage.getItem('naDismissed') === today) return;
     } catch (_) {}
 
-    // 今天 00:00 本地时间起新增的（first_seen 是 ISO，浏览器 Date 解析自动转本地）
-    // 仅限当前选中国家 — 弹窗与用户筛选的国家一致, 避免用户在 US 站看到 DE/FR 上新
-    const startMs = new Date(today + 'T00:00:00').getTime();
     const regionFilter = state.region;
-    const newOnes = products.filter(p => {
-        if (regionFilter !== 'all' && p.region !== regionFilter) return false;
-        if (!p.first_seen) return false;
-        const t = Date.parse(p.first_seen);
-        return !isNaN(t) && t >= startMs;
-    });
-    if (newOnes.length === 0) return;
-    // 阈值防炸: 单日 "新增" 超过 200 件几乎一定是 stale-delete+re-insert 把
-    // first_seen 全刷新了，不是真新品。这种情况不弹（避免误报）
-    if (newOnes.length > 200) {
-        console.warn(`[na] ${newOnes.length} items marked new today (region=${regionFilter}) — likely false positive, skipping modal`);
+    const newCount = Number(newArrivals?.count) || 0;
+    const newOnes = Array.isArray(newArrivals?.rows)
+        ? visibleProducts(newArrivals.rows).map(decorate)
+        : [];
+    if (!newCount || newArrivals?.suppressed || !newOnes.length) {
+        if (newArrivals?.suppressed) {
+            console.warn(`[na] ${newCount} items marked new today (region=${regionFilter}) — likely false positive, skipping modal`);
+        }
         return;
     }
 
-    // 取 top 12，按折扣率优先
-    const top = newOnes
-        .slice()
-        .sort((a, b) => (b.discount_pct || 0) - (a.discount_pct || 0))
-        .slice(0, 12);
+    const top = newOnes.slice(0, 12);
 
     const overlay = document.getElementById('na-overlay');
     const grid = document.getElementById('na-grid');
-    document.getElementById('na-count').textContent = newOnes.length;
+    document.getElementById('na-count').textContent = newCount;
     // 日期 + 当前国家标签 (e.g. "2026-05-16 · 🇺🇸 美国" / "2026-05-16 · 全部地区")
     const regionLabel = regionFilter === 'all'
         ? '全部地区'
@@ -2129,6 +2254,7 @@ function maybeShowNewArrivals() {
     }).join('');
 
     overlay.hidden = false;
+    newArrivalsShown = true;
     requestAnimationFrame(() => overlay.classList.add('show'));
 
     function close() {

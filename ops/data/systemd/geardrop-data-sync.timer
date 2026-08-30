@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh the GearDrop versioned data release
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=15min
+RandomizedDelaySec=60s
+Persistent=true
+Unit=geardrop-data-sync.service
+
+[Install]
+WantedBy=timers.target

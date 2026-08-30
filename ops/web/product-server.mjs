@@ -3,6 +3,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import catalogHandler from '../../api/catalog.mjs';
 import productHandler from '../../api/product.mjs';
 
 function sendText(req, res, status, body, extraHeaders = {}) {
@@ -22,7 +23,10 @@ function parsePort(value) {
   return port;
 }
 
-export function createProductServer({ handler = productHandler } = {}) {
+export function createProductServer({
+  handler = productHandler,
+  catalog = catalogHandler,
+} = {}) {
   const server = http.createServer(async (req, res) => {
     const url = new URL(req.url || '/', 'http://127.0.0.1');
 
@@ -33,12 +37,17 @@ export function createProductServer({ handler = productHandler } = {}) {
       return sendText(req, res, 200, 'ok\n');
     }
 
-    if (url.pathname !== '/p') return sendText(req, res, 404, 'not found\n');
+    const routeHandler = url.pathname === '/p'
+      ? handler
+      : url.pathname === '/api/catalog'
+        ? catalog
+        : null;
+    if (!routeHandler) return sendText(req, res, 404, 'not found\n');
 
     try {
-      await handler(req, res);
+      await routeHandler(req, res);
     } catch (error) {
-      console.error('product_handler_failed', error);
+      console.error('public_handler_failed', { pathname: url.pathname, error });
       if (!res.headersSent) return sendText(req, res, 503, 'temporarily unavailable\n');
       res.destroy();
     }

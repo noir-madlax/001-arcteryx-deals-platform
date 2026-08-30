@@ -670,44 +670,48 @@ def render_insight_sitemap(summary: dict[str, Any]) -> str:
     )
 
 
-def build_outputs(rows: list[dict[str, Any]]) -> dict[Path, str]:
+def build_outputs(
+    rows: list[dict[str, Any]], output_root: Path = ROOT
+) -> dict[Path, str]:
     normalized = normalize_rows(rows)
     if not normalized:
         raise ValueError("Refusing to generate an empty product sitemap")
     summary = build_summary(normalized)
     return {
-        ROOT / "sitemap-products.xml": render_product_sitemap(normalized),
-        ROOT / "sitemap-insights.xml": render_insight_sitemap(summary),
-        ROOT / "catalog-status.json": json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
-        ROOT / "catalog-status.html": render_status_html(summary),
-        ROOT / "en" / "catalog-status.html": render_status_html(summary, "en-US"),
-        ROOT / "insights" / "catalog-coverage.html": render_catalog_coverage_html(summary, "zh-CN"),
-        ROOT / "en" / "insights" / "catalog-coverage.html": render_catalog_coverage_html(summary, "en-US"),
-        ROOT / "insights" / "brand-source-matrix.html": render_brand_source_matrix_html(summary, "zh-CN"),
-        ROOT / "en" / "insights" / "brand-source-matrix.html": render_brand_source_matrix_html(summary, "en-US"),
-        ROOT / "insights" / "regional-coverage.html": render_regional_coverage_html(summary, "zh-CN"),
-        ROOT / "en" / "insights" / "regional-coverage.html": render_regional_coverage_html(summary, "en-US"),
+        output_root / "sitemap-products.xml": render_product_sitemap(normalized),
+        output_root / "sitemap-insights.xml": render_insight_sitemap(summary),
+        output_root / "catalog-status.json": json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+        output_root / "catalog-status.html": render_status_html(summary),
+        output_root / "en" / "catalog-status.html": render_status_html(summary, "en-US"),
+        output_root / "insights" / "catalog-coverage.html": render_catalog_coverage_html(summary, "zh-CN"),
+        output_root / "en" / "insights" / "catalog-coverage.html": render_catalog_coverage_html(summary, "en-US"),
+        output_root / "insights" / "brand-source-matrix.html": render_brand_source_matrix_html(summary, "zh-CN"),
+        output_root / "en" / "insights" / "brand-source-matrix.html": render_brand_source_matrix_html(summary, "en-US"),
+        output_root / "insights" / "regional-coverage.html": render_regional_coverage_html(summary, "zh-CN"),
+        output_root / "en" / "insights" / "regional-coverage.html": render_regional_coverage_html(summary, "en-US"),
     }
 
 
-def write_or_check(outputs: dict[Path, str], check: bool) -> int:
+def write_or_check(
+    outputs: dict[Path, str], check: bool, output_root: Path = ROOT
+) -> int:
     stale: list[str] = []
     for path, expected in outputs.items():
         if check:
             actual = path.read_text(encoding="utf-8") if path.exists() else None
             if actual != expected:
-                stale.append(str(path.relative_to(ROOT)))
+                stale.append(str(path.relative_to(output_root)))
             continue
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(expected, encoding="utf-8")
-        print(f"wrote {path.relative_to(ROOT)} ({len(expected):,} bytes)")
+        print(f"wrote {path.relative_to(output_root)} ({len(expected):,} bytes)")
     if stale:
         print("Generated catalog GEO assets are stale:", file=sys.stderr)
         for path in stale:
             print(f"- {path}", file=sys.stderr)
         return 1
     if check:
-        summary = json.loads(outputs[ROOT / "catalog-status.json"])
+        summary = json.loads(outputs[output_root / "catalog-status.json"])
         print(
             "Catalog GEO assets are current: "
             f"products={summary['active_product_urls']} "
@@ -728,11 +732,18 @@ def main() -> int:
         default=ROOT / "product-detail.html",
         help="HTML file containing the public Supabase config",
     )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=ROOT,
+        help="Write generated assets under this directory",
+    )
     args = parser.parse_args()
 
     rows = fetch_online_rows(args.template) if args.online else load_input_rows(args.input)
     print(f"catalog rows fetched={len(rows)}", file=sys.stderr)
-    return write_or_check(build_outputs(rows), args.check)
+    output_root = args.output_dir.resolve()
+    return write_or_check(build_outputs(rows, output_root), args.check, output_root)
 
 
 if __name__ == "__main__":

@@ -81,6 +81,17 @@ if [ "$INVALID_STATUS" != "404" ]; then
   exit 1
 fi
 
+CATALOG_STATUS=$(curl --max-time 60 -sS -o "$TMP_BODY" -w '%{http_code}' \
+  "http://127.0.0.1:$SMOKE_PORT/api/catalog?region=us&limit=1")
+if [ "$CATALOG_STATUS" != "200" ] || ! /usr/bin/node -e '
+  const fs = require("fs");
+  const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+  if (!Array.isArray(value.rows) || value.rows.length > 1 || !value.data_revision) process.exit(1);
+' "$TMP_BODY"; then
+  echo "Candidate catalog smoke failed: status=$CATALOG_STATUS" >&2
+  exit 1
+fi
+
 SAMPLE_LOC=$(grep -F -m 1 "<loc>$PRIMARY_ORIGIN/" \
   "$RELEASE/static/sitemap-products.xml" || true)
 SAMPLE_PATH=${SAMPLE_LOC#*<loc>$PRIMARY_ORIGIN}
@@ -145,8 +156,27 @@ if [ "$LIVE_STATUS" != "200" ] || ! grep -q '<link rel="canonical"' "$TMP_BODY";
   exit 1
 fi
 
+LIVE_CATALOG_STATUS=$(curl --max-time 60 -sS -o "$TMP_BODY" -w '%{http_code}' \
+  "http://127.0.0.1:$PRODUCT_PORT/api/catalog?region=us&limit=1")
+if [ "$LIVE_CATALOG_STATUS" != "200" ] || ! /usr/bin/node -e '
+  const fs = require("fs");
+  const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+  if (!Array.isArray(value.rows) || value.rows.length > 1 || !value.data_revision) process.exit(1);
+' "$TMP_BODY"; then
+  rollback
+  exit 1
+fi
+
 # Pick up deploy-script improvements only after the new release passes.
 sudo -n install -m 0755 "$SOURCE/ops/web/deploy-server.sh" \
   /usr/local/libexec/geardrop-deploy-server
+sudo -n install -m 0755 "$SOURCE/ops/data/sync-data-release.sh" \
+  /usr/local/libexec/geardrop-sync-data
+sudo -n install -m 0644 "$SOURCE/ops/data/systemd/geardrop-data-sync.service" \
+  /etc/systemd/system/geardrop-data-sync.service
+sudo -n install -m 0644 "$SOURCE/ops/data/systemd/geardrop-data-sync.timer" \
+  /etc/systemd/system/geardrop-data-sync.timer
+sudo -n systemctl daemon-reload
+sudo -n systemctl enable --now geardrop-data-sync.timer
 
 echo "deployed=$REVISION previous=${CURRENT_REVISION:-none}"

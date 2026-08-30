@@ -12,14 +12,21 @@ async function listen(server) {
   return `http://127.0.0.1:${server.address().port}`;
 }
 
-test('direct product server exposes only healthz and /p', async (t) => {
-  const requests = [];
+test('direct public server exposes only healthz, /p, and /api/catalog', async (t) => {
+  const productRequests = [];
+  const catalogRequests = [];
   const server = createProductServer({
     handler: async (req, res) => {
-      requests.push(req.url);
+      productRequests.push(req.url);
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/plain');
       res.end(`handled ${req.url}`);
+    },
+    catalog: async (req, res) => {
+      catalogRequests.push(req.url);
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.end('{"rows":[]}');
     },
   });
   t.after(() => new Promise((resolve) => server.close(resolve)));
@@ -39,7 +46,11 @@ test('direct product server exposes only healthz and /p', async (t) => {
   const product = await fetch(`${base}/p?sku=evo%3Aexample`);
   assert.equal(product.status, 200);
   assert.equal(await product.text(), 'handled /p?sku=evo%3Aexample');
-  assert.deepEqual(requests, ['/p?sku=evo%3Aexample']);
+  const catalog = await fetch(`${base}/api/catalog?region=us`);
+  assert.equal(catalog.status, 200);
+  assert.deepEqual(await catalog.json(), { rows: [] });
+  assert.deepEqual(productRequests, ['/p?sku=evo%3Aexample']);
+  assert.deepEqual(catalogRequests, ['/api/catalog?region=us']);
 });
 
 test('main-module detection resolves symlinked path components', () => {

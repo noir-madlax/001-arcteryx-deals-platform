@@ -46,7 +46,7 @@ done < "$MANIFEST"
 
 git -C "$REPO_ROOT" archive "$COMMIT" -- "${PUBLIC_PATHS[@]}" \
   | tar -xf - -C "$STAGING/static"
-git -C "$REPO_ROOT" archive "$COMMIT" -- api/product.mjs ops/web/product-server.mjs \
+git -C "$REPO_ROOT" archive "$COMMIT" -- api/catalog.mjs api/product.mjs ops/web/product-server.mjs \
   | tar -xf - -C "$STAGING"
 
 # api/product.mjs intentionally reads this public template to recover the
@@ -60,6 +60,7 @@ for required in \
   static/dealers/results.json \
   static/product-detail.html \
   static/sitemap-products.xml \
+  api/catalog.mjs \
   api/product.mjs \
   ops/web/product-server.mjs; do
   if [ ! -s "$STAGING/$required" ]; then

@@ -331,5 +331,5 @@ async function handler(req, res) {
   }
 }
 
-export { canonicalProductUrl, fetchProduct, renderProductPage };
+export { canonicalProductUrl, fetchProduct, publicSupabaseConfig, renderProductPage };
 export default handler;
