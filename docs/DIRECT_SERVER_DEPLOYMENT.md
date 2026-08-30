@@ -17,7 +17,10 @@ function.
 
 The public root is built from `ops/web/public-files.txt`. Repository source,
 SQL, tests, task notes, mobile code, Git metadata, and credentials are not
-copied into it.
+copied into it. The release builder also creates deterministic gzip sidecars
+for public text files of at least 1 KiB. The shared Nginx snippet serves those
+sidecars only when the client advertises gzip support and adds
+`Vary: Accept-Encoding`; unencoded responses remain available.
 
 ## Primary and legacy domains
 
@@ -62,7 +65,9 @@ bash -n ops/web/build-release.sh ops/web/deploy-server.sh
 Each automated release verifies a loopback health endpoint, invalid-SKU 404,
 and a live canonical product sampled from `sitemap-products.xml`. A failed
 candidate is never activated. A failed post-switch smoke restores the previous
-symlink and restarts the prior product service.
+symlink and restarts the prior product service. The release build also rejects
+missing or corrupt compressed variants for the homepage, full catalog, dealer
+results, and product sitemap.
 
 ## Rollback
 

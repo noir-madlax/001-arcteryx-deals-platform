@@ -78,7 +78,43 @@ if [ -n "$FORBIDDEN" ]; then
   exit 1
 fi
 
-STATIC_FILES=$(find "$STAGING/static" -type f | wc -l | tr -d ' ')
+if ! command -v gzip >/dev/null 2>&1; then
+  echo "gzip is required to build precompressed static assets" >&2
+  exit 1
+fi
+
+# Generate deterministic gzip sidecars for text assets. `-n` strips the source
+# name and timestamp so the same Git revision always produces identical bytes.
+# Keep the 1 KiB threshold aligned with Nginx's serving policy; smaller files do
+# not recover the extra filesystem entry and response negotiation overhead.
+COMPRESSED_FILES=0
+while IFS= read -r -d '' asset; do
+  gzip -n -9 -c "$asset" > "$asset.gz"
+  COMPRESSED_FILES=$((COMPRESSED_FILES + 1))
+done < <(find "$STAGING/static" -type f \( \
+  -name '*.css' -o -name '*.html' -o -name '*.js' -o -name '*.json' \
+  -o -name '*.svg' -o -name '*.txt' -o -name '*.webmanifest' \
+  -o -name '*.xml' \
+\) -size +1023c -print0)
+
+for required_compressed in \
+  static/index.html.gz \
+  static/data.js.gz \
+  static/dealers/results.json.gz \
+  static/sitemap-products.xml.gz; do
+  if [ ! -s "$STAGING/$required_compressed" ]; then
+    echo "Release is missing required compressed file: $required_compressed" >&2
+    exit 1
+  fi
+  if ! gzip -cd "$STAGING/$required_compressed" \
+    | cmp -s - "$STAGING/${required_compressed%.gz}"; then
+    echo "Compressed release file does not match its source: $required_compressed" >&2
+    exit 1
+  fi
+done
+
+STATIC_FILES=$(find "$STAGING/static" -type f ! -name '*.gz' | wc -l | tr -d ' ')
 mv "$STAGING" "$OUTPUT"
 trap - EXIT INT TERM
-printf 'release_commit=%s static_files=%s output=%s\n' "$COMMIT" "$STATIC_FILES" "$OUTPUT"
+printf 'release_commit=%s static_files=%s compressed_files=%s output=%s\n' \
+  "$COMMIT" "$STATIC_FILES" "$COMPRESSED_FILES" "$OUTPUT"

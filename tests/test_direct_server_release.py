@@ -1,3 +1,4 @@
+import gzip
 import pathlib
 import shutil
 import subprocess
@@ -21,6 +22,7 @@ class DirectServerReleaseTests(unittest.TestCase):
                 text=True,
             )
             self.assertIn("release_commit=", result.stdout)
+            self.assertIn("compressed_files=", result.stdout)
             self.assertTrue((release / "static/index.html").is_file())
             self.assertTrue((release / "static/en/index.html").is_file())
             self.assertTrue((release / "static/dealers/results.json").is_file())
@@ -39,6 +41,48 @@ class DirectServerReleaseTests(unittest.TestCase):
                 ).strip(),
             )
 
+            compressed_paths = sorted((release / "static").rglob("*.gz"))
+            self.assertTrue(compressed_paths)
+            self.assertTrue((release / "static/index.html.gz").is_file())
+            self.assertTrue((release / "static/data.js.gz").is_file())
+            self.assertTrue(
+                (release / "static/dealers/results.json.gz").is_file()
+            )
+            self.assertTrue(
+                (release / "static/sitemap-products.xml.gz").is_file()
+            )
+            for compressed in compressed_paths:
+                source = compressed.with_suffix("")
+                self.assertTrue(source.is_file(), compressed)
+                encoded = compressed.read_bytes()
+                self.assertEqual(encoded[4:8], b"\x00\x00\x00\x00", compressed)
+                self.assertEqual(
+                    gzip.decompress(encoded), source.read_bytes(), compressed
+                )
+
+            second_release = pathlib.Path(temp_dir) / "release-second"
+            subprocess.run(
+                ["bash", "ops/web/build-release.sh", str(second_release), "HEAD"],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            second_compressed = sorted(
+                path.relative_to(second_release)
+                for path in (second_release / "static").rglob("*.gz")
+            )
+            self.assertEqual(
+                [path.relative_to(release) for path in compressed_paths],
+                second_compressed,
+            )
+            for relative_path in second_compressed:
+                self.assertEqual(
+                    (release / relative_path).read_bytes(),
+                    (second_release / relative_path).read_bytes(),
+                    relative_path,
+                )
+
     def test_operational_templates_keep_scopes_separate(self):
         common = (ROOT / "ops/web/nginx/geardrop-common.conf").read_text()
         primary = (
@@ -54,6 +98,12 @@ class DirectServerReleaseTests(unittest.TestCase):
         deploy_unit = (ROOT / "ops/web/systemd/geardrop-deploy.service").read_text()
         deploy_script = (ROOT / "ops/web/deploy-server.sh").read_text()
         self.assertIn("root /srv/geardrop/current/static;", common)
+        self.assertIn("gzip_static on;", common)
+        self.assertIn("gzip_vary on;", common)
+        self.assertNotIn("gzip_static always;", common)
+        self.assertIn(
+            'Cache-Control "public, max-age=0, must-revalidate"', common
+        )
         self.assertIn("location = /p", common)
         self.assertIn("proxy_pass http://127.0.0.1:4181;", common)
         self.assertIn("DynamicUser=yes", product_unit)
