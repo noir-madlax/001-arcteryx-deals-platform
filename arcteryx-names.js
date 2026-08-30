@@ -30,7 +30,7 @@
         'Lithos', 'Lota', 'Macai', 'Mallow', 'Mantis', 'Metry', 'Metron', 'Micon', 'Mionn',
         'Monitor', 'Motus', 'Naya', 'Nia', 'Nitra', 'Norvan', 'Nuclei', 'Ogee',
         'Olera', 'Olia', 'Orsin', 'Ossa', 'Palisade', 'Palister', 'Patera', 'Phasic',
-        'Practitioner', 'Proton', 'Psiphon', 'Quartic', 'Ralle', 'Rho', 'Rhoam',
+        'Practitioner', 'Proton', 'Psiphon', 'Quartic', 'Quintic', 'Ralle', 'Rho', 'Rhoam',
         'Rhomb', 'Ribbed', 'Rula', 'Rush', 'Sabre', 'Satoro', 'Sawyer', 'Saydi',
         'Secant', 'Sentinel', 'Serratus', 'Sigma', 'Silex', 'Silene', 'Sima', 'Sinsola',
         'Sinsolo', 'Skaha', 'Ski', 'Skyline', 'Solano', 'Sonii', 'Soria', 'Sorin',
