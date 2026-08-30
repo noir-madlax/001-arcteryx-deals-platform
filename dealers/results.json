@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-30 04:29:10",
+  "generated_at": "2026-08-30 07:04:51",
   "dealers": {
     "evo": {
       "name": "EVO",
@@ -47422,7 +47422,7 @@
           "url": "https://www.mec.ca/en/product/6040-484/arcteryx-axios-4-crossbody-unisex",
           "name": "Arc'teryx Axios 4 Crossbody - Unisex",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/products/67681/images/625536/6040484_MNG12__50774.1787086278.1280.1280.jpg?c=1",
-          "color": "Black, Mongoose",
+          "color": "Mongoose",
           "sale_price": 100.0,
           "original_price": 100.0,
           "discount_pct": 0,
@@ -47436,7 +47436,6 @@
             "One Size": "in_stock"
           },
           "colors": [
-            "Black",
             "Mongoose"
           ],
           "price_source_quality": "pdp"
@@ -48503,34 +48502,14 @@
           "url": "https://www.mec.ca/en/product/6032-520/arcteryx-gamma-pant-mens",
           "name": "Arc'teryx Gamma Pant - Men's",
           "image": "https://cdn11.bigcommerce.com/s-xw5rh7060c/products/59741/images/615626/6032520_CLD00__37992.1784846224.1280.1280.jpg?c=1",
-          "color": "Black, Cloud",
-          "sale_price": 156.0,
+          "color": "Cloud",
+          "sale_price": 260.0,
           "original_price": 260.0,
-          "discount_pct": 40,
+          "discount_pct": 0,
           "dealer": "mec",
           "dealer_name": "MEC",
           "region": "CA",
-          "sizes": [
-            "28 Regular",
-            "30 Regular",
-            "32 Regular",
-            "34 Regular",
-            "36 Regular",
-            "38 Regular"
-          ],
-          "size_stock": {
-            "28 Regular": "in_stock",
-            "30 Regular": "in_stock",
-            "32 Regular": "in_stock",
-            "34 Regular": "in_stock",
-            "36 Regular": "in_stock",
-            "38 Regular": "in_stock"
-          },
-          "colors": [
-            "Black",
-            "Cloud"
-          ],
-          "price_source_quality": "pdp"
+          "price_source_quality": "list_fallback"
         },
         {
           "url": "https://www.mec.ca/en/product/6030-106/arcteryx-kyanite-hoodie-mens",
@@ -51890,7 +51869,7 @@
           "price_source_quality": "pdp"
         }
       ],
-      "refreshed_at": "2026-08-30 04:29:10"
+      "refreshed_at": "2026-08-30 07:04:50"
     },
     "rei": {
       "name": "REI",
@@ -69090,7 +69069,6 @@
       "refreshed_at": "2026-08-28 15:56:20"
     }
   },
-  "publication_id": "github-actions-33292346399-1",
   "total": 2177,
   "rejected_dealers": {},
   "retained_dealers": {
