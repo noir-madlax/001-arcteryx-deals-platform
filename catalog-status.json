@@ -3,23 +3,23 @@
   "entity": "GearDrop Outdoor Deals",
   "canonical_url": "https://geardrop.100app.dev/",
   "official_ios_app_url": "https://apps.apple.com/us/app/geardrop-outdoor-deals/id6790165332",
-  "snapshot_observed_at": "2026-08-30T13:55:01+00:00",
-  "active_product_urls": 8099,
+  "snapshot_observed_at": "2026-08-30T15:46:16+00:00",
+  "active_product_urls": 8084,
   "brands": [
     {
       "id": "arcteryx",
       "label": "Arc'teryx",
-      "count": 6419
+      "count": 6401
     },
     {
       "id": "burton",
       "label": "Burton",
-      "count": 1198
+      "count": 1200
     },
     {
       "id": "patagonia",
       "label": "Patagonia",
-      "count": 482
+      "count": 483
     }
   ],
   "platforms": [
@@ -31,12 +31,12 @@
     {
       "id": "evo",
       "label": "EVO",
-      "count": 1466
+      "count": 1469
     },
     {
       "id": "burton",
       "label": "Burton",
-      "count": 330
+      "count": 329
     },
     {
       "id": "mec",
@@ -51,14 +51,14 @@
     {
       "id": "rei",
       "label": "REI",
-      "count": 136
+      "count": 119
     }
   ],
   "regions": [
     {
       "id": "us",
       "label": "美国",
-      "count": 2488
+      "count": 2473
     },
     {
       "id": "ca",
@@ -140,24 +140,24 @@
     {
       "brand_id": "arcteryx",
       "brand": "Arc'teryx",
-      "total": 6419,
+      "total": 6401,
       "platform_counts": {
         "arcteryx_outlet": 5817,
-        "evo": 257,
+        "evo": 256,
         "burton": 0,
         "mec": 209,
         "backcountry": 0,
-        "rei": 136
+        "rei": 119
       }
     },
     {
       "brand_id": "burton",
       "brand": "Burton",
-      "total": 1198,
+      "total": 1200,
       "platform_counts": {
         "arcteryx_outlet": 0,
-        "evo": 727,
-        "burton": 330,
+        "evo": 730,
+        "burton": 329,
         "mec": 0,
         "backcountry": 141,
         "rei": 0
@@ -166,10 +166,10 @@
     {
       "brand_id": "patagonia",
       "brand": "Patagonia",
-      "total": 482,
+      "total": 483,
       "platform_counts": {
         "arcteryx_outlet": 0,
-        "evo": 482,
+        "evo": 483,
         "burton": 0,
         "mec": 0,
         "backcountry": 0,
@@ -181,11 +181,11 @@
     {
       "region_id": "us",
       "region": "United States",
-      "total": 2488,
+      "total": 2473,
       "brand_counts": {
-        "arcteryx": 808,
-        "burton": 1198,
-        "patagonia": 482
+        "arcteryx": 790,
+        "burton": 1200,
+        "patagonia": 483
       }
     },
     {
