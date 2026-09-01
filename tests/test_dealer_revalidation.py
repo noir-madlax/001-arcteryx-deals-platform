@@ -450,6 +450,81 @@ class DealerRevalidationTests(unittest.TestCase):
 
         self.assertEqual(result, {"_unavailable": True})
 
+    def test_evo_browser_snapshot_uses_rendered_product_price_without_legacy_globals(self):
+        snapshot = {
+            "RenderedProductPrice": {
+                "sale": "$589.94",
+                "original": "$779.90",
+                "discounted": True,
+                "available": True,
+            },
+        }
+
+        result = parse_evo_browser_snapshot(
+            snapshot,
+            "https://www.evo.com/products/rendered-bundle",
+        )
+
+        self.assertEqual(result, {
+            "sale_price": 589.94,
+            "original_price": 779.9,
+            "discount_pct": 24,
+        })
+
+    def test_evo_browser_snapshot_uses_rendered_full_price(self):
+        snapshot = {
+            "RenderedProductPrice": {
+                "sale": "$479.95",
+                "original": None,
+                "discounted": False,
+                "available": True,
+            },
+        }
+
+        result = parse_evo_browser_snapshot(
+            snapshot,
+            "https://www.evo.com/products/rendered-full-price",
+        )
+
+        self.assertEqual(result, {
+            "sale_price": 479.95,
+            "original_price": 479.95,
+            "discount_pct": 0,
+        })
+
+    def test_evo_browser_snapshot_fails_closed_without_rendered_compare_at(self):
+        snapshot = {
+            "RenderedProductPrice": {
+                "sale": "$589.94",
+                "original": None,
+                "discounted": True,
+                "available": True,
+            },
+        }
+
+        self.assertIsNone(parse_evo_browser_snapshot(
+            snapshot,
+            "https://www.evo.com/products/rendered-sale-without-original",
+        ))
+
+    def test_evo_browser_snapshot_rejects_rendered_sold_out_product(self):
+        snapshot = {
+            "RenderedProductPrice": {
+                "sale": "$589.94",
+                "original": "$779.90",
+                "discounted": True,
+                "available": False,
+            },
+        }
+
+        self.assertEqual(
+            parse_evo_browser_snapshot(
+                snapshot,
+                "https://www.evo.com/products/rendered-sold-out",
+            ),
+            {"_unavailable": True},
+        )
+
     def test_evo_browser_fallback_triggers_on_any_non_successful_direct_result(self):
         self.assertTrue(_evo_needs_browser_fallback(None))
         self.assertTrue(_evo_needs_browser_fallback({"_err": "http HTTPError"}))

@@ -289,7 +289,27 @@ def parse_evo_browser_snapshot(snapshot: dict, url: str) -> dict | None:
             "original_price": round(orig, 2),
             "discount_pct": _disc(orig, fallback_sale),
         }
-    return None
+    rendered = snapshot.get("RenderedProductPrice") or {}
+    if rendered.get("available") is False:
+        return {"_unavailable": True}
+    if rendered.get("available") is not True:
+        return None
+    sale = _num(rendered.get("sale"))
+    original = _num(rendered.get("original")) if rendered.get("discounted") else sale
+    if not sale or sale <= 0:
+        return None
+    # A red rendered price is a sale. Fail closed unless the corresponding
+    # compare-at value is present in the same product-price container.
+    if rendered.get("discounted") and not original:
+        return None
+    original = original or sale
+    if original < sale:
+        return None
+    return {
+        "sale_price": round(sale, 2),
+        "original_price": round(original, 2),
+        "discount_pct": _disc(original, sale),
+    }
 
 
 def fetch_evo_pdp_browser(page, url: str) -> dict | None:
@@ -304,11 +324,74 @@ def fetch_evo_pdp_browser(page, url: str) -> dict | None:
     if not response or response.status != 200:
         return {"_err": f"http {response.status if response else 'unknown'}"}
     snapshot = page.evaluate(
-        """() => ({
-          ShopifyAnalytics: window.ShopifyAnalytics || null,
-          igProductData: window.igProductData || null,
-          RegiosDOPP_ProductPage: window.RegiosDOPP_ProductPage || null,
-        })"""
+        """() => {
+          const money = /(?:US)?\\$\\s*[0-9][0-9,.]*/;
+          const visible = (element) => {
+            if (!element) return false;
+            const style = window.getComputedStyle(element);
+            return style.display !== 'none' && style.visibility !== 'hidden';
+          };
+          const candidates = Array.from(document.querySelectorAll('[data-price]'))
+            .filter((element) => visible(element) && money.test(element.textContent || ''));
+          const priceNode = candidates.find((element) => element.closest('main,[role="main"]'))
+            || candidates[0]
+            || null;
+          let compareNode = null;
+          let scope = priceNode ? priceNode.parentElement : null;
+          for (let depth = 0; scope && depth < 4 && !compareNode; depth += 1) {
+            compareNode = Array.from(scope.querySelectorAll('s,del,[class*="line-through" i]'))
+              .find((element) => visible(element) && money.test(element.textContent || ''))
+              || null;
+            scope = scope.parentElement;
+          }
+
+          let structuredAvailability = null;
+          for (const script of document.querySelectorAll('script[type="application/ld+json"]')) {
+            try {
+              const parsed = JSON.parse(script.textContent || 'null');
+              const queue = Array.isArray(parsed) ? [...parsed] : [parsed];
+              while (queue.length) {
+                const value = queue.shift();
+                if (!value || typeof value !== 'object') continue;
+                if (Array.isArray(value)) {
+                  queue.push(...value);
+                  continue;
+                }
+                if (value['@graph']) queue.push(value['@graph']);
+                if (value.offers) queue.push(value.offers);
+                const availability = String(value.availability || '');
+                if (/InStock$/i.test(availability)) structuredAvailability = true;
+                if (/OutOfStock$/i.test(availability) && structuredAvailability === null) {
+                  structuredAvailability = false;
+                }
+              }
+            } catch (_) {
+              // Malformed optional structured data must not break price parsing.
+            }
+          }
+          const buttons = Array.from(document.querySelectorAll('button'));
+          const buyButton = buttons.find((button) =>
+            /add to (cart|bag)/i.test(button.textContent || '') && !button.disabled
+          );
+          const soldOutButton = buttons.find((button) =>
+            /(sold out|out of stock|unavailable)/i.test(button.textContent || '')
+          );
+          const available = structuredAvailability !== null
+            ? structuredAvailability
+            : (buyButton ? true : (soldOutButton ? false : null));
+
+          return {
+            ShopifyAnalytics: window.ShopifyAnalytics || null,
+            igProductData: window.igProductData || null,
+            RegiosDOPP_ProductPage: window.RegiosDOPP_ProductPage || null,
+            RenderedProductPrice: {
+              sale: priceNode ? priceNode.textContent : null,
+              original: compareNode ? compareNode.textContent : null,
+              discounted: Boolean(priceNode && /text-red/i.test(String(priceNode.className || ''))),
+              available,
+            },
+          };
+        }"""
     )
     parsed = parse_evo_browser_snapshot(snapshot, url)
     return parsed or {"_err": "no_browser_price"}
