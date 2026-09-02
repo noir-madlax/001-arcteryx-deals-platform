@@ -808,8 +808,10 @@ class DealerScraperTests(unittest.TestCase):
 
     def test_rei_list_urls_paginate_search_results(self):
         scraper = ReiScraper()
+        urls = scraper.list_urls()
+        self.assertEqual(len(urls), 20)
         self.assertEqual(
-            scraper.list_urls(),
+            urls[:4],
             [
                 "https://www.rei.com/search?q=arcteryx",
                 "https://www.rei.com/search?q=arcteryx&page=2",
@@ -817,6 +819,7 @@ class DealerScraperTests(unittest.TestCase):
                 "https://www.rei.com/search?q=arcteryx&page=4",
             ],
         )
+        self.assertEqual(urls[-1], "https://www.rei.com/search?q=arcteryx&page=20")
 
     @patch("dealers.mec.time.sleep")
     @patch("dealers.mec.fetch_pdp")

@@ -54,7 +54,9 @@ class Scraper:
     NAV_TIMEOUT_MS = 45000
     DETAIL_TIMEOUT_MS = 20000
     MIN_LIST_ITEMS = 10
-    DEFAULT_MAX_PAGES = 4
+    # Pagination already stops at the first empty page. Keep enough bounded
+    # headroom for REI changing the number of cards returned per page.
+    DEFAULT_MAX_PAGES = 20
 
     def __init__(self):
         self.crawl_complete = False
