@@ -64,7 +64,10 @@ class PublicationGateTests(unittest.TestCase):
         dealers_workflow = (
             root / ".github" / "workflows" / "refresh-dealers.yml"
         ).read_text(encoding="utf-8")
-        self.assertIn('if [ "$dealer" = "evo" ]', dealers_workflow)
+        self.assertIn(
+            'if [ "$dealer" = "evo" ] || [ "$dealer" = "rei" ]',
+            dealers_workflow,
+        )
         self.assertIn("dealer_timeout=3600", dealers_workflow)
 
     def test_all_primary_refresh_scripts_keep_data_out_of_git(self):

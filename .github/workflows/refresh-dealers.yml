@@ -122,7 +122,8 @@ jobs:
           for dealer in burton backcountry evo rei; do
             echo "[dealers] $dealer"
             dealer_timeout=1800
-            if [ "$dealer" = "evo" ]; then
+            # EVO retries and complete REI PDP enrichment can exceed 30 minutes.
+            if [ "$dealer" = "evo" ] || [ "$dealer" = "rei" ]; then
               dealer_timeout=3600
             fi
             if ! timeout "$dealer_timeout" python -u -m "dealers.$dealer"; then
