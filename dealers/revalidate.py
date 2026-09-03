@@ -741,6 +741,137 @@ def _chunks(rows, size):
     for start in range(0, len(rows), size):
         yield start, rows[start:start + size]
 
+
+_REI_NON_RETRYABLE_ERRORS = {
+    "non_positive_original",
+    "non_positive_sale",
+    "original_below_sale",
+    "product_redirect",
+}
+
+
+def _rei_should_retry(result: dict | None) -> bool:
+    """Retry transient REI reads, but keep deterministic lifecycle results final."""
+    if not result:
+        return True
+    if result.get("_unavailable"):
+        return False
+    error = result.get("_err")
+    return bool(error and error not in _REI_NON_RETRYABLE_ERRORS)
+
+
+def _rei_browser_is_poisoned(result: dict | None) -> bool:
+    """A CF stub or unstable page is browser-scoped; rotate before the next row."""
+    error = str((result or {}).get("_err") or "")
+    return error in {"cf_stub", "unstable_document"} or error.startswith("goto ")
+
+
+def fetch_rei_rows_with_browser_retries(
+    rows,
+    *,
+    attempts: int | None = None,
+    chunk_size: int | None = None,
+    delay: float | None = None,
+    browser_context_factory=None,
+    fetch_fn=None,
+    sleep_fn=None,
+):
+    """Read REI rows with bounded fresh-browser retries.
+
+    REI's Akamai stub is sticky for a Camoufox browser process. A fresh page in
+    the same browser repeats the stub, while a fresh browser can return the real
+    PDP immediately. Queue only transient failures and rotate before retrying;
+    deterministic redirects and unavailability remain final.
+    """
+    rows = list(rows)
+    attempts = attempts or _env_int("REI_REVALIDATE_ATTEMPTS", 3, 1)
+    chunk_size = chunk_size or _env_int("REI_BROWSER_ROTATE_ROWS", 5, 1)
+    delay = delay if delay is not None else _env_float(
+        "REI_REVALIDATE_DELAY_SECONDS", 3.0, 0.0
+    )
+    retry_delay = _env_float("REI_REVALIDATE_RETRY_DELAY_SECONDS", 5.0, 0.0)
+    browser_context_factory = browser_context_factory or open_camoufox_browser
+    fetch_fn = fetch_fn or fetch_rei_pdp
+    sleep_fn = sleep_fn or time.sleep
+
+    pending = rows
+    final_results = {}
+    last_results = {}
+
+    for attempt in range(1, attempts + 1):
+        retry_rows = []
+        retry_ids = set()
+        for _, chunk in _chunks(pending, chunk_size):
+            page = None
+            try:
+                with browser_context_factory() as browser:
+                    page = browser.new_page()
+                    page.goto(
+                        "https://www.rei.com/",
+                        wait_until="domcontentloaded",
+                        timeout=60000,
+                    )
+                    sleep_fn(2)
+                    for index, row in enumerate(chunk):
+                        sku_id = row["sku_id"]
+                        result = fetch_fn(page, row["url"])
+                        normalized = result or {"_err": "empty_result"}
+                        last_results[sku_id] = normalized
+                        if _rei_should_retry(result):
+                            retry_rows.append(row)
+                            retry_ids.add(sku_id)
+                            if _rei_browser_is_poisoned(normalized):
+                                for tail in chunk[index + 1:]:
+                                    tail_id = tail["sku_id"]
+                                    if tail_id not in retry_ids:
+                                        retry_rows.append(tail)
+                                        retry_ids.add(tail_id)
+                                        last_results[tail_id] = {
+                                            "_err": f"browser_poisoned:{normalized['_err']}"
+                                        }
+                                break
+                        else:
+                            final_results[sku_id] = normalized
+                        sleep_fn(delay)
+            except Exception as exc:
+                failure = {"_err": _format_error("browser", exc)}
+                for row in chunk:
+                    sku_id = row["sku_id"]
+                    if sku_id in final_results or sku_id in retry_ids:
+                        continue
+                    retry_rows.append(row)
+                    retry_ids.add(sku_id)
+                    last_results[sku_id] = failure
+            finally:
+                if page is not None:
+                    try:
+                        page.close()
+                    except Exception:
+                        pass
+
+        if not retry_rows:
+            break
+        if attempt == attempts:
+            for row in retry_rows:
+                sku_id = row["sku_id"]
+                final_results[sku_id] = last_results.get(
+                    sku_id, {"_err": "retry_exhausted"}
+                )
+            break
+        print(
+            f"  [rei] transient read failures={len(retry_rows)}; "
+            f"fresh-browser retry {attempt + 1}/{attempts}",
+            flush=True,
+        )
+        if retry_delay:
+            sleep_fn(retry_delay * attempt)
+        pending = retry_rows
+
+    return [
+        (row, final_results.get(row["sku_id"], last_results.get(row["sku_id"])))
+        for row in rows
+    ]
+
 def _close_context(context):
     if context is None:
         return
@@ -884,39 +1015,38 @@ def main():
         rei_rows = sorted(by_dealer["rei"], key=lambda row: row.get("last_updated") or "")
         rei_delay = _env_float("REI_REVALIDATE_DELAY_SECONDS", 3.0, 0.5)
         chunk_size = _env_int("REI_BROWSER_ROTATE_ROWS", 5, 5)
+        rei_attempts = _env_int("REI_REVALIDATE_ATTEMPTS", 3, 1)
         print(
             f"\n[reval] REI ({len(rei_rows)}) — Camoufox, "
-            f"delay={rei_delay}s, rotate={chunk_size}",
+            f"delay={rei_delay}s, rotate={chunk_size}, attempts={rei_attempts}",
             flush=True,
         )
-        for start, chunk in _chunks(rei_rows, chunk_size):
-            try:
-                with open_camoufox_browser() as br:
-                    page = br.new_page()
-                    page.goto("https://www.rei.com/", wait_until="networkidle", timeout=60000)
-                    time.sleep(2)
-                    for offset, r in enumerate(chunk, 1):
-                        i = start + offset
-                        new = fetch_rei_pdp(page, r["url"])
-                        if not new: stats["rei"]["err"] += 1
-                        elif new.get("_unavailable"): stats["rei"]["unavail"] += 1
-                        elif new.get("_err"):
-                            if (
-                                new["_err"] in {"product_redirect", "original_below_sale"}
-                                and quarantine_invalid_price_row(client, r, new["_err"])
-                            ):
-                                stats["rei"]["quarantined"] += 1
-                            else:
-                                stats["rei"]["err"] += 1
-                        else:
-                            if update_row(client, r["sku_id"], new, r):
-                                stats["rei"]["ok"] += 1
-                                if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
-                                    stats["rei"]["diff"] += 1
-                        if i % 5 == 0: print(f"  rei {i}/{len(rei_rows)}", flush=True)
-                        time.sleep(rei_delay)
-            except Exception as e:
-                print(f"  REI Camoufox chunk {start + 1} launch err: {e}", file=sys.stderr)
+        rei_results = fetch_rei_rows_with_browser_retries(
+            rei_rows,
+            attempts=rei_attempts,
+            chunk_size=chunk_size,
+            delay=rei_delay,
+        )
+        for i, (r, new) in enumerate(rei_results, 1):
+            if not new: stats["rei"]["err"] += 1
+            elif new.get("_unavailable"): stats["rei"]["unavail"] += 1
+            elif new.get("_err"):
+                if (
+                    new["_err"] in {"product_redirect", "original_below_sale"}
+                    and quarantine_invalid_price_row(client, r, new["_err"])
+                ):
+                    stats["rei"]["quarantined"] += 1
+                else:
+                    stats["rei"]["err"] += 1
+            else:
+                if update_row(client, r["sku_id"], new, r):
+                    stats["rei"]["ok"] += 1
+                    if abs((new.get("sale_price") or 0) - (r.get("sale_price") or 0)) > 0.01:
+                        stats["rei"]["diff"] += 1
+                else:
+                    stats["rei"]["err"] += 1
+            if i % 5 == 0:
+                print(f"  rei {i}/{len(rei_rows)}", flush=True)
 
     # ── MEC: curl_cffi (Chrome TLS 指纹, 不用浏览器) ──
     if by_dealer.get("mec"):

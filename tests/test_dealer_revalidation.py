@@ -1,5 +1,6 @@
 import unittest
 from collections import defaultdict
+from contextlib import contextmanager
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
@@ -13,6 +14,7 @@ from dealers.revalidate import (
     fetch_evo_pdp_browser,
     fetch_evo_pdp_browser_with_retry,
     fetch_rei_pdp,
+    fetch_rei_rows_with_browser_retries,
     open_camoufox_browser,
     open_mec_revalidation_session,
     parse_evo_browser_snapshot,
@@ -333,6 +335,78 @@ class DealerRevalidationTests(unittest.TestCase):
         )
 
         self.assertEqual(result, {"_err": "product_redirect"})
+
+    def test_rei_cf_stub_rotates_browser_and_retries_only_pending_rows(self):
+        rows = [
+            {"sku_id": "rei:a", "url": "https://www.rei.com/product/1/a"},
+            {"sku_id": "rei:b", "url": "https://www.rei.com/product/2/b"},
+        ]
+        pages = []
+
+        @contextmanager
+        def browser_factory():
+            page = FakePage([])
+            page.close = MagicMock()
+            browser = MagicMock()
+            browser.new_page.return_value = page
+            pages.append(page)
+            yield browser
+
+        reads = iter([
+            {"_err": "cf_stub"},
+            {"sale_price": 100.0, "original_price": 200.0, "discount_pct": 50},
+            {"sale_price": 80.0, "original_price": 80.0, "discount_pct": 0},
+        ])
+        requested_urls = []
+
+        def fetch_fn(_page, url):
+            requested_urls.append(url)
+            return next(reads)
+
+        results = fetch_rei_rows_with_browser_retries(
+            rows,
+            attempts=2,
+            chunk_size=2,
+            delay=0,
+            browser_context_factory=browser_factory,
+            fetch_fn=fetch_fn,
+            sleep_fn=lambda _seconds: None,
+        )
+
+        self.assertEqual(len(pages), 2)
+        self.assertEqual(
+            requested_urls,
+            [rows[0]["url"], rows[0]["url"], rows[1]["url"]],
+        )
+        self.assertEqual(results[0][1]["original_price"], 200.0)
+        self.assertEqual(results[1][1]["sale_price"], 80.0)
+        self.assertTrue(all(page.close.called for page in pages))
+
+    def test_rei_deterministic_redirect_is_not_retried(self):
+        row = {"sku_id": "rei:a", "url": "https://www.rei.com/product/1/a"}
+        launches = 0
+
+        @contextmanager
+        def browser_factory():
+            nonlocal launches
+            launches += 1
+            page = FakePage([])
+            page.close = MagicMock()
+            browser = MagicMock()
+            browser.new_page.return_value = page
+            yield browser
+
+        results = fetch_rei_rows_with_browser_retries(
+            [row],
+            attempts=3,
+            browser_context_factory=browser_factory,
+            fetch_fn=lambda _page, _url: {"_err": "product_redirect"},
+            sleep_fn=lambda _seconds: None,
+            delay=0,
+        )
+
+        self.assertEqual(launches, 1)
+        self.assertEqual(results, [(row, {"_err": "product_redirect"})])
 
     def test_list_fallback_preserves_existing_discount(self):
         self.assertTrue(should_preserve_previous_discount("mec", "list_fallback", 200, 200, 100, 200))
