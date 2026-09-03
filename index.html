@@ -1065,7 +1065,21 @@
             justify-content: center;
         }
         .na-cta:hover { background: #000; }
-    </style>
+    
+        /* Touch targets: every tappable control keeps a 44px hit area (iOS HIG / WCAG 2.5.8) */
+        .brand > a { display: inline-flex; align-items: center; min-height: 44px; }
+        .filter-count .reset-link { min-width: 44px; }
+        .site-footer a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
+            padding: 0 6px;
+            border-bottom: none;
+            text-decoration: underline;
+            text-decoration-color: var(--border-strong);
+            text-underline-offset: 3px;
+        }
+</style>
 </head>
 <body>
 

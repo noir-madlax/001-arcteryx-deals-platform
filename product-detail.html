@@ -560,7 +560,13 @@
         @media (max-width: 640px) {
             .detail-context { margin-bottom: 40px; padding: 20px 16px; }
         }
-    </style>
+    
+        /* Touch targets: every tappable control keeps a 44px hit area (iOS HIG / WCAG 2.5.8) */
+        .brand > a { display: inline-flex; align-items: center; min-height: 44px; }
+        .back { min-height: 44px; padding: 0 6px; }
+        .detail-context nav a,
+        .detail-footer a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; }
+</style>
 </head>
 <body>
 

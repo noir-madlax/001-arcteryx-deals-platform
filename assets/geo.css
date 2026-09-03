@@ -390,6 +390,20 @@ h1 {
 
 .footer-links a { color: var(--text-2); text-decoration: none; }
 
+/* Touch targets: every tappable link keeps a 44px hit area (iOS HIG / WCAG 2.5.8) */
+.header-inner > a,
+.site-nav a,
+.breadcrumb a,
+.footer-links a,
+.link-list a,
+.cta-band a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+}
+.site-nav a,
+.footer-links a { padding: 0 4px; }
+
 @media (max-width: 760px) {
     .header-inner { width: min(100% - 28px, 1120px); min-height: 64px; }
     .brand-logo { width: 124px; }
