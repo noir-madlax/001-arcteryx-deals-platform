@@ -3,7 +3,10 @@ import type {
   CatalogGender,
   CatalogProduct,
   CatalogProductRow,
+  Product,
 } from './types';
+import { productCategory, productName } from './catalog';
+import { normalizeSearchText } from './search';
 
 type BrandRule = {
   label: string;
@@ -51,6 +54,29 @@ export type YearbookFilters = {
   year?: number | 'all';
 };
 
+export type YearbookMatchCounts = {
+  official_id: number;
+  exact_name: number;
+  unmatched: number;
+};
+
+export type YearbookDealIndex = {
+  byCatalogId: Record<string, Product[]>;
+  unmatched: Product[];
+  matchCounts: YearbookMatchCounts;
+};
+
+export type YearbookArchiveStyle = {
+  archive_id: string;
+  brand_key: CatalogBrandKey;
+  official_product_id: string | null;
+  name: string;
+  gender: CatalogGender;
+  categories: string[];
+  colors: string[];
+  offers: Product[];
+};
+
 function strings(value: string[] | string | null): string[] {
   if (Array.isArray(value)) return [...new Set(value.map((item) => item.trim()).filter(Boolean))];
   if (typeof value !== 'string' || !value.trim()) return [];
@@ -84,8 +110,9 @@ function sourceMap(value: Record<string, string> | string | null): Record<string
 }
 
 function finiteNumber(value: number | string | null): number | null {
+  if (value === null || (typeof value === 'string' && !value.trim())) return null;
   const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
 }
 
 function validDate(value: string | null): value is string {
@@ -175,14 +202,14 @@ export function yearbookYear(product: CatalogProduct): number {
 }
 
 export function filterYearbookProducts(products: CatalogProduct[], filters: YearbookFilters): CatalogProduct[] {
-  const query = filters.query?.trim().toLocaleLowerCase() || '';
+  const query = normalizeSearchText(filters.query || '');
   return products.filter((product) => {
     if (filters.brand && filters.brand !== 'all' && product.brand_key !== filters.brand) return false;
     if (filters.gender && filters.gender !== 'all' && product.gender !== filters.gender) return false;
     if (filters.category && filters.category !== 'all' && !product.categories.includes(filters.category)) return false;
     if (filters.year && filters.year !== 'all' && yearbookYear(product) !== filters.year) return false;
     if (!query) return true;
-    return [
+    const searchable = [
       product.name,
       product.brand,
       product.official_product_id,
@@ -190,7 +217,8 @@ export function filterYearbookProducts(products: CatalogProduct[], filters: Year
       ...product.categories,
       ...product.color_names,
       ...product.primary_colors,
-    ].join(' ').toLocaleLowerCase().includes(query);
+    ].join(' ');
+    return normalizeSearchText(searchable).includes(query);
   });
 }
 
@@ -215,8 +243,7 @@ export function brandLabel(value: CatalogBrandKey): string {
   return YEARBOOK_BRAND_RULES[value].label;
 }
 
-export function formatCatalogPrice(product: CatalogProduct): string {
-  const locale = product.country === 'au' ? 'en-AU' : 'en-US';
+export function formatCatalogPrice(product: CatalogProduct, locale = product.country === 'au' ? 'en-AU' : 'en-US'): string {
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: product.currency,
@@ -227,4 +254,236 @@ export function formatCatalogPrice(product: CatalogProduct): string {
   return product.list_price_max > product.list_price
     ? `${minimum}–${formatter.format(product.list_price_max)}`
     : minimum;
+}
+
+export function yearbookFreshnessLabel(lastUpdated: string | null | undefined, locale: string, now = Date.now()): string {
+  if (!lastUpdated) return '';
+  const normalized = lastUpdated.includes('T') ? lastUpdated : lastUpdated.replace(' ', 'T');
+  const zoned = /(?:Z|[+-]\d{2}:?\d{2})$/iu.test(normalized) ? normalized : `${normalized}Z`;
+  const stamp = Date.parse(zoned);
+  if (!Number.isFinite(stamp)) return '';
+  const days = Math.max(0, Math.floor((now - stamp) / 86_400_000));
+  const RelativeTimeFormatter = Intl.RelativeTimeFormat;
+  if (typeof RelativeTimeFormatter === 'function') {
+    try {
+      return new RelativeTimeFormatter(locale, { numeric: 'auto' }).format(-days, 'day');
+    } catch {
+      // Hermes builds can omit or partially implement RelativeTimeFormat.
+    }
+  }
+  const language = locale.toLocaleLowerCase();
+  if (language.startsWith('zh')) return days === 0 ? '今天' : days === 1 ? '昨天' : `${days} 天前`;
+  if (language.startsWith('de')) return days === 0 ? 'heute' : days === 1 ? 'gestern' : `vor ${days} Tagen`;
+  if (language.startsWith('fr')) return days === 0 ? 'aujourd’hui' : days === 1 ? 'hier' : `il y a ${days} jours`;
+  if (language.startsWith('ja')) return days === 0 ? '今日' : days === 1 ? '昨日' : `${days}日前`;
+  return days === 0 ? 'today' : days === 1 ? 'yesterday' : `${days} days ago`;
+}
+
+function isDiscounted(product: Product): boolean {
+  return Number.isFinite(product.sale_price)
+    && Number.isFinite(product.original_price)
+    && product.sale_price > 0
+    && product.original_price > product.sale_price + 0.01
+    && product.discount_pct > 0;
+}
+
+function audience(name: string, fallback: string | null | undefined): CatalogGender {
+  const value = name.normalize('NFKC').toLocaleLowerCase().replace(/[’]/g, "'");
+  if (/\b(?:kids?|youth|toddlers?|baby|babies|boys?|girls?)['’]?\b/.test(value)) return 'kids';
+  if (/\b(?:women|womens|woman|female)(?:'s)?\b/.test(value)) return 'women';
+  if (/\b(?:men|mens|man|male)(?:'s)?\b/.test(value)) return 'men';
+  if (fallback === 'kids' || fallback === 'women' || fallback === 'men') return fallback;
+  return 'unisex';
+}
+
+function normalizedStyleName(value: string): string {
+  const singular: Record<string, string> = {
+    bibs: 'bib',
+    bindings: 'binding',
+    boots: 'boot',
+    gloves: 'glove',
+    mittens: 'mitten',
+    pants: 'pant',
+    socks: 'sock',
+  };
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase()
+    .replace(/arc[\s-]*[’'`]?teryx|patagonia|burton/g, ' ')
+    .replace(/gore[\s\u2010-\u2015-]*tex/g, 'gore tex')
+    .replace(/step[\s\u2010-\u2015-]*on/g, 'step on')
+    .replace(/\b(?:women|womens|woman|female|men|mens|man|male|unisex)(?:['’]?s)?\b/g, ' ')
+    .replace(/\b(?:kids?|youth|toddlers?|baby|babies|boys?|girls?)(?:['’]?s)?\b/g, ' ')
+    .replace(/\b20\d{2}\b/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((token) => singular[token] || token)
+    .join(' ');
+}
+
+function styleNameKey(brand: CatalogBrandKey, name: string, gender: string | null | undefined): string | null {
+  const normalizedName = normalizedStyleName(name);
+  return normalizedName ? `${brand}|${audience(name, gender)}|${normalizedName}` : null;
+}
+
+function validOfficialId(brand: CatalogBrandKey, value: string): boolean {
+  if (brand === 'arcteryx') return /^X[0-9A-Z][0-9A-Z._-]{5,62}$/.test(value);
+  return STYLE_ID.test(value);
+}
+
+function officialIdFromUrl(product: Product): string | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(product.url || '');
+  } catch {
+    return null;
+  }
+  const host = parsed.hostname.toLocaleLowerCase();
+  const handle = decodeURIComponent(parsed.pathname).replace(/\/$/, '').split('/').pop() || '';
+  if (product._brand === 'arcteryx' && /(?:^|\.)arcteryx\.com$/.test(host)) {
+    const digits = /-(\d{4,5})$/.exec(handle)?.[1];
+    return digits ? `X${digits.padStart(9, '0')}` : null;
+  }
+  if (product._brand === 'burton' && /(?:^|\.)burton\.com$/.test(host)) {
+    return /-(\d{6})(?:-[a-z0-9]+)*$/i.exec(handle)?.[1] || null;
+  }
+  if (product._brand === 'patagonia' && /(?:^|\.)patagonia\.com\.au$/.test(host)) {
+    return /-(\d{5})(?:-[a-z0-9]{2,12})?$/i.exec(handle)?.[1] || null;
+  }
+  return null;
+}
+
+function dealOfficialId(product: Product): string | null {
+  const explicit = String(product.official_product_id || '').trim().toUpperCase();
+  if (explicit) return validOfficialId(product._brand, explicit) ? explicit : null;
+  const parsed = officialIdFromUrl(product);
+  return parsed && validOfficialId(product._brand, parsed) ? parsed : null;
+}
+
+function offerOrder(left: Product, right: Product): number {
+  return left.currency.localeCompare(right.currency)
+    || left.sale_price - right.sale_price
+    || right.discount_pct - left.discount_pct
+    || left.sku_id.localeCompare(right.sku_id);
+}
+
+export function indexYearbookDeals(catalog: CatalogProduct[], deals: Product[]): YearbookDealIndex {
+  const catalogById = new Map(catalog.map((product) => [product.catalog_product_id, product]));
+  const catalogByName = new Map<string, CatalogProduct[]>();
+  for (const product of catalog) {
+    const key = styleNameKey(product.brand_key, product.name, product.gender);
+    if (!key) continue;
+    const values = catalogByName.get(key) || [];
+    values.push(product);
+    catalogByName.set(key, values);
+  }
+
+  const byCatalogId: Record<string, Product[]> = {};
+  const unmatched: Product[] = [];
+  const matchCounts: YearbookMatchCounts = { official_id: 0, exact_name: 0, unmatched: 0 };
+  for (const deal of deals) {
+    if (!isDiscounted(deal)) continue;
+    const officialId = dealOfficialId(deal);
+    let target: CatalogProduct | null = null;
+    let method: keyof Omit<YearbookMatchCounts, 'unmatched'> | null = null;
+    if (officialId) {
+      target = catalogById.get(`${deal._brand}:${officialId.toLocaleLowerCase()}`) || null;
+      if (target) method = 'official_id';
+    } else {
+      const nameKey = styleNameKey(deal._brand, productName(deal), deal.gender);
+      const candidates = nameKey ? catalogByName.get(nameKey) || [] : [];
+      if (candidates.length === 1) {
+        target = candidates[0] ?? null;
+        method = 'exact_name';
+      }
+    }
+    if (!target || !method) {
+      unmatched.push(deal);
+      matchCounts.unmatched += 1;
+      continue;
+    }
+    (byCatalogId[target.catalog_product_id] ||= []).push(deal);
+    matchCounts[method] += 1;
+  }
+  for (const offers of Object.values(byCatalogId)) offers.sort(offerOrder);
+  unmatched.sort(offerOrder);
+  return { byCatalogId, unmatched, matchCounts };
+}
+
+export function bestYearbookOffers(offers: Product[], preferredCurrency?: string): Product[] {
+  const byCurrency = new Map<string, Product>();
+  for (const offer of offers.filter(isDiscounted)) {
+    const currency = offer.currency.toUpperCase();
+    const current = byCurrency.get(currency);
+    if (!current || offerOrder(offer, current) < 0) byCurrency.set(currency, offer);
+  }
+  return [...byCurrency.values()].sort((left, right) => {
+    const leftPreferred = left.currency === preferredCurrency ? 0 : 1;
+    const rightPreferred = right.currency === preferredCurrency ? 0 : 1;
+    return leftPreferred - rightPreferred || left.currency.localeCompare(right.currency) || offerOrder(left, right);
+  });
+}
+
+export function groupYearbookArchive(products: Product[]): YearbookArchiveStyle[] {
+  const groups = new Map<string, Product[]>();
+  for (const product of products.filter(isDiscounted)) {
+    const officialId = dealOfficialId(product);
+    const fallbackName = normalizedStyleName(productName(product));
+    const key = officialId
+      ? `${product._brand}:${officialId.toLocaleLowerCase()}`
+      : `${product._brand}:name:${audience(productName(product), product.gender)}:${fallbackName || product.sku_id}`;
+    const values = groups.get(key) || [];
+    values.push(product);
+    groups.set(key, values);
+  }
+
+  return [...groups.entries()].map(([archiveId, offers]) => {
+    const sortedOffers = [...offers].sort(offerOrder);
+    const names = [...new Set(sortedOffers.map(productName).filter(Boolean))]
+      .sort((left, right) => left.length - right.length || left.localeCompare(right));
+    const representative = sortedOffers[0]!;
+    const officialId = dealOfficialId(representative);
+    const colors = [...new Set(sortedOffers.flatMap((offer) => String(offer.color || '')
+      .split(',')
+      .map((value) => value.trim())
+      .filter(Boolean)))].sort((left, right) => left.localeCompare(right));
+    const categories = [...new Set(sortedOffers.map(productCategory).filter(Boolean))]
+      .sort((left, right) => left.localeCompare(right));
+    return {
+      archive_id: archiveId,
+      brand_key: representative._brand,
+      official_product_id: officialId,
+      name: names[0] || representative.sku_id,
+      gender: audience(names[0] || '', representative.gender),
+      categories,
+      colors,
+      offers: sortedOffers,
+    };
+  }).sort((left, right) => left.brand_key.localeCompare(right.brand_key) || left.name.localeCompare(right.name));
+}
+
+export function filterYearbookArchive(
+  products: YearbookArchiveStyle[],
+  filters: Omit<YearbookFilters, 'year'>,
+): YearbookArchiveStyle[] {
+  const query = normalizeSearchText(filters.query || '');
+  return products.filter((product) => {
+    if (filters.brand && filters.brand !== 'all' && product.brand_key !== filters.brand) return false;
+    if (filters.gender && filters.gender !== 'all' && product.gender !== filters.gender) return false;
+    if (filters.category && filters.category !== 'all' && !product.categories.includes(filters.category)) return false;
+    if (!query) return true;
+    const searchable = [
+      product.brand_key,
+      brandLabel(product.brand_key),
+      product.name,
+      product.official_product_id || '',
+      ...product.categories,
+      ...product.colors,
+      ...product.offers.map((offer) => offer._platform),
+    ].join(' ');
+    return normalizeSearchText(searchable).includes(query);
+  });
 }

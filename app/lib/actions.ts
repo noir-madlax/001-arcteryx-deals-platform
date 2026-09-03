@@ -1,4 +1,3 @@
-import * as Crypto from 'expo-crypto';
 import * as Haptics from 'expo-haptics';
 import * as Notifications from 'expo-notifications';
 import * as WebBrowser from 'expo-web-browser';
@@ -12,6 +11,8 @@ Notifications.setNotificationHandler({
     shouldShowList: true,
   }),
 });
+
+export const SUPPORT_URL = 'https://geardrop.100app.dev/support.html';
 
 function hasNotificationPermission(permissions: Notifications.NotificationPermissionsStatus) {
   if (Platform.OS === 'ios') {
@@ -38,8 +39,8 @@ export async function openBuyUrl(url?: string | null) {
   await WebBrowser.openBrowserAsync(url);
 }
 
-export function uuid4() {
-  return Crypto.randomUUID();
+export async function openSupportUrl() {
+  await WebBrowser.openBrowserAsync(SUPPORT_URL);
 }
 
 export async function requestNotificationPermission() {
@@ -67,7 +68,7 @@ export async function scheduleTestPriceNotification(productName: string) {
       content: {
         title: 'GearDrop alert armed',
         body: `${productName} is now on your watchlist.`,
-        data: { url: '/(tabs)/watchlist' },
+        data: { url: '/watchlist' },
       },
       trigger: null,
     });

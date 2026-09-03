@@ -1,0 +1,105 @@
+# GearDrop Apple IAP Setup
+
+The app-side RevenueCat integration, matching App Store products, RevenueCat `Pro` entitlement/default offering, and EAS public iOS SDK key are configured. They were rechecked live on 2026-08-02: the default offering is Active with three real App Store packages, `Pro` is Active, and the IAP key remains `Valid credentials`. Real purchases remain unverified until the sandbox matrix below runs on a signed build.
+
+The last real-key iPhone Simulator probe returned no StoreKit products and logged `None of the products registered in the RevenueCat dashboard could be fetched from App Store Connect`; a 2026-07-13 11:38 EDT rerun produced the same result. On 2026-08-04 Paid Apps Agreement, banking, W-8BEN, and DSA were all read back as Active. On 2026-08-05 Apple independently returned `MISSING_METADATA` for all three products and zero Review Information screenshots. TestFlight build `1.0.0 (6)` is `IN_BETA_TESTING` in `GearDrop Internal` and contains the invite-code entry; do not treat the empty Simulator offering as resolved until the signed build-6 sandbox matrix passes.
+
+## Fixed Contract
+
+Do not rename these identifiers after creating them:
+
+| Type | Identifier |
+|---|---|
+| Bundle ID | `dev.100app.geardrop` |
+| RevenueCat entitlement | `Pro` |
+| Monthly subscription | `dev.100app.geardrop.pro.monthly` |
+| Annual subscription | `dev.100app.geardrop.pro.annual` |
+| Lifetime non-consumable | `dev.100app.geardrop.pro.lifetime` |
+
+The app expects the RevenueCat current offering to expose the standard monthly, annual, and lifetime packages. StoreKit supplies all displayed prices. A trial is shown only when Apple reports that the current customer is eligible.
+
+## Apple Offer Codes / Pro Invite Codes
+
+GearDrop's invite-code path must remain an Apple IAP path. The paywall opens Apple's system Offer Code redemption sheet through `react-native-purchases`; a valid code creates a StoreKit transaction, and the existing RevenueCat `CustomerInfo` listener activates the `Pro` entitlement. Never add a hardcoded code, client-side code hash, AsyncStorage unlock, or unauthenticated backend endpoint that grants Pro.
+
+For permanent invited access, configure a free Offer Code for the lifetime non-consumable `dev.100app.geardrop.pro.lifetime`. For time-limited access, configure the code against the monthly or annual subscription and explicitly choose its renewal behavior. Prefer Apple-generated one-time-use codes for private invitations. A shared custom code requires an approved string, redemption limit, and optional expiration date before creation.
+
+Current status: the in-app redemption entry is implemented on `codex/ios-pro-offer-code-20260805`, and App Store Connect now has an active free lifetime offer named `PRO_INVITE_LIFETIME_20260805`. The current App Store Connect API accepts 10 or 100-step sandbox batch sizes, so a 100-code SANDBOX batch was created and locally split into 99 deliverable test codes plus one isolated reserve; it expires on 2027-02-01. These codes are test-only. Signed TestFlight build `1.0.0 (6)` contains the redemption UI and is available to the 3-member `GearDrop Internal` group; no production code exists.
+
+Apple requires production one-time-use batches to contain at least 500 codes. Production codes also require the app to be Ready for Distribution and the associated IAP to be Approved; GearDrop is not yet at those states. Do not generate or distribute production codes until the signed sandbox matrix passes.
+
+## 1. App Store Connect
+
+1. Confirm the app record uses bundle ID `dev.100app.geardrop`.
+2. Confirm Paid Apps agreements, tax, and banking are active.
+3. Create one subscription group for GearDrop Pro.
+4. Create the monthly and annual auto-renewable subscriptions in that group.
+5. Create the lifetime product as a non-consumable IAP.
+6. Add display names, descriptions, availability, price tiers, and review screenshots for every product.
+7. Optionally add a seven-day introductory free trial to the subscription group. Do not describe a trial in metadata until its eligibility behavior has been verified in sandbox.
+
+Suggested US launch prices are `$3.99/month`, `$23.99/year`, and `$49.99` lifetime. App Store Connect remains the source of truth for storefront prices.
+
+## 2. RevenueCat
+
+1. Create or select the GearDrop project and add an iOS app for `dev.100app.geardrop`.
+2. Connect App Store Connect using RevenueCat's current Apple integration requirements.
+3. Import all three product identifiers.
+4. Use entitlement `Pro` and attach all three products.
+5. Create an offering, mark it current, and attach the products as the standard monthly, annual, and lifetime packages.
+6. Copy the public iOS SDK key beginning with `appl_`. Never put an App Store Connect private key or RevenueCat secret key in the client or EAS public environment.
+
+## 3. EAS Environment
+
+Set the public SDK key for the environments used by native builds:
+
+```sh
+cd app
+npx eas-cli@20.5.1 env:create production \
+  --name EXPO_PUBLIC_REVENUECAT_IOS_API_KEY \
+  --value 'appl_REPLACE_WITH_PUBLIC_IOS_KEY' \
+  --visibility sensitive \
+  --scope project \
+  --non-interactive
+```
+
+Use the same command with `preview` when TestFlight-like preview builds should use the configured RevenueCat project. Confirm without printing the value:
+
+```sh
+npx eas-cli@20.5.1 env:list production
+```
+
+## 4. Sandbox Acceptance
+
+Run these checks on a signed development, preview, or TestFlight build. Expo Go cannot load `react-native-purchases`.
+
+1. A fresh sandbox Apple account sees localized monthly, annual, and lifetime prices.
+2. Trial copy appears only for an eligible account and matches App Store Connect.
+3. Cancelling the purchase sheet leaves the user on Free without an error banner.
+4. Monthly purchase activates the `Pro` entitlement and unlocks full price history and the all-time-low signal.
+5. Reinstalling the app and choosing Restore Purchases restores Pro.
+6. An account with no purchases gets a clear no-purchases result from Restore Purchases.
+7. Annual purchase and lifetime purchase each activate the same `Pro` entitlement.
+8. A pending Ask to Buy transaction does not grant Pro before approval.
+9. Offline launch preserves the last RevenueCat entitlement state and recovers when connectivity returns.
+10. Terms of Use and Privacy Policy links open successfully.
+11. The Pro invite-code button opens Apple's system redemption sheet; no code is accepted or stored by GearDrop itself.
+12. An invalid or expired sandbox code leaves the user on Free.
+13. A valid sandbox code activates `Pro` through a RevenueCat `CustomerInfo` update without a local unlock flag.
+14. Relaunch and Restore Purchases preserve access from the redeemed StoreKit transaction.
+
+Record the tester account type, storefront, build ID, product, displayed price, result, and screenshot for each run. Do not use a production Apple ID for sandbox evidence.
+
+The current sandbox delivery artifact is `/Users/J/Downloads/GearDrop-Pro-Sandbox-Codes-99-20260805-5da1ed3e.csv`. It contains 99 Apple-generated codes with file mode `0600`. The separate one-code reserve must not be distributed. Never commit either file or paste the code values into logs, issues, review notes, or source control.
+
+## 5. Release Commands
+
+Only after the sandbox matrix passes and the user authorizes the paid external action:
+
+```sh
+cd app
+npm run verify
+npx eas-cli@20.5.1 build --platform ios --profile production
+```
+
+Upload or submit only the build whose RevenueCat public key, App Store products, metadata, privacy answers, and review notes match this contract.

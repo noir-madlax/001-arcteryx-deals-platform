@@ -1,7 +1,18 @@
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
-import { formatPrice, productName } from '../lib/catalog';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { productName } from '../lib/catalog';
 import { colors, radii } from '../lib/theme';
 import type { Product } from '../lib/types';
 
@@ -13,6 +24,7 @@ type Props = {
 };
 
 export function AlertModal({ visible, product, onClose, onSubmit }: Props) {
+  const { formatMoney, formatOriginalMoney, t } = usePreferences();
   const [email, setEmail] = useState('');
   const [target, setTarget] = useState(() => String(Math.floor(product.sale_price * 0.85)));
   const [error, setError] = useState<string | null>(null);
@@ -24,11 +36,11 @@ export function AlertModal({ visible, product, onClose, onSubmit }: Props) {
     const parsedTarget = target.trim() ? Number(target) : null;
     setError(null);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
-      setError('Enter a valid email address.');
+      setError(t('alert.invalidEmail'));
       return;
     }
     if (parsedTarget !== null && (!Number.isFinite(parsedTarget) || parsedTarget <= 0 || parsedTarget >= product.sale_price)) {
-      setError(`Target must be below ${formatPrice(product.sale_price, product.symbol)}.`);
+      setError(t('alert.targetBelow', { price: formatOriginalMoney(product.sale_price, product.currency, product.symbol) }));
       return;
     }
     setBusy(true);
@@ -44,11 +56,15 @@ export function AlertModal({ visible, product, onClose, onSubmit }: Props) {
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-      <View style={styles.backdrop}>
+      <KeyboardAvoidingView
+        style={styles.backdrop}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <View style={styles.card}>
-          <Text style={styles.title}>Price alert</Text>
+          <Text style={styles.title}>{t('alert.title')}</Text>
           <Text style={styles.sub}>{productName(product)}</Text>
-          <Text style={styles.current}>Current {formatPrice(product.sale_price, product.symbol)} · suggested target {formatPrice(suggested, product.symbol)}</Text>
+          <Text style={styles.current}>{t('alert.currentSuggested', { current: formatMoney(product.sale_price, product.currency, product.symbol), suggested: formatOriginalMoney(suggested, product.currency, product.symbol) })}</Text>
+          <Text style={styles.originalNote}>{t('alert.originalCurrency', { currency: product.currency })}</Text>
           <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="you@example.com" autoCapitalize="none" keyboardType="email-address" />
           <View style={styles.priceInputRow}>
             <Text style={styles.symbol}>{product.symbol}</Text>
@@ -57,14 +73,14 @@ export function AlertModal({ visible, product, onClose, onSubmit }: Props) {
           {error ? <Text style={styles.error}>{error}</Text> : null}
           <View style={styles.actions}>
             <Pressable style={[styles.button, styles.secondary]} onPress={onClose} disabled={busy}>
-              <Text style={styles.secondaryText}>Cancel</Text>
+              <Text style={styles.secondaryText}>{t('common.cancel')}</Text>
             </Pressable>
             <Pressable style={[styles.button, styles.primary]} onPress={submit} disabled={busy}>
-              {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryText}>Save alert</Text>}
+              {busy ? <ActivityIndicator color={colors.onPill} /> : <Text style={styles.primaryText}>{t('alert.save')}</Text>}
             </Pressable>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
@@ -97,6 +113,11 @@ const styles = StyleSheet.create({
     color: colors.muted,
     fontSize: 13,
     fontWeight: '600',
+  },
+  originalNote: {
+    color: colors.faint,
+    fontSize: 11.5,
+    fontWeight: '700',
   },
   input: {
     minHeight: 48,
@@ -141,14 +162,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceAlt,
   },
   primary: {
-    backgroundColor: colors.ink,
+    backgroundColor: colors.pill,
   },
   secondaryText: {
     color: colors.ink,
     fontWeight: '800',
   },
   primaryText: {
-    color: '#fff',
+    color: colors.onPill,
     fontWeight: '900',
   },
 });

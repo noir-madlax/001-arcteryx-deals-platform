@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 import { SUPABASE_ANON, SUPABASE_URL, visibleProducts } from './catalog';
 import { postPriceAlert } from './priceAlerts';
 import { INITIAL_PRODUCT_LIMIT, INITIAL_PRODUCT_REGION } from './productPreview';
-import type { CatalogProduct, CatalogProductRow, PriceAlertPayload, PriceHistoryRow, Product, ProductRow } from './types';
+import type { CatalogProduct, CatalogProductRow, PriceAlertRequest, PriceHistoryRow, ProductRow } from './types';
 import { normalizeCatalogProduct } from './yearbook';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
@@ -20,6 +20,7 @@ export async function fetchInitialProducts() {
   const { data, error } = await supabase
     .from('products')
     .select('*')
+    .eq('status', 'active')
     .eq('region', INITIAL_PRODUCT_REGION)
     .order('discount_pct', { ascending: false })
     .order('sku_id', { ascending: true })
@@ -36,6 +37,7 @@ export async function fetchAllProducts() {
     const { data, error } = await supabase
       .from('products')
       .select('*')
+      .eq('status', 'active')
       .order('sku_id', { ascending: true })
       .range(offset, offset + pageSize - 1);
     if (error) throw error;
@@ -48,14 +50,14 @@ export async function fetchAllProducts() {
 }
 
 export async function fetchProductFamilyBySku(skuId: string) {
-  const { data: target, error: targetError } = await supabase.from('products').select('url').eq('sku_id', skuId).maybeSingle();
+  const { data: target, error: targetError } = await supabase.from('products').select('url').eq('sku_id', skuId).eq('status', 'active').maybeSingle();
   if (targetError) throw targetError;
   if (!target?.url) {
-    const { data, error } = await supabase.from('products').select('*').eq('sku_id', skuId);
+    const { data, error } = await supabase.from('products').select('*').eq('sku_id', skuId).eq('status', 'active');
     if (error) throw error;
     return visibleProducts((data || []) as ProductRow[]);
   }
-  const { data, error } = await supabase.from('products').select('*').eq('url', target.url);
+  const { data, error } = await supabase.from('products').select('*').eq('url', target.url).eq('status', 'active');
   if (error) throw error;
   return visibleProducts((data || []) as ProductRow[]);
 }
@@ -85,8 +87,8 @@ export async function fetchPriceHistory(skuId: string, sinceIso?: string) {
   return fetchPriceHistoryForSkus([skuId], sinceIso);
 }
 
-export async function insertPriceAlert(payload: PriceAlertPayload) {
-  await postPriceAlert(SUPABASE_URL, SUPABASE_ANON, payload);
+export async function insertPriceAlert(request: PriceAlertRequest) {
+  await postPriceAlert(SUPABASE_URL, SUPABASE_ANON, request);
 }
 
 const YEARBOOK_COLUMNS = [

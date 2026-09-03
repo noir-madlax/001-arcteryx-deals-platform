@@ -39,7 +39,7 @@
         const item = product || {};
         const url = String(item.url || '').toLowerCase();
         if (/(?:^|\.)burton\.com(?:\/|$)/.test(url.replace(/^https?:\/\//, ''))) return 'burton';
-        if (/(?:^|\.)patagonia\.com(?:\/|$)/.test(url.replace(/^https?:\/\//, ''))) return 'patagonia';
+        if (/(?:^|\.)patagonia\.com(?:\.au)?(?:\/|$)/.test(url.replace(/^https?:\/\//, ''))) return 'patagonia';
         if (/arcteryx\.com|\/product\/arcteryx\//.test(url)) return 'arcteryx';
 
         const raw = normalizeWhitespace(item.full_name || item.model || item.name);
@@ -122,6 +122,9 @@
         }
         if (dealer === 'backcountry') {
             return brand === 'burton' && /^https:\/\/(?:www\.)?backcountry\.com\/burton-[^?#]+(?:[?#].*)?$/i.test(url);
+        }
+        if (dealer === 'patagonia') {
+            return brand === 'patagonia' && /^https:\/\/(?:www\.)?patagonia\.com\.au\/products\/[a-z0-9-]+(?:[?#].*)?$/i.test(url);
         }
         return true;
     }

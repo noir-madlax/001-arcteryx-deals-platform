@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, G, Line, Path, Text as SvgText } from 'react-native-svg';
 
-import { colors, radii } from '../lib/theme';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { colors, radii, typography } from '../lib/theme';
 import type { ChartPoint, Product } from '../lib/types';
 
 type Props = {
@@ -17,32 +18,36 @@ const PAD_T = 14;
 const PAD_B = 26;
 
 export function PriceChart({ points, product }: Props) {
+  const { convertValue, displayedCurrency, formatMoney, formatNumber, t } = usePreferences();
   if (points.length < 2) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>Not enough price history yet</Text>
+        <Text style={styles.emptyText}>{t('chart.notEnough')}</Text>
       </View>
     );
   }
 
+  const displayPoints = points.map((point) => ({ ...point, sale: convertValue(point.sale, product.currency), original: convertValue(point.original, product.currency) }));
   const innerW = W - PAD_L - PAD_R;
   const innerH = H - PAD_T - PAD_B;
-  const prices = points.flatMap((point) => [point.sale, point.original].filter((value) => value > 0));
+  const prices = displayPoints.flatMap((point) => [point.sale, point.original].filter((value) => value > 0));
   const min = Math.min(...prices);
   const max = Math.max(...prices);
   const range = Math.max(max - min, 1);
   const yMin = Math.max(0, min - range * 0.1);
   const yMax = max + range * 0.1;
   const yRange = yMax - yMin;
-  const xOf = (index: number) => PAD_L + (points.length === 1 ? innerW / 2 : (index / (points.length - 1)) * innerW);
+  const xOf = (index: number) => PAD_L + (displayPoints.length === 1 ? innerW / 2 : (index / (displayPoints.length - 1)) * innerW);
   const yOf = (value: number) => PAD_T + innerH - ((value - yMin) / yRange) * innerH;
-  const salePath = points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${xOf(index).toFixed(1)} ${yOf(point.sale).toFixed(1)}`).join(' ');
-  const minY = yOf(Math.min(...points.map((point) => point.sale))).toFixed(1);
-  const last = points[points.length - 1]!;
-  const lastX = xOf(points.length - 1);
+  const salePath = displayPoints.map((point, index) => `${index === 0 ? 'M' : 'L'} ${xOf(index).toFixed(1)} ${yOf(point.sale).toFixed(1)}`).join(' ');
+  const minPrice = Math.min(...displayPoints.map((point) => point.sale));
+  const sourceMinPrice = Math.min(...points.map((point) => point.sale));
+  const minY = yOf(minPrice).toFixed(1);
+  const last = displayPoints[displayPoints.length - 1]!;
+  const lastX = xOf(displayPoints.length - 1);
   const lastY = yOf(last.sale);
   const yTicks = [yMin, (yMin + yMax) / 2, yMax];
-  const xTicks = Array.from(new Set([0, Math.floor(points.length / 2), points.length - 1]));
+  const xTicks = Array.from(new Set([0, Math.floor(displayPoints.length / 2), displayPoints.length - 1]));
 
   return (
     <View style={styles.wrap}>
@@ -52,24 +57,28 @@ export function PriceChart({ points, product }: Props) {
           return (
             <G key={tick}>
               <Line x1={PAD_L} y1={y} x2={W - PAD_R} y2={y} stroke={colors.border} strokeWidth={1} />
-              <SvgText x={PAD_L - 6} y={y + 4} textAnchor="end" fill={colors.faint} fontSize={10}>
-                {Math.round(tick)}
+              <SvgText x={PAD_L - 6} y={y + 4} textAnchor="end" fill={colors.faint} fontSize={10} fontFamily={typography.mono}>
+                {formatNumber(tick)}
               </SvgText>
             </G>
           );
         })}
-        <Line x1={PAD_L} y1={minY} x2={W - PAD_R} y2={minY} stroke={colors.success} strokeDasharray="5 5" strokeWidth={1.2} />
-        <Path d={salePath} fill="none" stroke={colors.danger} strokeWidth={3} strokeLinejoin="round" strokeLinecap="round" />
-        <Circle cx={lastX} cy={lastY} r={4.3} fill={colors.danger} />
+        <Line x1={PAD_L} y1={minY} x2={W - PAD_R} y2={minY} stroke={colors.faint} strokeDasharray="4 5" strokeWidth={1.2} />
+        <Path d={salePath} fill="none" stroke={colors.muted} strokeWidth={2.2} strokeLinejoin="round" strokeLinecap="round" />
+        <Circle cx={lastX} cy={lastY} r={8} fill="none" stroke={colors.disc} strokeOpacity={0.42} strokeWidth={1.4} />
+        <Circle cx={lastX} cy={lastY} r={4.3} fill={colors.disc} />
         {xTicks.map((index) => (
-          <SvgText key={`${points[index]?.day}-${index}`} x={xOf(index)} y={H - 7} textAnchor="middle" fill={colors.faint} fontSize={10}>
-            {points[index]?.day.slice(5)}
+          <SvgText key={`${displayPoints[index]?.day}-${index}`} x={xOf(index)} y={H - 7} textAnchor="middle" fill={colors.faint} fontSize={10} fontFamily={typography.mono}>
+            {displayPoints[index]?.day.slice(5)}
           </SvgText>
         ))}
       </Svg>
       <View style={styles.legend}>
-        <Text style={styles.legendText}>Actual sale price</Text>
-        <Text style={styles.legendText}>{points.length} points · {product.currency}</Text>
+        <Text style={styles.legendText}>
+          <Text style={styles.lowSwatch}>━ </Text>
+          {t('chart.low')} · <Text style={styles.legendMono}>{formatMoney(sourceMinPrice, product.currency, product.symbol)}</Text>
+        </Text>
+        <Text style={styles.legendText}>{t('chart.points', { count: points.length, currency: displayedCurrency(product.currency) })}</Text>
       </View>
     </View>
   );
@@ -78,9 +87,9 @@ export function PriceChart({ points, product }: Props) {
 const styles = StyleSheet.create({
   wrap: {
     backgroundColor: colors.surface,
-    borderRadius: radii.md,
+    borderRadius: radii.lg,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
+    borderColor: colors.borderStrong,
     paddingTop: 8,
     overflow: 'hidden',
   },
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
     minHeight: 150,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radii.md,
+    borderRadius: radii.lg,
     backgroundColor: colors.surface,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
@@ -107,7 +116,14 @@ const styles = StyleSheet.create({
   },
   legendText: {
     color: colors.muted,
-    fontSize: 12,
+    fontSize: 11.5,
     fontWeight: '700',
+  },
+  lowSwatch: {
+    color: colors.faint,
+  },
+  legendMono: {
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
   },
 });

@@ -1,7 +1,5 @@
 import type { Product, ProductRow } from './types';
-import {
-  extractModelFamily,
-} from './arcteryx-names';
+import { extractModelFamily } from './arcteryx-names';
 import {
   BRANDS,
   isSupportedBrandProduct,
@@ -34,6 +32,20 @@ export const REGION_LABEL: Record<string, string> = {
   be: 'Belgium',
 };
 
+function isKnownRegion(region: string) {
+  return Object.prototype.hasOwnProperty.call(REGION_LABEL, region);
+}
+
+export function regionFlag(region: string) {
+  const normalized = region.trim().toLowerCase();
+  if (normalized === 'all') return '◎';
+  if (!isKnownRegion(normalized)) return normalized.toUpperCase();
+
+  return String.fromCodePoint(
+    ...[...normalized.toUpperCase()].map((character) => 127397 + character.charCodeAt(0)),
+  );
+}
+
 export const GENDER_LABEL: Record<string, string> = {
   men: 'Men',
   women: 'Women',
@@ -48,7 +60,8 @@ export const PLATFORM: Record<string, { label: string; color: string }> = {
   ssense: { label: 'SSENSE', color: '#151513' },
   mec: { label: 'MEC', color: '#c8102e' },
   evo: { label: 'EVO', color: '#1a1a1a' },
-  burton: { label: 'Burton', color: '#111111' },
+  burton: { label: 'Burton Outlet', color: '#111111' },
+  patagonia: { label: 'Patagonia Sale', color: '#b7372f' },
   rei: { label: 'REI', color: '#067a46' },
   backcountry: { label: 'Backcountry', color: '#003a70' },
   steepandcheap: { label: 'Steep&Cheap', color: '#d22730' },
@@ -60,12 +73,13 @@ export const PLATFORM: Record<string, { label: string; color: string }> = {
   zalando_lounge: { label: 'Zalando Lounge', color: '#ff6900' },
 };
 
+export const REGION_OPTIONS = ['all', 'us', 'ca', 'gb', 'au', 'de', 'fr', 'nl', 'fi', 'ie', 'jp'];
 export const RETIRED_DEALERS = new Set(['ssense']);
-
-export const REGION_OPTIONS = ['all', 'us', 'ca', 'gb', 'de', 'fr', 'nl', 'fi', 'ie', 'jp'];
 export const BRAND_OPTIONS = ['all', 'arcteryx', 'burton', 'patagonia'];
+export const DEFAULT_REGION = 'us';
 export const GENDER_OPTIONS = ['all', 'women', 'men', 'unisex'];
 export const SORT_OPTIONS = ['discount_desc', 'price_asc', 'price_desc', 'recent'];
+export const MAX_OUTLET_STALE_HOURS = 72;
 export const CATEGORY_ORDER = [
   '冲锋衣',
   '保暖羽绒',
@@ -82,6 +96,11 @@ export const CATEGORY_ORDER = [
   'Veilance',
   '其他',
 ];
+
+export function normalizeRegion(value: string | null | undefined) {
+  const normalized = value?.trim().toLowerCase();
+  return normalized && (normalized === 'all' || isKnownRegion(normalized)) ? normalized : DEFAULT_REGION;
+}
 
 const SEASON_LABEL: Record<string, string> = { F: 'Fall/Winter', W: 'Fall/Winter', S: 'Spring/Summer' };
 
@@ -134,6 +153,7 @@ export function platformKey(product: Pick<ProductRow, 'dealer' | 'url'>) {
   if (url.includes('mec.ca')) return 'mec';
   if (url.includes('evo.com')) return 'evo';
   if (url.includes('burton.com')) return 'burton';
+  if (url.includes('patagonia.com.au')) return 'patagonia';
   if (url.includes('rei.com')) return 'rei';
   if (url.includes('backcountry')) return 'backcountry';
   if (url.includes('steepandcheap')) return 'steepandcheap';
@@ -166,6 +186,20 @@ function allKnownSizesOutOfStock(product: ProductRow) {
   return keys.length > 0 && keys.every((size) => stock[size] === 'out_of_stock');
 }
 
+function isStaleOutletProduct(product: ProductRow) {
+  const value = product.last_seen_at || product.last_updated;
+  if (!value) return true;
+  const stamp = Date.parse(value);
+  return Number.isNaN(stamp) || Date.now() - stamp > MAX_OUTLET_STALE_HOURS * 3600000;
+}
+
+function normalizeImageUrl(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  return trimmed.startsWith('//') ? `https:${trimmed}` : trimmed;
+}
+
 export function isBlockedProduct(product: ProductRow) {
   if (!isSupportedBrandProduct(product)) return true;
   const dealer = product.dealer || platformKey(product);
@@ -173,7 +207,15 @@ export function isBlockedProduct(product: ProductRow) {
   if (RETIRED_DEALERS.has(dealer)) return true;
   if (dealer !== 'arcteryx_outlet') return false;
   const url = (String(product.url || '').split('?')[0] || '').replace(/\/$/, '').toLowerCase();
-  return /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url) || allKnownSizesOutOfStock(product);
+  return (
+    Boolean(product.status && product.status !== 'active') ||
+    product.url_http_status === 404 ||
+    product.url_http_status === 410 ||
+    isStaleOutletProduct(product) ||
+    /outlet\.arcteryx\.com\/(?:[a-z]{2}\/[a-z]{2}\/)?shop\/womens\/rush-bib-pant$/.test(url) ||
+    /outlet\.arcteryx\.com\/us\/en\/shop\/womens\/alpha-pant$/.test(url) ||
+    allKnownSizesOutOfStock(product)
+  );
 }
 
 export function normalizeProduct(row: ProductRow): Product | null {
@@ -189,7 +231,10 @@ export function normalizeProduct(row: ProductRow): Product | null {
     sku_id: row.sku_id,
     sizes: Array.isArray(sizes) ? sizes : [],
     size_stock: sizeStock && typeof sizeStock === 'object' ? sizeStock : {},
-    images: Array.isArray(images) ? images : [],
+    image_url: normalizeImageUrl(row.image_url),
+    images: (Array.isArray(images) ? images : [])
+      .map(normalizeImageUrl)
+      .filter((value): value is string => value !== null),
     original_price: Number(row.original_price || 0),
     sale_price: Number(row.sale_price || 0),
     discount_pct: Number(row.discount_pct || 0),
@@ -205,7 +250,10 @@ export function normalizeProduct(row: ProductRow): Product | null {
 }
 
 export function visibleProducts(rows: ProductRow[]) {
-  return rows.filter((row) => !isBlockedProduct(row)).map(normalizeProduct).filter((row): row is Product => Boolean(row));
+  return rows
+    .filter((row) => (!row.status || row.status === 'active') && !isBlockedProduct(row))
+    .map(normalizeProduct)
+    .filter((row): row is Product => Boolean(row));
 }
 
 export function productCategory(product: Product) {

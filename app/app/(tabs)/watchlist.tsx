@@ -1,19 +1,23 @@
 import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { DealCard } from '../../components/DealCard';
 import { ScreenState } from '../../components/ScreenState';
+import { TopoPlaceholder } from '../../components/TopoPlaceholder';
 import { useProducts } from '../../contexts/ProductsContext';
+import { usePreferences } from '../../contexts/PreferencesContext';
 import { useWatchlist } from '../../contexts/WatchlistContext';
-import { formatPrice, productName } from '../../lib/catalog';
-import { colors, radii } from '../../lib/theme';
+import { BRAND, productCategory, productName } from '../../lib/catalog';
+import { colors, radii, typography } from '../../lib/theme';
 import type { Product, WatchEntry } from '../../lib/types';
 
 export default function WatchlistScreen() {
   const { entries, remove } = useWatchlist();
-  const { getProduct, signals } = useProducts();
+  const { getProduct } = useProducts();
+  const { formatNumber, t } = usePreferences();
   const rows = entries.map((entry) => ({ entry, product: getProduct(entry.skuId) })).filter((row) => row.product);
 
   return (
@@ -24,22 +28,13 @@ export default function WatchlistScreen() {
         contentContainerStyle={styles.content}
         ListHeaderComponent={
           <View style={styles.header}>
-            <Text style={styles.title}>Watchlist</Text>
-            <Text style={styles.subtitle}>{entries.length} saved · price movement since saved</Text>
+            <Text style={styles.title}>{t('watch.title')}</Text>
+            <Text style={styles.subtitle}>{t('watch.summary', { saved: formatNumber(entries.length), alerts: formatNumber(entries.filter((entry) => entry.alertTarget).length) })}</Text>
           </View>
         }
-        ListEmptyComponent={<ScreenState title="No saved deals" body="Save a product from Deals or the detail screen to track it here." />}
+        ListEmptyComponent={<ScreenState title={t('watch.emptyTitle')} body={t('watch.emptyBody')} />}
         renderItem={({ item }) => (
-          <View style={styles.row}>
-            <DealCard
-              product={item.product}
-              signal={signals[item.product.sku_id]}
-              saved
-              onPress={() => router.push({ pathname: '/product/[skuId]', params: { skuId: item.product.sku_id } })}
-              onToggleSave={() => remove(item.product.sku_id)}
-            />
-            <WatchStatus entry={item.entry} product={item.product} />
-          </View>
+          <WatchRow entry={item.entry} product={item.product} onPress={() => router.push({ pathname: '/product/[skuId]', params: { skuId: item.product.sku_id } })} onRemove={() => remove(item.product.sku_id)} />
         )}
         ListFooterComponent={<ProGuide />}
       />
@@ -47,32 +42,64 @@ export default function WatchlistScreen() {
   );
 }
 
-function WatchStatus({ entry, product }: { entry: WatchEntry; product: Product }) {
+function WatchRow({ entry, product, onPress, onRemove }: { entry: WatchEntry; product: Product; onPress: () => void; onRemove: () => void }) {
+  const { categoryLabel, formatMoney, t } = usePreferences();
+  const category = categoryLabel(productCategory(product));
   const delta = product.sale_price - entry.savedPrice;
   const down = delta < 0;
   const same = Math.abs(delta) < 0.01;
-  const text = same ? 'No change since saved' : `${down ? '↓' : '↑'} ${formatPrice(Math.abs(delta), product.symbol)} since you saved`;
+  const text = same ? t('watch.noChange') : t('watch.sinceSaved', { direction: down ? '↓' : '↑', amount: formatMoney(Math.abs(delta), product.currency, product.symbol) });
+  const imageCandidates = Array.from(new Set([product.image_url, ...product.images].filter(Boolean))) as string[];
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+  const imageUri = imageCandidates.find((uri) => !failedImages[uri]);
+
+  useEffect(() => {
+    setFailedImages({});
+  }, [product.sku_id]);
 
   return (
-    <View style={styles.status}>
-      <View style={[styles.statusPill, down ? styles.goodPill : styles.neutralPill]}>
-        <Text style={[styles.statusText, down && styles.goodText]}>{text}</Text>
+    <Pressable style={styles.row} onPress={onPress}>
+      <View style={styles.thumb}>
+        <TopoPlaceholder label={category} showLabel={false} />
+        {imageUri ? <Image source={{ uri: imageUri }} style={styles.image} contentFit="cover" transition={140} onError={() => setFailedImages((current) => ({ ...current, [imageUri]: true }))} /> : null}
+        <Text style={styles.thumbLabel} numberOfLines={1}>
+          {BRAND[product._brand].label} · {category}
+        </Text>
       </View>
-      <Text style={styles.current}>
-        Current {formatPrice(product.sale_price, product.symbol)} · saved {formatPrice(entry.savedPrice, entry.symbol)}
-      </Text>
-      {entry.alertTarget ? <Text style={styles.alert}>Alert at {formatPrice(entry.alertTarget, product.symbol)}</Text> : null}
-      <Text style={styles.name} numberOfLines={1}>{productName(product)}</Text>
-    </View>
+      <View style={styles.rowBody}>
+        <View style={styles.rowHead}>
+          <Text style={styles.name} numberOfLines={1}>
+            {productName(product)}
+          </Text>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('watch.remove')} style={styles.removeButton} onPress={onRemove} hitSlop={10}>
+            <Ionicons name="close" size={15} color={colors.faint} />
+          </Pressable>
+        </View>
+        <View style={styles.deltaRow}>
+          {down ? <Ionicons name="arrow-down" size={12} color={colors.buy} /> : null}
+          <Text style={[styles.statusText, down ? styles.goodText : styles.flatText]}>{text}</Text>
+        </View>
+        {entry.alertTarget ? (
+          <View style={styles.alertLine}>
+            <Ionicons name="notifications-outline" size={12} color={colors.ink2} />
+            <Text style={styles.alert}>{t('watch.alertAt')} <Text style={styles.mono}>{formatMoney(entry.alertTarget, product.currency, product.symbol)}</Text></Text>
+          </View>
+        ) : null}
+        <Text style={styles.current}>
+          <Text style={styles.mono}>{formatMoney(product.sale_price, product.currency, product.symbol)}</Text> <Text style={styles.currentUnit}>{t('watch.now')}</Text>
+        </Text>
+      </View>
+    </Pressable>
   );
 }
 
 function ProGuide() {
+  const { t } = usePreferences();
   return (
     <Pressable style={styles.proGuide} onPress={() => router.push('/paywall')}>
       <View>
-        <Text style={styles.proTitle}>Unlimited alerts with Pro</Text>
-        <Text style={styles.proSub}>Unlock full history, richer lows, and more room to track gear.</Text>
+        <Text style={styles.proTitle}>{t('watch.proTitle')}</Text>
+        <Text style={styles.proSub}>{t('watch.proSub')}</Text>
       </View>
       <Ionicons name="chevron-forward" size={20} color={colors.ink} />
     </Pressable>
@@ -87,16 +114,17 @@ const styles = StyleSheet.create({
   content: {
     padding: 20,
     paddingBottom: 32,
-    gap: 14,
+    gap: 0,
   },
   header: {
-    marginBottom: 4,
+    marginBottom: 12,
   },
   title: {
     color: colors.ink,
-    fontSize: 34,
-    lineHeight: 40,
+    fontSize: 28,
+    lineHeight: 34,
     fontWeight: '900',
+    letterSpacing: 0,
   },
   subtitle: {
     color: colors.muted,
@@ -104,35 +132,63 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   row: {
-    gap: 8,
+    minHeight: 88,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 11,
+    paddingVertical: 13,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.border,
   },
-  status: {
-    gap: 6,
-    borderRadius: radii.md,
-    backgroundColor: colors.surface,
+  thumb: {
+    width: 58,
+    aspectRatio: 4 / 5,
+    overflow: 'hidden',
+    borderRadius: 11,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    padding: 12,
+    backgroundColor: colors.photo,
   },
-  statusPill: {
-    alignSelf: 'flex-start',
-    borderRadius: radii.sm,
-    paddingHorizontal: 9,
-    paddingVertical: 5,
+  image: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
   },
-  goodPill: {
-    backgroundColor: colors.successSoft,
+  thumbLabel: {
+    position: 'absolute',
+    left: 6,
+    bottom: 5,
+    maxWidth: '80%',
+    color: colors.photoCat,
+    fontSize: 8.5,
+    fontWeight: '900',
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
   },
-  neutralPill: {
-    backgroundColor: colors.surfaceAlt,
+  rowBody: {
+    flex: 1,
+    minWidth: 0,
+  },
+  rowHead: {
+    minHeight: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   statusText: {
     color: colors.muted,
-    fontWeight: '900',
-    fontSize: 12,
+    fontWeight: '800',
+    fontSize: 11.5,
   },
   goodText: {
-    color: colors.success,
+    color: colors.buy,
+  },
+  flatText: {
+    color: colors.muted,
   },
   current: {
     color: colors.ink,
@@ -140,24 +196,55 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   alert: {
-    color: colors.accent,
-    fontSize: 13,
+    color: colors.ink2,
+    fontSize: 11.5,
     fontWeight: '800',
   },
   name: {
+    flex: 1,
+    color: colors.ink,
+    fontSize: 13.5,
+    fontWeight: '800',
+  },
+  removeButton: {
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  deltaRow: {
+    marginTop: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  alertLine: {
+    marginTop: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  mono: {
+    fontFamily: typography.mono,
+    fontVariant: typography.tabular,
+  },
+  currentUnit: {
     color: colors.faint,
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: 10.5,
+    fontWeight: '600',
   },
   proGuide: {
-    minHeight: 80,
+    minHeight: 72,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderRadius: radii.md,
-    backgroundColor: colors.accentSoft,
-    padding: 16,
-    marginTop: 8,
+    gap: 10,
+    borderRadius: radii.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.borderStrong,
+    backgroundColor: colors.card,
+    padding: 13,
+    marginTop: 14,
   },
   proTitle: {
     color: colors.ink,

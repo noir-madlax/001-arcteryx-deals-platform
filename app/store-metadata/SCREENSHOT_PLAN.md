@@ -1,0 +1,43 @@
+# Next-Version App Store Screenshot Plan
+
+## Boundary
+
+This file defines the conversion story and capture requirements; it is not a completed screenshot set. Final images depend on the final signed next-version build, current StoreKit products, and a fresh device smoke pass.
+
+Use iPhone 16 Pro Max portrait at 1320×2868 for Apple’s current 6.9-inch screenshot well. The first three slots are the search-results story and must remain in this order.
+
+## Slots
+
+| Slot | Source screen | Proof required in the signed build | Conversion job |
+|---|---|---|---|
+| 1 | `deals-feed` | Current feed, real product images, a valid low/drop signal | Establish outdoor deal discovery immediately |
+| 2 | `product-detail-signal` | Price chart plus actual all-time/90-day signal or buy/wait verdict | Differentiate GearDrop from a coupon feed |
+| 3 | `region-comparison` | Two or more real region prices for the exact product family | Prove cross-region intelligence |
+| 4 | `watchlist` | Saved item and movement-since-save state | Show retention and tracking value |
+| 5 | `pro-price-history` | StoreKit-backed paywall/full-history state with localized price | Explain the paid value without fabricated pricing |
+| 6 | `yearbook-current-deals` | Localized Yearbook UI with Current and Outlet/unlinked controls plus at least one deterministically linked real deal showing source, region, current/original price, discount, and freshness | Prove the three-brand catalog and conservative live-deal overlay |
+
+The localized headline for each slot is the same array index in `app/store-metadata/next-version.json`.
+
+## Composition Rules
+
+- Use only UI captured from the exact next-version signed build.
+- Keep the captured UI legible; a headline may sit above it, but must not cover price signals or primary controls.
+- Do not add device frames, fake notifications, invented savings, fake ratings, merchant logos, or unverified superlatives.
+- Do not expose tester emails, invite codes, account names, debug overlays, placeholder images, or sandbox-only labels.
+- The visible StoreKit price must match the screenshot locale/storefront and the current product returned by Apple.
+- Keep merchant/product content inside the genuine app capture; keep added overlay copy brand-neutral.
+- The Yearbook capture must not be an empty/error state or use fixture data. A merchant trademark may appear only inside genuine product UI from the final build, never in added overlay copy.
+- Export opaque RGB PNGs with no alpha channel.
+- Check light and dark contrast, text clipping, image safe areas, and exact 1320×2868 output before upload.
+- Run `npm run verify:store-screenshots`, then read back the live App Store Connect screenshot-set display type and image count before submission.
+
+## Product Page Optimization
+
+After the next version is live and has enough product-page traffic, keep metadata fixed and test screenshot storytelling separately:
+
+- Control: discovery-first order from this plan.
+- Treatment A: price-intelligence first (`product-detail-signal`, then `deals-feed`).
+- Treatment B: cross-region first (`region-comparison`, then `product-detail-signal`).
+
+Do not declare a winner from a short or underpowered run. Use App Store Product Page Optimization confidence and conversion rate, then apply only the verified winner.

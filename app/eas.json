@@ -19,7 +19,7 @@
       }
     },
     "production": {
-      "autoIncrement": true,
+      "autoIncrement": false,
       "ios": {
         "resourceClass": "medium"
       }
@@ -27,7 +27,9 @@
   },
   "submit": {
     "production": {
-      "ios": {}
+      "ios": {
+        "ascAppId": "6790165332"
+      }
     }
   }
 }
