@@ -11,7 +11,7 @@ Each locale directory (`en-US`, `zh-Hans`, `de-DE`, `fr-FR`, `ja`) must contain:
 5. `05-pro-price-history.png`
 6. `06-yearbook-current-deals.png`
 
-Capture the visible UI from the exact signed 1.1.0 / Build 10 candidate after device smoke and StoreKit price verification. Added overlay copy must match `store-metadata/next-version.json`. Do not use fixture data, fabricate prices, expose tester data, or imply that unlinked deals are absent from a current official catalog.
+Capture the visible UI from the exact signed 1.1.0 / Build 11 candidate after device smoke and StoreKit price verification. Added overlay copy must match `store-metadata/next-version.json`. Do not use fixture data, fabricate prices, expose tester data, or imply that unlinked deals are absent from a current official catalog.
 
 Validate before upload:
 

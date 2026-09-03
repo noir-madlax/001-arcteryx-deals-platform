@@ -2,7 +2,7 @@
 
 ## Status
 
-The ASO package is prepared for **GearDrop 1.1.0 / Build 10 only**. It must not be pasted into, or otherwise mutate, a version that is already in review.
+The ASO package is prepared for **GearDrop 1.1.0 / Build 11 only**. It must not be pasted into, or otherwise mutate, a version that is already in review.
 
 Canonical metadata:
 

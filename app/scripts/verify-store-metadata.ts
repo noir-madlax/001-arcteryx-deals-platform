@@ -94,7 +94,7 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as StoreMetadata
 assert.equal(manifest.schemaVersion, 1);
 assert.equal(manifest.target, 'next-app-version');
 assert.equal(manifest.targetVersion, '1.1.0');
-assert.equal(manifest.targetBuildNumber, '10');
+assert.equal(manifest.targetBuildNumber, '11');
 assert.equal(manifest.appId, '6790165332');
 assert.equal(manifest.bundleId, 'dev.100app.geardrop');
 assert.equal(manifest.primaryLocale, 'en-US');

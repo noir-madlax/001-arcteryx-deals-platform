@@ -109,7 +109,7 @@ assert.equal(expo.locales?.['zh-Hans']?.ios?.CFBundleName, '值de');
 assert.equal(expo.locales?.['zh-Hans']?.android?.app_name, '值de');
 assert.equal(expo.ios?.bundleIdentifier, 'dev.100app.geardrop');
 assert.equal(expo.ios?.supportsTablet, false, 'release candidate must remain iPhone-only until iPad UI and screenshots are verified');
-assert.equal(expo.ios?.buildNumber, '10');
+assert.equal(expo.ios?.buildNumber, '11');
 assert.equal(expo.ios?.config?.usesNonExemptEncryption, false);
 assertNoTrademark(expo.name, 'expo.name');
 assertNoTrademark(expo.slug, 'expo.slug');
@@ -168,8 +168,8 @@ assert.ok(packageJson.scripts['eas:build:ios'], 'missing EAS iOS build script');
 assert.ok(packageJson.scripts['eas:submit:ios'], 'missing EAS iOS submit script');
 assert.ok(easJson.build?.production, 'missing production build profile');
 assert.ok(easJson.build?.simulator, 'missing simulator build profile');
-assert.equal(easJson.cli?.appVersionSource, 'local', 'Build 10 must use the committed local version source');
-assert.equal(easJson.build?.production?.autoIncrement, false, 'production build must not increment committed Build 10');
+assert.equal(easJson.cli?.appVersionSource, 'local', 'Build 11 must use the committed local version source');
+assert.equal(easJson.build?.production?.autoIncrement, false, 'production build must not increment committed Build 11');
 assert.ok(easJson.submit?.production?.ios, 'missing production iOS submit profile');
 assert.equal(easJson.submit?.production?.ios?.ascAppId, '6790165332', 'production submit must target the GearDrop App Store Connect record');
 assert.ok(existsSync(join(root, '..', 'privacy.html')), 'missing root privacy.html for App Store privacy policy URL');
@@ -289,6 +289,6 @@ assert.ok(liveDataVerifierSource.includes('YEARBOOK_BRAND_MIN_ROWS'), 'live data
 assert.ok(!liveDataVerifierSource.includes('products.length >= 5000'), 'live data verification must not use a volatile aggregate catalog floor');
 
 console.log(
-  'config_ok name=GearDrop version=1.1.0 bundle=dev.100app.geardrop buildNumber=10 usesNonExemptEncryption=false privacyUrl=https://geardrop.100app.dev/privacy.html plugins=' +
+  'config_ok name=GearDrop version=1.1.0 bundle=dev.100app.geardrop buildNumber=11 usesNonExemptEncryption=false privacyUrl=https://geardrop.100app.dev/privacy.html plugins=' +
     [...pluginNames].join(','),
 );
